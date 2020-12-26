@@ -1,5 +1,5 @@
 ---
-title: "How to create a blog or a website in R with distill package (in progress!)"
+title: "How to create a blog or a website in R with {distill} package (in progress!)"
 description: |
   A short description of the post.
 author:
@@ -215,10 +215,10 @@ create_post("My second blog post...this will be really good :-)")
 - press "Push"
 - wait until you see the "Close" button and close "Git push" pop up window
 - close or ignore the other pop up window.
-- Get back to your Webpage and refresh. You should see a new blog-post.
+- Get back to your Webpage and refresh (it may take a few seconds, so, don't panic if the first refresh don't work). You should see a new blog-post.
 
-Repeat following procedure for every post, in short:
-- create or change
+Now you can repeat following routine for every post:
+- Create or change posts
 - Knit
 - Commit
 - Push
