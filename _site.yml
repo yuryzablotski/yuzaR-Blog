@@ -1,12 +1,20 @@
 name: "yuzaR-Blog"
 title: "yuzaR-Blog"
 description: |
-  yuzaR-Blog
+  Some description of the website
 output_dir: "_site"
+base_url: https://yuzar-blog.netlify.app/
 navbar:
+  logo: images/rstudio.png
   right:
     - text: "Home"
       href: index.html
     - text: "About"
       href: about.html
+    - icon: fa fa-rss
+      href: index.xml
 output: distill::distill_article
+collections:
+  posts:
+    disqus: yuzaR-Blog
+    share: [twitter, linkedin, facebook, google-plus, pinterest]

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
+  <url>
+    <loc>https://yuzar-blog.netlify.app/about.html</loc>
+    <lastmod>2020-12-26T21:36:08+01:00</lastmod>
+  </url>
+  <url>
+    <loc>https://yuzar-blog.netlify.app/</loc>
+    <lastmod>2020-12-26T17:20:05+01:00</lastmod>
+  </url>
+  <url>
+    <loc>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/</loc>
+    <lastmod>2020-12-26T21:41:13+01:00</lastmod>
+  </url>
+  <url>
+    <loc>https://yuzar-blog.netlify.app/posts/welcome/</loc>
+    <lastmod>2020-12-26T21:02:21+01:00</lastmod>
+  </url>
+</urlset>

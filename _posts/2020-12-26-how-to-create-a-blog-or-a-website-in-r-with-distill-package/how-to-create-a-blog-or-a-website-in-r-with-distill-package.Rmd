@@ -1,11 +1,14 @@
 ---
 title: "How to create a blog or a website in R with {distill} package (in progress!)"
 description: |
-  A short description of the post.
+  If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who are you and what are you capable of. Thus: show, don't tell.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
 date: 12-26-2020
+categories:
+  - R & the Web
+  - videos
 output:
   distill::distill_article:
     self_contained: false
@@ -225,15 +228,81 @@ Now you can repeat following routine for every post:
 
 Congrats! You are continuosly deploy your online blog. 
 
+## Always Knit after changing
+
+By the way, if you don't want your post to publish until you really sure, you can start out as a draft:
+
+```{r eval=FALSE}
+distill::create_post("Another nice post", draft = TRUE)
+```
+
+"Knitting" blog posts is the only way to update it. They are not re-rendered when the site is built, because it's computationally expensive and prone to problems. Build Website would not work for blogs. 
 
 
-# Improve your website of blog
 
-- listing pages
-- categories
-- thumbnail
-- date
 
+# Blog configuration with "_site.yml"
+
+- Open "_site.yml". You'll see something like that:
+
+```{r}
+name: "reproducible-finance-with-r"
+title: "Reproducible Finance with R"
+description: |
+  Exploring reproducible finance with the R statistical 
+  computing environment.
+base_url: https://beta.rstudioconnect.com/content/11424/
+navbar:
+  logo: images/rstudio.png
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Contributors"
+      href: contributors.html
+    - icon: fa fa-rss
+      href: index.xml
+output: distill::distill_article
+```
+
+
+
+
+# Improve your website or blog
+
+- Listing pages
+
+- Categories
+ 
+Categories can be added similar to the blogdown in the 
+
+
+  
+```{r}
+title: "How to create a blog or a website in R with {distill} package (in progress!)"
+author:
+  - name: Yury Zablotski
+date: 12-26-2020
+categories:
+  - R & the Web
+  - videos
+```
+
+- Thumbnails
+
+Thumbnails (or previews) are the images which are displayed along the post. They serve as an eyecatcher. You can add a preview image into the post’s metadata by adding a "preview" field:
+
+```{r}
+title: "Blog post on how to write blog posts"
+description: |
+  Here we were out of ideas, and therefore we are proud to announce
+our new post about how to write a post. Creativity is a b**ch! ... And I love her!
+preview: images/photo-of-me-because-I-am-sooo-beautifuuulll-toniiiight.png
+```
+
+  
+  
 # Change desing and appearence of your blog
 
 

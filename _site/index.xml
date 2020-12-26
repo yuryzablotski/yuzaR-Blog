@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>yuzaR-Blog</title>
+    <link>https://yuzar-blog.netlify.app/</link>
+    <atom:link href="https://yuzar-blog.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Some description of the website
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sat, 26 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>How to create a blog or a website in R with {distill} package (in progress!)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</link>
+      <description>If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who are you and what are you capable of. Thus: show, don't tell.</description>
+      <category>R &amp; the Web</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Welcome to yuzaR-Blog</title>
+      <dc:creator>Nora Jones</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/welcome</link>
+      <description>Welcome to our new blog, yuzaR-Blog. We hope you enjoy 
+reading what we have to say!</description>
+      <guid>https://yuzar-blog.netlify.app/posts/welcome</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>
