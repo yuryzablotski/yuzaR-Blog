@@ -15,5 +15,22 @@
     "preview": {},
     "last_modified": "2020-12-26T17:20:06+01:00",
     "input_file": {}
+  },
+  {
+    "path": "posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/",
+    "title": "How to create a blog or a website in R with distill package",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Nora Jones",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2020-12-26",
+    "categories": [],
+    "contents": "\nDistill is a publication format for scientific and technical writing, native to the web.\nLearn more about using Distill at https://rstudio.github.io/distill.\n\n\n\n",
+    "preview": {},
+    "last_modified": "2020-12-26T18:17:24+01:00",
+    "input_file": "how-to-create-a-blog-or-a-website-in-r-with-distill-package.utf8.md"
   }
 ]
