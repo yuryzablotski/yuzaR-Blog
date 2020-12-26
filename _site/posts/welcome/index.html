@@ -90,6 +90,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <meta property="description" itemprop="description" content="Welcome to our new blog, yuzaR-Blog. We hope you enjoy &#10;reading what we have to say!"/>
 
+<link rel="canonical" href="https://yuzar-blog.netlify.app/posts/welcome/"/>
 
 <!--  https://schema.org/Article -->
 <meta property="article:published" itemprop="datePublished" content="2020-12-26"/>
@@ -100,6 +101,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:title" content="yuzaR-Blog: Welcome to yuzaR-Blog"/>
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Welcome to our new blog, yuzaR-Blog. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="og:url" content="https://yuzar-blog.netlify.app/posts/welcome/"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="yuzaR-Blog"/>
 
@@ -107,12 +109,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:card" content="summary"/>
 <meta property="twitter:title" content="yuzaR-Blog: Welcome to yuzaR-Blog"/>
 <meta property="twitter:description" content="Welcome to our new blog, yuzaR-Blog. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="twitter:url" content="https://yuzar-blog.netlify.app/posts/welcome/"/>
 
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="yuzaR-Blog: Welcome to yuzaR-Blog"/>
+<meta name="citation_fulltext_html_url" content="https://yuzar-blog.netlify.app/posts/welcome/"/>
+<meta name="citation_online_date" content="2020/12/26"/>
+<meta name="citation_publication_date" content="2020/12/26"/>
+<meta name="citation_author" content="Nora Jones"/>
+<meta name="citation_author_institution" content="Spacely Sprockets"/>
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Welcome to yuzaR-Blog"]},{"type":"character","attributes":{},"value":["Welcome to our new blog, yuzaR-Blog. We hope you enjoy \nreading what we have to say!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Nora Jones"]},{"type":"character","attributes":{},"value":["https://example.com/norajones"]},{"type":"character","attributes":{},"value":["Spacely Sprockets"]},{"type":"character","attributes":{},"value":["https://example.com/spacelysprokets"]}]}]},{"type":"character","attributes":{},"value":["12-26-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Welcome to yuzaR-Blog"]},{"type":"character","attributes":{},"value":["Welcome to our new blog, yuzaR-Blog. We hope you enjoy \nreading what we have to say!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Nora Jones"]},{"type":"character","attributes":{},"value":["https://example.com/norajones"]},{"type":"character","attributes":{},"value":["Spacely Sprockets"]},{"type":"character","attributes":{},"value":["https://example.com/spacelysprokets"]}]}]},{"type":"character","attributes":{},"value":["12-26-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/posts/welcome/"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/posts/welcome/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2021,15 +2031,27 @@ document.addEventListener('DOMContentLoaded', function() {
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
+<span class="logo">
+<img src="../../images/rstudio.png"/>
+</span>
 <a href="../../index.html" class="title">yuzaR-Blog</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
 <a href="../../index.xml">
 <i class="fa fa-rss" aria-hidden="true"></i>
 </a>
-<a href="../../index.html">Home</a>
-<a href="../../about.html">About</a>
+<a href="https://github.com/yuryzablotski">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
+<a href="https://twitter.com/yuzaR___">
+<i class="fa fa-twitter" aria-hidden="true"></i>
+</a>
+<a href="https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA">
+<i class="fa fa-youtube-square" aria-hidden="true"></i>
+</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2054,6 +2076,47 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="d-article">
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/welcome/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=Welcome%20to%20yuzaR-Blog&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2Fwelcome%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2Fwelcome%2F&amp;title=Welcome%20to%20yuzaR-Blog">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2Fwelcome%2F">
+        <i class="fab fa-facebook"></i>
+      </a>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2Fwelcome%2F">
+        <i class="fab fa-google-plus"></i>
+      </a>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2Fwelcome%2F&amp;description=Welcome%20to%20yuzaR-Blog">
+        <i class="fab fa-pinterest"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://yuzaR-Blog.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script>
+var disqus_config = function () {
+  this.page.url = 'https://yuzar-blog.netlify.app/posts/welcome/';
+  this.page.identifier = 'posts/welcome/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://yuzaR-Blog.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
 <!--/radix_placeholder_article_footer-->
 </div>
 
@@ -2064,7 +2127,18 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Jones (2020, Dec. 26). yuzaR-Blog: Welcome to yuzaR-Blog. Retrieved from https://yuzar-blog.netlify.app/posts/welcome/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{jones2020welcome,
+  author = {Jones, Nora},
+  title = {yuzaR-Blog: Welcome to yuzaR-Blog},
+  url = {https://yuzar-blog.netlify.app/posts/welcome/},
+  year = {2020}
+}</pre>
+</div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
