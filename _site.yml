@@ -5,10 +5,16 @@ description: |
 output_dir: "_site"
 base_url: https://yuzar-blog.netlify.app/
 navbar:
-  logo: images/rstudio.png
+  logo: images/logo.jpg
   right:
     - text: "Home"
       href: index.html
+    - text: "Publish"
+      menu:
+        - text: "Bla"
+          href: welcome.html
+        - text: "Blup"
+          href: welcome.html
     - text: "About"
       href: about.html
     - icon: fa fa-rss
