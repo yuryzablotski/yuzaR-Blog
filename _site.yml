@@ -5,18 +5,19 @@ description: |
 output_dir: "_site"
 base_url: https://yuzar-blog.netlify.app/
 navbar:
-  image: images/logo.png
+  logo:
+    image: images/my_foto.jpg
   right:
-    - text: "Home"
-      href: index.html
-    - text: "Publish"
-      menu:
-        - text: "Bla"
-          href: welcome.html
-        - text: "Blup"
-          href: welcome.html
     - text: "About"
       href: about.html
+    - text: "Posts"
+      href: index.html
+    - text: "Topics"
+      menu:
+        - text: "Package reviews"
+          href: welcome.html
+        - text: "Visualisation"
+          href: welcome.html
     - icon: fa fa-rss
       href: index.xml
     - icon: fa fa-github

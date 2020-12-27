@@ -5,15 +5,15 @@
       "title": "About this blog",
       "description": "Self-taught data science. Exploring Statistics, Machine Learning and Artifitial Intelligence with the R statistical computing environment.",
       "author": [],
-      "contents": "\n\n\n\n",
-      "last_modified": "2020-12-27T09:58:48+01:00"
+      "contents": "\n\n\n\n\n\n\n",
+      "last_modified": "2020-12-27T10:24:15+01:00"
     },
     {
       "path": "index.html",
       "title": "yuzaR-Blog",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2020-12-27T09:58:49+01:00"
+      "last_modified": "2020-12-27T10:24:08+01:00"
     }
   ],
   "collections": ["posts/posts.json"]
