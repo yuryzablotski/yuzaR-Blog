@@ -2,11 +2,11 @@
   "articles": [
     {
       "path": "about.html",
-      "title": "This blog about self-taught data science.",
-      "description": "Exploring Statistics, Machine Learning and Artifitial Intelligence with the R statistical computing environment.",
+      "title": "Blog about Data Science in R",
+      "description": "Welcome to my blog about Data Science! I love to play with data and try to understand the world through the lens of Statistics, Machine Learning and Artifitial Intelligence. I also love to learn, to teach and to create. Having a personal blog optimally combines all of my passions. And all of this is possible with R and RStudio. That's why I love R!  ",
       "author": [],
       "contents": "\n\n\n\n\n\n\n",
-      "last_modified": "2020-12-27T11:48:53+01:00"
+      "last_modified": "2020-12-27T12:09:56+01:00"
     },
     {
       "path": "index.html",
