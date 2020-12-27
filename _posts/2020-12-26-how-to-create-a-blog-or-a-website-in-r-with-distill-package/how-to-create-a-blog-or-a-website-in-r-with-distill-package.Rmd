@@ -103,45 +103,68 @@ distill::create_post("My second blog post...this one will be really good :-)")
 - go back to RStudio and repeat step 5
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Automated continuous publishing (deploying)
 
-## Create blog either manually or with one line of code
+Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). 
+
+## 1. Install *distill* and *usethis* packages
+
+```{r}
+install.packages("distill")
+install.packages("usethis")
+```
+
+## 2. Create your blog either manually with RStudio or with one line of code
+
+### 2.1. with RStudio
 
 - open RStudio
 - File => New Project... => New Directory => Distill Blog
 - "Directory name" will be the name of the folder, where all the documents from your blog will be stored
 - Choose the directory where this folder supposed to be stored
-- Give your blog a name. You'll be able to rename it.
+- Give your blog a name. You'll be able to rename it later
 - Click "Create project"
 
-or execute the code below:
+### 2.2. with one line of code
 
-```{r}
+```{r eval=FALSE}
 distill::create_blog(dir = "my blog", title = "A cool name of my blog")
 ```
 
-## Have a look at your blog
 
-Either Knit the document, or go to the "Build" tab and press "Build Website".
+## 3. Build your website
 
-## Connect to your github
+A new RStudio window with newly created files and folders (right left corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don't bother about it now. 
 
-You have to have "git" installed on your computer and have a Github profile. If you still aren't, [Happy Git and GitHub for the useR](https://happygitwithr.com/) will help you with that. Take your time with this short, but comprehensive book.
+- Find the "Build" tab and press "Build Website". You'll see the process of building.
+- Click "Open in Browser" and explore your website
 
-### Then install "usethis" package, if you need:
+We aren't online yet. But very soon!
 
-```{r eval=FALSE}
-install.packages("usethis")
-```
+## 4. Connect to your github
 
-
-
-### Run use_git() and answer two questions:
-
-- Run "use_git()" command. You'll be asked: "Is it ok to commit them?"
-- Do not commit yet. Type 3 for "No", or "Nope" or similar. You'll get another question: "A restart of RStudio is required to activate the Git pane
-Restart now?"
-- Do restart! Type 2 for "Yes" or "Yup".
+- Run `use_git()` and answer two questions:
+  - "Is it ok to commit them?" Don't commit by typing 3 for "No", or "Nope" or similar. 
+  - "A restart of RStudio is required to activate the Git pane
+Restart now?" Restart by typing 2 for "Yes" or "Yup".
 
 ```{r eval=FALSE}
 usethis::use_git() 

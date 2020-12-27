@@ -2408,11 +2408,13 @@ TOPICS
 <li><a href="#create-a-new-blog-post">5. Create a new blog-post</a></li>
 </ul></li>
 <li><a href="#automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</a><ul>
-<li><a href="#create-blog-either-manually-or-with-one-line-of-code">Create blog either manually or with one line of code</a></li>
-<li><a href="#have-a-look-at-your-blog">Have a look at your blog</a></li>
-<li><a href="#connect-to-your-github">Connect to your github</a><ul>
-<li><a href="#then-install-usethis-package-if-you-need">Then install “usethis” package, if you need:</a></li>
-<li><a href="#run-use_git-and-answer-two-questions">Run use_git() and answer two questions:</a></li>
+<li><a href="#install-distill-and-usethis-packages">1. Install <em>distill</em> and <em>usethis</em> packages</a></li>
+<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">2. Create your blog either manually with RStudio or with one line of code</a><ul>
+<li><a href="#with-rstudio-1">2.1. with RStudio</a></li>
+<li><a href="#with-one-line-of-code-1">2.2. with one line of code</a></li>
+</ul></li>
+<li><a href="#build-your-website-1">3. Build your website</a></li>
+<li><a href="#connect-to-your-github">4. Connect to your github</a><ul>
 <li><a href="#stage-and-commit">Stage and Commit</a></li>
 <li><a href="#run-use_github-to-create-a-new-github-repository">Run use_github() to create a new Github repository</a></li>
 </ul></li>
@@ -2502,38 +2504,46 @@ TOPICS
 <li>go back to RStudio and repeat step 5</li>
 </ul>
 <h1 id="automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</h1>
-<h2 id="create-blog-either-manually-or-with-one-line-of-code">Create blog either manually or with one line of code</h2>
+<p>Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and <em>using Github with continuous deployment</em> becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed <em>Git</em> on your computer, created a <em>Github</em> account and connected your <em>RStudio</em> to your <em>Github</em>. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>.</p>
+<h2 id="install-distill-and-usethis-packages">1. Install <em>distill</em> and <em>usethis</em> packages</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"usethis"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">2. Create your blog either manually with RStudio or with one line of code</h2>
+<h3 id="with-rstudio-1">2.1. with RStudio</h3>
 <ul>
 <li>open RStudio</li>
 <li>File =&gt; New Project… =&gt; New Directory =&gt; Distill Blog</li>
 <li>“Directory name” will be the name of the folder, where all the documents from your blog will be stored</li>
 <li>Choose the directory where this folder supposed to be stored</li>
-<li>Give your blog a name. You’ll be able to rename it.</li>
+<li>Give your blog a name. You’ll be able to rename it later</li>
 <li>Click “Create project”</li>
 </ul>
-<p>or execute the code below:</p>
+<h3 id="with-one-line-of-code-1">2.2. with one line of code</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"my blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<h2 id="have-a-look-at-your-blog">Have a look at your blog</h2>
-<p>Either Knit the document, or go to the “Build” tab and press “Build Website”.</p>
-<h2 id="connect-to-your-github">Connect to your github</h2>
-<p>You have to have “git” installed on your computer and have a Github profile. If you still aren’t, <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a> will help you with that. Take your time with this short, but comprehensive book.</p>
-<h3 id="then-install-usethis-package-if-you-need">Then install “usethis” package, if you need:</h3>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"usethis"</span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<h3 id="run-use_git-and-answer-two-questions">Run use_git() and answer two questions:</h3>
+<h2 id="build-your-website-1">3. Build your website</h2>
+<p>A new RStudio window with newly created files and folders (right left corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don’t bother about it now.</p>
 <ul>
-<li>Run “use_git()” command. You’ll be asked: “Is it ok to commit them?”</li>
-<li>Do not commit yet. Type 3 for “No”, or “Nope” or similar. You’ll get another question: “A restart of RStudio is required to activate the Git pane Restart now?”</li>
-<li>Do restart! Type 2 for “Yes” or “Yup”.</li>
+<li>Find the “Build” tab and press “Build Website”. You’ll see the process of building.</li>
+<li>Click “Open in Browser” and explore your website</li>
+</ul>
+<p>We aren’t online yet. But very soon!</p>
+<h2 id="connect-to-your-github">4. Connect to your github</h2>
+<ul>
+<li>Run <code>use_git()</code> and answer two questions:
+<ul>
+<li>“Is it ok to commit them?” Don’t commit by typing 3 for “No”, or “Nope” or similar.</li>
+<li>“A restart of RStudio is required to activate the Git pane Restart now?” Restart by typing 2 for “Yes” or “Yup”.</li>
+</ul></li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
