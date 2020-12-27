@@ -94,7 +94,7 @@ distill::create_post("My second blog post...this one will be really good :-)")
 
 - a new partly pre-filled Rmarkdown document will open itself in RStudio
 - fill it with some text and code as you usually do with Rmarkdown documents
-- hit "Knit". **NOTE:** you'll need to always "Knit" all blog-posts individually. "Build Website" would not render them for you. However, the *distill*-Website (we are doing Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
+- hit "Knit". **NOTE:** you'll need to always "Knit" all changed or created blog-posts individually. It is the only way to update them. "Build Website" would not re-render them for you, because it's computationally expensive and prone to problems. However, the *distill*-Website (we are doing *distill*-Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
 
 This new post exists only on your local computer, still not online, thus...
 
@@ -239,7 +239,7 @@ distill::create_post("My second blog post...this one will be really good :-)")
 
 - a new partly pre-filled RMarkdown document will open itself in RStudio
 - fill it with some text and code as you usually do with RMarkdown documents
-- hit "Knit". **NOTE:** you'll need to always "Knit" all blog-posts individually. "Build Website" would not render them for you. However, the *distill*-Website (we are doing Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
+- hit "Knit". **NOTE:** you'll need to always "Knit" all changed or created blog-posts individually. It is the only way to update them. "Build Website" would not re-render them for you, because it's computationally expensive and prone to problems. However, the *distill*-Website (we are doing *distill*-Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
 
 This new post exists only on your local computer, still not online, thus...
 
@@ -262,23 +262,13 @@ This new post exists only on your local computer, still not online, thus...
   - Commit
   - Push
 
-You don't need to commit and push every change, only important once. Think of this process as saving the progress you made on your blog.
+You don't need to commit and push every change, only important ones. Think of this process as **really** saving the progress you made on your blog.
 
-
-
-
-
-
-
-## Always Knit after changing
-
-By the way, if you don't want your post to publish until you really sure, you can start out as a draft:
+By the way, if you don't want to publish your post until you really satisfied with it, you can start out as a draft:
 
 ```{r eval=FALSE}
 distill::create_post("Another nice post", draft = TRUE)
 ```
-
-"Knitting" blog posts is the only way to update it. They are not re-rendered when the site is built, because it's computationally expensive and prone to problems. Build Website would not work for blogs. 
 
 
 

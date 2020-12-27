@@ -1475,7 +1475,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul></li>
 <li><a href="#publish-your-blog-or-a-website-via-netlify-1">5. Publish your blog (or a website) via Netlify</a></li>
 <li><a href="#create-a-new-blog-post-1">6. Create a new blog-post</a></li>
-<li><a href="#always-knit-after-changing">Always Knit after changing</a></li>
 </ul></li>
 <li><a href="#blog-configuration-with-_site.yml">Blog configuration with "_site.yml"</a></li>
 <li><a href="#improve-your-website-or-blog">Improve your website or blog</a></li>
@@ -1550,7 +1549,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <ul>
 <li>a new partly pre-filled Rmarkdown document will open itself in RStudio</li>
 <li>fill it with some text and code as you usually do with Rmarkdown documents</li>
-<li>hit “Knit”. <strong>NOTE:</strong> you’ll need to always “Knit” all blog-posts individually. “Build Website” would not render them for you. However, the <em>distill</em>-Website (we are doing Blog now) would. You can learn more about the difference between them <a href="https://rstudio.github.io/distill/website.html">here</a>.</li>
+<li>hit “Knit”. <strong>NOTE:</strong> you’ll need to always “Knit” all changed or created blog-posts individually. It is the only way to update them. “Build Website” would not re-render them for you, because it’s computationally expensive and prone to problems. However, the <em>distill</em>-Website (we are doing <em>distill</em>-Blog now) would. You can learn more about the difference between them <a href="https://rstudio.github.io/distill/website.html">here</a>.</li>
 </ul>
 <p>This new post exists only on your local computer, still not online, thus…</p>
 <ul>
@@ -1664,7 +1663,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <ul>
 <li>a new partly pre-filled RMarkdown document will open itself in RStudio</li>
 <li>fill it with some text and code as you usually do with RMarkdown documents</li>
-<li>hit “Knit”. <strong>NOTE:</strong> you’ll need to always “Knit” all blog-posts individually. “Build Website” would not render them for you. However, the <em>distill</em>-Website (we are doing Blog now) would. You can learn more about the difference between them <a href="https://rstudio.github.io/distill/website.html">here</a>.</li>
+<li>hit “Knit”. <strong>NOTE:</strong> you’ll need to always “Knit” all changed or created blog-posts individually. It is the only way to update them. “Build Website” would not re-render them for you, because it’s computationally expensive and prone to problems. However, the <em>distill</em>-Website (we are doing <em>distill</em>-Blog now) would. You can learn more about the difference between them <a href="https://rstudio.github.io/distill/website.html">here</a>.</li>
 </ul>
 <p>This new post exists only on your local computer, still not online, thus…</p>
 <ul>
@@ -1689,16 +1688,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li>Push</li>
 </ul></li>
 </ul>
-<p>You don’t need to commit and push every change, only important once. Think of this process as saving the progress you made on your blog.</p>
-<h2 id="always-knit-after-changing">Always Knit after changing</h2>
-<p>By the way, if you don’t want your post to publish until you really sure, you can start out as a draft:</p>
+<p>You don’t need to commit and push every change, only important ones. Think of this process as <strong>really</strong> saving the progress you made on your blog.</p>
+<p>By the way, if you don’t want to publish your post until you really satisfied with it, you can start out as a draft:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"Another nice post"</span>, draft <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>“Knitting” blog posts is the only way to update it. They are not re-rendered when the site is built, because it’s computationally expensive and prone to problems. Build Website would not work for blogs.</p>
 <h1 id="blog-configuration-with-_site.yml">Blog configuration with "_site.yml"</h1>
 <ul>
 <li>Open "_site.yml". You’ll see something like that:</li>
