@@ -303,13 +303,26 @@ preview: images/photo-of-me-because-I-am-sooo-beautifuuulll-toniiiight.png
 
   
   
-# Change desing and appearence of your blog
+# Theming - change desing and appearence of your blog
 
 
+Distill blogs can use themes and CSS just like Distill sites. You can use the create_theme() function to add a theme CSS file in the current working directory:
+
+create_theme(name = "theme") 
 
 ```{r}
-
+distill::create_theme(name = "theme") 
 ```
+
+To apply a custom theme site-wide, add a theme key to the top-level of your "_site.yml" configuration file:
+
+```{r}
+name: "distill"
+title: "Distill for R Markdown"
+theme: theme.css 
+```
+
+
 
 # Difference between a website and a blog
 

@@ -1474,7 +1474,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul></li>
 <li><a href="#blog-configuration-with-_site.yml">Blog configuration with "_site.yml"</a></li>
 <li><a href="#improve-your-website-or-blog">Improve your website or blog</a></li>
-<li><a href="#change-desing-and-appearence-of-your-blog">Change desing and appearence of your blog</a></li>
+<li><a href="#theming---change-desing-and-appearence-of-your-blog">Theming - change desing and appearence of your blog</a></li>
 <li><a href="#difference-between-a-website-and-a-blog">Difference between a website and a blog</a></li>
 <li><a href="#useful-ressources">Useful ressources</a></li>
 </ul>
@@ -1705,9 +1705,23 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span id="cb3-4"><a href="#cb3-4"></a>our new post about how to write a post. Creativity is a b<span class="op">**</span>ch<span class="op">!</span><span class="st"> </span>... And I love her<span class="op">!</span></span>
 <span id="cb3-5"><a href="#cb3-5"></a>preview<span class="op">:</span><span class="st"> </span>images<span class="op">/</span>photo<span class="op">-</span>of<span class="op">-</span>me<span class="op">-</span>because<span class="op">-</span>I<span class="op">-</span>am<span class="op">-</span>sooo<span class="op">-</span>beautifuuulll<span class="op">-</span>toniiiight.png</span></code></pre></div>
 </div>
-<h1 id="change-desing-and-appearence-of-your-blog">Change desing and appearence of your blog</h1>
+<h1 id="theming---change-desing-and-appearence-of-your-blog">Theming - change desing and appearence of your blog</h1>
+<p>Distill blogs can use themes and CSS just like Distill sites. You can use the create_theme() function to add a theme CSS file in the current working directory:</p>
+<p>create_theme(name = “theme”)</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="sourceCode">
+<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_theme.html'>create_theme</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"theme"</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<p>To apply a custom theme site-wide, add a theme key to the top-level of your "_site.yml" configuration file:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>name</span><span class='op'>:</span> <span class='st'>"distill"</span>
+<span class='va'>title</span><span class='op'>:</span> <span class='st'>"Distill for R Markdown"</span>
+<span class='va'>theme</span><span class='op'>:</span> <span class='va'>theme.css</span> 
+</code></pre>
+</div>
 </div>
 <h1 id="difference-between-a-website-and-a-blog">Difference between a website and a blog</h1>
 <p>All articles on a website are re-rendered when the site is rebuilt while the blog-post are not. We need to knit each of the article separately. This might sound bad first, because we are not uptodate with our blog, but I personally found it great. See, like the authors of “distill” state: “Given that R package upgrades have a tendency to break older code, continuously re-rendering old posts is nearly impossible to do without errors, especially over longer periods of time.” That happend to my old blogdown-generated website, where Hugo-Academic theme changes so dramatically that I could not modify my site anymore, and, since it was not on Github, I could not even ask R community, what is wrong. Thus, I totally understand, if you go for a manual deployment first (been there!), but I would recommend you to progress to Github and continuous deploy after you have got comfortable. Especially if you create a lot, automated deployment will save you lot’s of time. However, my old blogdown-website is still online and running. Thus, I prefer blog instead of the website.</p>

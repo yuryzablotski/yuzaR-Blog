@@ -8,15 +8,15 @@ navbar:
   logo:
     image: images/my_foto.jpg
   right:
-    - text: "About"
+    - text: "ABOUT"
       href: about.html
-    - text: "Posts"
+    - text: "POSTS"
       href: index.html
-    - text: "Topics"
+    - text: "TOPICS"
       menu:
-        - text: "Package reviews"
+        - text: "(in progress) Package reviews"
           href: welcome.html
-        - text: "Visualisation"
+        - text: "(in progress) Visualisation"
           href: welcome.html
     - icon: fa fa-rss
       href: index.xml
@@ -29,6 +29,7 @@ navbar:
     # - icon: fa fa-linkedin
     #   href: https://www.linkedin.com/in/lisa-lendway-68a00b63/
 output: distill::distill_article
+theme: theme.css 
 collections:
   posts:
     disqus: yuzaR-Blog
