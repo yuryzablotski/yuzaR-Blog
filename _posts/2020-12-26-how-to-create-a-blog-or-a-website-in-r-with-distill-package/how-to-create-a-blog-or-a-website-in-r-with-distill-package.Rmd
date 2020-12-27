@@ -66,7 +66,7 @@ A new RStudio window with newly created files and folders (right left corner) wi
 
 We aren't online yet. But very soon!
 
-## 4. Publish your website via Netlify
+## 4. Publish your blog (or a website) via Netlify
 
 - go the [*https://www.netlify.com/*](https://www.netlify.com/), sing up for *Netlify* (I used the Email way) and confirm your Email.
 - In Netlify you'll see a window with: 
@@ -79,7 +79,7 @@ Drag and drop your site folder here". If you somehow don't see it, find and pres
 
 **Congrats, you are online!**
 
-- Go to "Site settings" => "Change site name" 
+- go back to *Netlify*, click "Site settings" => "Change site name" 
 - rename your site (e.g. better-name) and hit "Save"
 - Click on the "better-name.netlify.app" to make sure the name has changed and the site is still working
 - go back to RStudio to populate your blog
@@ -95,7 +95,9 @@ distill::create_post("My second blog post...this one will be really good :-)")
 - a new partly pre-filled Rmarkdown document will open itself in RStudio
 - fill it with some text and code as you usually do with Rmarkdown documents
 - hit "Knit". **NOTE:** you'll need to always "Knit" all blog-posts individually. "Build Website" would not render them for you. However, the *distill*-Website (we are doing Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
-- this new post exists only on your local computer, still not online, thus...
+
+This new post exists only on your local computer, still not online, thus...
+
 - go back to *Netlify* and click "Deploys" tab, where you'll see another window with: "Need to update your site? Drag and drop your site folder here"
 - drag and drop the "_site" folder there and wait till "Production" tab produces green "Published"
 - click on the "better-name.netlify.app" to make sure the new blog-post appeared
@@ -123,7 +125,7 @@ distill::create_post("My second blog post...this one will be really good :-)")
 
 # Automated continuous publishing (deploying)
 
-Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). 
+Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). You'll only need it once!
 
 ## 1. Install *distill* and *usethis* packages
 
@@ -171,20 +173,23 @@ usethis::use_git()
 ```
 
 
-After restart you'll see a "Git" tab near the Environment, History etc. That's gut! ;) Click on the "Git" tab and you'll see Empty boxed under "Staged", lot's of yellow question marks under "Status" and the documents names under "Path". 
+After restart you'll see a new "Git" tab appear between the "Build" and "Tutorial" tabs. That's gut! 
 
-### Stage and Commit
+- click on the "Git" tab and you'll see empty boxed under "Staged", lot's of yellow question marks under "Status" and the file-names under "Path". 
 
-- Check all the boxes and press "Commit" button, which is between the "Status" and "History" tabs. A colorful window will pop up. This window will describe all the changes you are about to make to your blog. 
+### 4.1. Stage and Commit
 
-- Definitely describe what you have done for a future you, because then you'll always be able to get back to this, in case something stops working. That's what they call - a version control. 
+- check all the boxes and press "Commit" button, which is (vertically) between the "Status" and "History" tabs. A colorful window will pop up. This window describes all the changes you are about to make to your blog. 
 
-- Write something like "first commit" and press "Commit". 
+- Find the "Commit message" box and **definitely** describe what changes you have done (e.g. "First commit"), because then you'll always be able to get back to the previous version, in case something stops working. That's what they call - a version control. 
 
-- Close or forget the window and go back to RStudio.
+- press "Commit"
 
+- wait until you see the "Close" button and close "Git commit" 
 
-### Run use_github() to create a new Github repository
+- forget the other pop up window and go back to RStudio.
+
+### 4.2. Run "usethis::use_github()" to create a new Github repository
 
 
 ```{r eval=FALSE}
@@ -193,64 +198,77 @@ usethis::use_github()
 
 A new repository will be automatically created on your Github profile and the new browser window with your Github will pop up.
 
-If you'll be asked: "Which git protocol to use?", choose the one with "https" and if you'll then be asked: "Are title and description ok?", agree with "Yes" or "Ok" or similar.
+- If you'll be asked: "Which git protocol to use?", choose the one with "https" and if you'll then be asked: "Are title and description ok?", agree to proceed.
 
-NOTE: if something else doesn't work, get back to the "Happy Git" book and work through it. You'll only need it once. Three main things you'd need to get working are:
+**NOTE:** if something (e.g. Github Personal Access Token) doesn't work, get back to the [Happy Git and GitHub for the useR](https://happygitwithr.com/) book and work through it if you still didn't. You'll only need it once! 
 
-- install git
-- connect RStudio to your Github and 
-- configure a Github Personal Access Token
+## 5. Publish your blog (or a website) via Netlify
 
-## Publish your blog with Netlify
+- sign into your Netlify account, if have one, if not...
 
-If you have a Netlify account you are fine, if not you can create one using your Github account. Then press:
+- go the [*https://www.netlify.com/*](https://www.netlify.com/), sing up for *Netlify* either with your Email or with your Github profile.
 
-- "New site from Git" in a green box
+- click a green box "New site from Git" 
 
-- Click on Configure Netlify on "Github", 
+- configure Netlify on "Github", 
 
-- Choose a newly created repository, you'll recognize the name ("my blog"?).
+- choose a newly created repository, you'll recognize the name ("my new blog"?).
 
-- **NOTE:** Make sure to set the "Publish Directory" to "_site" (could be "docs" if you checked some boxes while creating new project)
+- **NOTE:** Make sure to set the "Publish Directory" to "_site" (could be "docs" if you checked some boxes while creating new project). "_site" (or "docs") contains all the information about your blog.
 
-- Click deploy!
+- click "Deploy"!
 
-- you'll get an absurd or funny random name for your website (e.g. gracious-mestorf-194a9f), which you immediately by 
+- wait a moment till the "Production" tab produces green colored "Published" and you'll get a funny named website in the left top corner, also green and starting with "https://". My was "https://condescending-darwin-bc567f.netlify.app" :)
 
-- clicking "Site settings" => "Change site name"
+- click on it
 
-- now go on and click on the link of your blog. Congrats! Your blog is online! ;)
+**Congrats, you are online!**
 
-- go back to RStudio and create a new post
+- go back to *Netlify*, click "Site settings" => "Change site name" 
+- rename your site (e.g. better-name) and hit "Save"
+- click on the "better-name.netlify.app" to make sure the name has changed and the site is still working
+- go back to RStudio to populate your blog
 
-## Create a new blog-post
+## 6. Create a new blog-post
 
-- run following command in the Console:
+- run the line below with the name of your choice
 
 ```{r eval=FALSE}
-create_post("My second blog post...this will be really good :-)")
+distill::create_post("My second blog post...this one will be really good :-)")
 ```
 
-- a new RMarkdown document will be created and opened. 
-- these new post is only on your local computer, but still not online, thus,
-- "Knit" the document 
-- go to the "Git" tab and check all the boxes
-- press "Commit"
-- add some description
+- a new partly pre-filled RMarkdown document will open itself in RStudio
+- fill it with some text and code as you usually do with RMarkdown documents
+- hit "Knit". **NOTE:** you'll need to always "Knit" all blog-posts individually. "Build Website" would not render them for you. However, the *distill*-Website (we are doing Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
+
+This new post exists only on your local computer, still not online, thus...
+
+- go to the "Git" tab in RStudio and check all the boxes
+- press "Commit", a new window will pop up
+- add description of your commit
 - again press "Commit"
 - wait until you see the "Close" button and close "Git commit" pop up window
-- press "Push"
+- press "Push" 
 - wait until you see the "Close" button and close "Git push" pop up window
-- close or ignore the other pop up window.
-- Get back to your Webpage and refresh (it may take a few seconds, so, don't panic if the first refresh don't work). You should see a new blog-post.
+- close or ignore the other pop up window
+- get back to your blog "better-name.netlify.app" and refresh (it may take a few seconds, so, don't panic if the first refresh don't work). You should see a new blog-post.
 
-Now you can repeat following routine for every post:
-- Create or change posts
-- Knit
-- Commit
-- Push
+**Congrats! You now continuously deploy your online blog!** 
 
-Congrats! You are continuosly deploy your online blog. 
+- click on your post and enjoy your creative work for a moment ;), then 
+- go back to RStudio and repeat step 6 with following routine:
+  - Create or change posts
+  - Knit
+  - Commit
+  - Push
+
+You don't need to commit and push every change, only important once. Think of this process as saving the progress you made on your blog.
+
+
+
+
+
+
 
 ## Always Knit after changing
 
