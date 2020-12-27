@@ -30,7 +30,7 @@ navbar:
     #   href: https://www.linkedin.com/in/lisa-lendway-68a00b63/
 output: distill::distill_article
 theme: theme.css 
-google_analytics: "UA-186148306-1"
+google_analytics: "G-Q28WX9Y4VS"
 collections:
   posts:
     disqus: yuzaR-Blog
