@@ -5,7 +5,7 @@ description: |
 output_dir: "_site"
 base_url: https://yuzar-blog.netlify.app/
 navbar:
-  logo: images/logo.jpg
+  image: images/logo.png
   right:
     - text: "Home"
       href: index.html
