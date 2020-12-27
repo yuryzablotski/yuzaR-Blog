@@ -1,7 +1,7 @@
 ---
 title: "Blog about Data Science in R"
 description: |
-   Welcome to my blog about Data Science! I love to play with data and try to understand the world through the lens of Statistics, Machine Learning and Artifitial Intelligence. I also love to learn, to teach and to create. Having a personal blog optimally combines all of my passions. And all of this is possible with R and RStudio. That's why I love R!  
+   Welcome to my blog about Data Science! I love to play with data and try to understand the world through the lens of Statistics, Machine Learning and Artifitial Intelligence. I also love to learn, to teach and to create. Having a personal blog optimally combines these three passions. And all of this is possible with R and RStudio. That's why I love R! 
 ---
 
 ```{r setup, include=FALSE}

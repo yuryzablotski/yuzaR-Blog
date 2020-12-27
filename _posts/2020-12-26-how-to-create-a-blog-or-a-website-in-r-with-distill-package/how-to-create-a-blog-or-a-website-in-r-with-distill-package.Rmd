@@ -1,7 +1,7 @@
 ---
 title: "How to create a blog or a website in R with {distill} package (in progress!)"
 description: |
-  If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who are you and what are you capable of. Thus: show, don't tell.
+  If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -22,84 +22,85 @@ output:
 knitr::opts_chunk$set(echo = T, eval=FALSE)
 ```
 
-# Why should we use distill?
+# Why should we use *distill*?
 
-Because it's easy, quick and free way to go online today. All you need to create a website or a blog is R, RStudio and Netlify account. Moreover, it requires very little programming. It might not be too fancy, but it's originally thought to make scientific publishing online, so, it can't be too bad ;).
+Because it's an easy, quick and free way to go online today. All you need to create a website or a blog is R, RStudio and [*Netlify*](https://www.netlify.com/) account. Moreover, it requires very little programming. It might not look too fancy in the beginning (though totally enough for me), but with some effort you'll be able to re-design your website as you wish. Besides, *distill* was originally aimed to make scientific online-publishing easier, so, it can't be too bad ;). By the way, The blog you reading right now was created with *distill*. How? That's what this article is all about.
 
-For a more advanced users, you might wanna use continuous deployment via Github, but you do not understand this sentence, you'll be fine too.
+If you don't have or don't want to have a Github account (and continuous deployment), just read on. But if you are comfortable with Github and wanna continuously deploy via Github, jump to the chapter "Automated continuous publishing (deploying)".
 
 # Manual intermittent publishing (deploying)
 
-Why should we do manual instead of automated and continuous first. Well, for non programmers or IT folks, like me, it might be very frustrating and painful to immediately go with the continuous deploy via Github. We all know what is "better" and "more effective", but we turned off from doing something by complexity, we might never do what we want while thinking "it's not my cap of tea". 
+Why should we even consider manual instead of automated? Well, for some non-programmers going with the continuous deployment via Github immediately might be very challenging and frustrating. I've been there. We all know what is "better" and "more time effective" in the long run, but the complexity might sometimes turn us off from doing something we would love to, resulting into "it's just not my cup of tea" attitude. Other do not even need the continuous deployment, because they publish rarely, e.g. once per month, but would still like to be online. Going to the WordPress and co., which would most likely screw either code or code-output, is not always a solution. Fortunately, *distill* and *Netlify* greatly reduce the complexity of going online. Thus, have a look at the video and then follow the step by step procedure described below and you'll be online with your blog in minutes.
 
-If you are comfortable with Github, click on the "Automated continuous publishing (deploying)" on table of contents on your left.
+## 1. Install *distill* package
 
-## Install and load "distill" package
-
-```{r eval=FALSE}
+```{r}
 install.packages("distill")
 ```
 
+## 2. Create your blog either manually with RStudio or with one line of code
 
-```{r}
-library(distill)
-```
-
-## Create your blog manually or with one line of code
-
-Distill is a publication format for scientific and technical writing, native to the web. 
+### 2.1. with RStudio
 
 - open RStudio
 - File => New Project... => New Directory => Distill Blog
 - "Directory name" will be the name of the folder, where all the documents from your blog will be stored
 - Choose the directory where this folder supposed to be stored
-- Give your blog a name. You'll be able to rename it.
+- Give your blog a name. You'll be able to rename it later
 - Click "Create project"
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
 
-
-
-
-
-or execute the code below:
-
-The easiest way to get started is to use the Distill Blog option in the RStudio New Project dialog:
+### 2.2. with one line of code
 
 ```{r eval=FALSE}
-create_blog(dir = "my blog", title = "A cool name of my blog")
+distill::create_blog(dir = "my blog", title = "A cool name of my blog")
 ```
 
 
-## Knit it
+## 3. Build your website
 
-The "knit" button will show you how your website will look like. You can also open it in your browser.
+A new RStudio window with newly created files and folders (right left corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don't bother about it now. 
 
-## Publish your website via Netlify
+- Find the "Build" tab and press "Build Website". You'll see the process of building.
+- Click "Open in Browser" and explore your website
 
-- sing up for Netlify via Email (you'll need to conferm your Email)
-- In "Team overview" you'll see a window with: 
+We aren't online yet. But very soon!
+
+## 4. Publish your website via Netlify
+
+- go the [*https://www.netlify.com/*](https://www.netlify.com/), sing up for *Netlify* (I used the Email way) and confirm your Email.
+- In Netlify you'll see a window with: 
 "Want to deploy a new site without connecting to Git?
-Drag and drop your site folder here"
-- Drag and Drop your "_sites" into this window
-- wait a bit and you'll be getting a funny named website name, click on it
-- Contrats, you are online!
-- Go to "Site settings" => Change site name => choose a "better-name" => Save
-- Click on the "better-name.netlify.app" to make sure the name changed and the site is still working.
-- go back to RStudio and create a new post
+Drag and drop your site folder here". If you somehow don't see it, find and press "Team overview".
+- go to the directory of your blog and find the "_site" folder
+- drag and drop the "_site" folder from your computed into this window
+- wait a moment till the "Production" tab produces green colored "Published" and you'll get a funny named website in the left top corner, also green and starting with "https://". My was "https://condescending-darwin-bc567f.netlify.app" :)
+- click on it
 
-## Create a new blog-post
+**Congrats, you are online!**
+
+- Go to "Site settings" => "Change site name" 
+- rename your site (e.g. better-name) and hit "Save"
+- Click on the "better-name.netlify.app" to make sure the name has changed and the site is still working
+- go back to RStudio to populate your blog
+
+## 5. Create a new blog-post
+
+- run the line below with the name of your choice
 
 ```{r eval=FALSE}
-distill::create_post("My second blog post...this will be really good :-)")
+distill::create_post("My second blog post...this one will be really good :-)")
 ```
 
-- these new post are not on your local computer, but still not online, thus,
-- go back to Netlify => Deploys (tab) where you'll see: "Need to update your site? Drag and drop your site folder here" 
-- drag and drop the "_site" folder there and wait till "Production" (button) terns green and says Published.
-- Click on the "better-name.netlify.app" to make sure the new blog-post appeared. 
-
-
+- a new partly pre-filled Rmarkdown document will open itself in RStudio
+- fill it with some text and code as you usually do with Rmarkdown documents
+- hit "Knit". **NOTE:** you'll need to always "Knit" all blog-posts individually. "Build Website" would not render them for you. However, the *distill*-Website (we are doing Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
+- this new post exists only on your local computer, still not online, thus...
+- go back to *Netlify* and click "Deploys" tab, where you'll see another window with: "Need to update your site? Drag and drop your site folder here"
+- drag and drop the "_site" folder there and wait till "Production" tab produces green "Published"
+- click on the "better-name.netlify.app" to make sure the new blog-post appeared
+- click on your post and enjoy your creative work for a moment ;), then 
+- go back to RStudio and repeat step 5
 
 
 # Automated continuous publishing (deploying)
@@ -116,7 +117,7 @@ distill::create_post("My second blog post...this will be really good :-)")
 or execute the code below:
 
 ```{r}
-create_blog(dir = "my blog", title = "A cool name of my blog")
+distill::create_blog(dir = "my blog", title = "A cool name of my blog")
 ```
 
 ## Have a look at your blog
@@ -125,7 +126,7 @@ Either Knit the document, or go to the "Build" tab and press "Build Website".
 
 ## Connect to your github
 
-You have to have "git" installed on your computer and have a github profile. If you still aren't, [Happy Git and GitHub for the useR](https://happygitwithr.com/) will help you with that. Take your time with this short, but comprehensive book.
+You have to have "git" installed on your computer and have a Github profile. If you still aren't, [Happy Git and GitHub for the useR](https://happygitwithr.com/) will help you with that. Take your time with this short, but comprehensive book.
 
 ### Then install "usethis" package, if you need:
 
@@ -175,23 +176,23 @@ NOTE: if something else doesn't work, get back to the "Happy Git" book and work 
 
 - install git
 - connect RStudio to your Github and 
-- configure a GitHub Personal Access Token
+- configure a Github Personal Access Token
 
 ## Publish your blog with Netlify
 
-If you have a Notlify account you are fine, if not you can create one using your Github account. Then press:
+If you have a Netlify account you are fine, if not you can create one using your Github account. Then press:
 
 - "New site from Git" in a green box
 
-- Click on Configure Netlify on "GitHub", 
+- Click on Configure Netlify on "Github", 
 
-- Choose a newly created repository, you'll recognise the name ("my blog"?).
+- Choose a newly created repository, you'll recognize the name ("my blog"?).
 
 - **NOTE:** Make sure to set the "Publish Directory" to "_site" (could be "docs" if you checked some boxes while creating new project)
 
 - Click deploy!
 
-- you'll get an absurd or funny random name for your website (e.g. gracious-mestorf-194a9f), which you immediatly by 
+- you'll get an absurd or funny random name for your website (e.g. gracious-mestorf-194a9f), which you immediately by 
 
 - clicking "Site settings" => "Change site name"
 
@@ -207,7 +208,7 @@ If you have a Notlify account you are fine, if not you can create one using your
 create_post("My second blog post...this will be really good :-)")
 ```
 
-- a new RMarkdonw document will be created and opened. 
+- a new RMarkdown document will be created and opened. 
 - these new post is only on your local computer, but still not online, thus,
 - "Knit" the document 
 - go to the "Git" tab and check all the boxes
@@ -333,3 +334,4 @@ All articles on a website are re-rendered when the site is rebuilt while the blo
 
 - Tom Mocks blog-post on how to build blogs with distill: https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/
 
+- Learn more about using Distill at <https://rstudio.github.io/distill>.
