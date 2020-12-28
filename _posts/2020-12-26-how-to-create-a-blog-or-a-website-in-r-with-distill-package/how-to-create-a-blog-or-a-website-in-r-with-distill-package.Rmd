@@ -9,6 +9,7 @@ date: 12-26-2020
 categories:
   - R & the Web
   - videos
+preview: images/distill_logo.png
 output:
   distill::distill_article:
     self_contained: false
@@ -278,52 +279,57 @@ distill::create_post("Another nice post", draft = TRUE)
 - Open "_site.yml". You'll see something like that:
 
 ```{r}
-name: "reproducible-finance-with-r"
-title: "Reproducible Finance with R"
+name: "Your cool webpage"
+title: "Your cool webpage title"
 description: |
-  Exploring reproducible finance with the R statistical 
-  computing environment.
-base_url: https://beta.rstudioconnect.com/content/11424/
+  Exploring something very important.
+base_url: https://beta.rstudioconnect.com/content/your_thing/
 navbar:
-  logo: images/rstudio.png
+  logo: images/fancy_logo.png
   right:
     - text: "Home"
       href: index.html
     - text: "About"
       href: about.html
-    - text: "Contributors"
-      href: contributors.html
+    - text: "Rest"
+      href: rest.html
     - icon: fa fa-rss
       href: index.xml
 output: distill::distill_article
 ```
 
+"_site.yml" is the most important document for your website. Configure it carefully and slowly. You can add a lot of useful things: categories, google-analytics, customize the navigation bar, add references, new theme with CSS code for an individual design of your site, icons of twitter & co. and much more, which is not to important for a new site and can be added at any time.
 
+The best way I found to do this, is just to find the "_site.yml" or "theme.css" on Github of other distill-blogs and get inspiration from them play with your own code (I hope nobody is offended by this sentence due to the open source nature of R, but please let me know if it's wrong and I'll remove this recommendation!). 
 
+While you already have "_site.yml" file in your blog-folder, you don't have a "theme.css" file. To get one, read on...
 
-# Improve your website or blog
+# Theming - change desing and appearence of your blog
 
-- Listing pages
+You can modify the CSS code in your theme after creating it by running the following line of code:
 
-- Categories
- 
-Categories can be added similar to the blogdown in the 
-
-
-  
 ```{r}
-title: "How to create a blog or a website in R with {distill} package (in progress!)"
-author:
-  - name: Yury Zablotski
-date: 12-26-2020
-categories:
-  - R & the Web
-  - videos
+distill::create_theme(name = "theme") 
 ```
 
-- Thumbnails
+To activate a custom theme site-wide, add a theme key to the top-level of your "_site.yml" configuration file:
 
-Thumbnails (or previews) are the images which are displayed along the post. They serve as an eyecatcher. You can add a preview image into the post’s metadata by adding a "preview" field:
+```{r}
+name: "Your cool webpage"
+title: "Your cool webpage title"
+theme: theme.css 
+(...the rest of your _site.yml)
+```
+
+
+
+# Pimp your content
+
+Most elements of improving your content are similar to the usual Rmarkdown syntax. Below I display some quick examples.
+
+## Thumbnails
+
+Thumbnails (or previews) are the images which are displayed along the post. They serve as an eye catcher. You can add a preview image into the post’s metadata by adding a "preview" field:
 
 ```{r}
 title: "Blog post on how to write blog posts"
@@ -333,36 +339,57 @@ our new post about how to write a post. Creativity is a b**ch! ... And I love he
 preview: images/photo-of-me-because-I-am-sooo-beautifuuulll-toniiiight.png
 ```
 
-  
-  
-# Theming - change desing and appearence of your blog
+## Footnotes 
 
+Footnotes are created in the usual RMarkdown way, namely `^[here is the content of your footnote]` and here are two examples ^[Here is the first footnote, which does not suppose to interrupt the main text!] and ^[Here is the second]. Point your cursor on the footnote number or scroll to the bottom of the page to see what's inside of the footnote.
 
-Distill blogs can use themes and CSS just like Distill sites. You can use the create_theme() function to add a theme CSS file in the current working directory:
+## Figures
 
-create_theme(name = "theme") 
-
-```{r}
-distill::create_theme(name = "theme") 
+```{r eval=TRUE, echo=TRUE}
+library(tidyverse)
+ggplot(mtcars, aes(hp, mpg)) + 
+  geom_point() + 
+  geom_smooth() +
+  theme_bw()
 ```
 
-To apply a custom theme site-wide, add a theme key to the top-level of your "_site.yml" configuration file:
+## Tables
 
-```{r}
-name: "distill"
-title: "Distill for R Markdown"
-theme: theme.css 
+```{r eval=TRUE, echo=TRUE}
+# install.packages("gtsummary")
+library(gtsummary)
+iris %>% 
+  tbl_summary()
 ```
 
 
+## Asides
 
-# Difference between a website and a blog
+You can include notes or even plots "aside" (to the right) your article:
 
-All articles on a website are re-rendered when the site is rebuilt while the blog-post are not. We need to knit each of the article separately. This might sound bad first, because we are not uptodate with our blog, but I personally found it great. See, like the authors of "distill" state: "Given that R package upgrades have a tendency to break older code, continuously re-rendering old posts is nearly impossible to do without errors, especially over longer periods of time." That happend to my old blogdown-generated website, where Hugo-Academic theme changes so dramatically that I could not modify my site anymore, and, since it was not on Github, I could not even ask R community, what is wrong. Thus, I totally understand, if you go for a manual deployment first (been there!), but I would recommend you to progress to Github and continuous deploy after you have got comfortable. Especially if you create a lot, automated deployment will save you lot's of time. However, my old blogdown-website is still online and running. Thus, I prefer blog instead of the website.
+```{r eval=TRUE, echo=F}
+knitr::include_graphics("images/aside.png")
+```
+
+
+<aside>
+Here the funny fact or some important info.
+</aside>
+
+<aside>
+```{r eval=TRUE, echo=F}
+library(tidyverse)
+ggplot(mtcars, aes(hp, mpg)) + 
+  geom_point() + 
+  geom_smooth() +
+  theme_bw()
+```
+</aside>
 
 
 # Useful ressources
 
-- Tom Mocks blog-post on how to build blogs with distill: https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/
+- The best place to start is actually the Distill website itself: <https://rstudio.github.io/distill>.
 
-- Learn more about using Distill at <https://rstudio.github.io/distill>.
+- Tom Mocks blog-post on how to build blogs with distill helped me a lot! https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/
+

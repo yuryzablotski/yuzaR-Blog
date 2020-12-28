@@ -1,9 +1,13 @@
 name: "yuzaR-Blog"
 title: "yuzaR-Blog"
 description: |
-  Some description of the website
+  Data Science with R
 output_dir: "_site"
 base_url: https://yuzar-blog.netlify.app/
+repository_url: https://github.com/yuryzablotski/yuzaR-Blog
+creative_commons: CC BY
+twitter:
+  site: "@yuzaR___"
 navbar:
   logo:
     image: images/my_foto.jpg
@@ -28,7 +32,10 @@ navbar:
       href: index.xml
     # - icon: fa fa-linkedin
     #   href: https://www.linkedin.com/in/lisa-lendway-68a00b63/
-output: distill::distill_article
+output: 
+  distill::distill_article:
+    toc: true
+    #css: styles.css
 theme: theme.css 
 google_analytics: "G-Q28WX9Y4VS"
 collections:

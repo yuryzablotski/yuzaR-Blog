@@ -66,6 +66,7 @@ d-appendix {
   --text-size:        25px;
   --hover-color:      white;
   --bkgd-color:       #0F2E3D;
+  font-weight: bold;
 }
 
 .distill-site-footer {
@@ -77,4 +78,5 @@ d-appendix {
 
 /*-- Additional custom styles --*/
 /* Add any additional CSS rules below                      */
+
 
