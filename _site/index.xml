@@ -7,23 +7,7 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 30 Dec 2020 00:00:00 +0000</lastBuildDate>
-    <item>
-      <title>post number 4</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2020-12-30-post-number-4</link>
-      <description>A short description of the post.</description>
-      <guid>https://yuzar-blog.netlify.app/posts/2020-12-30-post-number-4</guid>
-      <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
-    </item>
-    <item>
-      <title>third post</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2020-12-30-third-post</link>
-      <description>A short description of the post.</description>
-      <guid>https://yuzar-blog.netlify.app/posts/2020-12-30-third-post</guid>
-      <pubDate>Wed, 30 Dec 2020 00:00:00 +0000</pubDate>
-    </item>
+    <lastBuildDate>Sat, 26 Dec 2020 00:00:00 +0000</lastBuildDate>
     <item>
       <title>How to create a blog or a website in R with {Distill} package (in progress!)</title>
       <dc:creator>Yury Zablotski</dc:creator>

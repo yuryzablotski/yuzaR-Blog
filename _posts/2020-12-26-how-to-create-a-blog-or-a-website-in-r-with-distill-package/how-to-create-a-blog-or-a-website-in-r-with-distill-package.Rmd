@@ -247,7 +247,7 @@ A new repository will be automatically created on your Github profile and the ne
 distill::create_post("My second blog post...this one will be really good :-)")
 ```
 
-- a new partly pre-filled RMarkdown document will open itself in RStudio
+- a new partly pre-filled RMarkdown document will open itself in RStudio 
 - fill it with some text and code as you usually do with RMarkdown documents
 - hit "Knit". **NOTE:** you'll need to always "Knit" all changed or created blog-posts individually. It is the only way to update them. "Build Website" would not re-render them for you, because it's computationally expensive and prone to problems. However, the *Distill*-Website (we are doing *Distill*-Blog now) would. You can learn more about the difference between them [here](https://rstudio.github.io/distill/website.html).
 
