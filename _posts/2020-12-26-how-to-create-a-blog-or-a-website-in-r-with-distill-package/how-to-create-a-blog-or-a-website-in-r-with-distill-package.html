@@ -1453,21 +1453,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <ul>
 <li><a href="#why-should-we-use-distill">Why should we use <em>Distill</em>?</a></li>
 <li><a href="#manual-intermittent-publishing-deploying">Manual intermittent publishing (deploying)</a><ul>
-<li><a href="#install-distill-package">1. Install <em>Distill</em> package</a></li>
-<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code">2. Create your blog either manually with RStudio or with one line of code</a><ul>
-<li><a href="#with-rstudio">2.1. with RStudio</a></li>
-<li><a href="#with-one-line-of-code">2.2. with one line of code</a></li>
+<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code">1. Create your blog either manually with RStudio or with one line of code</a><ul>
+<li><a href="#with-rstudio">1.1. with RStudio</a></li>
+<li><a href="#with-one-line-of-code">1.2. with one line of code</a></li>
 </ul></li>
+<li><a href="#install-distill-package">2. Install <em>Distill</em> package</a></li>
 <li><a href="#build-your-website">3. Build your website</a></li>
 <li><a href="#publish-your-blog-or-a-website-via-netlify">4. Publish your blog (or a website) via Netlify</a></li>
 <li><a href="#create-a-new-blog-post">5. Create a new blog-post</a></li>
 </ul></li>
 <li><a href="#automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</a><ul>
-<li><a href="#install-distill-and-usethis-packages">1. Install <em>Distill</em> and <em>usethis</em> packages</a></li>
-<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">2. Create your blog either manually with RStudio or with one line of code</a><ul>
-<li><a href="#with-rstudio-1">2.1. with RStudio</a></li>
-<li><a href="#with-one-line-of-code-1">2.2. with one line of code</a></li>
+<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">1. Create your blog either manually with RStudio or with one line of code</a><ul>
+<li><a href="#with-rstudio-1">1.1. with RStudio</a></li>
+<li><a href="#with-one-line-of-code-1">1.2. with one line of code</a></li>
 </ul></li>
+<li><a href="#install-distill-and-usethis-packages">2. Install <em>Distill</em> and <em>usethis</em> packages</a></li>
 <li><a href="#build-your-website-1">3. Build your website</a></li>
 <li><a href="#connect-to-your-github">4. Connect to your github</a><ul>
 <li><a href="#stage-and-commit">4.1. Stage and Commit</a></li>
@@ -1498,26 +1498,29 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>If you don’t have or don’t want to have a Github account (and continuous deployment), just read on. But if you are comfortable with Github and wanna continuously deploy via Github, jump to the chapter “Automated continuous publishing (deploying)”.</p>
 <h1 id="manual-intermittent-publishing-deploying">Manual intermittent publishing (deploying)</h1>
 <p>Why should we even consider manual instead of automated? Well, for some non-programmers going with the continuous deployment via Github immediately might be very challenging and frustrating. I’ve been there. We all know what is “better” and “more time effective” in the long run, but the complexity might sometimes turn us off from doing something we would love to, resulting into “it’s just not my cup of tea” attitude. Other do not even need the continuous deployment, because they publish rarely, e.g. once per month, but would still like to be online. Going to the WordPress and co., which would most likely screw either code or code-output, is not always a solution. Fortunately, <em>Distill</em> and <em>Netlify</em> greatly reduce the complexity of going online. Thus, have a look at the quick video and then follow the step by step procedure described below and you’ll be online with your blog in minutes.</p>
-<h2 id="install-distill-package">1. Install <em>Distill</em> package</h2>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<h2 id="create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code">2. Create your blog either manually with RStudio or with one line of code</h2>
-<h3 id="with-rstudio">2.1. with RStudio</h3>
+<h2 id="create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code">1. Create your blog either manually with RStudio or with one line of code</h2>
+<h3 id="with-rstudio">1.1. with RStudio</h3>
 <ul>
-<li>In the RStudio go to File =&gt; New Project… =&gt; New Directory =&gt; Distill Blog</li>
+<li>Open RStudio</li>
+<li>Go to File =&gt; New Project… =&gt; New Directory =&gt; Distill Blog</li>
 <li>“Directory name” will be the name of the folder, where all the documents from your blog will be stored</li>
 <li>Choose the directory where this folder supposed to be stored</li>
 <li>Give your blog a name. You’ll be able to rename it later</li>
 <li>Click “Create project”</li>
 </ul>
-<h3 id="with-one-line-of-code">2.2. with one line of code</h3>
+<h3 id="with-one-line-of-code">1.2. with one line of code</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"my blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
+<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
+<span class='co'># or</span>
+<span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_website</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing website"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my Website"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="install-distill-package">2. Install <em>Distill</em> package</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -1569,27 +1572,30 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul>
 <h1 id="automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</h1>
 <p>Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and <em>using Github with continuous deployment</em> becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed <em>Git</em> on your computer, created a <em>Github</em> account and connected your <em>RStudio</em> to your <em>Github</em>. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>. You’ll only need it once! If you ready to proceed, have a look at the quick video and then follow the step by step procedure described below and you’ll be online with your blog in minutes.</p>
-<h2 id="install-distill-and-usethis-packages">1. Install <em>Distill</em> and <em>usethis</em> packages</h2>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"usethis"</span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<h2 id="create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">2. Create your blog either manually with RStudio or with one line of code</h2>
-<h3 id="with-rstudio-1">2.1. with RStudio</h3>
+<h2 id="create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">1. Create your blog either manually with RStudio or with one line of code</h2>
+<h3 id="with-rstudio-1">1.1. with RStudio</h3>
 <ul>
-<li>In the RStudio go to File =&gt; New Project… =&gt; New Directory =&gt; Distill Blog</li>
+<li>Open RStudio</li>
+<li>Go to File =&gt; New Project… =&gt; New Directory =&gt; Distill Blog</li>
 <li>“Directory name” will be the name of the folder, where all the documents from your blog will be stored</li>
 <li>Choose the directory where this folder supposed to be stored</li>
 <li>Give your blog a name. You’ll be able to rename it later</li>
 <li>Click “Create project”</li>
 </ul>
-<h3 id="with-one-line-of-code-1">2.2. with one line of code</h3>
+<h3 id="with-one-line-of-code-1">1.2. with one line of code</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"my blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
+<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
+<span class='co'># or</span>
+<span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_website</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing website"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my Website"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="install-distill-and-usethis-packages">2. Install <em>Distill</em> and <em>usethis</em> packages</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"usethis"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -1791,7 +1797,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mohivpizoy .gt_table {
+#nrjorgzsqx .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1816,7 +1822,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-left-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_heading {
+#nrjorgzsqx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1828,7 +1834,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_title {
+#nrjorgzsqx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1838,7 +1844,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-bottom-width: 0;
 }
 
-#mohivpizoy .gt_subtitle {
+#nrjorgzsqx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1848,13 +1854,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-top-width: 0;
 }
 
-#mohivpizoy .gt_bottom_border {
+#nrjorgzsqx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_col_headings {
+#nrjorgzsqx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1869,7 +1875,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_col_heading {
+#nrjorgzsqx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1889,7 +1895,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   overflow-x: hidden;
 }
 
-#mohivpizoy .gt_column_spanner_outer {
+#nrjorgzsqx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1901,15 +1907,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-right: 4px;
 }
 
-#mohivpizoy .gt_column_spanner_outer:first-child {
+#nrjorgzsqx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mohivpizoy .gt_column_spanner_outer:last-child {
+#nrjorgzsqx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mohivpizoy .gt_column_spanner {
+#nrjorgzsqx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1921,7 +1927,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   width: 100%;
 }
 
-#mohivpizoy .gt_group_heading {
+#nrjorgzsqx .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1943,7 +1949,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   vertical-align: middle;
 }
 
-#mohivpizoy .gt_empty_group_heading {
+#nrjorgzsqx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1958,15 +1964,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   vertical-align: middle;
 }
 
-#mohivpizoy .gt_from_md > :first-child {
+#nrjorgzsqx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mohivpizoy .gt_from_md > :last-child {
+#nrjorgzsqx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mohivpizoy .gt_row {
+#nrjorgzsqx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1985,7 +1991,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   overflow-x: hidden;
 }
 
-#mohivpizoy .gt_stub {
+#nrjorgzsqx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1997,7 +2003,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-left: 12px;
 }
 
-#mohivpizoy .gt_summary_row {
+#nrjorgzsqx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2007,7 +2013,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-right: 5px;
 }
 
-#mohivpizoy .gt_first_summary_row {
+#nrjorgzsqx .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2017,7 +2023,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-top-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_grand_summary_row {
+#nrjorgzsqx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2027,7 +2033,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-right: 5px;
 }
 
-#mohivpizoy .gt_first_grand_summary_row {
+#nrjorgzsqx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2037,11 +2043,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-top-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_striped {
+#nrjorgzsqx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mohivpizoy .gt_table_body {
+#nrjorgzsqx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2050,7 +2056,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-bottom-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_footnotes {
+#nrjorgzsqx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2064,13 +2070,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_footnote {
+#nrjorgzsqx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mohivpizoy .gt_sourcenotes {
+#nrjorgzsqx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2084,46 +2090,46 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#mohivpizoy .gt_sourcenote {
+#nrjorgzsqx .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mohivpizoy .gt_left {
+#nrjorgzsqx .gt_left {
   text-align: left;
 }
 
-#mohivpizoy .gt_center {
+#nrjorgzsqx .gt_center {
   text-align: center;
 }
 
-#mohivpizoy .gt_right {
+#nrjorgzsqx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mohivpizoy .gt_font_normal {
+#nrjorgzsqx .gt_font_normal {
   font-weight: normal;
 }
 
-#mohivpizoy .gt_font_bold {
+#nrjorgzsqx .gt_font_bold {
   font-weight: bold;
 }
 
-#mohivpizoy .gt_font_italic {
+#nrjorgzsqx .gt_font_italic {
   font-style: italic;
 }
 
-#mohivpizoy .gt_super {
+#nrjorgzsqx .gt_super {
   font-size: 65%;
 }
 
-#mohivpizoy .gt_footnote_marks {
+#nrjorgzsqx .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="mohivpizoy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="nrjorgzsqx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   
   <thead class="gt_col_headings">
     <tr>

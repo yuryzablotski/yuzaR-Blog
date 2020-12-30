@@ -44,6 +44,15 @@ Why should we even consider manual instead of automated? Well, for some non-prog
 - Give your blog a name. You'll be able to rename it later
 - Click "Create project"
 
+### 1.2. with one line of code
+
+```{r eval=FALSE}
+distill::create_blog(dir = "amazing blog", title = "A cool name of my blog")
+# or
+distill::create_website(dir = "amazing website", title = "A cool name of my Website")
+```
+
+
 ## 2. Install *Distill* package
 
 ```{r}
@@ -135,6 +144,15 @@ Continuous deployment is cool! But the path there can be a little prickly. This 
 - Give your blog a name. You'll be able to rename it later
 - Click "Create project"
 
+### 1.2. with one line of code
+
+```{r eval=FALSE}
+distill::create_blog(dir = "amazing blog", title = "A cool name of my blog")
+# or
+distill::create_website(dir = "amazing website", title = "A cool name of my Website")
+```
+
+
 ## 2. Install *Distill* and *usethis* packages
 
 ```{r}
@@ -142,11 +160,6 @@ install.packages("distill")
 install.packages("usethis")
 ```
 
-### 1.2. with one line of code
-
-```{r eval=FALSE}
-distill::create_blog(dir = "my blog", title = "A cool name of my blog")
-```
 
 
 ## 3. Build your website
