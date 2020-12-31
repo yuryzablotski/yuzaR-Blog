@@ -1470,8 +1470,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul></li>
 <li><a href="#build-your-website-1">3. Build your website</a></li>
 <li><a href="#connect-to-your-github">4. Connect to your github</a><ul>
-<li><a href="#stage-and-commit">4.1. Stage and Commit</a></li>
-<li><a href="#run-usethisuse_github-to-create-a-new-github-repository">4.2. Run “usethis::use_github()” to create a new Github repository</a></li>
+<li><a href="#create-new-repository">4.1. Create new repository</a></li>
+<li><a href="#stage-and-commit">4.2. Stage and Commit</a></li>
+<li><a href="#run-usethisuse_github-to-connect-a-local-repository-to-github">4.3. Run “usethis::use_github()” to connect a local repository to Github</a></li>
 </ul></li>
 <li><a href="#publish-your-blog-or-a-website-via-netlify-1">5. Publish your blog (or a website) via Netlify</a></li>
 <li><a href="#create-a-new-blog-post-1">6. Create a new blog-post</a></li>
@@ -1600,15 +1601,17 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 </div>
 <h2 id="build-your-website-1">3. Build your website</h2>
-<p>A new RStudio window with newly created files and folders (right left corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don’t bother about it now.</p>
+<p>A new RStudio window with newly created files and folders (right bottom corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don’t bother about it now.</p>
 <ul>
-<li>Find the “Build” tab and press “Build Website”. You’ll see the process of building.</li>
+<li>Find the “Build” tab and press “Build Website”. Your blog will be created in a new window.</li>
 <li>Click “Open in Browser” and explore your website</li>
 </ul>
 <p>We aren’t online yet. But very soon!</p>
 <h2 id="connect-to-your-github">4. Connect to your github</h2>
+<h3 id="create-new-repository">4.1. Create new repository</h3>
 <ul>
-<li>Run <code>use_git()</code> and answer two questions:
+<li>Go back to RStudio and run <code>use_git()</code> in order to create a new local Git repository</li>
+<li>then answer two questions:
 <ul>
 <li>“Is it ok to commit them?” Don’t commit by typing 3 for “No”, or “Nope” or similar.</li>
 <li>“A restart of RStudio is required to activate the Git pane Restart now?” Restart by typing 2 for “Yes” or “Yup”.</li>
@@ -1624,15 +1627,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <ul>
 <li>click on the “Git” tab and you’ll see empty boxed under “Staged”, lot’s of yellow question marks under “Status” and the file-names under “Path”.</li>
 </ul>
-<h3 id="stage-and-commit">4.1. Stage and Commit</h3>
+<h3 id="stage-and-commit">4.2. Stage and Commit</h3>
 <ul>
-<li><p>check all the boxes and press “Commit” button, which is (vertically) between the “Status” and “History” tabs. A colorful window will pop up. This window describes all the changes you are about to make to your blog.</p></li>
+<li><p>check all the boxes and press “Commit” button, which is (vertically) between the “Status” and “History” tabs. A colourful window will pop up. This window describes all the changes you are about to make to your blog.</p></li>
 <li><p>Find the “Commit message” box and <strong>definitely</strong> describe what changes you have done (e.g. “First commit”), because then you’ll always be able to get back to the previous version, in case something stops working. That’s what they call - a version control.</p></li>
 <li><p>press “Commit”</p></li>
 <li><p>wait until you see the “Close” button and close “Git commit”</p></li>
 <li><p>forget the other pop up window and go back to RStudio.</p></li>
 </ul>
-<h3 id="run-usethisuse_github-to-create-a-new-github-repository">4.2. Run “usethis::use_github()” to create a new Github repository</h3>
+<h3 id="run-usethisuse_github-to-connect-a-local-repository-to-github">4.3. Run “usethis::use_github()” to connect a local repository to Github</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/use_github.html'>use_github</a></span><span class='op'>(</span><span class='op'>)</span> 
@@ -1685,7 +1688,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li>add description of your commit</li>
 <li>again press “Commit”</li>
 <li>wait until you see the “Close” button and close “Git commit” pop up window</li>
-<li>press “Push”</li>
+<li>press “Push”. Pushing will transfer changes in your blog from your local computer to a remote place, namely your Github repository. And since your Github repository is connected to Netlify, this changes will be online after successful push.</li>
 <li>wait until you see the “Close” button and close “Git push” pop up window</li>
 <li>close or ignore the other pop up window</li>
 <li>get back to your blog “better-name.netlify.app” and refresh (it may take a few seconds, so, don’t panic if the first refresh don’t work). You should see a new blog-post.</li>
@@ -1797,7 +1800,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#atkwbtvthk .gt_table {
+#jnvrggeyux .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1822,7 +1825,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-left-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_heading {
+#jnvrggeyux .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1834,7 +1837,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_title {
+#jnvrggeyux .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1844,7 +1847,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-bottom-width: 0;
 }
 
-#atkwbtvthk .gt_subtitle {
+#jnvrggeyux .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1854,13 +1857,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-top-width: 0;
 }
 
-#atkwbtvthk .gt_bottom_border {
+#jnvrggeyux .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_col_headings {
+#jnvrggeyux .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1875,7 +1878,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_col_heading {
+#jnvrggeyux .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1895,7 +1898,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   overflow-x: hidden;
 }
 
-#atkwbtvthk .gt_column_spanner_outer {
+#jnvrggeyux .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1907,15 +1910,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-right: 4px;
 }
 
-#atkwbtvthk .gt_column_spanner_outer:first-child {
+#jnvrggeyux .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#atkwbtvthk .gt_column_spanner_outer:last-child {
+#jnvrggeyux .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#atkwbtvthk .gt_column_spanner {
+#jnvrggeyux .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1927,7 +1930,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   width: 100%;
 }
 
-#atkwbtvthk .gt_group_heading {
+#jnvrggeyux .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1949,7 +1952,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   vertical-align: middle;
 }
 
-#atkwbtvthk .gt_empty_group_heading {
+#jnvrggeyux .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1964,15 +1967,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   vertical-align: middle;
 }
 
-#atkwbtvthk .gt_from_md > :first-child {
+#jnvrggeyux .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#atkwbtvthk .gt_from_md > :last-child {
+#jnvrggeyux .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#atkwbtvthk .gt_row {
+#jnvrggeyux .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1991,7 +1994,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   overflow-x: hidden;
 }
 
-#atkwbtvthk .gt_stub {
+#jnvrggeyux .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2003,7 +2006,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-left: 12px;
 }
 
-#atkwbtvthk .gt_summary_row {
+#jnvrggeyux .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2013,7 +2016,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-right: 5px;
 }
 
-#atkwbtvthk .gt_first_summary_row {
+#jnvrggeyux .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2023,7 +2026,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-top-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_grand_summary_row {
+#jnvrggeyux .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2033,7 +2036,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   padding-right: 5px;
 }
 
-#atkwbtvthk .gt_first_grand_summary_row {
+#jnvrggeyux .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2043,11 +2046,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-top-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_striped {
+#jnvrggeyux .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#atkwbtvthk .gt_table_body {
+#jnvrggeyux .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2056,7 +2059,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-bottom-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_footnotes {
+#jnvrggeyux .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2070,13 +2073,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_footnote {
+#jnvrggeyux .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#atkwbtvthk .gt_sourcenotes {
+#jnvrggeyux .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2090,46 +2093,46 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   border-right-color: #D3D3D3;
 }
 
-#atkwbtvthk .gt_sourcenote {
+#jnvrggeyux .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#atkwbtvthk .gt_left {
+#jnvrggeyux .gt_left {
   text-align: left;
 }
 
-#atkwbtvthk .gt_center {
+#jnvrggeyux .gt_center {
   text-align: center;
 }
 
-#atkwbtvthk .gt_right {
+#jnvrggeyux .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#atkwbtvthk .gt_font_normal {
+#jnvrggeyux .gt_font_normal {
   font-weight: normal;
 }
 
-#atkwbtvthk .gt_font_bold {
+#jnvrggeyux .gt_font_bold {
   font-weight: bold;
 }
 
-#atkwbtvthk .gt_font_italic {
+#jnvrggeyux .gt_font_italic {
   font-style: italic;
 }
 
-#atkwbtvthk .gt_super {
+#jnvrggeyux .gt_super {
   font-size: 65%;
 }
 
-#atkwbtvthk .gt_footnote_marks {
+#jnvrggeyux .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="atkwbtvthk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="jnvrggeyux" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   
   <thead class="gt_col_headings">
     <tr>

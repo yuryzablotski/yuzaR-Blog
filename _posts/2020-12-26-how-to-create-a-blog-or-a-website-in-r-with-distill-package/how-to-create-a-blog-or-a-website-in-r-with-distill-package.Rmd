@@ -162,16 +162,19 @@ distill::create_website(dir = "amazing website", title = "A cool name of my Webs
 
 ## 3. Build your website
 
-A new RStudio window with newly created files and folders (right left corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don't bother about it now. 
+A new RStudio window with newly created files and folders (right bottom corner) will open itself. One of the folders "_posts" will contain all your posts. There are already some examples of it. But don't bother about it now. 
 
-- Find the "Build" tab and press "Build Website". You'll see the process of building.
+- Find the "Build" tab and press "Build Website". Your blog will be created in a new window.
 - Click "Open in Browser" and explore your website
 
 We aren't online yet. But very soon!
 
 ## 4. Connect to your github
 
-- Run `use_git()` and answer two questions:
+### 4.1. Create new repository
+
+- Go back to RStudio and run `use_git()` in order to create a new local Git repository
+- then answer two questions:
   - "Is it ok to commit them?" Don't commit by typing 3 for "No", or "Nope" or similar. 
   - "A restart of RStudio is required to activate the Git pane
 Restart now?" Restart by typing 2 for "Yes" or "Yup".
@@ -185,9 +188,9 @@ After restart you'll see a new "Git" tab appear between the "Build" and "Tutoria
 
 - click on the "Git" tab and you'll see empty boxed under "Staged", lot's of yellow question marks under "Status" and the file-names under "Path". 
 
-### 4.1. Stage and Commit
+### 4.2. Stage and Commit
 
-- check all the boxes and press "Commit" button, which is (vertically) between the "Status" and "History" tabs. A colorful window will pop up. This window describes all the changes you are about to make to your blog. 
+- check all the boxes and press "Commit" button, which is (vertically) between the "Status" and "History" tabs. A colourful window will pop up. This window describes all the changes you are about to make to your blog. 
 
 - Find the "Commit message" box and **definitely** describe what changes you have done (e.g. "First commit"), because then you'll always be able to get back to the previous version, in case something stops working. That's what they call - a version control. 
 
@@ -197,7 +200,7 @@ After restart you'll see a new "Git" tab appear between the "Build" and "Tutoria
 
 - forget the other pop up window and go back to RStudio.
 
-### 4.2. Run "usethis::use_github()" to create a new Github repository
+### 4.3. Run "usethis::use_github()" to connect a local repository to Github
 
 
 ```{r eval=FALSE}
@@ -256,7 +259,7 @@ This new post exists only on your local computer, still not online, thus...
 - add description of your commit
 - again press "Commit"
 - wait until you see the "Close" button and close "Git commit" pop up window
-- press "Push" 
+- press "Push". Pushing will transfer changes in your blog from your local computer to a remote place, namely your Github repository. And since your Github repository is connected to Netlify, this changes will be online after successful push.
 - wait until you see the "Close" button and close "Git push" pop up window
 - close or ignore the other pop up window
 - get back to your blog "better-name.netlify.app" and refresh (it may take a few seconds, so, don't panic if the first refresh don't work). You should see a new blog-post.
