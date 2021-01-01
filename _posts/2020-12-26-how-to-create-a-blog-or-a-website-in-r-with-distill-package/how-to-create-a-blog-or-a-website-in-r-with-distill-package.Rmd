@@ -9,7 +9,7 @@ date: 12-26-2020
 categories:
   - R & the Web
   - videos
-preview: images/distill_logo.png
+preview: images/thumbnail.png
 output:
   distill::distill_article:
     self_contained: false

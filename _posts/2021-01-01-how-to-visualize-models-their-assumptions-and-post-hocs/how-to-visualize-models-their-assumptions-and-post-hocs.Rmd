@@ -1,0 +1,465 @@
+---
+title: "How to visualize models, their assumptions and post-hocs. (in progress)"
+description: |
+ A picture is worth a thousand words! Here you can learn how to visualize results of 16 different models in R: from a simple linear model, going to the multiple models, including logistic and multinomial models and finishing with the multiple-mixed-effects-non-linear and even survival models. **Goal: minimum R code & maximum output!** We'll also go a bit beyond only model visualization, so it is worth to work through the whole post at least once. 
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-01-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    code_download: true
+#draft: true
+categories:
+  - visualization
+  - videos
+  - models
+preview: thumbnail_visualize_models.png
+  
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+```{r}
+# install.packages("tidyverse") 
+# install.packages("ISLR") 
+library(tidyverse) # data wrangling
+library(ISLR)      # get Wage dataset
+
+set.seed(1)        # reproducibility: the same seed grows the same tree
+
+d <- Wage %>%
+  sample_n(1000) %>% 
+  rename(salary = wage) 
+
+glimpse(d)
+```
+
+
+
+# A demo for the first 7 linear models
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("BNTn_f43U04")
+```
+
+
+
+## 1. simple linear model with categorical predictor
+
+```{r}
+m <- lm(salary ~ jobclass, d)
+
+library(effects)    # for model visualisation & more
+
+plot(allEffects(m))
+```
+
+
+
+## 2. simple linear model with numeric predictor
+
+```{r}
+m <- lm(salary ~ age, d)
+
+plot(allEffects(m))
+
+plot(allEffects(m), grid = TRUE)
+```
+
+
+
+## 3. multiple linear model with categorical predictors
+
+```{r}
+m <- lm(salary ~ jobclass + education, d)
+
+plot(allEffects(m))
+
+plot(predictorEffect(predictor = "education", mod = m))
+```
+
+
+
+## 4. multiple linear model with numeric predictors
+
+```{r}
+m <- lm(salary ~ age + year, d)
+
+plot(allEffects(m))
+plot(allEffects(m), confint=list(style="bars"))
+
+# install.packages("sjPlot")
+library(sjPlot)    # for model visualization
+plot_model(m)
+```
+
+
+
+## 5. multiple linear model with numeric and categorical predictors
+
+```{r}
+m <- lm(salary ~ age + education, d)
+
+plot(allEffects(m))
+plot(allEffects(m), rows = 2, cols = 1)
+
+plot_model(m)
+plot_model(m, show.values = T)
+```
+
+
+# Bonus 1: check all the assumption in one line of code
+
+```{r}
+# install.packages("performance")
+library(performance)    # model assumptions & performance
+check_model(m)
+```
+
+
+
+## 6. multiple linear model with interactions 
+
+```{r}
+m <- lm(salary ~ education * jobclass, d)
+
+plot(allEffects(m))
+plot(allEffects(m), lines = list(multiline = T))
+plot(
+  allEffects(m), 
+  lines = list(multiline = T), 
+  confint = list(style = "auto"))
+
+plot_model(m, type = "int")+theme_blank()+theme(legend.position = "top")
+```
+
+
+
+# Bonus 2: easy post-hoc
+
+```{r}
+# install.packages("emmeans")
+library(emmeans)      # for post-hocs
+emmeans(m, pairwise ~ jobclass | education, adjust = "fdr")$contrasts
+```
+
+
+
+## 7. multiple linear model with interactions of a numeric predictor
+
+```{r}
+m <- lm(salary ~ age * health, d)
+
+plot(allEffects(m))
+plot(
+  allEffects(m), 
+  lines = list(multiline = T), 
+  confint = list(style = "auto"))
+
+plot_model(m, type = "int")+
+  theme_classic()+
+  theme(legend.position = "top")+
+  xlab("something different")+
+  theme_void()+
+  theme(legend.position = "none", title = element_blank())
+
+check_model(m)
+```
+
+
+# Bonus 3: make a quick multiple models with ggplot
+
+```{r}
+ggplot(d, aes(age, salary))+
+  geom_point()+
+  geom_smooth()+    # the quickest way to model numeric data
+  facet_grid(jobclass~health) # quick multiple model 
+```
+
+
+
+
+# A demo for the next 9 models: non-linear, logistic, multinomial, mixed-effects, survival...
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("wev5a3rwsvo")
+```
+
+
+
+## 8. multiple non-linear polynomial model with interactions
+
+```{r}
+m <- lm(log(salary) ~ poly(age, 2) * health, d)
+
+plot(allEffects(m))
+plot(
+  allEffects(m), 
+  lines = list(multiline = T), 
+  confint = list(style = "auto"))
+
+plot_model(m, show.values = T)
+
+check_model(m)
+```
+
+
+
+## 9. Multiple non-linear Generalized Additive Models (GAM)
+
+- `s()` function indicates that we would like to use a smoothing spline 
+- `mgcv` is another package for GAMs but there are still conflicts! Thus, use `gam::` to specify from which package exactly the `gam()` function should be used.
+
+```{r}
+# install.packages("gam")
+library(gam)
+
+gam1 <- gam::gam(salary~s(year,df = 4)+s(age, df = 5)+education + jobclass, data=d)
+summary(gam1)
+
+par(mfrow =c(2, 2) )
+plot.Gam(gam1 , se=TRUE, col= "blue")
+```
+
+
+
+
+
+## 10. multiple logistic regression with interactions
+
+```{r}
+m <- glm(health ~ jobclass * health_ins, d, family = binomial)
+
+plot(allEffects(m))
+
+plot_model(m, type = "int")
+
+emmeans(m, pairwise ~ jobclass | health_ins, adjust = "fdr")$contrasts
+emmeans(m, pairwise ~ health_ins | jobclass, adjust = "fdr")$contrasts
+emmeans(m, pairwise ~ health_ins * jobclass, adjust = "fdr")$contrasts
+```
+
+
+# Bonus 4: visualize the post-hoc analysis with the Pairwise P-value Plot
+
+```{r}
+pwpp(emmeans(m, ~ health_ins * jobclass), type = "response", adjust = "fdr"
+     )+theme_minimal()
+```
+
+
+
+## 11. Multinomial logistic regression models via neural networks
+
+
+```{r}
+# get the data
+d <- foreign::read.dta("https://stats.idre.ucla.edu/stat/data/hsbdemo.dta")
+
+m <- nnet::multinom(prog ~ ses + write, d)
+
+plot(allEffects(m), 
+     lines = list(multiline = T), 
+     confint = list(style = "auto"), rows = 2, cols = 1)
+
+plot(predictorEffect(predictor = "ses", mod = m), 
+     lines = list(multiline = T),
+     confint = list(style = "auto"))
+
+
+plot(predictorEffect(predictor = "write", mod = m), 
+     lines = list(multiline = T),
+     confint = list(style = "auto"))
+```
+
+
+## 12. Multiple Linear Mixed-Effects-Model with interactions
+
+```{r}
+# install.packages("lme4")
+# install.packages("lmerTest")
+
+library(lme4)
+library(lmerTest)
+
+# get the data
+set.seed(9)
+d <- InstEval %>% 
+  group_by(service, studage) %>% 
+  sample_n(100) %>% 
+  mutate(dept = as.numeric(dept))
+
+m1 <- lmer(y ~ service * studage + (1|s) + (1|d), data=d)
+
+plot(
+  allEffects(m1), 
+  lines = list(multiline = T), 
+  confint = list(style = "auto"))
+
+# post-hocs
+emmeans(m1, pairwise ~ service | studage, adjust = "none")$contrasts 
+pwpp(emmeans(m1, ~ service * studage), type = "response", adjust = "none")+
+  theme_minimal() 
+```
+
+
+
+# Bonus 5: how to choose the best model
+
+```{r}
+m  <- lm(y ~ service * studage, data=d)
+m1 <- lmer(y ~ service * studage + (1|s) + (1|d), data=d)
+
+# compare AIC & BIC as performance metrics: lower = better
+anova(m1, m)
+
+# you might use "compare_performance" function from the "performance" package
+```
+
+
+
+## 13. GAMMs - Multiple Generalised Additive (non-linear) Mixed Effects Models
+
+```{r}
+# install.packages("mgcViz")
+library(mgcViz)
+
+m <- gammV(y ~ s(as.numeric(d), k = 3), random=list(s=~1), data= InstEval %>% 
+             slice(1:5000))
+
+plot(m, allTerms = T)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 14. Kaplan-Meier survival model
+
+```{r}
+# install.packages("survival")
+# install.packages("survminer")
+library(survival)
+library(survminer)
+
+set.seed(1)
+d <- lung %>% 
+  filter(ph.ecog != 3) %>% 
+  sample_n(100)
+
+m <- survfit(Surv(time, status) ~ ph.ecog, data = d)
+
+ggsurvplot(m)
+
+ggsurvplot(m, 
+           pval = TRUE, 
+           risk.table = "abs_pct", 
+           surv.median.line = "hv") 
+
+# post-hocs for survival analysis
+pairwise_survdiff(
+  formula = Surv(time, status) ~ ph.ecog, data = d, p.adjust.method = "fdr"
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 15. Exponential Parametric Models
+
+```{r}
+# install.packages("flexsurv")
+library(flexsurv)    # for Parametric Survival Modelling
+
+ex <- flexsurvreg(Surv(time, status) ~ factor(ph.ecog), data = d, dist="exponential")
+
+ggsurvplot(ex)
+```
+
+  
+
+## 16. Cox proportional hazard models
+
+```{r}
+m <- coxph(Surv(time, status) ~ age + sex + ph.ecog, data =  d)
+
+ggforest(m, d)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
