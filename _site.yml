@@ -40,6 +40,6 @@ theme: theme.css
 google_analytics: "G-Q28WX9Y4VS"
 collections:
   posts:
-    disqus: yuzaR-Blog
+    disqus: yuzar-blog
     share: [twitter, linkedin, facebook, google-plus, pinterest]
     #subscribe: _subscribe.html

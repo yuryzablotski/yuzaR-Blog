@@ -1,7 +1,7 @@
 ---
-title: "How to visualize models, their assumptions and post-hocs. (in progress)"
+title: "How to visualize models, their assumptions and post-hocs"
 description: |
- A picture is worth a thousand words! Here you can learn how to visualize results of 16 different models in R: from a simple linear model, going to the multiple models, including logistic and multinomial models and finishing with the multiple-mixed-effects-non-linear and even survival models. **Goal: minimum R code & maximum output!** We'll also go a bit beyond only model visualization, so it is worth to work through the whole post at least once. 
+ A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code & maximum output!** We'll also go a bit beyond only model visualization. So, watch out for Bonuses 😉. 
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -23,8 +23,23 @@ preview: thumbnail_visualize_models.png
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T)
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
+
+
+
+
+
+# A demo for the first 7 linear models
+
+Two YouTube videos in this article demonstrate the code presented below and explain all you need to know. Thus, I reduced the text to a minimum in order to decrease redundancy. If you still have a question, drop me a comment on YouTube or on this article below. I'll try to respond as quick as I can.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("BNTn_f43U04")
+```
+
+
+Let's get our first data. We'll use several dataset though.
 
 
 ```{r}
@@ -39,32 +54,28 @@ d <- Wage %>%
   sample_n(1000) %>% 
   rename(salary = wage) 
 
+# have a look at the data
 glimpse(d)
 ```
 
+## 1. Simple linear model with categorical predictor
 
-
-# A demo for the first 7 linear models
-
-```{r, eval=T, echo=F}
-vembedr::embed_youtube("BNTn_f43U04")
-```
-
-
-
-## 1. simple linear model with categorical predictor
+The *effects()* package is the mane visualization package we'll use. It can visualize results of almost any model. We'll start with the visualization of predicted values.
 
 ```{r}
 m <- lm(salary ~ jobclass, d)
 
-library(effects)    # for model visualisation & more
+# install.packages("effects")
+library(effects)    # for model visualization & more
 
 plot(allEffects(m))
 ```
 
 
 
-## 2. simple linear model with numeric predictor
+## 2. Simple linear model with numeric predictor
+
+Here we'll add a *grid = TRUE* for a better readability, so that we don't need to stare on the y-axis and guess the result.
 
 ```{r}
 m <- lm(salary ~ age, d)
@@ -78,6 +89,8 @@ plot(allEffects(m), grid = TRUE)
 
 ## 3. multiple linear model with categorical predictors
 
+We can visualize any particular predictor from a multiple model individually.
+
 ```{r}
 m <- lm(salary ~ jobclass + education, d)
 
@@ -89,6 +102,8 @@ plot(predictorEffect(predictor = "education", mod = m))
 
 
 ## 4. multiple linear model with numeric predictors
+
+Here we'll see how to change the appearance of confidence intervals and introduce another amazing model-visualization package - *sjPlot*. In this chapter we'll use the *effects* package for the visualization of the predicted values and *sjPlot* package for the visualization of the estimates with their confidence intervals.
 
 ```{r}
 m <- lm(salary ~ age + year, d)
@@ -105,20 +120,30 @@ plot_model(m)
 
 ## 5. multiple linear model with numeric and categorical predictors
 
+We can change design of the plot by determining the number of *rows* and *columns*. The *sjPlot* package can also display the estimates themselves, as numeric values, and the significance start, which is often all we need. Besides, it looks much better than a table-looking output of the model results.
+
 ```{r}
 m <- lm(salary ~ age + education, d)
 
 plot(allEffects(m))
-plot(allEffects(m), rows = 2, cols = 1)
+```
 
-plot_model(m)
-plot_model(m, show.values = T)
+
+```{r fig.height=7}
+plot(allEffects(m), rows = 2, cols = 1)
+```
+
+
+```{r fig.width=7}
+plot_model(m, show.values = TRUE)
 ```
 
 
 # Bonus 1: check all the assumption in one line of code
 
-```{r}
+*check_model* is just awesome! One of my favorite R functions! I get a "**nerdgasm**" every time I use it 😂. The video explains it very well.
+
+```{r fig.height=9}
 # install.packages("performance")
 library(performance)    # model assumptions & performance
 check_model(m)
@@ -128,11 +153,13 @@ check_model(m)
 
 ## 6. multiple linear model with interactions 
 
+First of all, the *allEffects()* functions visualizes interactions easily! Secondly, we can put several lines on the same plot with or without confidence intervals by using argument *multiline = TRUE*. "T" instead of "TRUE" also works. The *sjPlot* package is not only able to also easily visualize interactions, but can in addition be extended with the usual *ggplot2* syntax, which can greatly improve the appearance of the plot. 
+
 ```{r}
 m <- lm(salary ~ education * jobclass, d)
 
 plot(allEffects(m))
-plot(allEffects(m), lines = list(multiline = T))
+plot(allEffects(m), lines = list(multiline = TRUE))
 plot(
   allEffects(m), 
   lines = list(multiline = T), 
@@ -144,6 +171,8 @@ plot_model(m, type = "int")+theme_blank()+theme(legend.position = "top")
 
 
 # Bonus 2: easy post-hoc
+
+The *emmeans* package is one of my favorite for conducting post-hocs. In this chapter we only display the results in the text/table form. Later we'll also visualize post-hocs.
 
 ```{r}
 # install.packages("emmeans")
@@ -170,18 +199,23 @@ plot_model(m, type = "int")+
   xlab("something different")+
   theme_void()+
   theme(legend.position = "none", title = element_blank())
+```
 
+
+```{r fig.height=9}
 check_model(m)
 ```
 
 
 # Bonus 3: make a quick multiple models with ggplot
 
-```{r}
+We do not always need to explicitly model things in order to explore our data. A *geom_smooth()* from *ggplot2* package will automatically fit numeric data. Mostly with non-linear models (e.g. GAM), but with the argument *method="lm"* forces it to take the linear one. Moreover, we could also use any formula inside of the *geom_smooth()*, but since we can't really model categorical predictors, and when we need to write formula anyway, we then better produce an actual model. However, the code presented below is quick and easy, and therefore very practical! On this note we'll enter the world of non-linear models and I recommend to watch the second video first, before checking out the code.
+
+```{r fig.height=9}
 ggplot(d, aes(age, salary))+
   geom_point()+
   geom_smooth()+    # the quickest way to model numeric data
-  facet_grid(jobclass~health) # quick multiple model 
+  facet_grid(education~jobclass, scales = "free") # quick multiple model 
 ```
 
 
@@ -197,17 +231,22 @@ vembedr::embed_youtube("wev5a3rwsvo")
 
 ## 8. multiple non-linear polynomial model with interactions
 
+The *allEffects* function can also easily handle non-linear models. For instance polynomial ones. In contrast, the *plot_model* function can't. However, we
+
 ```{r}
 m <- lm(log(salary) ~ poly(age, 2) * health, d)
 
-plot(allEffects(m))
 plot(
   allEffects(m), 
   lines = list(multiline = T), 
   confint = list(style = "auto"))
 
-plot_model(m, show.values = T)
+plot_model(m, show.values = T)+
+  theme_bw()
+```
 
+
+```{r fig.height=9}
 check_model(m)
 ```
 
@@ -215,17 +254,16 @@ check_model(m)
 
 ## 9. Multiple non-linear Generalized Additive Models (GAM)
 
-- `s()` function indicates that we would like to use a smoothing spline 
-- `mgcv` is another package for GAMs but there are still conflicts! Thus, use `gam::` to specify from which package exactly the `gam()` function should be used.
+- *s()* function indicates that we would like to use a smoothing spline 
+- *mgcv* is another package for GAMs but there are still conflicts! Thus, use *gam::* to specify from which package exactly the *gam()* function should be used. The *gam* package has it's own plotting function - *plot.Gam* and you can display all subplots on one plot by using *par(mfrow = c(2, 2))*. Please, don't use "plot(allEffects(gam1))" for GAM models, because it will produce linear results.
 
-```{r}
+```{r fig.height=7}
 # install.packages("gam")
 library(gam)
 
-gam1 <- gam::gam(salary~s(year,df = 4)+s(age, df = 5)+education + jobclass, data=d)
-summary(gam1)
+gam1 <- gam::gam(salary~s(year, df = 4)+s(age, df = 5)+education + jobclass, data=d)
 
-par(mfrow =c(2, 2) )
+par(mfrow = c(2, 2) )
 plot.Gam(gam1 , se=TRUE, col= "blue")
 ```
 
@@ -234,6 +272,8 @@ plot.Gam(gam1 , se=TRUE, col= "blue")
 
 
 ## 10. multiple logistic regression with interactions
+
+Interactions in logistic regression are not a problem for both packages. Moreover, have a look at three different displays of post-hocs from the same model and find code differences. Hint: I love the "|" part of it! 
 
 ```{r}
 m <- glm(health ~ jobclass * health_ins, d, family = binomial)
@@ -244,11 +284,17 @@ plot_model(m, type = "int")
 
 emmeans(m, pairwise ~ jobclass | health_ins, adjust = "fdr")$contrasts
 emmeans(m, pairwise ~ health_ins | jobclass, adjust = "fdr")$contrasts
+```
+
+
+```{r}
 emmeans(m, pairwise ~ health_ins * jobclass, adjust = "fdr")$contrasts
 ```
 
 
 # Bonus 4: visualize the post-hoc analysis with the Pairwise P-value Plot
+
+And here is promise visualization of the post-hocs. Notice the marginal means on the y axis and color-coded design of the plot, which connects the pairs the p-value value for which was calculated (x-axis).
 
 ```{r}
 pwpp(emmeans(m, ~ health_ins * jobclass), type = "response", adjust = "fdr"
@@ -259,8 +305,9 @@ pwpp(emmeans(m, ~ health_ins * jobclass), type = "response", adjust = "fdr"
 
 ## 11. Multinomial logistic regression models via neural networks
 
+No special treatment of the fancy neural networks needed. *plot(allEffects())* just works!
 
-```{r}
+```{r fig.height=9}
 # get the data
 d <- foreign::read.dta("https://stats.idre.ucla.edu/stat/data/hsbdemo.dta")
 
@@ -269,19 +316,14 @@ m <- nnet::multinom(prog ~ ses + write, d)
 plot(allEffects(m), 
      lines = list(multiline = T), 
      confint = list(style = "auto"), rows = 2, cols = 1)
-
-plot(predictorEffect(predictor = "ses", mod = m), 
-     lines = list(multiline = T),
-     confint = list(style = "auto"))
-
-
-plot(predictorEffect(predictor = "write", mod = m), 
-     lines = list(multiline = T),
-     confint = list(style = "auto"))
 ```
 
 
+
+
 ## 12. Multiple Linear Mixed-Effects-Model with interactions
+
+The mixed-effects models are very complex. But fortunately, both *plot(allEffects())*, *plot_model()*, *emmeans()* and *check_model()* work flawlessly and **simply deliver!** The *check_model()* even check the assumptions for the random effects! The random effects themselves can also be visualized, but they are rarely interpreted, so, why bother?
 
 ```{r}
 # install.packages("lme4")
@@ -304,35 +346,49 @@ plot(
   lines = list(multiline = T), 
   confint = list(style = "auto"))
 
+plot_model(m1, type = "int")+
+  theme_blank()+
+  theme(legend.position = "top")
+
 # post-hocs
 emmeans(m1, pairwise ~ service | studage, adjust = "none")$contrasts 
 pwpp(emmeans(m1, ~ service * studage), type = "response", adjust = "none")+
-  theme_minimal() 
+  theme_minimal()
+```
+
+
+```{r fig.height=9, fig.width=9}
+# check model assumptions
+check_model(m1)
 ```
 
 
 
 # Bonus 5: how to choose the best model
 
+The *performance* package, near the already insanely useful *check_model* function, provides a *compare_performance* function, which compares models with multiple quality indicators, e.g. $R^2$ or AIC. It is not only more informative as compared to the *anova()* function, which is often used for model comparison, but also works much better, because it displays a warning when two models shouldn't be compared, while *anova(m, m1)* simply fails, when models aren't supposed to be compared, but can be tricked by placing the mixed effects model (m1) first. 
+
 ```{r}
 m  <- lm(y ~ service * studage, data=d)
 m1 <- lmer(y ~ service * studage + (1|s) + (1|d), data=d)
 
-# compare AIC & BIC as performance metrics: lower = better
-anova(m1, m)
+compare_performance(m1, m)
 
-# you might use "compare_performance" function from the "performance" package
+anova(m1, m)
 ```
+
 
 
 
 ## 13. GAMMs - Multiple Generalised Additive (non-linear) Mixed Effects Models
 
+These kind of models are just madness, can be visualized though.
+
 ```{r}
 # install.packages("mgcViz")
 library(mgcViz)
 
-m <- gammV(y ~ s(as.numeric(d), k = 3), random=list(s=~1), data= InstEval %>% 
+m <- gammV(y ~ s(as.numeric(d), k = 3) + lectage, random=list(s=~1), data= InstEval %>% 
              slice(1:5000))
 
 plot(m, allTerms = T)
@@ -340,25 +396,9 @@ plot(m, allTerms = T)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 14. Kaplan-Meier survival model
+
+Survival models are can be visualized with *survminer* package. Even some statistical details can be displayed. I still did not figured out how to visualize the post-hocs for survival analysis. It you know how, please let me know via YouTube. Thus, I here simply provide the p-values of the post-hocs.
 
 ```{r}
 # install.packages("survival")
@@ -374,12 +414,18 @@ d <- lung %>%
 m <- survfit(Surv(time, status) ~ ph.ecog, data = d)
 
 ggsurvplot(m)
+```
 
+
+```{r fig.height=7, fig.width=7}
 ggsurvplot(m, 
            pval = TRUE, 
            risk.table = "abs_pct", 
-           surv.median.line = "hv") 
+           surv.median.line = "hv")
+```
 
+
+```{r fig.height=7}
 # post-hocs for survival analysis
 pairwise_survdiff(
   formula = Surv(time, status) ~ ph.ecog, data = d, p.adjust.method = "fdr"
@@ -410,6 +456,8 @@ pairwise_survdiff(
 
 ## 15. Exponential Parametric Models
 
+These models are very rarely used. 
+
 ```{r}
 # install.packages("flexsurv")
 library(flexsurv)    # for Parametric Survival Modelling
@@ -423,6 +471,8 @@ ggsurvplot(ex)
 
 ## 16. Cox proportional hazard models
 
+The are more common as compared to the exponential models and can be visualized with beautiful *ggforest* plots.
+
 ```{r}
 m <- coxph(Surv(time, status) ~ age + sex + ph.ecog, data =  d)
 
@@ -431,34 +481,9 @@ ggforest(m, d)
 
 
 
+I hope you found this article useful. The are of coarse more interesting models out there. Thus, please let me know what kind of models you make and how you visualize them.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
 
 
 
