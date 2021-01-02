@@ -273,7 +273,12 @@ This new post exists only on your local computer, still not online, thus...
   - Commit
   - Push
 
-You don't need to commit and push every change, only important ones. Think of this process as **really** saving the progress you made on your blog.
+You don't need to commit and push every change, only important ones. Think of this process as **really** saving the progress you made on your blog. Another useful thing I learned to appreciate after committing a couple of thousands of changes (which is annoying!) is to - check all the boxes (under "stage") at once! For this:
+
+- go to "Terminal" tab in RStuio (it's near the "Console")
+- type "git add -A" and press enter
+- check one of the stage-boxes, the rest of them suppose to be then check themselves automatically
+- then press "Commit"
 
 By the way, if you don't want to publish your post until you really satisfied with it, you can start out as a draft:
 
