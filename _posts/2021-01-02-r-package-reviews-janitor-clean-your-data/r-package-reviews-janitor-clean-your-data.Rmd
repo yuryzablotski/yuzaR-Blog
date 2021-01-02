@@ -1,0 +1,223 @@
+---
+title: "R package reviews | janitor | clean your data!"
+description: |
+  Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-02-2021
+categories:
+  - R package reviews
+  - videos
+preview: images/thumbnail_janitor.jpg
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    code_download: true
+draft: true
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# {janitor} package
+
+```{r}
+library(tidyverse)          # data manipulation
+library(janitor)            # data cleaning
+library(readxl)             # data importing
+library(kableExtra)         # beautifying tables
+
+citation("janitor")
+```
+
+# Get dirty data and look at it
+
+If you are reading this post, you are probably already familiar with the concept of **tidy data**. If not, [have a look at it](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html#:~:text=Tidy%20data%20is%20a%20standard,Each%20observation%20forms%20a%20row.). And you have most likely already worked with the **messy (dirty) data**. I did, and that is why I found the *janitor* package sooo useful!
+
+The messy data displayed below can be found [here](https://github.com/sfirke/janitor/blob/master/dirty_data.xlsx). Some of the indicators of messyness are: strange (difficult) names, empty columns and rows, constant columns, which do not provide much of a value, duplicates, strange dates which do not look like dates etc..
+
+```{r, layout="l-screen-inset shaded"}
+dirty_data <- read_excel("dirty_data.xlsx")
+dirty_data %>%
+  kbl() %>%
+  kable_classic_2(full_width = F)
+```
+
+# R demo for how to clean your data
+
+A short (ca. 12 min) video below shows how to clean this data and the code you'll see in the video is provided below.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("poUveR6aDS8")
+```
+
+
+# Main functions
+
+## clean_names()
+
+This function removes all the non-letters and signs from the names and connects several words with underscores. You can ignore the *kbl()* and *kable_classic_2()* rows in the code below, they just make the HTML table look clean, but do not really clean anything in our dataset.
+
+
+```{r, layout="l-screen-inset shaded"}
+d <- dirty_data %>% 
+  clean_names()
+
+d %>% 
+  kbl() %>%
+  kable_classic_2(full_width = F)
+```
+
+## remove_empty() & remove_constant()
+
+*remove_empty()* removes both empty rows and empty columns. We have two empty columns and one empty row. They are just useless. Lets add two constant columns to the dataset and see how we can remove all this junk with *janitor*.
+
+```{r, layout = "l-screen-inset shaded"}
+# add two constant columns
+d <- d %>% 
+  mutate(constant_column   = 42,
+         constant_column_2 = "text")
+
+# remove the junk
+d %>% 
+  remove_constant() %>%  
+  remove_empty() %>% 
+  kbl() %>%
+  kable_classic_2(full_width = F)
+```
+
+## get_dupes()
+
+You can hunt duplicates rows in several columns. The function also returns the counts for every duplicate.
+
+```{r, layout = "l-screen-inset shaded"}
+d %>% 
+  get_dupes(first_name) %>% 
+  kbl() %>%
+  kable_classic_2(full_width = F)
+```
+
+## round_to_fraction()
+
+This can be very useful if you have lots of data. I do work with agricultural animals and they have all kinds of scores. One of them - Body Condition Score (BCS) is always recorded in quarters, e.g. 2.25, 2.5, 2.75 etc. So, if some colleagues try to be very smart and very exact, they stupidly record values like 0.8 or 3.149 instead of wanted 0.75 and 3, you need to correct this. *round_to_fraction()* simplifies this task enormously! Have a look at the last number below, before and after applying *round_to_fraction()* to a variable.
+
+```{r}
+# before
+d$percent_allocated
+
+# after
+round_to_fraction(d$percent_allocated, denominator = 4) # digits = 3
+```
+
+## convert_to_date()
+
+A modern Excel always tries to automate things, and I hate it! 😂 For instance you write a number into a cell and it sometimes immediately converts it into date. Then you try to have a date in a cell, and it returns a number. Moreover, Excel also has some strange date encoding systems, which can be confused with a normal numeric columns. Luckily, our dirty dataset has a "date" word in the name of a column "hire_date", otherwise we wouldn't know that it is a date:
+
+```{r}
+d$hire_date
+convert_to_date(d$hire_date)
+```
+
+## row_to_names()
+
+People often have several header columns, in order to beautifully explain everything, make things accurate and don't miss any important information. I've been there too. But as soon as I started to work with software, I realized that this "beauty" hurts. I get a lot of Excel datasets like that, which is not a problem, I just delete not needed rows and continue working. But then I get the same table with a few corrected values, even if I tell colleagues to have only one header. That is why I was pleased to discover *row_to_names()* function. Have a look at the dataset "x" below and how easy can we handle it.
+
+```{r}
+x <- data.frame(
+  X_1 = c("some general description", "Real title", 1:3),
+  X_2 = c("something `very!!! important` :) ", "Which we wont!", 4:6))
+
+x
+
+x %>%
+  row_to_names(row_number = 2)
+```
+
+
+
+# Generate "adorable" frequency table (1-, 2-, or 3-way).
+
+The *table()* function is actually cool, but as I discovered *tabyl()* in the *janitor* packages, I couldn't go back. First of all, I always need to explicitly write *, useNA = "ifany"* if I wanna see whether there NAs. Secondly the proportions have to be called with an extra function *prop.table()* on top of the *table()* function. Now, look at what *tabyl()* does:
+
+```{r}
+# old way
+table(d$employee_status, useNA = "ifany")
+
+prop.table(table(d$employee_status))
+
+# new way
+tabyl(d$employee_status) # "show_na" is TRUE by default
+
+# new way with two variables
+d %>% 
+  tabyl(employee_status, full_time)
+```
+
+Moreover, along the counts *janitor's tabyl* can also display totals, formatted percentages and even all of them together by using a family of "adorable" functions. 
+
+```{r}
+#  
+d %>%
+  tabyl(employee_status, full_time) %>%
+  adorn_totals(c("col", "row"))
+
+d %>%
+  tabyl(employee_status, full_time) %>%
+  adorn_totals("row") %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting() %>%
+  adorn_ns(position = "front") %>%               
+  adorn_title() %>% 
+  adorn_title("combined")
+```
+
+
+
+```{r}
+mtcars %>%
+  tabyl(am, cyl) %>%
+  adorn_totals(c("col", "row")) %>% 
+  adorn_percentages("all") %>% 
+  adorn_pct_formatting() %>%
+  adorn_ns() 
+```
+
+You could also compare columns of two dataframes to see the difference. To see more function, type *?janitor* in the console of RStudio, scroll down and press *index*.
+
+```{r}
+d1 <- d %>% 
+  mutate(new_column = 42, 
+         second_new = "into it")
+
+compare_df_cols(d, d1) %>% View()
+
+```
+
+
+Every single function from janitor package makes your life easier and more productive for a moment, some of them a lot easier, e.g. *clean_names()* and *remove_empty()*. But the real power of it accumulates over time, because you free your mind and time for creative work, instead of solving problems. 
+
+What is you favorite R package?
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
