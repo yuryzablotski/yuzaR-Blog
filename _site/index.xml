@@ -7,7 +7,17 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 01 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R package reviews | janitor | clean your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</link>
+      <description>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</guid>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>How to visualize models, their assumptions and post-hocs</title>
       <dc:creator>Yury Zablotski</dc:creator>
