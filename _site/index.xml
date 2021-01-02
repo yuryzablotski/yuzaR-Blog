@@ -12,7 +12,7 @@
       <title>How to visualize models, their assumptions and post-hocs</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</link>
-      <description>A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code &amp; maximum output!** We'll also go a bit beyond only model visualization. So, watch out for Bonuses 😉.</description>
+      <description>A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code &amp; maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.</description>
       <category>visualization</category>
       <category>videos</category>
       <category>models</category>
