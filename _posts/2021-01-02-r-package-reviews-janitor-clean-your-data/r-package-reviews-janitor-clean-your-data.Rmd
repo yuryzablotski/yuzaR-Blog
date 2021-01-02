@@ -1,5 +1,5 @@
 ---
-title: "R package reviews | janitor | clean your data!"
+title: "R package reviews {janitor} clean your data!"
 description: |
   Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.
 author:
@@ -31,8 +31,6 @@ library(tidyverse)          # data manipulation
 library(janitor)            # data cleaning
 library(readxl)             # data importing
 library(kableExtra)         # beautifying tables
-
-citation("janitor")
 ```
 
 # Get dirty data and look at it
@@ -195,11 +193,15 @@ d1 <- d %>%
          second_new = "into it")
 
 compare_df_cols(d, d1) %>% View()
-
 ```
 
 
-Every single function from janitor package makes your life easier and more productive for a moment, some of them a lot easier, e.g. *clean_names()* and *remove_empty()*. But the real power of it accumulates over time, because you free your mind and time for creative work, instead of solving problems. 
+Every single function from janitor package makes your life easier and more productive for a moment, some of them a lot easier, e.g. *clean_names()* and *remove_empty()*. But the real power of it accumulates over time, because you free your mind and time for creative work, instead of solving problems. Thus, thousand thanks to package-developer Sam Firke!
+
+```{r}
+citation("janitor")
+```
+
 
 What is you favorite R package?
 
