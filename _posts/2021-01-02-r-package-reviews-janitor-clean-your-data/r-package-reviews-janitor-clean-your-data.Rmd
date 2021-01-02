@@ -9,7 +9,7 @@ date: 01-02-2021
 categories:
   - R package reviews
   - videos
-preview: images/thumbnail_janitor.jpg
+preview: thumbnail_janitor.jpg
 output:
   distill::distill_article:
     self_contained: false
