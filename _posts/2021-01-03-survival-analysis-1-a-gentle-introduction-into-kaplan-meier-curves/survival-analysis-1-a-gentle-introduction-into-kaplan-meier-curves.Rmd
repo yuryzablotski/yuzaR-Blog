@@ -6,6 +6,9 @@ author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
 date: 01-03-2021
+categories:
+  - survival analysis
+  - videos
 preview: thumbnail_survival_1.png
 output:
   distill::distill_article:
