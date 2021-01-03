@@ -24,7 +24,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# {janitor} package
 
 ```{r}
 library(tidyverse)          # data manipulation
