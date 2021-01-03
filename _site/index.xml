@@ -21,6 +21,15 @@
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/thumbnail_performance.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
+      <title>Survival analysis 1: a gentle introduction into Kaplan-Meier Curves</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</link>
+      <description>Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.</description>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/thumbnail_survival_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
       <title>R package reviews {janitor} clean your data!</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</link>
