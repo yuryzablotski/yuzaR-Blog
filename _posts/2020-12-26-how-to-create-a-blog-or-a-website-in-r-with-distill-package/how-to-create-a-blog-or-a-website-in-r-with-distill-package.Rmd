@@ -1,5 +1,5 @@
 ---
-title: "How to create a blog or a website in R with {Distill} package (in progress!)"
+title: "How to create a blog or a website in R with {Distill} package"
 description: |
   If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.
 author:
@@ -31,7 +31,11 @@ If you don't have or don't want to have a Github account (and continuous deploym
 
 # Manual intermittent publishing (deploying)
 
-Why should we even consider manual instead of automated? Well, for some non-programmers going with the continuous deployment via Github immediately might be very challenging and frustrating. I've been there. We all know what is "better" and "more time effective" in the long run, but the complexity might sometimes turn us off from doing something we would love to, resulting into "it's just not my cup of tea" attitude. Other do not even need the continuous deployment, because they publish rarely, e.g. once per month, but would still like to be online. Going to the WordPress and co., which would most likely screw either code or code-output, is not always a solution. Fortunately, *Distill* and *Netlify* greatly reduce the complexity of going online. Thus, have a look at the quick video and then follow the step by step procedure described below and you'll be online with your blog in minutes.
+Why should we even consider manual instead of automated? Well, for some non-programmers going with the continuous deployment via Github immediately might be very challenging and frustrating. I've been there. We all know what is "better" and "more time effective" in the long run, but the complexity might sometimes turn us off from doing something we would love to, resulting into "it's just not my cup of tea" attitude. Other do not even need the continuous deployment, because they publish rarely, e.g. once per month, but would still like to be online. Going to the WordPress and co., which would most likely screw either code or code-output, is not always a solution. Fortunately, *Distill* and *Netlify* greatly reduce the complexity of going online. Thus, have a look at the quick (<5 minutes) video and then follow the step by step procedure described below and you'll be online with your blog in minutes.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("p9nuRKaF4nM")
+```
 
 
 ## 1. Install *Distill* package
@@ -128,7 +132,7 @@ This new post exists only on your local computer, still not online, thus...
 
 # Automated continuous publishing (deploying)
 
-Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). You'll only need it once! If you ready to proceed, have a look at the quick video and then follow the step by step procedure described below and you’ll be online with your blog in minutes.
+Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). You'll only need it once! If you ready to proceed, have a look at the quick (ca. 8 minutes) video (will be online soon!) and then follow the step by step procedure described below and you’ll be online with your blog in minutes.
 
 
 ## 1. Install *distill* and *usethis* packages

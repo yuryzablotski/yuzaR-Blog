@@ -55,7 +55,7 @@
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
-      <title>How to create a blog or a website in R with {Distill} package (in progress!)</title>
+      <title>How to create a blog or a website in R with {Distill} package</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</link>
       <description>If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.</description>
