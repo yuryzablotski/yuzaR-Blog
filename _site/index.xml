@@ -7,7 +7,18 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 03 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Survival analysis 2: parametric survival models</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</link>
+      <description>The non-parametric Kaplan-Meier method (KM) can not describe survival probability by a smooth function, which means it can not predict anything. The parametric models (e.g. Exponential, Weibull etc.) can! Besides, in case where parametric models are appropriate, they are more exact, more effective and more informative than KM or Cox. However, unfortunately, this step is often left out due to the rear use of parametric models. In this post we’ll try to close this gap.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>R package reviews {performance} check how good your model is! </title>
       <dc:creator>Yury Zablotski</dc:creator>
