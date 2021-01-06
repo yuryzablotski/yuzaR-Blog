@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+  <title>R package reviews {DataExplorer} explore your data</title>
+  
+  <meta property="description" itemprop="description" content="A short description of the post."/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2021-01-06"/>
+  <meta property="article:created" itemprop="dateCreated" content="2021-01-06"/>
+  <meta name="article:author" content="Yury Zablotski"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="R package reviews {DataExplorer} explore your data"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A short description of the post."/>
+  <meta property="og:locale" content="en_US"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="R package reviews {DataExplorer} explore your data"/>
+  <meta property="twitter:description" content="A short description of the post."/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","preview","output"]}},"value":[{"type":"character","attributes":{},"value":["R package reviews {DataExplorer} explore your data"]},{"type":"character","attributes":{},"value":["A short description of the post.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yury-zablotski.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-06-2021"]},{"type":"character","attributes":{},"value":["survival analysis","videos"]},{"type":"character","attributes":{},"value":["thumbnail_survival_2.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-3-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-4-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-5-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-5-2.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-5-3.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-2.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-3.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-4.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-7-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-7-2.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-8-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-8-2.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-9-1.png","r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-9-2.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+  
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+  
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+  
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+  
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+  
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+  
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  /* Tweak code blocks */
+  
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+  
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+  
+  d-article div.sourceCode {
+    background-color: white;
+  }
+  
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  d-article pre a {
+    border-bottom: none;
+  }
+  
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+  
+  @media(min-width: 768px) {
+  
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+  
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+  
+  d-article pre {
+    font-size: 14px;
+  }
+  
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for d-contents */
+  
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+  
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+  
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+  
+  .d-contents li {
+    list-style-type: none
+  }
+  
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+  
+  .d-contents ul {
+    padding-left: 1em
+  }
+  
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+  
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+  
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+  
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+  
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+  
+  
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+  
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+  
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  /* Citations */
+  
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+  
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  /* Include appendix styles here so they can be overridden */
+  
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+  
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+  
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+  
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+  
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+  
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+  
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  d-appendix > * {
+    grid-column: text;
+  }
+  
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+  
+  /* Include footnote styles here so they can be overridden */
+  
+  d-footnote-list {
+    contain: layout style;
+  }
+  
+  d-footnote-list > * {
+    grid-column: text;
+  }
+  
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+  
+  
+  
+  /* Anchor.js */
+  
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+  
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+  
+  /* Styles for posts lists (not auto-injected) */
+  
+  
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+  
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+  
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+  
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+  
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+  
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+  
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+  
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+  
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+  
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+  
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+  
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+  
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+  
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .posts-list img {
+    opacity: 1;
+  }
+  
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+  
+  .posts-more {
+    clear: both;
+  }
+  
+  
+  .posts-sidebar {
+    font-size: 16px;
+  }
+  
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+  
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+  
+  .categories li>a {
+    border-bottom: none;
+  }
+  
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+  
+  .categories .active {
+    font-weight: 600;
+  }
+  
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+  
+  
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+  
+  
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+  
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+  
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-contents').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="r-package-reviews-dataexplorer-explore-your-data_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="r-package-reviews-dataexplorer-explore-your-data_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="r-package-reviews-dataexplorer-explore-your-data_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="r-package-reviews-dataexplorer-explore-your-data_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="r-package-reviews-dataexplorer-explore-your-data_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"R package reviews {DataExplorer} explore your data","description":"A short description of the post.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-06T00:00:00.000+00:00","citationText":"Zablotski, 2021"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>R package reviews {DataExplorer} explore your data</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt=tag">survival analysis</div>
+<div class="dt=tag">videos</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>A short description of the post.</p></p>
+</div>
+
+<div class="d-byline">
+  Yury Zablotski <a href="https://yury-zablotski.netlify.app/" class="uri">https://yury-zablotski.netlify.app/</a> 
+  
+<br/>01-06-2021
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#data-visualisation">Data visualisation</a></li>
+<li><a href="#view-missing-value-distribution-for-airquality-data">View missing value distribution for airquality data</a></li>
+<li><a href="#visualise-distribution-of-categorical-discrete-variables">Visualise distribution of categorical (discrete) variables</a></li>
+<li><a href="#visualise-distribution-of-numeric-variables">Visualise distribution of numeric variables</a></li>
+<li><a href="#visualize-correlation">Visualize correlation</a></li>
+<li><a href="#visualize-boxplot">Visualize boxplot</a></li>
+<li><a href="#visualize-principal-component-analysis">Visualize principal component analysis</a></li>
+<li><a href="#feature-engineering">Feature Engineering</a></li>
+</ul>
+</nav>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'># install.packages("tidyverse")</span>
+<span class='co'># install.packages("DataExplorer")</span>
+
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://boxuancui.github.io/DataExplorer/'>DataExplorer</a></span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Exploratory Data Analysis with some bonuses.</p>
+<h2 id="data-visualisation">Data visualisation</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>airquality</span> <span class='op'>&lt;-</span> <span class='fu'>datasets</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/datasets/airquality.html'>airquality</a></span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>Month <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>Month</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/create_report.html'>create_report</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+
+<span class='co'># report with a response variable</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/create_report.html'>create_report</a></span><span class='op'>(</span><span class='va'>diamonds</span>, y <span class='op'>=</span> <span class='st'>"price"</span><span class='op'>)</span>
+
+<span class='co'># Bonus 4:</span>
+<span class='fu'>SmartEDA</span><span class='fu'>::</span><span class='fu'><a href='https://daya6489.github.io/SmartEDA/reference/ExpReport.html'>ExpReport</a></span><span class='op'>(</span><span class='va'>airquality</span>, op_dir  <span class='op'>=</span> <span class='st'>'other_docs/'</span>, op_file <span class='op'>=</span> <span class='st'>'smarteda.html'</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'>## Instead of running create_report, you may also run each function individually for your analysis, e.g.,</span>
+
+<span class='co'>## View basic description for airquality data</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_intro.html'>plot_intro</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-3-1.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## Bonus 1:</span>
+<span class='fu'>skimr</span><span class='fu'>::</span><span class='fu'><a href='https://docs.ropensci.org/skimr/reference/skim.html'>skim</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<caption><span id="tab:unnamed-chunk-3">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">airquality</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">153</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ozone</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">42.13</td>
+<td style="text-align: right;">32.99</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">18.00</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">63.25</td>
+<td style="text-align: right;">168.0</td>
+<td style="text-align: left;">▇▃▂▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Solar.R</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">185.93</td>
+<td style="text-align: right;">90.06</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">115.75</td>
+<td style="text-align: right;">205.0</td>
+<td style="text-align: right;">258.75</td>
+<td style="text-align: right;">334.0</td>
+<td style="text-align: left;">▅▃▅▇▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wind</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">9.96</td>
+<td style="text-align: right;">3.52</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">7.40</td>
+<td style="text-align: right;">9.7</td>
+<td style="text-align: right;">11.50</td>
+<td style="text-align: right;">20.7</td>
+<td style="text-align: left;">▂▇▇▃▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Temp</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">77.88</td>
+<td style="text-align: right;">9.47</td>
+<td style="text-align: right;">56.0</td>
+<td style="text-align: right;">72.00</td>
+<td style="text-align: right;">79.0</td>
+<td style="text-align: right;">85.00</td>
+<td style="text-align: right;">97.0</td>
+<td style="text-align: left;">▂▃▇▇▃</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Month</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">6.99</td>
+<td style="text-align: right;">1.42</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">8.00</td>
+<td style="text-align: right;">9.0</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Day</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">15.80</td>
+<td style="text-align: right;">8.86</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">8.00</td>
+<td style="text-align: right;">16.0</td>
+<td style="text-align: right;">23.00</td>
+<td style="text-align: right;">31.0</td>
+<td style="text-align: left;">▇▇▇▇▆</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="view-missing-value-distribution-for-airquality-data">View missing value distribution for airquality data</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_missing.html'>plot_missing</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
+</div>
+<h2 id="visualise-distribution-of-categorical-discrete-variables">Visualise distribution of categorical (discrete) variables</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_bar.html'>plot_bar</a></span><span class='op'>(</span><span class='va'>diamonds</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_bar.html'>plot_bar</a></span><span class='op'>(</span><span class='va'>diamonds</span>, with <span class='op'>=</span> <span class='st'>"price"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-5-2.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## View frequency distribution by a discrete variable</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_bar.html'>plot_bar</a></span><span class='op'>(</span><span class='va'>diamonds</span>, by <span class='op'>=</span> <span class='st'>"cut"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-5-3.png" width="624" /></p>
+</div>
+<h2 id="visualise-distribution-of-numeric-variables">Visualise distribution of numeric variables</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'>## View histogram of all continuous variables</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_histogram.html'>plot_histogram</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-1.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## View estimated density distribution of all continuous variables</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_density.html'>plot_density</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-2.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## View quantile-quantile plot of all continuous variables</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_qq.html'>plot_qq</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-3.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## View quantile-quantile plot of all continuous variables by feature `cut`</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_qq.html'>plot_qq</a></span><span class='op'>(</span><span class='va'>airquality</span>, by <span class='op'>=</span> <span class='st'>"Month"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-6-4.png" width="624" /></p>
+</div>
+<h2 id="visualize-correlation">Visualize correlation</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'>## View overall correlation heatmap</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_correlation.html'>plot_correlation</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>(</span><span class='va'>airquality</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"c"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-7-1.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## Bonus 2:</span>
+<span class='fu'>PerformanceAnalytics</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PerformanceAnalytics/man/chart.Correlation.html'>chart.Correlation</a></span><span class='op'>(</span><span class='va'>airquality</span> <span class='op'>%&gt;%</span> <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>Month</span><span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-7-2.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'># method = "kendall"</span>
+</code></pre>
+</div>
+</div>
+<h2 id="visualize-boxplot">Visualize boxplot</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'>## View bivariate continuous distribution based on `cut`</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_boxplot.html'>plot_boxplot</a></span><span class='op'>(</span><span class='va'>airquality</span>, by <span class='op'>=</span> <span class='st'>"Month"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-8-1.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## Bonus 3:</span>
+<span class='fu'>ggstatsplot</span><span class='fu'>::</span><span class='fu'><a href='https://indrajeetpatil.github.io/ggstatsplot//reference/ggbetweenstats.html'>ggbetweenstats</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>airquality</span>, x <span class='op'>=</span> <span class='va'>Month</span>, y <span class='op'>=</span> <span class='va'>Ozone</span>, type <span class='op'>=</span> <span class='st'>"np"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-8-2.png" width="624" />
+<div class="sourceCode">
+<pre><code><span class='co'>## I did 3 videos about these fancy box plots with statistics</span>
+</code></pre>
+</div>
+</div>
+<h2 id="visualize-principal-component-analysis">Visualize principal component analysis</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/plot_prcomp.html'>plot_prcomp</a></span><span class='op'>(</span><span class='va'>diamonds</span>, maxcat <span class='op'>=</span> <span class='fl'>5L</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-9-1.png" width="624" /><img src="r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-9-2.png" width="624" /></p>
+</div>
+<h2 id="feature-engineering">Feature Engineering</h2>
+<p>To make quick updates to your data:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'>## Group bottom 20% `clarity` by frequency</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/group_category.html'>group_category</a></span><span class='op'>(</span><span class='va'>diamonds</span>, feature <span class='op'>=</span> <span class='st'>"clarity"</span>, threshold <span class='op'>=</span> <span class='fl'>0.2</span>, update <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 53,940 x 10
+   carat cut       color clarity depth table price     x     y     z
+   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+ 2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+ 3 0.23  Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+ 4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+ 5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+ 6 0.24  Very Good J     OTHER    62.8    57   336  3.94  3.96  2.48
+ 7 0.24  Very Good I     OTHER    62.3    57   336  3.95  3.98  2.47
+ 8 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+ 9 0.22  Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+10 0.23  Very Good H     VS1      59.4    61   338  4     4.05  2.39
+# … with 53,930 more rows</code></pre>
+<div class="sourceCode">
+<pre><code><span class='co'>## Group bottom 20% `clarity` by `price`</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/group_category.html'>group_category</a></span><span class='op'>(</span><span class='va'>diamonds</span>, feature <span class='op'>=</span> <span class='st'>"clarity"</span>, threshold <span class='op'>=</span> <span class='fl'>0.2</span>, measure <span class='op'>=</span> <span class='st'>"price"</span>, update <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 53,940 x 10
+   carat cut       color clarity depth table price     x     y     z
+   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 0.23  Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+ 2 0.21  Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+ 3 0.23  Good      E     OTHER    56.9    65   327  4.05  4.07  2.31
+ 4 0.290 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+ 5 0.31  Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+ 6 0.24  Very Good J     OTHER    62.8    57   336  3.94  3.96  2.48
+ 7 0.24  Very Good I     OTHER    62.3    57   336  3.95  3.98  2.47
+ 8 0.26  Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+ 9 0.22  Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+10 0.23  Very Good H     OTHER    59.4    61   338  4     4.05  2.39
+# … with 53,930 more rows</code></pre>
+<div class="sourceCode">
+<pre><code><span class='co'>## Dummify diamonds dataset</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/dummify.html'>dummify</a></span><span class='op'>(</span><span class='va'>diamonds</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 53,940 x 27
+   carat depth table price     x     y     z cut_Fair cut_Good
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt;
+ 1 0.23   61.5    55   326  3.95  3.98  2.43        0        0
+ 2 0.21   59.8    61   326  3.89  3.84  2.31        0        0
+ 3 0.23   56.9    65   327  4.05  4.07  2.31        0        1
+ 4 0.290  62.4    58   334  4.2   4.23  2.63        0        0
+ 5 0.31   63.3    58   335  4.34  4.35  2.75        0        1
+ 6 0.24   62.8    57   336  3.94  3.96  2.48        0        0
+ 7 0.24   62.3    57   336  3.95  3.98  2.47        0        0
+ 8 0.26   61.9    55   337  4.07  4.11  2.53        0        0
+ 9 0.22   65.1    61   337  3.87  3.78  2.49        1        0
+10 0.23   59.4    61   338  4     4.05  2.39        0        0
+# … with 53,930 more rows, and 18 more variables: cut_Ideal &lt;int&gt;,
+#   cut_Premium &lt;int&gt;, cut_Very.Good &lt;int&gt;, color_D &lt;int&gt;,
+#   color_E &lt;int&gt;, color_F &lt;int&gt;, color_G &lt;int&gt;, color_H &lt;int&gt;,
+#   color_I &lt;int&gt;, color_J &lt;int&gt;, clarity_I1 &lt;int&gt;, clarity_IF &lt;int&gt;,
+#   clarity_SI1 &lt;int&gt;, clarity_SI2 &lt;int&gt;, clarity_VS1 &lt;int&gt;,
+#   clarity_VS2 &lt;int&gt;, clarity_VVS1 &lt;int&gt;, clarity_VVS2 &lt;int&gt;</code></pre>
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/dummify.html'>dummify</a></span><span class='op'>(</span><span class='va'>diamonds</span>, select <span class='op'>=</span> <span class='st'>"cut"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 53,940 x 14
+   carat depth table price     x     y     z color clarity cut_Fair
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt;      &lt;int&gt;
+ 1 0.23   61.5    55   326  3.95  3.98  2.43 E     SI2            0
+ 2 0.21   59.8    61   326  3.89  3.84  2.31 E     SI1            0
+ 3 0.23   56.9    65   327  4.05  4.07  2.31 E     VS1            0
+ 4 0.290  62.4    58   334  4.2   4.23  2.63 I     VS2            0
+ 5 0.31   63.3    58   335  4.34  4.35  2.75 J     SI2            0
+ 6 0.24   62.8    57   336  3.94  3.96  2.48 J     VVS2           0
+ 7 0.24   62.3    57   336  3.95  3.98  2.47 I     VVS1           0
+ 8 0.26   61.9    55   337  4.07  4.11  2.53 H     SI1            0
+ 9 0.22   65.1    61   337  3.87  3.78  2.49 E     VS2            1
+10 0.23   59.4    61   338  4     4.05  2.39 H     VS1            0
+# … with 53,930 more rows, and 4 more variables: cut_Good &lt;int&gt;,
+#   cut_Ideal &lt;int&gt;, cut_Premium &lt;int&gt;, cut_Very.Good &lt;int&gt;</code></pre>
+<div class="sourceCode">
+<pre><code><span class='co'>## Set values for missing observations</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='st'>"a"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>260</span><span class='op'>)</span>, <span class='st'>"b"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>letters</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>df</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample.int</a></span><span class='op'>(</span><span class='fl'>260</span>, <span class='fl'>50</span><span class='op'>)</span>, <span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/set_missing.html'>set_missing</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fl'>0L</span>, <span class='st'>"unknown"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>               a       b
+1   -1.541431705       a
+2   -0.963373705       b
+3   -0.086867937       c
+4    0.000000000 unknown
+5   -0.929903692       e
+6    0.532163384       f
+7    0.000000000 unknown
+8   -0.672924937       h
+9    1.809677089       i
+10   0.619658577       j
+11  -0.392263470       k
+12   1.237984427       l
+13   0.899621947       m
+14  -0.496247834       n
+15   1.190263400       o
+16   0.000000000 unknown
+17  -0.415407788       q
+18   1.088563854       r
+19   0.382399187       s
+20   0.027951369       t
+21   0.100077582       u
+22   0.583324196       v
+23  -0.998226572       w
+24  -2.733154769       x
+25  -1.442091954       y
+26   2.889221771       z
+27  -0.569885557       a
+28  -1.743415362       b
+29  -0.604285959       c
+30  -0.062410144       d
+31   2.638486732       e
+32   0.000000000 unknown
+33  -1.934847102       g
+34  -0.736648700       h
+35   1.023795754       i
+36  -0.681347401       j
+37   0.156314161       k
+38   0.411207024       l
+39  -0.701811348       m
+40   0.290940784       n
+41   0.573275953       o
+42  -0.847298990       p
+43   0.697562651       q
+44  -1.084941710       r
+45   0.000000000 unknown
+46   0.295093780       t
+47   0.289209726       u
+48  -0.178222053       v
+49   0.000000000 unknown
+50   0.121886325       x
+51  -1.605804030       y
+52  -0.918317526       z
+53   0.000000000 unknown
+54  -0.289086904       b
+55   0.602333537       c
+56   0.000000000 unknown
+57   0.000000000 unknown
+58  -0.288711744       f
+59  -0.483100323       g
+60   0.000000000 unknown
+61   2.150619165       i
+62   1.241365745       j
+63  -0.602274825       k
+64   0.129905335       l
+65  -0.074438335       m
+66   0.458602006       n
+67  -1.047189919       o
+68   2.458957014       p
+69   1.062725421       q
+70   0.000000000 unknown
+71  -1.968137220       s
+72   0.000000000 unknown
+73  -1.521875574       u
+74  -0.112940825       v
+75   0.763115896       w
+76   0.826076198       x
+77   0.774823736       y
+78   1.108724338       z
+79   1.061858496       a
+80   3.243020224       b
+81   1.070272543       c
+82  -1.366271077       d
+83   1.841076079       e
+84   0.287124460       f
+85  -1.873366850       g
+86  -0.014437779       h
+87   0.000000000 unknown
+88  -0.825863695       j
+89   0.074933907       k
+90   1.512304465       l
+91  -0.073312231       m
+92   0.694108334       n
+93  -0.011204346       o
+94   1.329678677       p
+95   0.186788785       q
+96   2.206596120       r
+97  -0.673524630       s
+98   0.547789074       t
+99   0.439417052       u
+100 -2.269664153       v
+101  0.000000000 unknown
+102  2.228870480       x
+103  0.000000000 unknown
+104  0.279053154       z
+105 -0.033306413       a
+106  0.433716497       b
+107 -1.138274061       c
+108 -0.718734302       d
+109 -1.205992339       e
+110 -0.790535645       f
+111  0.687789181       g
+112  0.586464864       h
+113 -0.343937769       i
+114  0.000000000 unknown
+115 -1.076685217       k
+116 -0.230237857       l
+117  0.666879795       m
+118 -0.773407406       n
+119  0.679083023       o
+120 -2.345143345       p
+121  0.843174048       q
+122 -1.778484544       r
+123  0.000000000 unknown
+124  0.000000000 unknown
+125  1.340577072       u
+126  0.473137128       v
+127  0.645544656       w
+128  0.908816349       x
+129  0.000000000 unknown
+130 -0.753030032       z
+131 -0.702471344       a
+132  0.083833086       b
+133 -1.125261093       c
+134 -0.942545795       d
+135  0.249711500       e
+136 -0.278046626       f
+137  0.589288401       g
+138  0.000000000 unknown
+139  0.462932160       i
+140 -1.516945327       j
+141  0.000000000 unknown
+142 -0.221614970       l
+143 -0.371744397       m
+144  0.000000000 unknown
+145  0.000000000 unknown
+146 -0.915385597       p
+147  0.570426032       q
+148 -0.626774463       r
+149 -0.319280719       s
+150  0.084915337       t
+151  0.000000000 unknown
+152 -0.163187724       v
+153  0.011034521       w
+154 -0.753655046       x
+155  0.000000000 unknown
+156  0.000000000 unknown
+157  0.382455087       a
+158  0.256150366       b
+159  0.000000000 unknown
+160  0.000000000 unknown
+161  1.019157582       e
+162  1.861654912       f
+163  1.707936923       g
+164  0.000000000 unknown
+165 -0.678385695       i
+166  0.000000000 unknown
+167  0.000000000 unknown
+168  0.348268308       l
+169  0.000000000 unknown
+170 -1.256584030       n
+171  0.000000000 unknown
+172 -0.308715557       p
+173 -1.796613983       q
+174  0.015171232       r
+175 -1.645670086       s
+176  0.000000000 unknown
+177 -0.572142966       u
+178  0.000000000 unknown
+179  0.776343523       w
+180 -0.060739521       x
+181 -2.144709627       y
+182  0.000000000 unknown
+183 -0.775336426       a
+184  0.587275631       b
+185 -0.059281260       c
+186  0.000000000 unknown
+187 -1.269967951       e
+188 -0.806154413       f
+189 -0.075776840       g
+190  0.903060478       h
+191  1.006327591       i
+192 -0.101059246       j
+193  0.000000000 unknown
+194  0.243544341       l
+195  0.000000000 unknown
+196  0.000000000 unknown
+197  0.000000000 unknown
+198 -0.530174451       p
+199 -2.687045152       q
+200  1.394800248       r
+201  0.743450928       s
+202 -1.243770406       t
+203  1.942595628       u
+204 -0.314088277       v
+205  0.421629566       w
+206 -0.863129866       x
+207  1.116297823       y
+208 -0.765363688       z
+209  0.630354403       a
+210  0.349193275       b
+211 -2.128120161       c
+212 -1.390758123       d
+213  2.850497451       e
+214  0.313978906       f
+215  0.737666371       g
+216  1.093096277       h
+217  1.486104746       i
+218  0.047934342       j
+219  2.409495066       k
+220 -0.398675568       l
+221  0.247578626       m
+222  0.000000000 unknown
+223  0.562691248       o
+224  1.356833526       p
+225 -0.341016020       q
+226  0.000000000 unknown
+227 -0.056989617       s
+228  0.951268877       t
+229  0.000000000 unknown
+230 -1.945313181       v
+231  0.000000000 unknown
+232  0.000000000 unknown
+233 -0.343963622       y
+234  0.000000000 unknown
+235 -1.547561899       a
+236 -0.012982773       b
+237  0.028266314       c
+238  0.745310597       d
+239 -0.002923368       e
+240  1.166958765       f
+241 -0.103302847       g
+242  1.054435981       h
+243  0.875307156       i
+244  0.000000000 unknown
+245  0.296100952       k
+246  0.275907130       l
+247 -0.228234605       m
+248  0.794962526       n
+249 -1.454229586       o
+250 -0.615880590       p
+251  1.125026330       q
+252 -0.245894790       r
+253  0.000000000 unknown
+254  0.000000000 unknown
+255  1.251221133       u
+256  1.528176737       v
+257 -0.048552283       w
+258  0.801881589       x
+259 -0.166125275       y
+260 -0.566365978       z</code></pre>
+<div class="sourceCode">
+<pre><code><span class='co'>## Update columns</span>
+<span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/update_columns.html'>update_columns</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cyl"</span>, <span class='st'>"am"</span><span class='op'>)</span>, <span class='va'>as.factor</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1  21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3  22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4  21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5  18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6  18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7  14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8  24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9  22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/update_columns.html'>update_columns</a></span><span class='op'>(</span><span class='va'>airquality</span>, <span class='fl'>1L</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>    Ozone Solar.R Wind Temp Month Day
+1    1681     190  7.4   67     5   1
+2    1296     118  8.0   72     5   2
+3     144     149 12.6   74     5   3
+4     324     313 11.5   62     5   4
+5      NA      NA 14.3   56     5   5
+6     784      NA 14.9   66     5   6
+7     529     299  8.6   65     5   7
+8     361      99 13.8   59     5   8
+9      64      19 20.1   61     5   9
+10     NA     194  8.6   69     5  10
+11     49      NA  6.9   74     5  11
+12    256     256  9.7   69     5  12
+13    121     290  9.2   66     5  13
+14    196     274 10.9   68     5  14
+15    324      65 13.2   58     5  15
+16    196     334 11.5   64     5  16
+17   1156     307 12.0   66     5  17
+18     36      78 18.4   57     5  18
+19    900     322 11.5   68     5  19
+20    121      44  9.7   62     5  20
+21      1       8  9.7   59     5  21
+22    121     320 16.6   73     5  22
+23     16      25  9.7   61     5  23
+24   1024      92 12.0   61     5  24
+25     NA      66 16.6   57     5  25
+26     NA     266 14.9   58     5  26
+27     NA      NA  8.0   57     5  27
+28    529      13 12.0   67     5  28
+29   2025     252 14.9   81     5  29
+30  13225     223  5.7   79     5  30
+31   1369     279  7.4   76     5  31
+32     NA     286  8.6   78     6   1
+33     NA     287  9.7   74     6   2
+34     NA     242 16.1   67     6   3
+35     NA     186  9.2   84     6   4
+36     NA     220  8.6   85     6   5
+37     NA     264 14.3   79     6   6
+38    841     127  9.7   82     6   7
+39     NA     273  6.9   87     6   8
+40   5041     291 13.8   90     6   9
+41   1521     323 11.5   87     6  10
+42     NA     259 10.9   93     6  11
+43     NA     250  9.2   92     6  12
+44    529     148  8.0   82     6  13
+45     NA     332 13.8   80     6  14
+46     NA     322 11.5   79     6  15
+47    441     191 14.9   77     6  16
+48   1369     284 20.7   72     6  17
+49    400      37  9.2   65     6  18
+50    144     120 11.5   73     6  19
+51    169     137 10.3   76     6  20
+52     NA     150  6.3   77     6  21
+53     NA      59  1.7   76     6  22
+54     NA      91  4.6   76     6  23
+55     NA     250  6.3   76     6  24
+56     NA     135  8.0   75     6  25
+57     NA     127  8.0   78     6  26
+58     NA      47 10.3   73     6  27
+59     NA      98 11.5   80     6  28
+60     NA      31 14.9   77     6  29
+61     NA     138  8.0   83     6  30
+62  18225     269  4.1   84     7   1
+63   2401     248  9.2   85     7   2
+64   1024     236  9.2   81     7   3
+65     NA     101 10.9   84     7   4
+66   4096     175  4.6   83     7   5
+67   1600     314 10.9   83     7   6
+68   5929     276  5.1   88     7   7
+69   9409     267  6.3   92     7   8
+70   9409     272  5.7   92     7   9
+71   7225     175  7.4   89     7  10
+72     NA     139  8.6   82     7  11
+73    100     264 14.3   73     7  12
+74    729     175 14.9   81     7  13
+75     NA     291 14.9   91     7  14
+76     49      48 14.3   80     7  15
+77   2304     260  6.9   81     7  16
+78   1225     274 10.3   82     7  17
+79   3721     285  6.3   84     7  18
+80   6241     187  5.1   87     7  19
+81   3969     220 11.5   85     7  20
+82    256       7  6.9   74     7  21
+83     NA     258  9.7   81     7  22
+84     NA     295 11.5   82     7  23
+85   6400     294  8.6   86     7  24
+86  11664     223  8.0   85     7  25
+87    400      81  8.6   82     7  26
+88   2704      82 12.0   86     7  27
+89   6724     213  7.4   88     7  28
+90   2500     275  7.4   86     7  29
+91   4096     253  7.4   83     7  30
+92   3481     254  9.2   81     7  31
+93   1521      83  6.9   81     8   1
+94     81      24 13.8   81     8   2
+95    256      77  7.4   82     8   3
+96   6084      NA  6.9   86     8   4
+97   1225      NA  7.4   85     8   5
+98   4356      NA  4.6   87     8   6
+99  14884     255  4.0   89     8   7
+100  7921     229 10.3   90     8   8
+101 12100     207  8.0   90     8   9
+102    NA     222  8.6   92     8  10
+103    NA     137 11.5   86     8  11
+104  1936     192 11.5   86     8  12
+105   784     273 11.5   82     8  13
+106  4225     157  9.7   80     8  14
+107    NA      64 11.5   79     8  15
+108   484      71 10.3   77     8  16
+109  3481      51  6.3   79     8  17
+110   529     115  7.4   76     8  18
+111   961     244 10.9   78     8  19
+112  1936     190 10.3   78     8  20
+113   441     259 15.5   77     8  21
+114    81      36 14.3   72     8  22
+115    NA     255 12.6   75     8  23
+116  2025     212  9.7   79     8  24
+117 28224     238  3.4   81     8  25
+118  5329     215  8.0   86     8  26
+119    NA     153  5.7   88     8  27
+120  5776     203  9.7   97     8  28
+121 13924     225  2.3   94     8  29
+122  7056     237  6.3   96     8  30
+123  7225     188  6.3   94     8  31
+124  9216     167  6.9   91     9   1
+125  6084     197  5.1   92     9   2
+126  5329     183  2.8   93     9   3
+127  8281     189  4.6   93     9   4
+128  2209      95  7.4   87     9   5
+129  1024      92 15.5   84     9   6
+130   400     252 10.9   80     9   7
+131   529     220 10.3   78     9   8
+132   441     230 10.9   75     9   9
+133   576     259  9.7   73     9  10
+134  1936     236 14.9   81     9  11
+135   441     259 15.5   76     9  12
+136   784     238  6.3   77     9  13
+137    81      24 10.9   71     9  14
+138   169     112 11.5   71     9  15
+139  2116     237  6.9   78     9  16
+140   324     224 13.8   67     9  17
+141   169      27 10.3   76     9  18
+142   576     238 10.3   68     9  19
+143   256     201  8.0   82     9  20
+144   169     238 12.6   64     9  21
+145   529      14  9.2   71     9  22
+146  1296     139 10.3   81     9  23
+147    49      49 10.3   69     9  24
+148   196      20 16.6   63     9  25
+149   900     193  6.9   70     9  26
+150    NA     145 13.2   77     9  27
+151   196     191 14.3   75     9  28
+152   324     131  8.0   76     9  29
+153   400     223 11.5   68     9  30</code></pre>
+<div class="sourceCode">
+<pre><code><span class='co'>## Drop columns (Я сам понял что он работает с пайп оператором)</span>
+<span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/drop_columns.html'>drop_columns</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>    mpg carb
+1  21.0    4
+2  21.0    4
+3  22.8    1
+4  21.4    1
+5  18.7    2
+6  18.1    1
+7  14.3    4
+8  24.4    2
+9  22.8    2
+10 19.2    4
+11 17.8    4
+12 16.4    3
+13 17.3    3
+14 15.2    3
+15 10.4    4
+16 10.4    4
+17 14.7    4
+18 32.4    1
+19 30.4    2
+20 33.9    1
+21 21.5    1
+22 15.5    2
+23 15.2    2
+24 13.3    4
+25 19.2    2
+26 27.3    1
+27 26.0    2
+28 30.4    2
+29 15.8    4
+30 19.7    6
+31 15.0    8
+32 21.4    2</code></pre>
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='http://boxuancui.github.io/DataExplorer/reference/drop_columns.html'>drop_columns</a></span><span class='op'>(</span><span class='va'>diamonds</span>, <span class='st'>"clarity"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 53,940 x 9
+   carat cut       color depth table price     x     y     z
+   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 0.23  Ideal     E      61.5    55   326  3.95  3.98  2.43
+ 2 0.21  Premium   E      59.8    61   326  3.89  3.84  2.31
+ 3 0.23  Good      E      56.9    65   327  4.05  4.07  2.31
+ 4 0.290 Premium   I      62.4    58   334  4.2   4.23  2.63
+ 5 0.31  Good      J      63.3    58   335  4.34  4.35  2.75
+ 6 0.24  Very Good J      62.8    57   336  3.94  3.96  2.48
+ 7 0.24  Very Good I      62.3    57   336  3.95  3.98  2.47
+ 8 0.26  Very Good H      61.9    55   337  4.07  4.11  2.53
+ 9 0.22  Fair      E      65.1    61   337  3.87  3.78  2.49
+10 0.23  Very Good H      59.4    61   338  4     4.05  2.39
+# … with 53,930 more rows</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

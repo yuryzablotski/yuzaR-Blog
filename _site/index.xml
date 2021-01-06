@@ -20,6 +20,17 @@
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
+      <title>R package reviews {DataExplorer} explore your data</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</link>
+      <description>A short description of the post.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/r-package-reviews-dataexplorer-explore-your-data_files/figure-html5/unnamed-chunk-3-1.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
       <title>R package reviews {performance} check how good your model is! </title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</link>

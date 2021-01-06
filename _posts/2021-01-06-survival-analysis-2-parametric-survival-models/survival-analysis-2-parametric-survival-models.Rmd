@@ -19,6 +19,7 @@ output:
 ---
 
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T)
 ```
@@ -30,7 +31,8 @@ library(sjPlot)     # for plotting results of log.regr.
 library(effects)    # for probability output and plots
 library(survival)   # for core survival analysis routines
 library(survminer)  # for drawing survival curves
-library(knitr)      # for a wonderful-looking tables
+library(flexsurv)   # for Parametric Survival Modelling
+library(knitr)      # for a wonderful-looking tables 
 ```
 
 ## Previous topics
@@ -40,7 +42,7 @@ A good understanding of [Kaplan-Meier method (KM)](https://yuzar-blog.netlify.ap
 If you are more of a visual person, you can watch the video below first, but for more details and R-code have a look at the article.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("rqg4efjQ9dM")
+vembedr::embed_youtube("rqg4efjQ9dM") 
 ```
 
 ## Why do we need parametric survival models 
@@ -296,8 +298,6 @@ where *-Hazard* and *time* are two **parameters** which describe our **exponenti
 
 
 ```{r}
-library(survival)    # main package for modelling survival data
-library(survminer)   # visualization of survival model results
 library(flexsurv)    # for Parametric Survival Modelling
 
 ex <- flexsurvreg(Surv(time, status) ~ 1, data = d2, dist="exponential")
@@ -359,6 +359,9 @@ If you think, I missed something, please comment on it, and I'll improve this tu
 
 
 - M J Bradburn, T G Clark, S B Love, & D G Altman. (2003). Survival Analysis Part II: Multivariate data analysis – an introduction to concepts and methods. British Journal of Cancer, 89(3), 431-436.
+
+- Examples of focused model comparison: parametric
+survival models: https://cran.r-project.org/web/packages/fic/vignettes/survival.pdf
 
 - `survminer` cheat sheet: https://rpkgs.datanovia.com/survminer/survminer_cheatsheet.pdf
 

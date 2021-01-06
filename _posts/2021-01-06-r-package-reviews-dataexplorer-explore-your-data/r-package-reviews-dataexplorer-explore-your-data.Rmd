@@ -1,0 +1,201 @@
+---
+title: "R package reviews {DataExplorer} explore your data"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-06-2021
+categories:
+  - survival analysis
+  - videos
+preview: thumbnail_survival_2.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    code_download: true
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+```{r}
+# install.packages("tidyverse")
+# install.packages("DataExplorer")
+
+library(tidyverse)
+library(DataExplorer)
+```
+
+
+
+Exploratory Data Analysis with some bonuses.
+
+## Data visualisation
+
+```{r eval=F}
+airquality <- datasets::airquality %>% 
+  mutate(Month = factor(Month))
+
+create_report(airquality)
+
+# report with a response variable
+create_report(diamonds, y = "price")
+
+# Bonus 4:
+SmartEDA::ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+## Instead of running create_report, you may also run each function individually for your analysis, e.g.,
+
+## View basic description for airquality data
+plot_intro(airquality)
+
+## Bonus 1:
+skimr::skim(airquality)
+```
+
+
+
+
+
+
+
+
+## View missing value distribution for airquality data
+
+
+```{r}
+plot_missing(airquality)
+```
+
+## Visualise distribution of categorical (discrete) variables
+
+
+```{r}
+plot_bar(diamonds)
+
+plot_bar(diamonds, with = "price")
+
+## View frequency distribution by a discrete variable
+plot_bar(diamonds, by = "cut")
+```
+
+
+## Visualise distribution of numeric variables
+
+```{r}
+## View histogram of all continuous variables
+plot_histogram(airquality)
+
+## View estimated density distribution of all continuous variables
+plot_density(airquality)
+
+## View quantile-quantile plot of all continuous variables
+plot_qq(airquality)
+
+## View quantile-quantile plot of all continuous variables by feature `cut`
+plot_qq(airquality, by = "Month")
+```
+
+
+
+## Visualize correlation
+
+```{r}
+## View overall correlation heatmap
+plot_correlation(na.omit(airquality), type = "c")
+
+## Bonus 2:
+PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month)) 
+# method = "kendall"
+```
+
+
+## Visualize boxplot
+
+```{r}
+## View bivariate continuous distribution based on `cut`
+plot_boxplot(airquality, by = "Month")
+
+## Bonus 3:
+ggstatsplot::ggbetweenstats(data = airquality, x = Month, y = Ozone, type = "np")
+## I did 3 videos about these fancy box plots with statistics
+
+```
+
+
+## Visualize principal component analysis
+
+```{r}
+plot_prcomp(diamonds, maxcat = 5L)
+```
+
+
+
+## Feature Engineering
+
+To make quick updates to your data:
+
+```{r}
+## Group bottom 20% `clarity` by frequency
+group_category(diamonds, feature = "clarity", threshold = 0.2, update = TRUE)
+
+## Group bottom 20% `clarity` by `price`
+group_category(diamonds, feature = "clarity", threshold = 0.2, measure = "price", update = TRUE)
+
+## Dummify diamonds dataset
+dummify(diamonds)
+dummify(diamonds, select = "cut")
+
+## Set values for missing observations
+df <- data.frame("a" = rnorm(260), "b" = rep(letters, 10))
+df[sample.int(260, 50), ] <- NA
+set_missing(df, list(0L, "unknown"))
+
+## Update columns
+update_columns(mtcars, c("cyl", "am"), as.factor)
+update_columns(airquality, 1L, function(x) x^2)
+
+## Drop columns (Я сам понял что он работает с пайп оператором)
+mtcars %>% drop_columns(2:10)
+drop_columns(diamonds, "clarity")
+```
+

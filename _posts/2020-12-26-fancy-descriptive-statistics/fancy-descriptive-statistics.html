@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"NULL"}
+  {"type":"character","attributes":{},"value":["fancy-descriptive-statistics_files/anchor-4.2.2/anchor.min.js","fancy-descriptive-statistics_files/bowser-1.9.3/bowser.min.js","fancy-descriptive-statistics_files/distill-2.2.21/template.v2.js","fancy-descriptive-statistics_files/jquery-1.11.3/jquery.min.js","fancy-descriptive-statistics_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1443,9 +1443,1147 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<p>Distill is a publication format for scientific and technical writing, native to the web.</p>
-<p>Learn more about using Distill at <a href="https://rstudio.github.io/distill" class="uri">https://rstudio.github.io/distill</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://www.StatLearning.com'>ISLR</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="previous-topics">Previous topics</h2>
+<p>There are three posts on Data Wrangling (<a href="https://yury-zablotski.netlify.com/post/data-wrangling-1/">Vol. 1</a>, <a href="https://yury-zablotski.netlify.com/post/2019-09-22-data-wrangling-2/data-wrangling-2/">Vol. 2</a> and <a href="https://yury-zablotski.netlify.com/post/2019-09-24-data-wrangling-3/data-wrangling-3/">Vol. 3</a>) which would be helpful.</p>
+<h2 id="why-do-we-need-descriptive-stats">Why do we need descriptive stats?</h2>
+<p>If you need to describe 100 cars, let’s say their height, weight, efficiency (miles per gallon) etc., how would you do this? Collect all the data and present a big table? Perhaps? But would this be useful? Not really. What if you have 1000 cars or more?</p>
+<p>You most likely would want to somehow summarize the data to a few numbers, e.g. mean of “miles per gallon” of cars with automatic or manual transmission. And this is exactly what descriptive stats do - summarizing data to make it more digestible and interpretable.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'># # load packages</span>
+<span class='co'># library(tidyverse)</span>
+<span class='co'># library(ISLR)</span>
+<span class='co'># library(knitr)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="numeric-variable">1 numeric variable</h2>
+<p>Let’s have a look at the variable “miles per gallons” of cars from <code>mtcars()</code> dataset:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'># %&gt;% - means "then" from the "magrittr" package</span>
+<span class='va'>mpg</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>select</span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span> 
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                   mpg
+Mazda RX4         21.0
+Mazda RX4 Wag     21.0
+Datsun 710        22.8
+Hornet 4 Drive    21.4
+Hornet Sportabout 18.7
+Valiant           18.1</code></pre>
+</div>
+<h3 id="function">1 function</h3>
+<p>You could immediately calculate any statistics you want: <strong>mean, standard deviation, sum</strong> etc.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 20.09062</code></pre>
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 6.026948</code></pre>
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 642.9</code></pre>
+</div>
+<p>But it’s kind of wordy. Isn’t there a better way? Of course. There are several useful functions in descriptive stats, which summarize the data in several ways. Not surprisingly :) these functions are called <code>summary()</code> and <code>describe()</code>.</p>
+<h3 id="functions">&gt; 1 functions</h3>
+<p>Particularly, <code>summary()</code> gives you: <strong>minimum, maximum, mean, median, 1st quantile</strong> - splits off the lowest 25% of data from the highest 75% and <strong>3rd quantile</strong> - splits off the highest 25% of data from the lowest 75%.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>      mpg       
+ Min.   :10.40  
+ 1st Qu.:15.43  
+ Median :19.20  
+ Mean   :20.09  
+ 3rd Qu.:22.80  
+ Max.   :33.90  </code></pre>
+</div>
+<p><strong>Mean</strong> is often the most useful, i.e. for statistical tests. Thus, you can enrich your mean with <strong>confidence intervals</strong>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'>mean_cl_boot</span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>         y     ymin     ymax
+1 20.09062 18.01203 22.16883</code></pre>
+</div>
+<p>Other useful ways to describe our data are: <strong>number of observations, number of missing values, number of distinct values, some lowest and some highest values</strong> and may be <strong>more quantiles</strong> then just 1st and 3rd which we have got from <code>summary()</code>. <code>describe()</code> from <code>Hmisc</code> package provides such statistics:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'>Hmisc</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Hmisc/man/describe.html'>describe</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>mpg 
+
+ 1  Variables      32  Observations
+----------------------------------------------------------------------
+mpg 
+       n  missing distinct     Info     Mean      Gmd      .05 
+      32        0       25    0.999    20.09    6.796    12.00 
+     .10      .25      .50      .75      .90      .95 
+   14.34    15.43    19.20    22.80    30.09    31.30 
+
+lowest : 10.4 13.3 14.3 14.7 15.0, highest: 26.0 27.3 30.4 32.4 33.9
+----------------------------------------------------------------------</code></pre>
+</div>
+<p><code>describe(mpg)</code> from <code>psych</code> package additionally delivers <strong>trimmed mean, mad, range, skew, kurtosis and standard error</strong>. Moreover, it allows you to <strong>specify the quantile</strong> if you wish.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'>#psych::describe(mpg, quant = c(0.1, 0.5, 0.9))</span>
+</code></pre>
+</div>
+</div>
+<p>But since there is an identical function in several packages, you need to tell <em>R</em> which one you want to use by just putting the name of the package in front of the <code>describe()</code> function (as shown above).</p>
+<p>The last descriptive function I’d recommend gives you <strong>sum, variance, standard deviation</strong> and even <strong>normality tests</strong> for your vector.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'>pastecs</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pastecs/man/stat.desc.html'>stat.desc</a></span><span class='op'>(</span><span class='va'>mpg</span>, norm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>                     mpg
+nbr.val       32.0000000
+nbr.null       0.0000000
+nbr.na         0.0000000
+min           10.4000000
+max           33.9000000
+range         23.5000000
+sum          642.9000000
+median        19.2000000
+mean          20.0906250
+SE.mean        1.0654240
+CI.mean.0.95   2.1729465
+var           36.3241028
+std.dev        6.0269481
+coef.var       0.2999881
+skewness       0.6106550
+skew.2SE       0.7366922
+kurtosis      -0.3727660
+kurt.2SE      -0.2302812
+normtest.W     0.9475647
+normtest.p     0.1228814</code></pre>
+</div>
+<h2 id="numeric-variables-multivariate-descriptive-stats">&gt; 1 numeric variables: multivariate descriptive stats</h2>
+<p>Likely, you can describe unlimited number of variables in the same time. Here, for the sake of clarity, we just take three: mpg - miles per gallon, hp - horsepower and wt - weight of a car in thousands of pounds. <code>kable</code> function from <code>knitr</code> package just makes our table look nice.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'>%&gt;%</span> <span class='fu'>select</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span>, <span class='va'>wt</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">mpg</th>
+<th style="text-align: right;">hp</th>
+<th style="text-align: right;">wt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Mazda RX4</td>
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">2.620</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mazda RX4 Wag</td>
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">2.875</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Datsun 710</td>
+<td style="text-align: right;">22.8</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">2.320</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hornet 4 Drive</td>
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">3.215</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hornet Sportabout</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3.440</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Valiant</td>
+<td style="text-align: right;">18.1</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">3.460</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">mpg</th>
+<th style="text-align: left;">hp</th>
+<th style="text-align: left;">wt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Min. :10.40</td>
+<td style="text-align: left;">Min. : 52.0</td>
+<td style="text-align: left;">Min. :1.513</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1st Qu.:15.43</td>
+<td style="text-align: left;">1st Qu.: 96.5</td>
+<td style="text-align: left;">1st Qu.:2.581</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Median :19.20</td>
+<td style="text-align: left;">Median :123.0</td>
+<td style="text-align: left;">Median :3.325</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Mean :20.09</td>
+<td style="text-align: left;">Mean :146.7</td>
+<td style="text-align: left;">Mean :3.217</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3rd Qu.:22.80</td>
+<td style="text-align: left;">3rd Qu.:180.0</td>
+<td style="text-align: left;">3rd Qu.:3.610</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Max. :33.90</td>
+<td style="text-align: left;">Max. :335.0</td>
+<td style="text-align: left;">Max. :5.424</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode">
+<pre><code><span class='fu'>Hmisc</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Hmisc/man/describe.html'>describe</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>data 
+
+ 3  Variables      32  Observations
+----------------------------------------------------------------------
+mpg 
+       n  missing distinct     Info     Mean      Gmd      .05 
+      32        0       25    0.999    20.09    6.796    12.00 
+     .10      .25      .50      .75      .90      .95 
+   14.34    15.43    19.20    22.80    30.09    31.30 
+
+lowest : 10.4 13.3 14.3 14.7 15.0, highest: 26.0 27.3 30.4 32.4 33.9
+----------------------------------------------------------------------
+hp 
+       n  missing distinct     Info     Mean      Gmd      .05 
+      32        0       22    0.997    146.7    77.04    63.65 
+     .10      .25      .50      .75      .90      .95 
+   66.00    96.50   123.00   180.00   243.50   253.55 
+
+lowest :  52  62  65  66  91, highest: 215 230 245 264 335
+----------------------------------------------------------------------
+wt 
+       n  missing distinct     Info     Mean      Gmd      .05 
+      32        0       29    0.999    3.217    1.089    1.736 
+     .10      .25      .50      .75      .90      .95 
+   1.956    2.581    3.325    3.610    4.048    5.293 
+
+lowest : 1.513 1.615 1.835 1.935 2.140, highest: 3.845 4.070 5.250 5.345 5.424
+----------------------------------------------------------------------</code></pre>
+<div class="sourceCode">
+<pre><code><span class='co'># scroll to the right to see the whole table</span>
+<span class='co'>#kable(psych::describe(data))</span>
+<span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> <span class='fu'>pastecs</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/pastecs/man/stat.desc.html'>stat.desc</a></span><span class='op'>(</span><span class='va'>data</span>, norm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">mpg</th>
+<th style="text-align: right;">hp</th>
+<th style="text-align: right;">wt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">nbr.val</td>
+<td style="text-align: right;">32.0000000</td>
+<td style="text-align: right;">32.0000000</td>
+<td style="text-align: right;">32.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nbr.null</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nbr.na</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">min</td>
+<td style="text-align: right;">10.4000000</td>
+<td style="text-align: right;">52.0000000</td>
+<td style="text-align: right;">1.5130000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">max</td>
+<td style="text-align: right;">33.9000000</td>
+<td style="text-align: right;">335.0000000</td>
+<td style="text-align: right;">5.4240000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">range</td>
+<td style="text-align: right;">23.5000000</td>
+<td style="text-align: right;">283.0000000</td>
+<td style="text-align: right;">3.9110000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sum</td>
+<td style="text-align: right;">642.9000000</td>
+<td style="text-align: right;">4694.0000000</td>
+<td style="text-align: right;">102.9520000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">median</td>
+<td style="text-align: right;">19.2000000</td>
+<td style="text-align: right;">123.0000000</td>
+<td style="text-align: right;">3.3250000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mean</td>
+<td style="text-align: right;">20.0906250</td>
+<td style="text-align: right;">146.6875000</td>
+<td style="text-align: right;">3.2172500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SE.mean</td>
+<td style="text-align: right;">1.0654240</td>
+<td style="text-align: right;">12.1203173</td>
+<td style="text-align: right;">0.1729685</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CI.mean.0.95</td>
+<td style="text-align: right;">2.1729465</td>
+<td style="text-align: right;">24.7195501</td>
+<td style="text-align: right;">0.3527715</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">var</td>
+<td style="text-align: right;">36.3241028</td>
+<td style="text-align: right;">4700.8669355</td>
+<td style="text-align: right;">0.9573790</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">std.dev</td>
+<td style="text-align: right;">6.0269481</td>
+<td style="text-align: right;">68.5628685</td>
+<td style="text-align: right;">0.9784574</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">coef.var</td>
+<td style="text-align: right;">0.2999881</td>
+<td style="text-align: right;">0.4674077</td>
+<td style="text-align: right;">0.3041285</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">skewness</td>
+<td style="text-align: right;">0.6106550</td>
+<td style="text-align: right;">0.7260237</td>
+<td style="text-align: right;">0.4231465</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">skew.2SE</td>
+<td style="text-align: right;">0.7366922</td>
+<td style="text-align: right;">0.8758726</td>
+<td style="text-align: right;">0.5104825</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">kurtosis</td>
+<td style="text-align: right;">-0.3727660</td>
+<td style="text-align: right;">-0.1355511</td>
+<td style="text-align: right;">-0.0227108</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">kurt.2SE</td>
+<td style="text-align: right;">-0.2302812</td>
+<td style="text-align: right;">-0.0837385</td>
+<td style="text-align: right;">-0.0140299</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">normtest.W</td>
+<td style="text-align: right;">0.9475647</td>
+<td style="text-align: right;">0.9334193</td>
+<td style="text-align: right;">0.9432577</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">normtest.p</td>
+<td style="text-align: right;">0.1228814</td>
+<td style="text-align: right;">0.0488082</td>
+<td style="text-align: right;">0.0926550</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="descriptive-stats-by-group-of-categorical-variables">Descriptive stats by group of categorical variables</h2>
+<p>Sometimes we want to have descriptive stats for several groups of a categorical variable. For example, cars in our dataset can be divided into three groups in terms of numbers of cylinders (4, 6 or 8 cylinders) and in two groups in terms of transmission (0 = automatic, 1 = manual):</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>am</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>cyl</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">4</th>
+<th style="text-align: right;">6</th>
+<th style="text-align: right;">8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>You could use the functions we just learned for grouped data, but adding more variables can make the code long and confusing:</p>
+<p><code>psych::describeBy(mtcars, group = mtcars$am)</code> <code>psych::describeBy(mtcars, group = list(am = mtcars$am, cyl = mtcars$cyl))</code></p>
+<p>I prefer to use summarizing functions with <code>dplyr</code> package, which was created for data wrangling. For example, let’s start with one numeric and one grouping variables and calculate just one statistics (e.g. mean) for each group:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> 
+  <span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>summarize_at</span><span class='op'>(</span><span class='fu'>vars</span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mean</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">cyl</th>
+<th style="text-align: right;">mpg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">26.66364</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19.74286</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15.10000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The code above might look big at first for what it gives us, but it has two nice features. <strong>First</strong>, it is very clear (at least to me). You can read it like: <em>take</em> <code>mtcars</code> dataset, <em>then</em> ( <code>%&gt;%</code> operator) <em>group</em> it <em>by</em> a number of cylinders and <em>then for a variable</em> <code>miles per gallons</code> <em>calculate the mean for each of cylinder groups</em>. Every line has a clear purpose and takes the job one task at a time. <strong>Second</strong>, this chunk of code is highly extendable, while keeping same structure and simplicity. For instance, we can <code>group_by</code> several variables, and <code>summarize</code> several statistics (e.g. mean and standard deviation) for several variables in the same time … which is kind of fancy.</p>
+<h2 id="fancy-descriptive-stats">Fancy descriptive stats</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> 
+  <span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>am</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>summarize_at</span><span class='op'>(</span><span class='fu'>vars</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='va'>mean</span>, median <span class='op'>=</span> <span class='va'>median</span>, st_dev <span class='op'>=</span> <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">am</th>
+<th style="text-align: right;">cyl</th>
+<th style="text-align: right;">mpg_mean</th>
+<th style="text-align: right;">hp_mean</th>
+<th style="text-align: right;">mpg_median</th>
+<th style="text-align: right;">hp_median</th>
+<th style="text-align: right;">mpg_st_dev</th>
+<th style="text-align: right;">hp_st_dev</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">22.90000</td>
+<td style="text-align: right;">84.66667</td>
+<td style="text-align: right;">22.80</td>
+<td style="text-align: right;">95.0</td>
+<td style="text-align: right;">1.4525839</td>
+<td style="text-align: right;">19.65536</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19.12500</td>
+<td style="text-align: right;">115.25000</td>
+<td style="text-align: right;">18.65</td>
+<td style="text-align: right;">116.5</td>
+<td style="text-align: right;">1.6317169</td>
+<td style="text-align: right;">9.17878</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15.05000</td>
+<td style="text-align: right;">194.16667</td>
+<td style="text-align: right;">15.20</td>
+<td style="text-align: right;">180.0</td>
+<td style="text-align: right;">2.7743959</td>
+<td style="text-align: right;">33.35984</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">28.07500</td>
+<td style="text-align: right;">81.87500</td>
+<td style="text-align: right;">28.85</td>
+<td style="text-align: right;">78.5</td>
+<td style="text-align: right;">4.4838599</td>
+<td style="text-align: right;">22.65542</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">20.56667</td>
+<td style="text-align: right;">131.66667</td>
+<td style="text-align: right;">21.00</td>
+<td style="text-align: right;">110.0</td>
+<td style="text-align: right;">0.7505553</td>
+<td style="text-align: right;">37.52777</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15.40000</td>
+<td style="text-align: right;">299.50000</td>
+<td style="text-align: right;">15.40</td>
+<td style="text-align: right;">299.5</td>
+<td style="text-align: right;">0.5656854</td>
+<td style="text-align: right;">50.20458</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This code even names your columns for you by combining the names of variables and functions. You can add hundreds of variables and functions without changing the structure of this chunk of code. Moreover, you can include the summarizing functions we just learned:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> 
+  <span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>summarize_at</span><span class='op'>(</span><span class='fu'>vars</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span>, <span class='fu'>funs</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>mean_cl_boot</span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">cyl</th>
+<th style="text-align: left;">mpg</th>
+<th style="text-align: left;">hp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">26.66364, 24.10909, 29.26386</td>
+<td style="text-align: left;">82.63636, 70.72500, 94.63636</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">19.74286, 18.77107, 20.68607</td>
+<td style="text-align: left;">122.2857, 109.7143, 140.8571</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">15.10000, 13.77107, 16.38589</td>
+<td style="text-align: left;">209.2143, 183.5714, 235.5804</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A point inside of the summarizing function tells <em>R</em> to apply it to every variable we chose by <code>vars()</code>.</p>
+<p>This code shows that <em>R</em> collects / nests the results for each <em>group-variable-pair</em> in one individual cell/list. Unnesting / unlisting these lists puts the results in a tidy table.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> 
+  <span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>summarize_at</span><span class='op'>(</span><span class='fu'>vars</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>hp</span><span class='op'>)</span>, <span class='fu'>funs</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>mean_cl_boot</span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>unnest</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">cyl</th>
+<th style="text-align: right;">y</th>
+<th style="text-align: right;">ymin</th>
+<th style="text-align: right;">ymax</th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">ymin1</th>
+<th style="text-align: right;">ymax1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">26.66364</td>
+<td style="text-align: right;">24.29955</td>
+<td style="text-align: right;">29.44545</td>
+<td style="text-align: right;">82.63636</td>
+<td style="text-align: right;">70.36136</td>
+<td style="text-align: right;">93.55227</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19.74286</td>
+<td style="text-align: right;">18.71429</td>
+<td style="text-align: right;">20.71464</td>
+<td style="text-align: right;">122.28571</td>
+<td style="text-align: right;">109.28571</td>
+<td style="text-align: right;">141.57143</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">15.10000</td>
+<td style="text-align: right;">13.78554</td>
+<td style="text-align: right;">16.28589</td>
+<td style="text-align: right;">209.21429</td>
+<td style="text-align: right;">184.28393</td>
+<td style="text-align: right;">237.42857</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>You would only have to rename them, but since you know you have two variables, <code>mpg</code> and <code>hp</code>, you will know that <em>y, ymin and ymax</em> results belong to <code>mpg</code>, while <em>y1, ymin1 and ymax1</em> belong to <code>hp</code>.</p>
+<p>Similarly, if you need <strong>more stats</strong>, then just mean and confidence intervals, for <strong>more variables and more groups</strong>, just <code>group_by</code> more (categorical) variables and use a particular summarizing function inside of the same code:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'># scroll to the right to see the whole table</span>
+<span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span> 
+  <span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>am</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='co'>#summarize_at(vars(mpg, hp), funs(list(psych::describe(.)))) %&gt;%</span>
+    <span class='fu'>unnest</span><span class='op'>(</span><span class='op'>)</span>  <span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">mpg</th>
+<th style="text-align: right;">cyl</th>
+<th style="text-align: right;">disp</th>
+<th style="text-align: right;">hp</th>
+<th style="text-align: right;">drat</th>
+<th style="text-align: right;">wt</th>
+<th style="text-align: right;">qsec</th>
+<th style="text-align: right;">vs</th>
+<th style="text-align: right;">am</th>
+<th style="text-align: right;">gear</th>
+<th style="text-align: right;">carb</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">160.0</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">3.90</td>
+<td style="text-align: right;">2.620</td>
+<td style="text-align: right;">16.46</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">160.0</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">3.90</td>
+<td style="text-align: right;">2.875</td>
+<td style="text-align: right;">17.02</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">22.8</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">108.0</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">3.85</td>
+<td style="text-align: right;">2.320</td>
+<td style="text-align: right;">18.61</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">258.0</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">3.08</td>
+<td style="text-align: right;">3.215</td>
+<td style="text-align: right;">19.44</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">360.0</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3.15</td>
+<td style="text-align: right;">3.440</td>
+<td style="text-align: right;">17.02</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">18.1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">225.0</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">2.76</td>
+<td style="text-align: right;">3.460</td>
+<td style="text-align: right;">20.22</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">14.3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">360.0</td>
+<td style="text-align: right;">245</td>
+<td style="text-align: right;">3.21</td>
+<td style="text-align: right;">3.570</td>
+<td style="text-align: right;">15.84</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">24.4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">146.7</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">3.69</td>
+<td style="text-align: right;">3.190</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">22.8</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">140.8</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">3.92</td>
+<td style="text-align: right;">3.150</td>
+<td style="text-align: right;">22.90</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">19.2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">167.6</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">3.92</td>
+<td style="text-align: right;">3.440</td>
+<td style="text-align: right;">18.30</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17.8</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">167.6</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">3.92</td>
+<td style="text-align: right;">3.440</td>
+<td style="text-align: right;">18.90</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">16.4</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">275.8</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">3.07</td>
+<td style="text-align: right;">4.070</td>
+<td style="text-align: right;">17.40</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17.3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">275.8</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">3.07</td>
+<td style="text-align: right;">3.730</td>
+<td style="text-align: right;">17.60</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">15.2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">275.8</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">3.07</td>
+<td style="text-align: right;">3.780</td>
+<td style="text-align: right;">18.00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10.4</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">472.0</td>
+<td style="text-align: right;">205</td>
+<td style="text-align: right;">2.93</td>
+<td style="text-align: right;">5.250</td>
+<td style="text-align: right;">17.98</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10.4</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">460.0</td>
+<td style="text-align: right;">215</td>
+<td style="text-align: right;">3.00</td>
+<td style="text-align: right;">5.424</td>
+<td style="text-align: right;">17.82</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">14.7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">440.0</td>
+<td style="text-align: right;">230</td>
+<td style="text-align: right;">3.23</td>
+<td style="text-align: right;">5.345</td>
+<td style="text-align: right;">17.42</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">32.4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">78.7</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">4.08</td>
+<td style="text-align: right;">2.200</td>
+<td style="text-align: right;">19.47</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">30.4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">75.7</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: right;">1.615</td>
+<td style="text-align: right;">18.52</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">33.9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">71.1</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">4.22</td>
+<td style="text-align: right;">1.835</td>
+<td style="text-align: right;">19.90</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">21.5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">120.1</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">3.70</td>
+<td style="text-align: right;">2.465</td>
+<td style="text-align: right;">20.01</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">15.5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">318.0</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">2.76</td>
+<td style="text-align: right;">3.520</td>
+<td style="text-align: right;">16.87</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15.2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">304.0</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">3.15</td>
+<td style="text-align: right;">3.435</td>
+<td style="text-align: right;">17.30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">13.3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">350.0</td>
+<td style="text-align: right;">245</td>
+<td style="text-align: right;">3.73</td>
+<td style="text-align: right;">3.840</td>
+<td style="text-align: right;">15.41</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">19.2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">400.0</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3.08</td>
+<td style="text-align: right;">3.845</td>
+<td style="text-align: right;">17.05</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">27.3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">79.0</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">4.08</td>
+<td style="text-align: right;">1.935</td>
+<td style="text-align: right;">18.90</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">26.0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">120.3</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">4.43</td>
+<td style="text-align: right;">2.140</td>
+<td style="text-align: right;">16.70</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">30.4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">95.1</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">3.77</td>
+<td style="text-align: right;">1.513</td>
+<td style="text-align: right;">16.90</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15.8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">351.0</td>
+<td style="text-align: right;">264</td>
+<td style="text-align: right;">4.22</td>
+<td style="text-align: right;">3.170</td>
+<td style="text-align: right;">14.50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">19.7</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">145.0</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3.62</td>
+<td style="text-align: right;">2.770</td>
+<td style="text-align: right;">15.50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15.0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">301.0</td>
+<td style="text-align: right;">335</td>
+<td style="text-align: right;">3.54</td>
+<td style="text-align: right;">3.570</td>
+<td style="text-align: right;">14.60</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">121.0</td>
+<td style="text-align: right;">109</td>
+<td style="text-align: right;">4.11</td>
+<td style="text-align: right;">2.780</td>
+<td style="text-align: right;">18.60</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>To make it even more crazy, let’s assume, that you have three grouping variables, while the rest of the variables in your dataset is numeric and you want to get <strong>all the useful stats</strong> for <strong>all the numeric variables</strong> for <strong>all the groups</strong>. You can actually get it with <strong>even simpler code</strong>! you already know by using <code>summarise_all()</code>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'># kable(</span>
+<span class='co'>#   mtcars %&gt;% </span>
+<span class='co'>#     group_by(am, cyl, gear) %&gt;%</span>
+<span class='co'>#     summarize_all(funs(list(Hmisc::describe(.)))) %&gt;% </span>
+<span class='co'>#     unnest()  )</span>
+</code></pre>
+</div>
+</div>
+<p>Scroll to the write to see the results of 8 numeric variables!</p>
+<p>Cool! Isn’t it? This is actually one of the most useful and fascinating things I have learned in <em>R</em> regarding descriptive statistics. In just 4 very intuitive lines of code (ignore <code>kable</code> since it is just cosmetics), you produce 3 times more numbers (results) then, the original dataset itself contains [^1] :).</p>
+<p>That is why I love the German translation for science - <em>Wissenschaft</em>, which literally means - Knowledge-Creation <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>If you know how to do even fancier descriptive stats in <em>R</em>, feel free to leave a comment with a suggestion.</p>
+<h2 id="limitations-of-descriptive-statistics">Limitations of descriptive statistics</h2>
+<p>Descriptive statistic is limited to the data you see. You just made “the best” out of it by condensing it to a couple of numbers. Despite its usefulness, describing data serves as a first-explorative step in data analysis. After you familiarized yourself with your data, you can start to compare group, or means of groups to see whether they are truly (significantly) different, you extend (extrapolate or interpolate) your data in order to fill the gaps or look into the future (modeling). And finally, you can draw conclusions (inferences), make claims, suggest ideas for future work, estimate parameters and produce new variables. All statistics, which goes beyond descriptive is - inferential statistics, which is the nearly all other posts in this blog.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>There are of coarse many ways in <em>R</em> to choose from how to do descriptive statistics. This is a blessing and a coarse of <em>R</em> at the same time. You can choose or create your own way!</p>
+<p>I choose a <code>tidyverse</code> way! <code>tidyverse</code> is an universe of the most useful <em>R</em> packages, created specially for <em>Data Science</em>. At least nowadays in 2019. It offers a clean, readable and small (since functional) code, while producing tidy results. Moreover, it is highly extendable to modeling of groups and putting modeling results in the similarly tidy tables, so the next very exiting thing I recommend you to learn it - “<a href="https://yury-zablotski.netlify.com/post/2019-09-24-data-wrangling-3/data-wrangling-3/">Tidy data</a> and tidy modeling results(in progress)”.</p>
+<p><strong>Thank you for reading!</strong></p>
+<h2 id="further-readings-and-references">Further readings and references</h2>
+<ol type="1">
+<li><a href="http://www.sthda.com/english/wiki/descriptive-statistics-and-graphics" class="uri">http://www.sthda.com/english/wiki/descriptive-statistics-and-graphics</a></li>
+<li><a href="https://towardsdatascience.com/understanding-descriptive-statistics-c9c2b0641291" class="uri">https://towardsdatascience.com/understanding-descriptive-statistics-c9c2b0641291</a></li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Please, ignore <code>NA</code>s at the moment. There is just isn’t enough data in <code>mtcars</code> for calculating every statistics we want. Bigger dataset will fill the gaps.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

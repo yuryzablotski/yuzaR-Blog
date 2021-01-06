@@ -14,11 +14,212 @@ draft: true
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
+```{r}
+library(tidyverse)
+library(ISLR)
+library(knitr)
+```
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+## Previous topics
 
+There are three posts on Data Wrangling ([Vol. 1](https://yury-zablotski.netlify.com/post/data-wrangling-1/), [Vol. 2](https://yury-zablotski.netlify.com/post/2019-09-22-data-wrangling-2/data-wrangling-2/) and [Vol. 3](https://yury-zablotski.netlify.com/post/2019-09-24-data-wrangling-3/data-wrangling-3/)) which would be helpful.
+
+## Why do we need descriptive stats?
+
+If you need to describe 100 cars, let's say their height, weight, efficiency (miles per gallon) etc., how would you do this? Collect all the data and present a big table? Perhaps? But would this be useful? Not really. What if you have 1000 cars or more? 
+
+You most likely would want to somehow summarize the data to a few numbers, e.g. mean of "miles per gallon" of cars with automatic or manual transmission. And this is exactly what descriptive stats do - summarizing data to make it more digestible and interpretable.
+
+```{r}
+# # load packages
+# library(tidyverse)
+# library(ISLR)
+# library(knitr)
+```
+
+
+## 1 numeric variable
+
+Let's have a look at the variable "miles per gallons" of cars from `mtcars()` dataset:
+
+```{r}
+# %>% - means "then" from the "magrittr" package
+mpg <- mtcars %>% select(mpg) 
+head(mpg)
+```
+
+### 1 function
+
+You could immediately calculate any statistics you want: **mean, standard deviation, sum** etc. 
+
+```{r}
+mean(mtcars$mpg)
+sd(mtcars$mpg)
+sum(mtcars$mpg)
+```
+
+But it's kind of wordy. Isn't there a better way? Of course. There are several useful functions in descriptive stats, which summarize the data in several ways. Not surprisingly :) these functions are called `summary()` and `describe()`.
+
+### > 1 functions
+
+Particularly, `summary()` gives you: **minimum, maximum, mean, median, 1st quantile** - splits off the lowest 25% of data from the highest 75% and **3rd quantile** - splits off the highest 25% of data from the lowest 75%.
+
+```{r}
+summary(mpg)
+```
+
+
+**Mean** is often the most useful, i.e. for statistical tests. Thus, you can enrich your mean with **confidence intervals**:
+
+```{r}
+mean_cl_boot(mpg)
+```
+
+Other useful ways to describe our data are: **number of observations, number of missing values, number of distinct values, some lowest and some highest values** and may be **more quantiles** then just 1st and 3rd which we have got from `summary()`. `describe()` from `Hmisc` package provides such statistics:
+
+```{r}
+Hmisc::describe(mpg)
+```
+
+`describe(mpg)` from `psych` package additionally delivers **trimmed mean, mad, range, skew, kurtosis and standard error**. Moreover, it allows you to **specify the quantile** if you wish.
+
+```{r}
+#psych::describe(mpg, quant = c(0.1, 0.5, 0.9))
+```
+
+But since there is an identical function in several packages, you need to tell *R* which one you want to use by just putting the name of the package in front of the `describe()` function (as shown above).
+
+The last descriptive function I'd recommend gives you **sum, variance, standard deviation** and even **normality tests** for your vector.
+
+```{r}
+pastecs::stat.desc(mpg, norm = T)
+```
+
+
+## > 1 numeric variables: multivariate descriptive stats
+
+Likely, you can describe unlimited number of variables in the same time. Here, for the sake of clarity, we just take three: mpg - miles per gallon, hp - horsepower and wt - weight of a car in thousands of pounds. `kable` function from `knitr` package just makes our table 
+look nice.
+
+```{r}
+data <- mtcars %>% select(mpg, hp, wt)
+kable(head(data))
+
+kable( summary(data) )
+Hmisc::describe(data)
+# scroll to the right to see the whole table
+#kable(psych::describe(data))
+kable( pastecs::stat.desc(data, norm = T) )
+```
+
+
+## Descriptive stats by group of categorical variables
+
+Sometimes we want to have descriptive stats for several groups of a categorical variable. For example, cars in our dataset can be divided into three groups in terms of numbers of cylinders (4, 6 or 8 cylinders) and in two groups in terms of transmission (0 = automatic, 1 = manual):
+
+```{r}
+kable( table(mtcars$am, mtcars$cyl) )
+```
+
+You could use the functions we just learned for grouped data, but adding more variables can make the code long and confusing:
+
+`psych::describeBy(mtcars, group = mtcars$am)` 
+`psych::describeBy(mtcars, group = list(am = mtcars$am, cyl = mtcars$cyl))`
+
+I prefer to use summarizing functions with `dplyr` package, which was created for data wrangling. For example, let’s start with one numeric and one grouping variables and calculate just one statistics (e.g. mean) for each group:
+
+```{r}
+kable( 
+  mtcars %>%
+    group_by(cyl) %>%
+    summarize_at(vars(mpg), list(mean)) )
+```
+
+The code above might look big at first for what it gives us, but it has two nice features. **First**, it is very clear (at least to me). You can read it like: *take* `mtcars` dataset, *then* ( `%>%` operator) *group* it *by* a number of cylinders and *then for a variable* `miles per gallons` *calculate the mean for each of cylinder groups*. Every line has a clear purpose and takes the job one task at a time. **Second**, this chunk of code is highly extendable, while keeping same structure and simplicity. For instance, we can `group_by` several variables, and `summarize` several statistics (e.g. mean and standard deviation) for several variables in the same time ... which is kind of fancy.
+
+## Fancy descriptive stats
+
+```{r}
+kable( 
+  mtcars %>%
+    group_by(am, cyl) %>%
+    summarize_at(vars(mpg, hp), list(mean = mean, median = median, st_dev = sd)) )
+```
+
+
+This code even names your columns for you by combining the names of variables and functions. You can add hundreds of variables and functions without changing the structure of this chunk of code. Moreover, you can include the summarizing functions we just learned: 
+
+```{r, warning=FALSE}
+kable( 
+  mtcars %>%
+    group_by(cyl) %>%
+    summarize_at(vars(mpg, hp), funs(list(mean_cl_boot(.)))) )
+```
+
+A point inside of the summarizing function tells *R* to apply it to every variable we chose by `vars()`.
+
+This code shows that *R* collects / nests the results for each *group-variable-pair* in one individual cell/list. Unnesting / unlisting these lists puts the results in a tidy table.
+
+```{r, warning=FALSE}
+kable( 
+  mtcars %>%
+    group_by(cyl) %>%
+    summarize_at(vars(mpg, hp), funs(list(mean_cl_boot(.)))) %>% 
+    unnest() )
+```
+
+
+You would only have to rename them, but since you know you have two variables, `mpg` and `hp`, you will know that *y, ymin and ymax* results belong to `mpg`, while *y1, ymin1 and ymax1* belong to `hp`.
+
+Similarly, if you need **more stats**, then just mean and confidence intervals, for **more variables and more groups**, just `group_by` more (categorical) variables and use a particular summarizing function inside of the same code:
+
+```{r}
+# scroll to the right to see the whole table
+kable( 
+  mtcars %>%
+    group_by(am, cyl) %>%
+    #summarize_at(vars(mpg, hp), funs(list(psych::describe(.)))) %>%
+    unnest()  )
+```
+
+To make it even more crazy, let's assume, that you have three grouping variables, while the rest of the variables in your dataset is numeric and you want to get **all the useful stats** for **all the numeric variables** for **all the groups**. You can actually get it with **even simpler code**! you already know by using `summarise_all()`:
+
+```{r}
+# kable(
+#   mtcars %>% 
+#     group_by(am, cyl, gear) %>%
+#     summarize_all(funs(list(Hmisc::describe(.)))) %>% 
+#     unnest()  )
+```
+
+Scroll to the write to see the results of 8 numeric variables!
+
+Cool! Isn't it? This is actually one of the most useful and fascinating things I have learned in *R* regarding descriptive statistics. In just 4 very intuitive lines of code (ignore `kable` since it is just cosmetics), you produce 3 times more numbers (results) then, the original dataset itself contains [^1] :).
+
+That is why I love the German translation for science - *Wissenschaft*, which literally means - Knowledge-Creation [^2]. 
+
+If you know how to do even fancier descriptive stats in *R*, feel free to leave a comment with a suggestion.
+
+[^2]: for this small dataset
+[^2]: Please, ignore `NA`s at the moment. There is just isn’t enough data in `mtcars` for calculating every statistics we want. Bigger dataset will fill the gaps.
+
+## Limitations of descriptive statistics
+
+Descriptive statistic is limited to the data you see. You just made "the best" out of it by condensing it to a couple of numbers. Despite its usefulness, describing data serves as a first-explorative step in data analysis. After you familiarized yourself with your data, you can start to compare group, or means of groups to see whether they are truly (significantly) different, you extend (extrapolate or interpolate) your data in order to fill the gaps or look into the future (modeling). And finally, you can draw conclusions (inferences), make claims, suggest ideas for future work, estimate parameters and produce new variables. All statistics, which goes beyond descriptive is - inferential statistics, which is the nearly all other posts in this blog. 
+
+## Conclusion
+
+There are of coarse many ways in *R* to choose from how to do descriptive statistics. This is a blessing and a coarse of *R* at the same time. You can choose or create your own way! 
+
+I choose a `tidyverse` way! `tidyverse` is an universe of the most useful *R* packages, created specially for *Data Science*. At least nowadays in 2019. It offers a clean, readable and small (since functional) code, while producing tidy results. Moreover, it is highly extendable to modeling of groups and putting modeling results in the similarly tidy tables, so the next very exiting thing I recommend you to learn it - "[Tidy data](https://yury-zablotski.netlify.com/post/2019-09-24-data-wrangling-3/data-wrangling-3/) and tidy modeling results(in progress)".
+
+**Thank you for reading!**
+
+## Further readings and references
+
+1. http://www.sthda.com/english/wiki/descriptive-statistics-and-graphics
+2. https://towardsdatascience.com/understanding-descriptive-statistics-c9c2b0641291
 
