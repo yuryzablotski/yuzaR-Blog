@@ -135,7 +135,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/anchor-4.2.2/anchor.min.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/bowser-1.9.3/bowser.min.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/distill-2.2.21/template.v2.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/chunk_name_here-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-12-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-13-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-14-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-15-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-16-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-17-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-18-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/jquery-1.11.3/jquery.min.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/vembedr-0.1.4/css/vembedr.css","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/webcomponents-2.0.0/webcomponents.js","images/_site.png","images/aside.png","images/distill_logo.png","images/iconfinder_github-hexagon-social-media_764833.png","images/thumbnail_distill_1.jpg","images/thumbnail_distill_2.jpg","images/thumbnail.png","my blog/_posts/welcome/welcome.Rmd","my blog/_site.yml","my blog/about.Rmd","my blog/index.Rmd"]}
+  {"type":"character","attributes":{},"value":["how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/anchor-4.2.2/anchor.min.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/bowser-1.9.3/bowser.min.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/distill-2.2.21/template.v2.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/chunk_name_here-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-12-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-13-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-14-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-15-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-16-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-17-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-18-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-19-1.png","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/jquery-1.11.3/jquery.min.js","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/vembedr-0.1.4/css/vembedr.css","how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/webcomponents-2.0.0/webcomponents.js","images/_site.png","images/aside.png","images/distill_logo.png","images/iconfinder_github-hexagon-social-media_764833.png","images/thumbnail_distill_1.jpg","images/thumbnail_distill_2.jpg","images/thumbnail.png","my blog/_posts/welcome/welcome.Rmd","my blog/_site.yml","my blog/about.Rmd","my blog/index.Rmd"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2532,7 +2532,14 @@ gtag('config', 'G-Q28WX9Y4VS');
 <li>go back to RStudio and repeat step 5</li>
 </ul>
 <h1 id="automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</h1>
-<p>Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and <em>using Github with continuous deployment</em> becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed <em>Git</em> on your computer, created a <em>Github</em> account and connected your <em>RStudio</em> to your <em>Github</em>. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>. You’ll only need it once! If you ready to proceed, have a look at the quick (ca. 8 minutes) video (will be online soon!) and then follow the step by step procedure described below and you’ll be online with your blog in minutes.</p>
+<p>Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and <em>using Github with continuous deployment</em> becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed <em>Git</em> on your computer, created a <em>Github</em> account and connected your <em>RStudio</em> to your <em>Github</em>. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>. You’ll only need it once! If you ready to proceed, have a look at the quick (ca. 8 minutes) video and then follow the step by step procedure described below and you’ll be online with your blog in minutes.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/WZt4H-ogH3s" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+</div>
 <h2 id="install-distill-and-usethis-packages">1. Install <em>distill</em> and <em>usethis</em> packages</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2734,7 +2741,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   <span class='fu'>theme_bw</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+<p><img src="how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-15-1.png" width="624" /></p>
 </div>
 <h2 id="figures">Figures</h2>
 <p>You can add external static and dynamic figures, plots, photos or diagrams by using <code>knitr::include_graphics()</code> function. <a href="https://rstudio.github.io/distill/figures.html">More on figures here</a>.</p>
@@ -2766,7 +2773,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ililhvzwyp .gt_table {
+#dvnhdgjzxt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2791,7 +2798,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-left-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_heading {
+#dvnhdgjzxt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2803,7 +2810,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_title {
+#dvnhdgjzxt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2813,7 +2820,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-bottom-width: 0;
 }
 
-#ililhvzwyp .gt_subtitle {
+#dvnhdgjzxt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2823,13 +2830,13 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-top-width: 0;
 }
 
-#ililhvzwyp .gt_bottom_border {
+#dvnhdgjzxt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_col_headings {
+#dvnhdgjzxt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2844,7 +2851,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_col_heading {
+#dvnhdgjzxt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2864,7 +2871,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   overflow-x: hidden;
 }
 
-#ililhvzwyp .gt_column_spanner_outer {
+#dvnhdgjzxt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2876,15 +2883,15 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-right: 4px;
 }
 
-#ililhvzwyp .gt_column_spanner_outer:first-child {
+#dvnhdgjzxt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ililhvzwyp .gt_column_spanner_outer:last-child {
+#dvnhdgjzxt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ililhvzwyp .gt_column_spanner {
+#dvnhdgjzxt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2896,7 +2903,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   width: 100%;
 }
 
-#ililhvzwyp .gt_group_heading {
+#dvnhdgjzxt .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2918,7 +2925,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   vertical-align: middle;
 }
 
-#ililhvzwyp .gt_empty_group_heading {
+#dvnhdgjzxt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2933,15 +2940,15 @@ gtag('config', 'G-Q28WX9Y4VS');
   vertical-align: middle;
 }
 
-#ililhvzwyp .gt_from_md > :first-child {
+#dvnhdgjzxt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ililhvzwyp .gt_from_md > :last-child {
+#dvnhdgjzxt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ililhvzwyp .gt_row {
+#dvnhdgjzxt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2960,7 +2967,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   overflow-x: hidden;
 }
 
-#ililhvzwyp .gt_stub {
+#dvnhdgjzxt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2972,7 +2979,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-left: 12px;
 }
 
-#ililhvzwyp .gt_summary_row {
+#dvnhdgjzxt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2982,7 +2989,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-right: 5px;
 }
 
-#ililhvzwyp .gt_first_summary_row {
+#dvnhdgjzxt .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2992,7 +2999,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-top-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_grand_summary_row {
+#dvnhdgjzxt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3002,7 +3009,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-right: 5px;
 }
 
-#ililhvzwyp .gt_first_grand_summary_row {
+#dvnhdgjzxt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3012,11 +3019,11 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-top-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_striped {
+#dvnhdgjzxt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ililhvzwyp .gt_table_body {
+#dvnhdgjzxt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3025,7 +3032,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-bottom-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_footnotes {
+#dvnhdgjzxt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3039,13 +3046,13 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_footnote {
+#dvnhdgjzxt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ililhvzwyp .gt_sourcenotes {
+#dvnhdgjzxt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3059,46 +3066,46 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#ililhvzwyp .gt_sourcenote {
+#dvnhdgjzxt .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ililhvzwyp .gt_left {
+#dvnhdgjzxt .gt_left {
   text-align: left;
 }
 
-#ililhvzwyp .gt_center {
+#dvnhdgjzxt .gt_center {
   text-align: center;
 }
 
-#ililhvzwyp .gt_right {
+#dvnhdgjzxt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ililhvzwyp .gt_font_normal {
+#dvnhdgjzxt .gt_font_normal {
   font-weight: normal;
 }
 
-#ililhvzwyp .gt_font_bold {
+#dvnhdgjzxt .gt_font_bold {
   font-weight: bold;
 }
 
-#ililhvzwyp .gt_font_italic {
+#dvnhdgjzxt .gt_font_italic {
   font-style: italic;
 }
 
-#ililhvzwyp .gt_super {
+#dvnhdgjzxt .gt_super {
   font-size: 65%;
 }
 
-#ililhvzwyp .gt_footnote_marks {
+#dvnhdgjzxt .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="ililhvzwyp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="dvnhdgjzxt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   
   <thead class="gt_col_headings">
     <tr>
@@ -3167,7 +3174,7 @@ Here the funny fact or some important info.
 </aside>
 <aside>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-18-1.png" width="624" /></p>
+<p><img src="how-to-create-a-blog-or-a-website-in-r-with-distill-package_files/figure-html5/unnamed-chunk-19-1.png" width="624" /></p>
 </div>
 </aside>
 <h2 id="equations">Equations</h2>

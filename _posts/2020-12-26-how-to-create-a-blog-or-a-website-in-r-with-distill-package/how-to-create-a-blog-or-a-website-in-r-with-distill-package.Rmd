@@ -132,7 +132,11 @@ This new post exists only on your local computer, still not online, thus...
 
 # Automated continuous publishing (deploying)
 
-Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). You'll only need it once! If you ready to proceed, have a look at the quick (ca. 8 minutes) video (will be online soon!) and then follow the step by step procedure described below and you’ll be online with your blog in minutes.
+Continuous deployment is cool! But the path there can be a little prickly. This path may take a couple of hours or days (in my case 🙈). But, once there, you quickly forget all the troubles and *using Github with continuous deployment* becomes your second nature. So, I think there are many people which deploy either still manually or already continuously. But not many of them in the middle (I might be wrong though). Thus, I will assume you already have installed *Git* on your computer, created a *Github* account and connected your *RStudio* to your *Github*. If not, but you wanna be there, I could recommend a single short free online book which helped me go through it: [Happy Git and GitHub for the useR](https://happygitwithr.com/). You'll only need it once! If you ready to proceed, have a look at the quick (ca. 8 minutes) video and then follow the step by step procedure described below and you’ll be online with your blog in minutes.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("WZt4H-ogH3s")
+```
 
 
 ## 1. Install *distill* and *usethis* packages
