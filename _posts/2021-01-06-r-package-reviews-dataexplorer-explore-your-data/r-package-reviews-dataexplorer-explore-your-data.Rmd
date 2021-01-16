@@ -1,5 +1,5 @@
 ---
-title: "R package reviews {DataExplorer} explore your data (in progress)"
+title: "R package reviews {DataExplorer} explore your data! (in progress)"
 description: |
   What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...
 author:
