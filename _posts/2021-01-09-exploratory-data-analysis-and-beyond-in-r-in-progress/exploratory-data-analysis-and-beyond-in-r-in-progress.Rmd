@@ -1,0 +1,220 @@
+---
+title: "Exploratory Data Analysis (EDA) and BEYOND in R (in progress)"
+description: |
+  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, it's the most important part of data science, which includes data cleaning, data transformation, generating hypothesis, testing assumptions etc. Unfortunatly this part often remains a black box, simply due to the individual differences in knowledge and preferences of data scientists. So that we often don't know how and, most importantly WHY, the data was cleaned or transformed on the way to the final result. This article tries to narrow this gap by adding one further step to the EDA, which helps to generate hypotheses and identify next steps.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-09-2021
+categories:
+  - EDA
+  - videos
+#preview: thumbnail_survival_2.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    code_download: true
+---
+
+
+```{r setup, include=FALSE, warning=F, message=F}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+```{r}
+# install.packages("tidyverse")
+# install.packages("DataExplorer")
+
+library(tidyverse)        # for data wrangling and visualization
+library(datasets)         # for getting the data 
+library(DataExplorer)     # for exploratory data analysis
+library(skimr)
+library(PerformanceAnalytics)
+library(ggstatsplot)
+library(performance)
+```
+
+
+## Creating visualised reports of the whole dataset with only one function!
+
+### DataExplorer
+
+```{r eval=F}
+library(DataExplorer)     # for exploratory data analysis
+
+airquality <- airquality %>% 
+  mutate(Month = factor(Month))
+
+create_report(airquality)
+
+# report with a response variable
+create_report(diamonds, y = "price")
+```
+
+### SmartEDA
+
+```{r eval=F}
+# Bonus 4:
+SmartEDA::ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
+```
+
+## Big Picture of your data
+
+Instead of running *create_report()*, you may also run each function individually for your analysis, e.g. view basic description for *airquality* data.
+
+### DataExplorer
+
+```{r}
+introduce(airquality)
+
+plot_intro(airquality)
+```
+
+### skimr
+
+```{r}
+skimr::skim(airquality)
+```
+
+
+
+
+## View missing value distribution for airquality data
+
+### DataExplorer
+
+```{r}
+plot_missing(airquality)
+```
+
+### visdata
+
+```{r}
+visdat::vis_dat(airquality)
+```
+
+
+
+
+
+## Visualise distribution of categorical (discrete) variables
+
+### DataExplorer
+
+```{r}
+plot_bar(diamonds)
+
+plot_bar(diamonds, with = "price")
+
+## View frequency distribution by a discrete variable
+plot_bar(diamonds, by = "cut")
+```
+
+### ggstatsplot
+
+```{r}
+ggbarstats(data = diamonds, x = cut, y = clarity)
+```
+
+
+## Visualise distribution of numeric variables
+
+### DataExplorer
+
+```{r}
+## View histogram of all continuous variables
+plot_histogram(airquality)
+
+## View estimated density distribution of all continuous variables
+plot_density(airquality)
+
+## View quantile-quantile plot of all continuous variables
+plot_qq(airquality)
+
+## View quantile-quantile plot of all continuous variables by feature `cut`
+plot_qq(airquality, by = "Month")
+```
+### ggpubr
+
+```{r}
+library(ggpubr)
+ggqqplot(airquality$Temp)
+ggqqplot(airquality$Temp[airquality$Month == 5])
+```
+
+
+## Visualize correlation
+
+### DataExplorer
+
+```{r}
+## View overall correlation heatmap
+plot_correlation(na.omit(airquality), type = "c")
+```
+
+### PerformanceAnalytics
+
+Correlation coeffitients and correlation color are amazing, they give us an idea about where there is a potentias for further exploration. However, they are quite limited though. Firstly, we don't really know whether these correlations are significant, so there are no tests behind it. Secondly, we don't even know what correlation method produced these coeffitients in the first place, was it the Pearson correaltion, or Spearman. Finally we don't see how data are scattered, so that some relationships might be very non-linear and correlation analysis would be not appropriate at all. The solution for all three problems is provided by the *PerformanceAnalytics* package, which offers a *chart.Correlation()* function. It produces histograms for every particular numeric variable and the scatterplots for every combination of numeric variables. I found the significance stars particularly helpful. Besides, we can easily choose the method we measure the correlation by, for instance, in the example below we use a robust non-parametric *kendall* correlation which is more appropriate for non-normally and non-too-linearly distributed values with some outliers. If we do not specify the methos, we'll produce a parametric (usual) Pearson correlation which is only appropriate for perfect data, which ... rarely happens.
+
+
+
+```{r}
+PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month)) 
+# method = "kendall" or "spearman"
+PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = "kendall") 
+```
+
+
+## Visualize numerical and categorical at the same time
+
+### DataExplorer
+
+```{r}
+## View bivariate continuous distribution based on `cut`
+plot_boxplot(airquality, by = "Month")
+```
+
+
+### ggstatsplot
+
+```{r}
+ggstatsplot::ggbetweenstats(data = airquality, x = Month, y = Ozone, type = "np")
+## I did 3 videos about these fancy box plots with statistics
+
+```
+
+## Visualize outlier
+
+The *performance* package provide an easy way to visualize outliers.
+
+```{r}
+check_outliers(airquality$Ozone, method = "iqr")
+plot(check_outliers(airquality$Ozone, method = "iqr"))
+```
+
+## Exploratory modelling
+
+```{r}
+ggplot(airquality, aes(Solar.R, Temp))+
+  geom_point()+
+  geom_smooth()+
+  facet_wrap(~Month)
+  
+
+ggplot(diamonds, aes(price, carat))+
+  geom_point()+
+  geom_smooth()+
+  facet_grid(cut ~ clarity)
+```
+
+
+--------------------------------
+
+If you think, I missed something, please comment on it, and I'll improve this tutorial.
+
+**Thank you for learning!**
+
+## Further readings and references

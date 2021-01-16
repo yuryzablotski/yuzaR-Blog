@@ -9,7 +9,7 @@ date: 01-02-2021
 categories:
   - R package reviews
   - videos
-preview: thumbnail_janitor.jpg
+preview: 9.png
 output:
   distill::distill_article:
     self_contained: false
@@ -57,6 +57,8 @@ vembedr::embed_youtube("poUveR6aDS8")
 # Main functions
 
 ## clean_names()
+
+![](janitor_thumbnails.jpeg)
 
 This function removes all the non-letters and signs from the names and connects several words with underscores. You can ignore the *kbl()* and *kable_classic_2()* rows in the code below, they just make the HTML table look clean, but do not really clean anything in our dataset.
 

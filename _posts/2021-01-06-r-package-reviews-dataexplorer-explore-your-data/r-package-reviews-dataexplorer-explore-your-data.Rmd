@@ -1,13 +1,14 @@
 ---
-title: "R package reviews {DataExplorer} explore your data"
+title: "R package reviews {DataExplorer} explore your data (in progress)"
 description: |
-  A short description of the post.
+  What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
 date: 01-06-2021
 categories:
-  - survival analysis
+  - R package reviews
+  - EDA
   - videos
 preview: thumbnail_survival_2.png
 output:
@@ -16,12 +17,9 @@ output:
     toc: true
     toc_float: true
     code_download: true
-draft: true
 ---
 
-
-
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=F, message=F}
 knitr::opts_chunk$set(echo = T)
 ```
 
@@ -29,141 +27,147 @@ knitr::opts_chunk$set(echo = T)
 ```{r}
 # install.packages("tidyverse")
 # install.packages("DataExplorer")
+# install.packages("datasets")
 
-library(tidyverse)
-library(DataExplorer)
+library(tidyverse)        # for data wrangling and visualization
+library(DataExplorer)     # for exploratory data analysis
+library(datasets)         # for getting the data 
 ```
 
 
+## Automated EDA: visualise **everything** with **only one function!**
 
-Exploratory Data Analysis with some bonuses.
+*create_report()* function will produce, save and open an HTML document in your web-browser with visualization of all your data in seconds! Moreover, we can determine a single most important variable in our dataset and let the report display the data in the light of this variable. Just run *create_report()* function with two different datasets, as shown below and see the difference for yourself.
 
-## Data visualisation
-
-```{r eval=F}
+```{r}
 airquality <- datasets::airquality %>% 
   mutate(Month = factor(Month))
+```
 
+
+```{r eval=F}
 create_report(airquality)
 
-# report with a response variable
 create_report(diamonds, y = "price")
-
-# Bonus 4:
-SmartEDA::ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
 ```
 
+Every report consists of several parts and always starts with "Table of contents".
+
+## Table of contents
+
+![](report_files/figure-html/contents.png)
+
+Table of contents shows what exactly the exploratory analysis visualized. Namely, it first generally describes the dataset with raw numbers and percentages, then visualizes missing values and every single (univariate) numeric or categorical variable, while checking the distribution of numeric variables with histograms and Quantile-Quantile plots. The report then explores multiple variables simultaneously by displaying correlation between then and conducting a principal component analyses. It finishes with box and scatter plots, which I find especially informative. 
+
+Not bad for a single function, if you ask me ;)
+
+But, should we then always produced the whole report? Of coarse not. Conveniently, every part of the report can be produced separately, which not only allows you to explore every aspect of our data even deeper than in the big report, but also gives you the opportunity to adjust the appearance of plots as you wish. Let's have a look at this!
 
 
+## Big Picture of your data
 
+Below we can see the basic overview or *diamonds* data in absolute numbers. First, we see the number of rows and columns (variables). Then we see how many numeric and categorical variables do we have in our dataset and whether there are missing values or even missing columns.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![](report_files/figure-html/overview.png)
+Such quick introduction into our dataset can be reached by the function *introduce()* for absolute numbers ("t" simply transposes the result) or by the *plot_intro()* for percentages. 
 
 
 
 ```{r}
-## Instead of running create_report, you may also run each function individually for your analysis, e.g.,
+introduce(diamonds) %>% t()
 
-## View basic description for airquality data
 plot_intro(airquality)
-
-## Bonus 1:
-skimr::skim(airquality)
 ```
 
 
 
+## View missing value distribution
 
+One of the most useful functions from *DataExplorer* package, which I use almost daily is *plot_missing()*. It not only shows - how many percent of data is missing in every columns, but also explains what the amount of missing values means for us, namely that missing around 25% of data is still kind of OK and we can continue working. This legend helps me to better communicate with my collaborators, which wants me to continue analysis, even when I tell them there is not enough data in some columns. Yes, :) some people prefer to believe statistical software then a human being. Besides, it helps to quickly identify variables with missing values, if some models refuse to run because missing values are present.
 
-
-
-
-## View missing value distribution for airquality data
-
+Moreover, all plots in DataExplorer can be pimped with the syntax from *ggplot2* package:
 
 ```{r}
-plot_missing(airquality)
+# pimp your plot with ggplot2
+plot_missing(airquality, ggtheme = theme_minimal())
 ```
 
 ## Visualise distribution of categorical (discrete) variables
 
+The best way to visualize categorical variables are bar-plots. And a simple *plot_bar()* function visualizes all categorical variables from our dataset at once. It even sorts the categories for us putting the most frequent categories on the top. It's very useful to see how many data-points every category has and usually, in my job, I see way too many of the small categories which are then supposed to be thrown together. By the way DataExplorer package can do this too, and easily, but more about this later.
+Until then, we can go one step further as compared to the *create_report()* function and display the frequency distribution of our categorical variable by **any** other variable, be it numeric (e.g. price) or discrete (e.g. cut). So, the long time of using "table()" function to count categorical variables is over for me :)
 
-```{r}
+```{r, fig.width=9}
 plot_bar(diamonds)
 
-plot_bar(diamonds, with = "price")
+## View frequency distribution by a numeric variable
+plot_bar(diamonds, with = "price", ggtheme = theme_classic())
 
 ## View frequency distribution by a discrete variable
-plot_bar(diamonds, by = "cut")
-```
-
-
-## Visualise distribution of numeric variables
-
-```{r}
-## View histogram of all continuous variables
-plot_histogram(airquality)
-
-## View estimated density distribution of all continuous variables
-plot_density(airquality)
-
-## View quantile-quantile plot of all continuous variables
-plot_qq(airquality)
-
-## View quantile-quantile plot of all continuous variables by feature `cut`
-plot_qq(airquality, by = "Month")
+plot_bar(diamonds, by = "cut", ggtheme = theme_bw())
 ```
 
 
 
 ## Visualize correlation
 
+One of the most powerful tools to summarize a large dataset and to identify patterns and connections between variables is a correlation matrix. A correlation matrix is simply a cross table with correlation coefficients between all combinations of variables pairwisely. This table is at the same time a heatmap, which colorcoded correlation from the negative (in blue) to the positive (in red). In practice, high correlation can be desirable, for example where it may allow to predict one variable by the other. However, it also may be unwanted, for example two highly correlated variables in a statistical model would screw up the results by providing the same information, like weight and BMI. Thus, knowing correlation is always useful for developing better hypotheses. 
+
+
 ```{r}
 ## View overall correlation heatmap
-plot_correlation(na.omit(airquality), type = "c")
-
-## Bonus 2:
-PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month)) 
-# method = "kendall"
+plot_correlation(na.omit(airquality), type = "continuous")
 ```
+
+
+## Visualise distribution of numeric variables
+
+The distribution of numeric variables is usually explored by the means of histograms, density plots, Quantile-Quantile plots and scatterplots. Well, *DataExplorer* package provides easy functions for each of them. Moreover, it allows to produce the Quantile-Quantile plots for every category of a discrete variable, which I personally find very useful, since usual groups comparison (be it a t-test or ANOVA) requires checking the normality of every group, and not only of the whole numeric variable. 
+
+As you probably remember, the big-picture from the *create_report()* function does not provide density and categorical Quantile-Quantile plots, showing that it's worth to go beyond the general report. For instance, you immediately see that *Wind* and *Temperature* can be analyzed using parametric methods (e.g. ANOVA), while *Ozone* would either need a non-parametric approach (e.g. Kruskal-Wallis) or would need to be transformed before modeling.
+
+```{r}
+## View histogram of all continuous variables
+plot_histogram(airquality)
+
+## View estimated density distribution of all continuous variables
+plot_density(airquality, ncol = 3)
+
+## View quantile-quantile plots of all continuous variables
+plot_qq(airquality, ncol = 3, ggtheme = theme_linedraw())
+
+## View quantile-quantile plots of all continuous variables of all categories 
+plot_qq(iris, by = "Species", 
+        ncol = 2,
+        ggtheme = theme_bw(), 
+        theme_config = list(legend.position = c("top")))
+```
+
 
 
 ## Visualize boxplot
 
+Boxplots beautifully show where the most of the data is, namely inside of the box, and whether variables have many outliers. Boxplots are also useful for a quick comparison of distributions of several groups, samples or categories, because they visualize center, spread and range of every group. Thus, similarly to correlation analysis above, boxplots also help to develop hypotheses. I love boxplots and have already three videos on them on this channel.
+
 ```{r}
-## View bivariate continuous distribution based on `cut`
-plot_boxplot(airquality, by = "Month")
+## View bivariate continuous distribution based on `Month`
+plot_boxplot(iris, by = "Species", 
+             ncol = 2, 
+             ggtheme = theme_bw())
+```
 
-## Bonus 3:
-ggstatsplot::ggbetweenstats(data = airquality, x = Month, y = Ozone, type = "np")
-## I did 3 videos about these fancy box plots with statistics
+## Visualize scatterplots
 
+Scatterplots are kind of self-explanatory.
+
+```{r fig.width=10}
+plot_scatterplot(airquality, by = "Temp", ncol = 2, ggtheme = theme_classic())
 ```
 
 
 ## Visualize principal component analysis
+
+The goal of PCA is to reduce the number of variables in a dataset, while preserving as much information from the original dataset as possible. PCA transforms larger datasets with a lot of variables, some of which might be **highly correlated**, into a smaller dataset with a few new variables - (which are) the principal components and are **uncorrelated** with each other.
 
 ```{r}
 plot_prcomp(diamonds, maxcat = 5L)
@@ -171,32 +175,92 @@ plot_prcomp(diamonds, maxcat = 5L)
 
 
 
-## Feature Engineering
+## Data transformation or Feature Engineering
 
-To make quick updates to your data:
+### Sum up small categories
+
+Transforming and [cleaning](https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/) your data is the next step after EDA. Being able to make it quick and simple frees your time and brain capacity for the important creative work instead of solving problems. **The best package for data manipulation is definitely - {dplyr}**! However, some other worth to know packages also provide very simple and useful ways, but fade in the bright light of **dplyr**.
+
+*DataExplorer* is a good example. For instance, if your have a lot of small categories in a variable, you can aggregate them into a single category - "OTHER", you just have to call the variable you are interested in and set the threshold for how many percent of your data suppose to go into this "OTHER" category. For instance, the variable *clarity* has 4 categories, all of which have less then 10% of observations. Cumulatively (together) they add up to 20%. Thus, we can use 20% as a threshold and end up with only 5 big categories:
+
+
 
 ```{r}
+plot_bar(diamonds)
+
+janitor::tabyl(diamonds$clarity) %>% 
+  mutate(percent = round(percent*100)) %>% 
+  arrange(-percent)
+
 ## Group bottom 20% `clarity` by frequency
-group_category(diamonds, feature = "clarity", threshold = 0.2, update = TRUE)
+bla <- group_category(
+  diamonds, 
+  feature = "clarity", 
+  threshold = 0.2, 
+  update = T)
 
-## Group bottom 20% `clarity` by `price`
-group_category(diamonds, feature = "clarity", threshold = 0.2, measure = "price", update = TRUE)
+janitor::tabyl(bla$clarity) %>% 
+  mutate(percent = round(percent*100)) %>% 
+  arrange(-percent)
 
-## Dummify diamonds dataset
-dummify(diamonds)
-dummify(diamonds, select = "cut")
-
-## Set values for missing observations
-df <- data.frame("a" = rnorm(260), "b" = rep(letters, 10))
-df[sample.int(260, 50), ] <- NA
-set_missing(df, list(0L, "unknown"))
-
-## Update columns
-update_columns(mtcars, c("cyl", "am"), as.factor)
-update_columns(airquality, 1L, function(x) x^2)
-
-## Drop columns (Я сам понял что он работает с пайп оператором)
-mtcars %>% drop_columns(2:10)
-drop_columns(diamonds, "clarity")
+plot_bar(bla)
 ```
+
+
+### Dummification
+
+Sometimes, especially in the machine learning field, it is useful to produce several dummy variables (0s & 1s) from one categorical variable. We can easily do this by calling a *dummify()* function and specify the variable which needs to be dummified. Interestingly, if we don't specify any, all categorical variables will be transferred. 
+
+```{r}
+## Dummify diamonds dataset
+glimpse(dummify(diamonds, select = "cut"))
+glimpse(dummify(diamonds))
+```
+
+### Set all missing values to a particular value.
+
+```{r}
+df <- airquality %>% 
+  slice(1:10)
+
+df
+
+set_missing(df, list(0L, "unknown"))
+```
+
+### Transform or drop columns
+
+Again, dplyr is much better for data manipulation. But if you still don't know dplyr, first, your should, and secondly, you can use functions below to quickly update or drop columns.
+
+```{r}
+## Update columns
+update_columns(airquality, c("Month", "Temp"), as.factor) %>% head()
+update_columns(airquality, c("Temp", "Wind"), function(x) x^2) %>% head()
+
+## Drop columns
+mtcars %>% drop_columns(2:10) %>% head()
+diamonds %>% drop_columns(c("x", "y", "z")) %>% head() 
+```
+
+
+## Conclusion 
+
+*DataExplorer* allows us not only to quickly explore our data, but also helps to get initial insights and to generate new hypotheses. Moreover, it greatly simplifies the workflow, which we need to do anyway, saves time, reduces the probability of mistakes by coding everything manually and accelerates delivering final results. So, DataExplorer alone would be enough for a reasonably good exploration of data. But, there are of coarse many other useful packages for EDA. Thus, in the next video I'll present the best functions from different packages which will take your EDA on the next level.
+
+However, I personally found it very time consuming to look for them, so that I'll hope to create the one-stop solution for EDA in R.
+
+## What's next?
+
+The next steps in your journey to the final results are [cleaning](https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/) and further pre-processing your data.
+
+--------------------------------
+
+If you think, I missed something, please comment on it, and I'll improve this tutorial.
+
+**Thank you for learning!**
+
+## Further readings and references
+
+- http://boxuancui.github.io/DataExplorer/
+
 
