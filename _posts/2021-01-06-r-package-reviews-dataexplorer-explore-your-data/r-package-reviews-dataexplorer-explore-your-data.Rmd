@@ -1,5 +1,5 @@
 ---
-title: "R package reviews {DataExplorer} explore your data! (in progress)"
+title: "R package reviews {DataExplorer} explore your data!"
 description: |
   What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...
 author:
@@ -35,6 +35,14 @@ library(datasets)         # for getting the data
 ```
 
 
+
+## R demo (ca. 9 min) about DataExplorer package
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("W3xErD6qIzg")
+```
+
+
 ## Automated EDA: visualise **everything** with **only one function!**
 
 *create_report()* function will produce, save and open an HTML document in your web-browser with visualization of all your data in seconds! Moreover, we can determine a single most important variable in our dataset and let the report display the data in the light of this variable. Just run *create_report()* function with two different datasets, as shown below and see the difference for yourself.
@@ -66,7 +74,7 @@ But, should we then always produced the whole report? Of coarse not. Convenientl
 
 ## Big Picture of your data
 
-Below we can see the basic overview or *diamonds* data in absolute numbers. First, we see the number of rows and columns (variables). Then we see how many numeric and categorical variables do we have in our dataset and whether there are missing values or even missing columns.
+Below we can see the basic overview of *diamonds* data in absolute numbers. First, we see the number of rows and columns (variables). Then we see how many numeric and categorical variables do we have in our dataset and whether there are missing values or even missing columns.
 
 ![](report_files/figure-html/overview.png)
 Such quick introduction into our dataset can be reached by the function *introduce()* for absolute numbers ("t" simply transposes the result) or by the *plot_intro()* for percentages. 
@@ -83,7 +91,7 @@ plot_intro(airquality)
 
 ## View missing value distribution
 
-One of the most useful functions from *DataExplorer* package, which I use almost daily is *plot_missing()*. It not only shows - how many percent of data is missing in every columns, but also explains what the amount of missing values means for us, namely that missing around 25% of data is still kind of OK and we can continue working. This legend helps me to better communicate with my collaborators, which wants me to continue analysis, even when I tell them there is not enough data in some columns. Yes, :) some people prefer to believe statistical software then a human being. Besides, it helps to quickly identify variables with missing values, if some models refuse to run because missing values are present.
+One of the most useful functions from *DataExplorer* package, which I use almost daily is *plot_missing()*. It not only shows - how many percent of data is missing in every columns, but also explains what the amount of missing values means for us, namely that missing around 25% of data is still kind of OK and we can continue working. This legend helps me to better communicate with my collaborators, which often want me to continue analysis, even when I tell them there is not enough data in some columns. Yes, :) some people prefer to believe statistical software then a human being. Besides, it helps to quickly identify variables with missing values, if some models refuse to run because missing values are present.
 
 Moreover, all plots in DataExplorer can be pimped with the syntax from *ggplot2* package:
 
@@ -94,8 +102,8 @@ plot_missing(airquality, ggtheme = theme_minimal())
 
 ## Visualise distribution of categorical (discrete) variables
 
-The best way to visualize categorical variables are bar-plots. And a simple *plot_bar()* function visualizes all categorical variables from our dataset at once. It even sorts the categories for us putting the most frequent categories on the top. It's very useful to see how many data-points every category has and usually, in my job, I see way too many of the small categories which are then supposed to be thrown together. By the way DataExplorer package can do this too, and easily, but more about this later.
-Until then, we can go one step further as compared to the *create_report()* function and display the frequency distribution of our categorical variable by **any** other variable, be it numeric (e.g. price) or discrete (e.g. cut). So, the long time of using "table()" function to count categorical variables is over for me :)
+The best way to visualize categorical variables are bar-plots. And a simple *plot_bar()* function visualizes all categorical variables from our dataset at once. It even sorts the categories for us putting the most frequent categories on the top. It's very useful to see how many data-points every category has and usually, in my job, I see way too many small categories which are then supposed to be thrown together. By the way DataExplorer package can do this too, and easily, but more about this later.
+Until then, we can go one step further as compared to the *create_report()* function and display the frequency distribution of our categorical variable by **any** other variable, be it numeric (e.g. price) or discrete (e.g. cut). So, the long time of using *table()* function to count categorical variables is over for me :)
 
 ```{r, fig.width=9}
 plot_bar(diamonds)
@@ -122,7 +130,7 @@ plot_correlation(na.omit(airquality), type = "continuous")
 
 ## Visualise distribution of numeric variables
 
-The distribution of numeric variables is usually explored by the means of histograms, density plots, Quantile-Quantile plots and scatterplots. Well, *DataExplorer* package provides easy functions for each of them. Moreover, it allows to produce the Quantile-Quantile plots for every category of a discrete variable, which I personally find very useful, since usual groups comparison (be it a t-test or ANOVA) requires checking the normality of every group, and not only of the whole numeric variable. 
+The distribution of numeric variables is usually explored by the means of histograms, density plots, Quantile-Quantile plots and scatterplots. Well, *DataExplorer* package provides easy functions for each of them. Moreover, it allows to produce the Quantile-Quantile plots for every category of a discrete variable, which I personally find very useful, since usual groups comparison (be it a t-test or ANOVA) requires checking the normality of every group, and not of the whole numeric variable. 
 
 As you probably remember, the big-picture from the *create_report()* function does not provide density and categorical Quantile-Quantile plots, showing that it's worth to go beyond the general report. For instance, you immediately see that *Wind* and *Temperature* can be analyzed using parametric methods (e.g. ANOVA), while *Ozone* would either need a non-parametric approach (e.g. Kruskal-Wallis) or would need to be transformed before modeling.
 
@@ -147,7 +155,7 @@ plot_qq(iris, by = "Species",
 
 ## Visualize boxplot
 
-Boxplots beautifully show where the most of the data is, namely inside of the box, and whether variables have many outliers. Boxplots are also useful for a quick comparison of distributions of several groups, samples or categories, because they visualize center, spread and range of every group. Thus, similarly to correlation analysis above, boxplots also help to develop hypotheses. I love boxplots and have already three videos on them on this channel.
+Boxplots beautifully show where the most of the data is, namely inside of the box, and whether variables have many outliers. Boxplots are also useful for a quick comparison of distributions of several groups, samples or categories, because they visualize center, spread and range of every group. Thus, similarly to correlation analysis above, boxplots also help to develop hypotheses. I love boxplots and have already three videos on them on my YouTube channel.
 
 ```{r}
 ## View bivariate continuous distribution based on `Month`
@@ -245,9 +253,7 @@ diamonds %>% drop_columns(c("x", "y", "z")) %>% head()
 
 ## Conclusion 
 
-*DataExplorer* allows us not only to quickly explore our data, but also helps to get initial insights and to generate new hypotheses. Moreover, it greatly simplifies the workflow, which we need to do anyway, saves time, reduces the probability of mistakes by coding everything manually and accelerates delivering final results. So, DataExplorer alone would be enough for a reasonably good exploration of data. But, there are of coarse many other useful packages for EDA. Thus, in the next video I'll present the best functions from different packages which will take your EDA on the next level.
-
-However, I personally found it very time consuming to look for them, so that I'll hope to create the one-stop solution for EDA in R.
+*DataExplorer* allows us not only to quickly explore our data, but also helps to get initial insights and to generate new hypotheses. Moreover, it greatly simplifies the workflow, which we need to do anyway, saves time, reduces the probability of mistakes by coding everything manually and accelerates delivering final results. So, DataExplorer alone would be enough for a reasonably good exploration of data. But, there are of coarse many other useful packages for EDA. Thus, in the [next post](https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/) I'll present the best functions from different packages which will take your EDA to the next level.
 
 ## What's next?
 
