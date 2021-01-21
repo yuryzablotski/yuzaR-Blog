@@ -463,3 +463,4 @@ You either can include a BibTex-like citation of others or make your article cit
 
 - Tom Mocks blog-post on how to build blogs with Distill helped me a lot! https://themockup.blog/posts/2020-08-01-building-a-blog-with-distill/
 
+- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 

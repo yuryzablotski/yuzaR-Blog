@@ -269,4 +269,4 @@ If you think, I missed something, please comment on it, and I'll improve this tu
 
 - http://boxuancui.github.io/DataExplorer/
 
-
+- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 
