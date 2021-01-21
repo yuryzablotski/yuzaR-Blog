@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
+  <link rel="alternate" type="application/rss+xml" href="https://yuzar-blog.netlify.app/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -107,7 +108,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Latest posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["posts"]}},"value":[{"type":"character","attributes":{},"value":["2021-01-06-r-package-reviews-dataexplorer-explore-your-data","2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs","2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package"]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Latest posts"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2488,6 +2489,26 @@ function init_posts_list() {
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="Latest posts">Latest posts</h1>
+<a href="posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["EDA","videos"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 9, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/1.png"/>
+</div>
+<div class="description">
+<h2>Exploratory Data Analysis (EDA) and BEYOND in R (in progress)</h2>
+<div class="dt-tags">
+<div class="dt-tag">EDA</div>
+<div class="dt-tag">videos</div>
+</div>
+<p>Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, it's the most important part of data science, which includes data cleaning, data transformation, generating hypothesis, testing assumptions etc. Unfortunatly this part often remains a black box, simply due to the individual differences in knowledge and preferences of data scientists. So that we often don't know how and, most importantly WHY, the data was cleaned or transformed on the way to the final result. This article tries to narrow this gap by adding one further step to the EDA, which helps to generate hypotheses and identify next steps.</p>
+</div>
+</a>
 <a href="posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["R package reviews","EDA","videos"]}</script>
 <div class="metadata">
@@ -2509,6 +2530,87 @@ function init_posts_list() {
 <p>What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...</p>
 </div>
 </a>
+<a href="posts/2021-01-06-survival-analysis-2-parametric-survival-models/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["survival analysis","videos"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 6, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png"/>
+</div>
+<div class="description">
+<h2>Survival analysis 2: parametric survival models</h2>
+<div class="dt-tags">
+<div class="dt-tag">survival analysis</div>
+<div class="dt-tag">videos</div>
+</div>
+<p>The non-parametric Kaplan-Meier method (KM) can not describe survival probability by a smooth function, which means it can not predict anything. The parametric models (e.g. Exponential, Weibull etc.) can! Besides, in case where parametric models are appropriate, they are more exact, more effective and more informative than KM or Cox. However, unfortunately, this step is often left out due to the rear use of parametric models. In this post we’ll try to close this gap.</p>
+</div>
+</a>
+<a href="posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["R package reviews","videos","visualization"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 3, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/14.png"/>
+</div>
+<div class="description">
+<h2>R package reviews {performance} check how good your model is! </h2>
+<div class="dt-tags">
+<div class="dt-tag">R package reviews</div>
+<div class="dt-tag">videos</div>
+<div class="dt-tag">visualization</div>
+</div>
+<p>There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.</p>
+</div>
+</a>
+<a href="posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["survival analysis","videos"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 3, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/thumbnail_survival_1.png"/>
+</div>
+<div class="description">
+<h2>Survival analysis 1: a gentle introduction into Kaplan-Meier Curves</h2>
+<div class="dt-tags">
+<div class="dt-tag">survival analysis</div>
+<div class="dt-tag">videos</div>
+</div>
+<p>Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.</p>
+</div>
+</a>
+<a href="posts/2021-01-02-r-package-reviews-janitor-clean-your-data/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["R package reviews","videos"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 2, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/2021-01-02-r-package-reviews-janitor-clean-your-data/9.png"/>
+</div>
+<div class="description">
+<h2>R package reviews {janitor} clean your data!</h2>
+<div class="dt-tags">
+<div class="dt-tag">R package reviews</div>
+<div class="dt-tag">videos</div>
+</div>
+<p>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.</p>
+</div>
+</a>
 <a href="posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["visualization","videos","models"]}</script>
 <div class="metadata">
@@ -2518,7 +2620,7 @@ function init_posts_list() {
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png"/>
+<img data-src="posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png"/>
 </div>
 <div class="description">
 <h2>How to visualize models, their assumptions and post-hocs</h2>
@@ -2539,7 +2641,7 @@ function init_posts_list() {
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/images/thumbnail.png"/>
+<img data-src="posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/images/thumbnail.png"/>
 </div>
 <div class="description">
 <h2>How to create a blog or a website in R with {Distill} package</h2>
@@ -2557,11 +2659,11 @@ function init_posts_list() {
 <ul>
 <li>
 <a href="#category:Articles">Articles</a>
-<span class="category-count">(3)</span>
+<span class="category-count">(8)</span>
 </li>
 <li>
 <a href="#category:EDA">EDA</a>
-<span class="category-count">(1)</span>
+<span class="category-count">(2)</span>
 </li>
 <li>
 <a href="#category:models">models</a>
@@ -2573,15 +2675,19 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#category:R_package_reviews">R package reviews</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#category:videos">videos</a>
 <span class="category-count">(3)</span>
 </li>
 <li>
+<a href="#category:survival_analysis">survival analysis</a>
+<span class="category-count">(2)</span>
+</li>
+<li>
+<a href="#category:videos">videos</a>
+<span class="category-count">(8)</span>
+</li>
+<li>
 <a href="#category:visualization">visualization</a>
-<span class="category-count">(1)</span>
+<span class="category-count">(2)</span>
 </li>
 </ul>
 </div>
