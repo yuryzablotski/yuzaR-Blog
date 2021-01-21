@@ -4,4 +4,6 @@ site: distill::distill_website
 listing: 
   posts:
     - 2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs
+    - 2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package
+    - 2021-01-06-r-package-reviews-dataexplorer-explore-your-data
 ---
