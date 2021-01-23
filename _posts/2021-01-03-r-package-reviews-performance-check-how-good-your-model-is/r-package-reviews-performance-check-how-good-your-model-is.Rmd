@@ -214,7 +214,7 @@ Cheers guys, have a good one!
 
 - https://www.rdocumentation.org/packages/performance/versions/0.6.1
 
-
+- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 
 
 
 

@@ -367,8 +367,7 @@ survival models: https://cran.r-project.org/web/packages/fic/vignettes/survival.
 
 - the whole playlist of videos from MarinStatsLectures! They are amazing! https://www.youtube.com/watch?v=vX3l36ptrTU&list=PLqzoL9-eJTNDdnKvep_YHIwk2AMqHhuJ0 especially the second video of marinstatslecture: https://www.youtube.com/watch?v=MdmWdIV5k-I&list=PLqzoL9-eJTNDdnKvep_YHIwk2AMqHhuJ0&index=2
 
-
-
+- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 
 
 
 

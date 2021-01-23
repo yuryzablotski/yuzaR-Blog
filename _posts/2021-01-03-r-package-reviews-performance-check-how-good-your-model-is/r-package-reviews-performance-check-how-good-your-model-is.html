@@ -1550,7 +1550,7 @@ AIC    |    BIC | R2 (cond.) | R2 (marg.) |      ICC | RMSE | Sigma
 
 ELPD   | ELPD_SE |  LOOIC | LOOIC_SE |   WAIC |   R2 | R2 (marg.) | R2 (adj.) | RMSE | Sigma
 --------------------------------------------------------------------------------------------
--75.75 |    3.95 | 151.51 |     7.90 | 150.85 | 0.86 |       0.85 |      0.83 | 2.07 |  2.28</code></pre>
+-75.79 |    4.02 | 151.58 |     8.05 | 150.78 | 0.86 |       0.86 |      0.83 | 2.06 |  2.27</code></pre>
 </div>
 <h2 id="compare-models">Compare models</h2>
 <p>Unfortunately we can’t compare not similar models, for instance different types of models (e.g. linear vs. mixed effects) or models done with different amounts of data, because one of them will be better for reasons other then model quality. Even more unfortunately, such comparisons are often conducted anyway. I was also guilty of it in the past. One of the common R functions allowing such comparisons is <em>anova(model1, model2)</em>. It smartly does not allow the comparison of linear vs. mixed effects models (see the red warning below), but stupidly can be out-tricked by placing mixed effects model first.</p>
@@ -1628,16 +1628,16 @@ m1.1  | lmerMod | 164.24 | 173.03 | 8.58 |       0.83 |       0.83 | 8.48e-03 | 
 </div>
 <pre><code># Bayesian R2 with Standard Error
 
-  Conditional R2: 0.861 (89% CI [0.800, 0.919])
-     Marginal R2: 0.853 (89% CI [0.766, 0.930])</code></pre>
+  Conditional R2: 0.862 (89% CI [0.797, 0.921])
+     Marginal R2: 0.855 (89% CI [0.759, 0.932])</code></pre>
 <div class="sourceCode">
 <pre><code><span class='fu'><a href='https://easystats.github.io/performance/reference/icc.html'>icc</a></span><span class='op'>(</span><span class='va'>m2</span><span class='op'>)</span>   <span class='co'># Intraclass Correlation Coefficient (ICC)</span>
 </code></pre>
 </div>
 <pre><code># Intraclass Correlation Coefficient
 
-     Adjusted ICC: 0.847
-  Conditional ICC: 0.461</code></pre>
+     Adjusted ICC: 0.822
+  Conditional ICC: 0.411</code></pre>
 <div class="sourceCode">
 <pre><code><span class='co'># not part of the "performance" package, but fits well here</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/AIC.html'>AIC</a></span><span class='op'>(</span><span class='va'>m1</span><span class='op'>)</span>   <span class='co'># Akaike's Information Criterion</span>
@@ -1793,6 +1793,7 @@ High Correlation
 <li><p><a href="https://easystats.github.io/performance/" class="uri">https://easystats.github.io/performance/</a></p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/performance/performance.pdf" class="uri">https://cran.r-project.org/web/packages/performance/performance.pdf</a></p></li>
 <li><p><a href="https://www.rdocumentation.org/packages/performance/versions/0.6.1" class="uri">https://www.rdocumentation.org/packages/performance/versions/0.6.1</a></p></li>
+<li><p>One of the best places to learn R is R-Bloggers platform: <a href="http://www.R-bloggers.com" class="uri">http://www.R-bloggers.com</a></p></li>
 </ul>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

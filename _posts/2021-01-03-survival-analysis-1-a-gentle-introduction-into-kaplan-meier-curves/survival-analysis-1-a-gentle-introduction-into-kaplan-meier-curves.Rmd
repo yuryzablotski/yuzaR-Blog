@@ -534,3 +534,4 @@ If you think, I missed something, please comment on it, and I'll improve this tu
 
 - https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html#part_1:_introduction_to_survival_analysis
 
+- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 

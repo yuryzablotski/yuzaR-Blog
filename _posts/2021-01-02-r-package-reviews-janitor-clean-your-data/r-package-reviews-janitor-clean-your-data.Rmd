@@ -208,18 +208,6 @@ What is you favorite R package?
 
 If you think, I missed something, please comment on it, and I’ll improve this tutorial.
 
+## Useful references:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 
