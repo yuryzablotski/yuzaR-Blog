@@ -1,7 +1,7 @@
 ---
-title: "Exploratory Data Analysis (EDA) and BEYOND in R (in progress)"
+title: "Exploratory Data Analysis (EDA) and BEYOND in R: or one-stop solution for EDA in R (in progress)"
 description: |
-  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, it's the most important part of data science, which includes data cleaning, data transformation, generating hypothesis, testing assumptions etc. Unfortunatly this part often remains a black box, simply due to the individual differences in knowledge and preferences of data scientists. So that we often don't know how and, most importantly WHY, the data was cleaned or transformed on the way to the final result. This article tries to narrow this gap by adding one further step to the EDA, which helps to generate hypotheses and identify next steps.
+  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, EDA is sometimes the most important part of data analysis, because it helps to generate hypothesis, which then determine the final result. Unfortunatly EDA often remains unreported, simply because everyone focuses on the final result. So that we often don't know how EDA was conducted. Thus, in this article I'll provide the best (to my knowledge) ways to explore the data in R and go one step beyond the EDA towards generating hypotheses.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -30,24 +30,29 @@ knitr::opts_chunk$set(echo = T)
 
 library(tidyverse)        # for data wrangling and visualization
 library(datasets)         # for getting the data 
+library(ISLR)
 library(DataExplorer)     # for exploratory data analysis
-library(skimr)
+library(SmartEDA)         # for exploratory data analysis
+library(skimr)            # for descriptive stats
 library(PerformanceAnalytics)
 library(ggstatsplot)
 library(performance)
+library(pastecs)
+library(dlookr)
 ```
-I love R, but I sometimes find it very time consuming to look for the best functions for a particular task, there are so many great packages! Thus, if you know better functions or packages, please let me know in the comments below and let us together create a one-stop solution for EDA in R.
+I love R, because it is reach and having ca. 17000 packages allows me to concur almost any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by different functions from different packages with different levels of effectiveness. Looking for the most effective way can be very time consuming! So, I hope this collection will save you some time. And if you know better functions or packages for EDA, than those provided here, please let me know in the comments below and let us together create a one-stop solution for EDA in R.
 
 ## Creating visualised reports of the whole dataset with only one function!
+
+The most effective way to explore the data fast is a creation of automated reports. [DataExplorer package](https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/) creates the best reports in my opinion. [SmartEDA](https://daya6489.github.io/SmartEDA/) package is another good choice. 
 
 ### DataExplorer
 
 ```{r eval=F}
-library(DataExplorer)     # for exploratory data analysis
-
 airquality <- airquality %>% 
   mutate(Month = factor(Month))
 
+# report without a response variable
 create_report(airquality)
 
 # report with a response variable
@@ -57,11 +62,20 @@ create_report(diamonds, y = "price")
 ### SmartEDA
 
 ```{r eval=F}
-# Bonus 4:
-SmartEDA::ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
+ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
 ```
 
-## Big Picture of your data
+### dlookr
+
+```{r eval=F}
+eda_report(airquality)
+
+diamonds %>% 
+  eda_report(price)
+```
+
+
+## Big Picture of your data, or some quick descriptive stats
 
 Instead of running *create_report()*, you may also run each function individually for your analysis, e.g. view basic description for *airquality* data.
 
@@ -73,13 +87,72 @@ introduce(airquality)
 plot_intro(airquality)
 ```
 
-### skimr
+### SmartEDA
 
 ```{r}
-skimr::skim(airquality)
+ExpData(data=diamonds,type=1)
+ExpData(data=diamonds,type=2)
 ```
 
 
+
+### skimr
+
+```{r}
+skim(diamonds)
+```
+
+### pastecs
+
+```{r}
+stat.desc(airquality)
+```
+
+
+### summarytools
+
+```{r}
+library(summarytools)
+dfSummary(diamonds)
+```
+
+### psych
+
+```{r}
+library(psych)
+describeBy(diamonds,
+           diamonds$cut) # grouping variable
+```
+
+### dlookr
+
+```{r}
+dlookr::describe(airquality)
+
+diamonds %>% 
+  dplyr::select(price, cut, carat) %>% 
+  group_by(cut) %>% 
+  dlookr::describe() %>% 
+  dplyr::select(variable, cut, n, na, mean, sd, IQR)
+```
+
+### Hmisc
+
+```{r}
+Hmisc::describe(mpg)
+```
+
+
+
+### gtsummary
+
+```{r}
+library(gtsummary)
+diamonds %>%
+  tbl_summary(by = cut) %>% 
+  bold_labels() %>% 
+  add_p()
+```
 
 
 ## View missing value distribution for airquality data
@@ -90,7 +163,13 @@ skimr::skim(airquality)
 plot_missing(airquality)
 ```
 
-### visdata
+### dlookr
+
+```{r}
+plot_na_pareto(airquality)
+```
+
+### visdat
 
 ```{r}
 visdat::vis_dat(airquality)
@@ -111,6 +190,27 @@ plot_bar(diamonds, with = "price")
 
 ## View frequency distribution by a discrete variable
 plot_bar(diamonds, by = "cut")
+```
+
+### SmartEDA
+
+```{r}
+ExpCatViz(diamonds)
+
+## Stacked bar graph
+ExpCatViz(diamonds,target="cut",fname=NULL,clim=10,col=NULL,margin=2,Page = c(2,1),sample=2)
+
+## Frequency or custom tables for categorical variables
+ExpCTable(diamonds, Target = "price")
+
+## Summary statistics of categorical variables
+ExpCatStat(diamonds, Target="price",result = "Stat")
+
+## Inforamtion value and Odds value
+ExpCatStat(diamonds, Target="price",result = "IV")
+
+## Variable importance graph using information values
+ExpCatStat(Carseats, Target="Urban", result = "Stat", clim=10, nlim=5, bins=10, Pclass="Yes", plot=TRUE, top=10, Round=2)
 ```
 
 ### ggstatsplot
@@ -137,12 +237,50 @@ plot_qq(airquality)
 ## View quantile-quantile plot of all continuous variables by feature `cut`
 plot_qq(airquality, by = "Month")
 ```
+
+### SmartEDA
+
+```{r}
+## View estimated density distribution of all continuous variables
+ExpNumViz(airquality)
+
+## View quantile-quantile plot of all continuous variables
+ExpOutQQ(airquality)
+```
+
+
 ### ggpubr
 
 ```{r}
 library(ggpubr)
 ggqqplot(airquality$Temp)
 ggqqplot(airquality$Temp[airquality$Month == 5])
+```
+
+### car
+
+```{r}
+car::qqPlot(mtcars$mpg, groups = mtcars$cyl)
+```
+
+### dlookr
+
+Shapiro-Wilk normality test is performed.
+
+```{r}
+normality(airquality)
+
+# amazingly it supports dplyr and therefore group_by
+mtcars %>%
+  group_by(am, cyl) %>%
+  normality(mpg, wt) %>% 
+  arrange(desc(p_value)) 
+
+plot_normality(airquality, Ozone, Wind)
+
+airquality %>% 
+  group_by(Month) %>%
+  plot_normality(Ozone)
 ```
 
 
@@ -166,9 +304,21 @@ PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month))
 # method = "kendall" or "spearman"
 PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = "kendall") 
 ```
+### dlookr
+
+```{r}
+correlate(airquality, Ozone)
+
+plot_correlate(airquality)
+
+diamonds %>%
+  filter(cut %in% c("Premium", "Ideal")) %>% 
+  group_by(cut) %>%
+  plot_correlate()
+```
 
 
-## Visualize numerical and categorical at the same time
+## Visualize box plots
 
 ### DataExplorer
 
@@ -177,6 +327,11 @@ PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = 
 plot_boxplot(airquality, by = "Month")
 ```
 
+### SmartEDA
+
+```{r}
+ExpNumViz(airquality, target = "Month")
+```
 
 ### ggstatsplot
 
@@ -194,6 +349,20 @@ The *performance* package provide an easy way to visualize outliers.
 check_outliers(airquality$Ozone, method = "iqr")
 plot(check_outliers(airquality$Ozone, method = "iqr"))
 ```
+## Scatter plots
+
+```{r}
+plot(iris)
+```
+
+### SmartEDA
+
+```{r}
+airquality %>% 
+  select(1:3) %>% 
+ExpNumViz(scatter=TRUE)
+```
+
 
 ## Exploratory modelling
 
@@ -220,3 +389,5 @@ If you think, I missed something, please comment on it, and I'll improve this tu
 ## Further readings and references
 
 - One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 
+
+- https://www.groundai.com/project/the-landscape-of-r-packages-for-automated-exploratory-data-analysis/1
