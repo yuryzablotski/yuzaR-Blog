@@ -1,7 +1,7 @@
 ---
 title: "Exploratory Data Analysis (EDA) and BEYOND in R: or one-stop solution for EDA in R (in progress)"
 description: |
-  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, EDA is sometimes the most important part of data analysis, because it helps to generate hypothesis, which then determine the final result. Unfortunatly EDA often remains unreported, simply because everyone focuses on the final result. So that we often don't know how EDA was conducted. Thus, in this article I'll provide the best (to my knowledge) ways to explore the data in R and go one step beyond the EDA towards generating hypotheses.
+  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, EDA is sometimes the most important and the most time consuming part of data analysis, because it helps to generate hypothesis, which then determine the final result. Unfortunatly EDA often remains unreported, simply because everyone focuses on the final result. So that we often don't know how EDA was conducted. Thus, in this article we'll provide the best (to my knowledge) ways to explore the data in R, which will signifiantly speed up and easy data exploration. Moreover we'll go one step beyond the EDA towards generating hypotheses by using some simple statistical tests. 
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -39,7 +39,12 @@ library(ggstatsplot)
 library(performance)
 library(pastecs)
 library(dlookr)
+library(visdat)
+library(summarytools)
+library(explore)
+library(knitr)
 ```
+
 I love R, because it is reach and having ca. 17000 packages allows me to concur almost any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by different functions from different packages with different levels of effectiveness. Looking for the most effective way can be very time consuming! So, I hope this collection will save you some time. And if you know better functions or packages for EDA, than those provided here, please let me know in the comments below and let us together create a one-stop solution for EDA in R.
 
 ## Creating visualised reports of the whole dataset with only one function!
@@ -67,6 +72,8 @@ ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
 
 ### dlookr
 
+The advantage of *dlookr* package is that you can choose to output to pdf (by default) and html files. Moreover, you can determine the output name, directory and even the font family.
+
 ```{r eval=F}
 eda_report(airquality)
 
@@ -93,6 +100,17 @@ plot_intro(airquality)
 ExpData(data=diamonds,type=1)
 ExpData(data=diamonds,type=2)
 ```
+### dlookr
+
+```{r}
+diagnose(airquality) %>% 
+  kable()
+```
+
+
+```{r eval=F}
+diagnose_report(airquality)
+```
 
 
 
@@ -114,6 +132,8 @@ stat.desc(airquality)
 ```{r}
 library(summarytools)
 dfSummary(diamonds)
+freq(diamonds)
+descr(airquality)
 ```
 
 ### psych
@@ -134,6 +154,11 @@ diamonds %>%
   group_by(cut) %>% 
   dlookr::describe() %>% 
   dplyr::select(variable, cut, n, na, mean, sd, IQR)
+
+diamonds %>% 
+  dplyr::select(price, cut, carat) %>% 
+  group_by(cut) %>%
+  univar_numeric()
 ```
 
 ### Hmisc
@@ -165,17 +190,58 @@ plot_missing(airquality)
 
 ### dlookr
 
+Plot The Combination Variables That Is Include Missing Value
+Visualize the combinations of missing value across cases.
+
 ```{r}
 plot_na_pareto(airquality)
+plot_na_hclust(airquality)
+plot_na_intersect(airquality)
 ```
 
 ### visdat
 
 ```{r}
-visdat::vis_dat(airquality)
+vis_dat(airquality)
+
+plotly::ggplotly(vis_miss(airquality))
+
+vis_miss(airquality, 
+         cluster = TRUE)
+
+vis_guess(iris)
+plotly::ggplotly(vis_guess(airquality))
 ```
 
 
+## Quickly impute missing values
+
+### dlookr
+
+*Dlookr* package provide numerous methods to impute missing values. However, it's not recommenden to use any specific number, like mean or median. Two of the methods from *Dlookr* package are particularly useful,
+- "rpart" : Recursive Partitioning and Regression Trees
+- "mice" : Multivariate Imputation by Chained Equations
+because they can be applied for both numerical and categorical variables, while additionally, the 
+- "knn" : K-nearest neighbors 
+method can be used for only numeric columns.
+
+One thing I found particularly interesting: we can use several methods and compare them visually. This gives us a choice to use the method which does not change the distribution too much or too weirdly. The example with *median* shown below is a weard one, so that I'd prefer to use *rpart* or *mice*.
+
+
+
+```{r}
+bla <- imputate_na(airquality, Ozone, Temp, method = "rpart")
+summary(bla)
+plot(bla)
+
+blup <- imputate_na(airquality, Ozone, Temp, method = "mice")
+summary(blup)
+plot(blup)
+
+blip <- imputate_na(airquality, Ozone, Temp, method = "median")
+summary(blip)
+plot(blip)
+```
 
 
 
@@ -191,6 +257,16 @@ plot_bar(diamonds, with = "price")
 ## View frequency distribution by a discrete variable
 plot_bar(diamonds, by = "cut")
 ```
+
+### dlookr
+
+```{r}
+compare_category(.data = diamonds, cut, clarity) %>% plot()
+
+diagnose_category(diamonds)
+```
+
+
 
 ### SmartEDA
 
@@ -220,7 +296,16 @@ ggbarstats(data = diamonds, x = cut, y = clarity)
 ```
 
 
-## Visualise distribution of numeric variables
+## Explore numeric variables
+
+### dlookr
+
+Besides the usual descriptive statistics, *diagnose_numeric()* reports the number of zeros, negative values and outliers.
+
+```{r}
+diagnose_numeric(airquality)
+```
+
 
 ### DataExplorer
 
@@ -274,13 +359,23 @@ normality(airquality)
 mtcars %>%
   group_by(am, cyl) %>%
   normality(mpg, wt) %>% 
-  arrange(desc(p_value)) 
+  arrange(p_value)
+
+# get ca. 2000 tests in seconds
+diamonds %>% 
+  group_by(cut, color, clarity) %>% 
+  normality()
 
 plot_normality(airquality, Ozone, Wind)
 
 airquality %>% 
+  filter(Month %in% c(7, 9)) %>% 
   group_by(Month) %>%
   plot_normality(Ozone)
+
+method = c("zscore", "minmax", "log", "log+1", "sqrt", "1/x", "x^2", "x^3")
+transform(airquality$Ozone, method = "log+1") %>% plot()
+transform(airquality$Ozone, method = "log+1") %>% summary()
 ```
 
 
@@ -291,6 +386,19 @@ airquality %>%
 ```{r}
 ## View overall correlation heatmap
 plot_correlation(na.omit(airquality), type = "c")
+```
+
+### dlookr
+
+```{r}
+correlate(airquality, Ozone)
+
+plot_correlate(airquality, method = "kendall")
+
+diamonds %>%
+  filter(cut %in% c("Premium", "Ideal")) %>% 
+  group_by(cut) %>%
+  plot_correlate()
 ```
 
 ### PerformanceAnalytics
@@ -304,18 +412,7 @@ PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month))
 # method = "kendall" or "spearman"
 PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = "kendall") 
 ```
-### dlookr
 
-```{r}
-correlate(airquality, Ozone)
-
-plot_correlate(airquality)
-
-diamonds %>%
-  filter(cut %in% c("Premium", "Ideal")) %>% 
-  group_by(cut) %>%
-  plot_correlate()
-```
 
 
 ## Visualize box plots
@@ -346,9 +443,52 @@ ggstatsplot::ggbetweenstats(data = airquality, x = Month, y = Ozone, type = "np"
 The *performance* package provide an easy way to visualize outliers.
 
 ```{r}
-check_outliers(airquality$Ozone, method = "iqr")
+check_outliers(airquality$Ozone)
 plot(check_outliers(airquality$Ozone, method = "iqr"))
 ```
+
+### dlookr
+
+
+
+```{r}
+diagnose_outlier(diamonds)
+
+plot_outlier(airquality, Ozone)
+
+airquality %>% 
+  dplyr::select(Ozone, Wind) %>% 
+  plot_outlier()
+
+# Visualize variables with a ratio of outliers greater than 3%
+diamonds %>%
+  plot_outlier(diamonds %>%
+      diagnose_outlier() %>%
+      filter(outliers_ratio > 3) %>%
+      select(variables) %>%
+      pull())
+```
+
+
+## Impute outliers
+
+*Dlookr* package also provides an opportunity to impute outliers using several methods:
+
+- "mean" : arithmetic mean
+- "median" : median
+- "mode" : mode
+- "capping" : Impute the upper outliers with 95 percentile, and Impute the bottom outliers with 5 percentile.
+
+Moreover, we can compare the results of a column before and after imputation via a plain table or via a plot.
+
+```{r}
+bla <- imputate_outlier(diamonds, carat, method = "capping")
+summary(bla)
+plot(bla)
+```
+
+
+
 ## Scatter plots
 
 ```{r}
@@ -361,6 +501,16 @@ plot(iris)
 airquality %>% 
   select(1:3) %>% 
 ExpNumViz(scatter=TRUE)
+```
+
+### dlookr
+
+The *compare_numeric()* function examines the relationship between numerical variables with the help of (Pearson's) correlation and simple linear models.
+
+```{r}
+compare_numeric(iris) %>% plot()
+
+compare_numeric(iris)
 ```
 
 
@@ -378,6 +528,33 @@ ggplot(diamonds, aes(price, carat))+
   geom_smooth()+
   facet_grid(cut ~ clarity)
 ```
+
+
+## Data transformation
+
+### Normalize the variables
+
+```{r eval=F}
+tr <- transform(airquality$Ozone, method = "log+1")
+summary(tr)
+plot(tr)
+
+transformation_report(airquality)
+```
+
+### Categorize numeric variables
+
+The binning() converts a numeric variable to a categorization variable. Choose from "quantile", "equal", "equal", "pretty", "kmeans" and "bclust". The "quantile" sets breaks with quantiles of the same interval. The "equal" sets breaks at the same interval. The "pretty" chooses a number of breaks not necessarily equal to nbins using base::pretty function. The "kmeans" uses stats::kmeans function to generate the breaks. The "bclust" uses e1071::bclust function to generate the breaks using bagged clustering. "kmeans" and "bclust" was implemented by classInt::classIntervals function.
+
+```{r}
+bin <- binning(airquality$Ozone, type = "bclust", nbins = 4,
+              labels = c("LQ1", "UQ1", "LQ3", "UQ3"))
+
+summary(bin)
+
+plot(bin)
+```
+
 
 
 --------------------------------
