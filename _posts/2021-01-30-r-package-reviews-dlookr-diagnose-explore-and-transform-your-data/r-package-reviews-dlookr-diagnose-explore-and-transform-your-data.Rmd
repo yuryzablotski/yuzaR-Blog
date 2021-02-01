@@ -1,0 +1,183 @@
+---
+title: "R package reviews {dlookr} diagnose, explore and transform your data"
+description: |
+  Row data need to be diagnosed for problems, explored for new hypotheses and transformed in order to increase data quality. The {dlookr} package makes these steps fast and easy. It is able to generate automated reports or performe compex operation, like imputing missing values, with simple functions.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-30-2021
+output:
+  distill::distill_article:
+    self_contained: false
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r}
+library(dlookr)
+
+citation("dlookr")
+```
+
+
+## Diagnose your data
+
+Diagnosing data quality means checking ...
+
+```{r}
+diagnose(airquality)
+
+library(tidyverse)
+diagnose_category(diamonds)
+
+diagnose_numeric(diamonds)
+
+diagnose_outlier(diamonds)
+
+diagnose_outlier(diamonds)
+
+plot_outlier(iris)
+```
+
+### Visualize Missing Values
+
+```{r}
+plot_na_pareto(airquality)
+
+plot_na_hclust(airquality)
+
+plot_na_intersect(airquality)	
+```
+
+
+### Reporting
+
+```{r eval=F}
+diagnose_report(airquality) # pdf or html
+```
+
+
+
+
+
+
+
+## Explore your data
+
+### Univariate EDA
+
+```{r}
+describe(diamonds)
+
+correlate(airquality) 
+
+plot_correlate(airquality) 
+```
+
+### Normality Test
+
+```{r}
+normality(iris)
+
+iris %>% 
+  group_by(Species) %>% 
+  normality()
+
+airquality %>% 
+  plot_normality()
+```
+
+
+```{r eval=F}
+eda_report(airquality)
+```
+
+
+## Transform your data
+
+Derive new variables, impute missing values, impute outliers or perform variable transformations.
+
+### Find Variables
+
+```{r}
+find_na(airquality)
+
+find_outliers(diamonds)
+
+find_skewness(diamonds)
+```
+
+### Imputation
+
+```{r}
+bla <- imputate_na(airquality, Ozone, Temp, method = "rpart")
+summary(bla)
+plot(bla)
+
+blup <- imputate_na(airquality, Ozone, Temp, method = "mice")
+summary(blup)
+plot(blup)
+
+blip <- imputate_na(airquality, Ozone, Temp, method = "median")
+summary(blip)
+plot(blip)
+
+bla <- imputate_outlier(diamonds, carat, method = "capping")
+summary(bla)
+plot(bla)
+```
+### Binning
+
+```{r}
+DataExplorer::plot_density(airquality$Ozone)
+
+bin <- binning(airquality$Ozone, type = "bclust", nbins = 4,
+              labels = c("LQ1", "UQ1", "LQ3", "UQ3"))
+
+summary(bin)
+
+plot(bin)
+
+```
+
+### Transformation
+
+```{r}
+transform(airquality$Ozone)
+
+plot(transform(airquality$Ozone))
+```
+
+
+### Reporting
+
+```{r eval = F}
+transformation_report(airquality)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
