@@ -1,7 +1,7 @@
 ---
 title: "R package reviews {dlookr} diagnose, explore and transform your data"
 description: |
-  Row data need to be diagnosed for problems, explored for new hypotheses and transformed in order to increase data quality. The {dlookr} package makes these steps fast and easy. It is able to generate automated reports or performe compex operation, like imputing missing values, with simple functions.
+  Row data need to be diagnosed for problems, explored for new hypotheses and transformed in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. It is able to generate automated reports or perform compex operation, like imputing missing values or outliers with simple functions. Moreover, {dlookr} collaborates perfectly with {dplyr} and {tidyverse}! 
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -14,11 +14,12 @@ draft: true
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = T)
 ```
 
 
 ```{r}
+library(tidyverse)
 library(dlookr)
 
 citation("dlookr")
@@ -32,24 +33,41 @@ Diagnosing data quality means checking ...
 ```{r}
 diagnose(airquality)
 
-library(tidyverse)
 diagnose_category(diamonds)
 
 diagnose_numeric(diamonds)
 
-diagnose_outlier(diamonds)
+diagnose_numeric(diamonds) %>% 
+  filter(minus > 0 | zero > 0) 
 
 diagnose_outlier(diamonds)
+
+diagnose_outlier(diamonds) %>% 
+  filter(outliers_ratio > 3)
 
 plot_outlier(iris)
 ```
 
 ### Visualize Missing Values
 
+The rating of the variable is expressed as a proportion of missing values. It is calculated as the ratio of missing values. If it is [0, 0.05), it is Good, if it is [0.05, 0.4) it is OK, if it is [0.4, 0.8) it is Bad, and if it is [0.8, 1.0] it is Remove.
+
+
+
 ```{r}
 plot_na_pareto(airquality)
 
-plot_na_hclust(airquality)
+airquality %>% 
+  plot_na_pareto(only_na = TRUE)
+
+airquality %>% 
+  plot_na_pareto(only_na = TRUE, plot = FALSE)
+```
+
+It is important to look at the relationship between variables, including missing values. plot_na_hclust() visualizes the relationship of variables that contain missing values. This function rearranges the positions of variables using hierarchical clustering. Then, the expression of the missing value is visualized by grouping similar variables.
+
+```{r}
+plot_na_hclust(airquality)+theme_bw()
 
 plot_na_intersect(airquality)	
 ```
@@ -63,44 +81,135 @@ diagnose_report(airquality) # pdf or html
 
 
 
-
-
-
-
 ## Explore your data
 
 ### Univariate EDA
 
+*describe()* function provides descriptive statistics of all numeric variables in your dataset, if you don't specify any. As all function in {dlookr}, *describe()* works perfectly with {dplyr}.
+
 ```{r}
 describe(diamonds)
 
-correlate(airquality) 
-
-plot_correlate(airquality) 
-```
-
-### Normality Test
-
-```{r}
-normality(iris)
+describe(airquality, Ozone, Temp)
 
 iris %>% 
   group_by(Species) %>% 
-  normality()
+  select(Petal.Length) %>% 
+  describe()
+```
+
+
+
+### Normality Test
+
+*normality()* function performs a Shapiro-Wilk normality test on all numeric variables, if non particular are specified. When the number of observations is greater than 5000, then 5000 samples by random simple sampling are selected. *plot_normality()* function visualizes the normality of numeric data and two most common transformations of data in case the normality assumption was not met:
+
+- Histogram of original data
+- Q-Q plot of original data
+- Histogram of log transformed data
+- Histogram of square root transformed data
+
+```{r}
+normality(iris) 
+
+# use dplyr with dlookr
+iris %>% 
+  group_by(Species) %>% 
+  normality() %>%
+  filter(p_value <= 0.05) %>% 
+  arrange(abs(p_value))
+
+# select few columns 
+airquality %>%
+  plot_normality(Ozone, Temp)
+```
+### Correlation
+
+```{r}
+correlate(airquality, Ozone)
+
+plot_correlate(airquality, method = "kendall")
+
+diamonds %>%
+  filter(cut %in% c("Premium", "Ideal")) %>% 
+  group_by(cut) %>%
+  plot_correlate()
+```
+
+### Relation
+
+#### categorical to categorical
+
+```{r}
+diamonds %>% 
+  target_by(cut) %>%      # similar to "group_by" only for one variable
+  relate(clarity) %>% 
+  summary() 
+
+
+diamonds %>% 
+  target_by(cut) %>%      # similar to "group_by" only for one variable
+  relate(clarity) %>% 
+  plot()
+```
+
+
+#### categorical to numeric
+
+```{r}
+iris %>% 
+  target_by(Species) %>%      # similar to "group_by" only for one variable
+  relate(Sepal.Length) %>% 
+  plot()
+```
+
+
+#### categorical to numeric
+
+```{r}
+iris %>% 
+  target_by(Sepal.Length) %>%      # similar to "group_by" only for one variable
+  relate(Species) %>% 
+  summary()
+
+iris %>% 
+  target_by(Sepal.Length) %>%      # similar to "group_by" only for one variable
+  relate(Species) %>% 
+  plot()
+```
+#### numeric to numeric
+
+```{r}
+airquality %>% 
+  target_by(Ozone) %>%      
+  relate(Temp) %>% 
+  #summary() 
+  sjPlot::tab_model()
 
 airquality %>% 
-  plot_normality()
+  target_by(Ozone) %>%      
+  relate(Temp) %>% 
+  plot()
 ```
+
+
+### Reporting
 
 
 ```{r eval=F}
 eda_report(airquality)
+
+airquality %>%
+  eda_report(
+    target        = Temp, 
+    output_format = "html", 
+    output_file   = "EDA_airquality.html")
 ```
 
 
 ## Transform your data
 
-Derive new variables, impute missing values, impute outliers or perform variable transformations.
+Derive new variables, impute missing values, impute outliers, resolve skewed data or transform numeric variable into categorical.
 
 ### Find Variables
 
@@ -114,43 +223,153 @@ find_skewness(diamonds)
 
 ### Imputation
 
+Just run all the methods available and peak the best for your particular dataset. Because there is no "best" imputation method, just the best method for your individual data. *imputate_na()* support both numeric and categorical variables, and supports the following method.
+
+#### 1. Predictor is numerical variable
+
+- “mean” : arithmetic mean
+- “median” : median
+- “mode” : mode
+- “knn” : K-nearest neighbors
+- “rpart” : Recursive Partitioning and Regression Trees
+- “mice” : Multivariate Imputation by Chained Equations (random seed must be set)
+
+
 ```{r}
-bla <- imputate_na(airquality, Ozone, Temp, method = "rpart")
+# mean
+bla <- imputate_na(airquality, Ozone, Temp, method = "mean")
 summary(bla)
 plot(bla)
 
-blup <- imputate_na(airquality, Ozone, Temp, method = "mice")
-summary(blup)
-plot(blup)
+# median
+blup <- imputate_na(airquality, Ozone, Temp, method = "median")
+# summary(blup)
+plot(blup)+theme_minimal()
 
-blip <- imputate_na(airquality, Ozone, Temp, method = "median")
-summary(blip)
-plot(blip)
+# “knn” : K-nearest neighbors
+blap <- imputate_na(airquality, Ozone, Temp, method = "knn")
+summary(blap)
+plot(blap)
 
+# “rpart” : Recursive Partitioning and Regression Trees
+blah <- imputate_na(airquality, Ozone, Temp, method = "rpart")
+summary(blah)
+plot(blah)+theme_classic()+theme(legend.position = "top")
+
+# “mice” : Multivariate Imputation by Chained Equations
+blup <- imputate_na(airquality, Ozone, Temp, method = "mice", seed = 1234)
+# summary(blup)
+plot(blup)+theme_void()
+```
+
+#### 2. Predictor is categorical variable
+
+- “mode” : mode
+- “rpart” : Recursive Partitioning and Regression Trees
+- “mice” : Multivariate Imputation by Chained Equations (random seed must be set)
+
+```{r}
+# does temporarily not work
+# imputate_na(ISLR::Carseats$Urban, method = "mice")
+```
+
+
+#### 3. Imputation of outliers
+
+imputate_outlier() imputes the outliers value. The predictor with outliers supports only numeric variables and supports the following methods.
+
+- predictor is numerical variable
+  - “mean” : arithmetic mean
+  - “median” : median
+  - “mode” : mode
+  - “capping” : Impute the upper outliers with 95 percentile, and Impute the bottom outliers with 5 percentile.
+
+```{r}
 bla <- imputate_outlier(diamonds, carat, method = "capping")
-summary(bla)
+plot(bla)
+
+bla <- imputate_outlier(diamonds, carat, method = "mean")
 plot(bla)
 ```
+
+
+
 ### Binning
+
+*binning()* transforms a numeric variable into a categorical variable. The following types of binning are supported:
+
+- “quantile” : categorize using quantile to include the same frequencies
+- “equal”  : categorize to have equal length segments
+- “pretty” : categorized into moderately good segments
+- “kmeans” : categorization using K-means clustering
+- “bclust” : categorization using bagged clustering technique
 
 ```{r}
 DataExplorer::plot_density(airquality$Ozone)
 
-bin <- binning(airquality$Ozone, type = "bclust", nbins = 4,
-              labels = c("LQ1", "UQ1", "LQ3", "UQ3"))
+# the fanciest one
+bin <- binning(airquality$Ozone, type = "bclust", nbins = 3,
+              labels = c("LQ1", "UQ1", "LQ3"))
 
 summary(bin)
 
 plot(bin)
 
+# the simplest one
+bin <- binning(airquality$Ozone, type = "quantile", nbins = 3,
+              labels = c("cat1", "cat2", "cat3"))
+
+summary(bin)
+
+plot(bin)
+
+airquality %>% glimpse()
+
+airquality %>% 
+  mutate(
+    binned_Ozone = binning(airquality$Ozone, type = "quantile", nbins = 3, labels = c("cat1", "cat2", "cat3"))
+    ) %>% head()
 ```
 
-### Transformation
+
+
+### Standardization and Resolving Skewness
+
+
+transform() performs data transformation for numeric variables. Following methods are provided:
+
+#### 1. Standardization
+
+- “zscore” : z-score transformation. (x - mu) / sigma
+- “minmax” : minmax transformation. (x - min) / (max - min)
+
 
 ```{r}
-transform(airquality$Ozone)
+bla <- transform(airquality$Solar.R)
 
-plot(transform(airquality$Ozone))
+plot(bla)
+```
+
+
+
+
+#### 2. Resolving Skewness
+
+- “log” : log transformation. log(x)
+- “log+1” : log transformation. log(x + 1). Used for values that contain 0.
+- “sqrt” : square root transformation.
+- “1/x” : 1 / x transformation
+- “x^2” : x square transformation
+- “x^3” : x^3 square transformation
+
+```{r}
+find_skewness(diamonds)
+
+find_skewness(diamonds, index = FALSE, value = TRUE)
+
+plot( transform(diamonds$carat, method = "log+1") )
+
+plot( transform(diamonds$carat, method = "sqrt") )
 ```
 
 
