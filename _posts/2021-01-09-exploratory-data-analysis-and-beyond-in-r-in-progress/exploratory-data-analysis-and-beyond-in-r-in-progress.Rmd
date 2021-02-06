@@ -9,7 +9,9 @@ date: 01-09-2021
 categories:
   - EDA
   - videos
-preview: 1.png
+  - data wrangling
+  - visualization
+preview: 2.png
 output:
   distill::distill_article:
     self_contained: false

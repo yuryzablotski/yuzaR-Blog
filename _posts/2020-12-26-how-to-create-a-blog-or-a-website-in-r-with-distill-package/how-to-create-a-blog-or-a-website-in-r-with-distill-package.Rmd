@@ -451,6 +451,8 @@ preview: images/photo-of-me-because-I-am-sooo-beautifuuulll-toniiiight.png
 
 If you don't provide a picture for preview, the first plot or picture from your blog-post will be used as a thumbnail by default. To override this behavior, you can add the `preview = TRUE` in to the code-chunk, e.g.: `{r some_chunk, preview=TRUE}`.
 
+---------------
+
 If you think, I missed something, please comment on it, and I’ll improve this tutorial.
 
 ## Citations

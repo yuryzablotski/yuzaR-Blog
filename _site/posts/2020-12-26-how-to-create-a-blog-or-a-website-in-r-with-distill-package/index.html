@@ -20,19 +20,19 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -52,7 +52,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
@@ -473,8 +473,15 @@ d-title {
   top: 0;
 }
 
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
 </style>
 
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
 <link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
 <link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
 <script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -582,19 +589,21 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           var results = fuse.search(query, searchOptions);
           callback(results
             .map(function(result) { return result.item; })
-            .filter(function(item) { return !!item.description; })
           );
         },
         templates: {
           suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
             var html = `
               <div class="search-item">
                 <h3>${suggestion.title}</h3>
                 <div class="search-item-description">
-                  ${suggestion.description}
+                  ${suggestion.description || ''}
                 </div>
                 <div class="search-item-preview">
-                  <img src="${suggestion.preview ? offsetURL(suggestion.preview) : ''}"</img>
+                  ${img}
                 </div>
               </div>
             `;
@@ -617,6 +626,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 
 <style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
 
 /* Algolioa Autocomplete */
 
@@ -692,6 +705,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 }
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
   margin-block-start: 0;
   margin-block-end: 5px;
 }
@@ -919,6 +933,11 @@ d-article pre a:hover {
   text-decoration: underline;
 }
 
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
 @media(min-width: 768px) {
 
 d-article pre,
@@ -1073,6 +1092,17 @@ d-article .citation {
 
 div.hanging-indent{
   margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
 }
 
 
@@ -1740,7 +1770,7 @@ function init_distill() {
     var layout = $(this).attr('data-layout');
 
     // apply layout to markdown level block elements
-    var elements = $(this).children().not('div.sourceCode, pre, script');
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
     elements.each(function(i, el) {
       var layout_div = $('<div class="' + layout + '"></div>');
       if (layout_div.hasClass('shaded')) {
@@ -1855,6 +1885,20 @@ function init_distill() {
     // move appendix-bottom entries to the bottom
     $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
     $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
 
     // clear polling timer
     clearInterval(tid);
@@ -2199,7 +2243,7 @@ h1, h2, h3, h4, h5, h6,
 
 d-article div.sourceCode code,
 d-article pre code {
-	font-family: var(--mono-font), var(--mono-default);
+  font-family: var(--mono-font), var(--mono-default);
 }
 
 
@@ -2224,76 +2268,78 @@ d-article h6 {
 }
 
 /*-- BODY --*/
-/* only text inside of <p> tags */
-d-article > p {
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
   color: var(--body-color, rgba(0, 0, 0, 0.8));
   font-size: var(--body-size, 1.06rem);
 }
 
+
 /*-- CODE --*/
 d-article div.sourceCode code,
 d-article pre code {
-	font-size: var(--code-size, 14px);
+  font-size: var(--code-size, 14px);
 }
 
 /*-- ASIDE --*/
 d-article aside {
-	font-size: var(--aside-size, 12px);
-	color: var(--aside-color, rgba(0, 0, 0, 0.6));
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
 }
 
 /*-- FIGURE CAPTIONS --*/
 figure .caption,
 figure figcaption,
 .figure .caption {
-	font-size: var(--fig-cap-size, 13px);
-	color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
 }
 
 /*-- METADATA --*/
 d-byline h3 {
-	font-size: var(--heading-size, 0.6rem);
-	color: var(--heading-color, rgba(0, 0, 0, 0.5));
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
 }
 
 d-byline {
-	font-size: var(--body-size, 0.8rem);
-	color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
 }
 
 d-byline a,
 d-article d-byline a {
-	color: var(--body-color, rgba(0, 0, 0, 0.8));
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
 }
 
 /*-- TABLE OF CONTENTS --*/
 .d-contents nav h3 {
-	font-size: var(--heading-size, 18px);
+  font-size: var(--heading-size, 18px);
 }
 
 .d-contents nav a {
-	font-size: var(--contents-size, 13px);
+  font-size: var(--contents-size, 13px);
 }
 
 /*-- APPENDIX --*/
 d-appendix h3 {
   font-size: var(--heading-size, 15px);
-	color: var(--heading-color, rgba(0, 0, 0, 0.65));
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
 }
 
 d-appendix {
   font-size: var(--text-size, 0.8em);
-	color: var(--text-color, rgba(0, 0, 0, 0.5));
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
 }
 
 d-appendix d-footnote-list a.footnote-backlink {
-	color: var(--text-color, rgba(0, 0, 0, 0.5));
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
 }
 
 /*-- WEBSITE HEADER + FOOTER --*/
 .distill-site-header .title {
-	font-size: var(--title-size, 18px);
-	font-family: var(--navbar-font), var(--heading-default);
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
 }
 
 .distill-site-header a,
@@ -2301,35 +2347,46 @@ d-appendix d-footnote-list a.footnote-backlink {
   font-family: var(--navbar-font), var(--heading-default);
 }
 
-.distill-site-header a:hover {
-	color: var(--hover-color, white);
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
 }
 
 .distill-site-header {
-	font-size: var(--text-size, 15px);
-	color: var(--text-color, rgba(255, 255, 255, 0.8));
-	background-color: var(--bkgd-color, #0F2E3D);
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
 }
 
 .distill-site-footer {
-	font-size: var(--text-size, 15px);
-	color: var(--text-color, rgba(255, 255, 255, 0.8));
-	background-color: var(--bkgd-color, #0F2E3D);
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
 }
 
 .distill-site-footer a:hover {
-	color: var(--hover-color, white);
+  color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.6/header-attrs.js"></script>
   <link href="../../site_libs/vembedr-0.1.4/css/vembedr.css" rel="stylesheet" />
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
   <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q28WX9Y4VS"></script>
-<script>
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-Q28WX9Y4VS"></script>
+<script type="text/javascript" cookie-consent="tracking">
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
@@ -2405,9 +2462,11 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h3>Contents</h3>
 <ul>
 <li><a href="#why-should-we-use-distill">Why should we use <em>Distill</em>?</a></li>
-<li><a href="#manual-intermittent-publishing-deploying">Manual intermittent publishing (deploying)</a><ul>
+<li><a href="#manual-intermittent-publishing-deploying">Manual intermittent publishing (deploying)</a>
+<ul>
 <li><a href="#install-distill-package">1. Install <em>Distill</em> package</a></li>
-<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code">2. Create your blog either manually with RStudio or with one line of code</a><ul>
+<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code">2. Create your blog either manually with RStudio or with one line of code</a>
+<ul>
 <li><a href="#with-rstudio">2.1. with RStudio</a></li>
 <li><a href="#with-one-line-of-code">2.2. with one line of code</a></li>
 </ul></li>
@@ -2415,14 +2474,17 @@ gtag('config', 'G-Q28WX9Y4VS');
 <li><a href="#publish-your-blog-or-a-website-via-netlify">4. Publish your blog (or a website) via Netlify</a></li>
 <li><a href="#create-a-new-blog-post">5. Create a new blog-post</a></li>
 </ul></li>
-<li><a href="#automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</a><ul>
+<li><a href="#automated-continuous-publishing-deploying">Automated continuous publishing (deploying)</a>
+<ul>
 <li><a href="#install-distill-and-usethis-packages">1. Install <em>distill</em> and <em>usethis</em> packages</a></li>
-<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">2. Create your blog either manually with RStudio or with one line of code</a><ul>
+<li><a href="#create-your-blog-either-manually-with-rstudio-or-with-one-line-of-code-1">2. Create your blog either manually with RStudio or with one line of code</a>
+<ul>
 <li><a href="#with-rstudio-1">2.1. with RStudio</a></li>
 <li><a href="#with-one-line-of-code-1">2.2. with one line of code</a></li>
 </ul></li>
 <li><a href="#build-your-website-1">3. Build your website</a></li>
-<li><a href="#connect-to-your-github">4. Connect to your github</a><ul>
+<li><a href="#connect-to-your-github">4. Connect to your github</a>
+<ul>
 <li><a href="#create-new-repository">4.1. Create new repository</a></li>
 <li><a href="#stage-and-commit">4.2. Stage and Commit</a></li>
 <li><a href="#run-usethisuse_github-to-connect-a-local-repository-to-github">4.3. Run “usethis::use_github()” to connect a local repository to Github</a></li>
@@ -2432,7 +2494,8 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ul></li>
 <li><a href="#blog-configuration-with-_site.yml">Blog configuration with "_site.yml"</a></li>
 <li><a href="#theming---change-desing-and-appearence-of-your-blog">Theming - change desing and appearence of your blog</a></li>
-<li><a href="#pimp-your-content">Pimp your content</a><ul>
+<li><a href="#pimp-your-content">Pimp your content</a>
+<ul>
 <li><a href="#links">Links</a></li>
 <li><a href="#plots">Plots</a></li>
 <li><a href="#figures">Figures</a></li>
@@ -2462,7 +2525,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h2 id="install-distill-package">1. Install <em>Distill</em> package</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -2479,7 +2542,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h3 id="with-one-line-of-code">2.2. with one line of code</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
 <span class='co'># or</span>
 <span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_website</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing website"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my Website"</span><span class='op'>)</span>
 </code></pre>
@@ -2514,7 +2577,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"My second blog post...this one will be really good :-)"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"My second blog post...this one will be really good :-)"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -2543,7 +2606,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h2 id="install-distill-and-usethis-packages">1. Install <em>distill</em> and <em>usethis</em> packages</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"usethis"</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2561,7 +2624,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h3 id="with-one-line-of-code-1">2.2. with one line of code</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_blog</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing blog"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my blog"</span><span class='op'>)</span>
 <span class='co'># or</span>
 <span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_website.html'>create_website</a></span><span class='op'>(</span>dir <span class='op'>=</span> <span class='st'>"amazing website"</span>, title <span class='op'>=</span> <span class='st'>"A cool name of my Website"</span><span class='op'>)</span>
 </code></pre>
@@ -2586,7 +2649,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/use_git.html'>use_git</a></span><span class='op'>(</span><span class='op'>)</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/use_git.html'>use_git</a></span><span class='op'>(</span><span class='op'>)</span> 
 </code></pre>
 </div>
 </div>
@@ -2605,7 +2668,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h3 id="run-usethisuse_github-to-connect-a-local-repository-to-github">4.3. Run “usethis::use_github()” to connect a local repository to Github</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/use_github.html'>use_github</a></span><span class='op'>(</span><span class='op'>)</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/use_github.html'>use_github</a></span><span class='op'>(</span><span class='op'>)</span> 
 </code></pre>
 </div>
 </div>
@@ -2639,7 +2702,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"My second blog post...this one will be really good :-)"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"My second blog post...this one will be really good :-)"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -2681,7 +2744,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>By the way, if you don’t want to publish your post until you really satisfied with it, you can start out as a draft:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"Another nice post"</span>, draft <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_post.html'>create_post</a></span><span class='op'>(</span><span class='st'>"Another nice post"</span>, draft <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -2691,23 +2754,23 @@ gtag('config', 'G-Q28WX9Y4VS');
 <li>Open "_site.yml". You’ll see something like that:</li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>name<span class="op">:</span><span class="st"> &quot;Your cool webpage&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>title<span class="op">:</span><span class="st"> &quot;Your cool webpage title&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>description<span class="op">:</span><span class="st"> </span><span class="er">|</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="st">  </span>Exploring something very important.</span>
-<span id="cb1-5"><a href="#cb1-5"></a>base_url<span class="op">:</span><span class="st"> </span>https<span class="op">:</span><span class="er">//</span>beta.rstudioconnect.com<span class="op">/</span>content<span class="op">/</span>your_thing<span class="op">/</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>navbar<span class="op">:</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="st">  </span>logo<span class="op">:</span><span class="st"> </span>images<span class="op">/</span>fancy_logo.png</span>
-<span id="cb1-8"><a href="#cb1-8"></a>  right<span class="op">:</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="st">    </span><span class="op">-</span><span class="st"> </span>text<span class="op">:</span><span class="st"> &quot;Home&quot;</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>      href<span class="op">:</span><span class="st"> </span>index.html</span>
-<span id="cb1-11"><a href="#cb1-11"></a>    <span class="op">-</span><span class="st"> </span>text<span class="op">:</span><span class="st"> &quot;About&quot;</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>      href<span class="op">:</span><span class="st"> </span>about.html</span>
-<span id="cb1-13"><a href="#cb1-13"></a>    <span class="op">-</span><span class="st"> </span>text<span class="op">:</span><span class="st"> &quot;Rest&quot;</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>      href<span class="op">:</span><span class="st"> </span>rest.html</span>
-<span id="cb1-15"><a href="#cb1-15"></a>    <span class="op">-</span><span class="st"> </span>icon<span class="op">:</span><span class="st"> </span>fa fa<span class="op">-</span>rss</span>
-<span id="cb1-16"><a href="#cb1-16"></a>      href<span class="op">:</span><span class="st"> </span>index.xml</span>
-<span id="cb1-17"><a href="#cb1-17"></a>output<span class="op">:</span><span class="st"> </span>distill<span class="op">::</span>distill_article</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>name<span class="sc">:</span> <span class="st">&quot;Your cool webpage&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;Your cool webpage title&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>description<span class="sc">:</span> <span class="er">|</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  Exploring something very important.</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>base_url<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>beta.rstudioconnect.com<span class="sc">/</span>content<span class="sc">/</span>your_thing<span class="sc">/</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>navbar<span class="sc">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  logo<span class="sc">:</span> images<span class="sc">/</span>fancy_logo.png</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  right<span class="sc">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> text<span class="sc">:</span> <span class="st">&quot;Home&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      href<span class="sc">:</span> index.html</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> text<span class="sc">:</span> <span class="st">&quot;About&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      href<span class="sc">:</span> about.html</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> text<span class="sc">:</span> <span class="st">&quot;Rest&quot;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      href<span class="sc">:</span> rest.html</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span> icon<span class="sc">:</span> fa fa<span class="sc">-</span>rss</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      href<span class="sc">:</span> index.xml</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> distill<span class="sc">::</span>distill_article</span></code></pre></div>
 </div>
 <p>"_site.yml" is the most important document for your website. Configure it carefully and slowly. You can add a lot of useful things: categories, google-analytics, customize the navigation bar, add references, new theme with CSS code for an individual design of your site, icons of twitter &amp; co. and much more, which is not to important for a new site and can be added at any time.</p>
 <p>If you work through the <a href="https://rstudio.github.io/distill">Distill web page</a>, you’ll see a lot of examples for how to design your "_site.yml" and “theme.css” files. But, the best way I found to do this, is just to find the "_site.yml" or “theme.css” of other Distill-blogs on Github and get inspiration from them by playing with your own code (I hope nobody is offended by this sentence due to the open source nature of R, but please let me know if it’s wrong and I’ll remove this recommendation!).</p>
@@ -2716,16 +2779,16 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>You can modify the CSS code in your theme after creating it by running the following line of code:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_theme.html'>create_theme</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"theme"</span><span class='op'>)</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>distill</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/distill//reference/create_theme.html'>create_theme</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"theme"</span><span class='op'>)</span> 
 </code></pre>
 </div>
 </div>
 <p>To activate a custom theme site-wide, add a theme key to the top-level of your "_site.yml" configuration file:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>name<span class="op">:</span><span class="st"> &quot;Your cool webpage&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>title<span class="op">:</span><span class="st"> &quot;Your cool webpage title&quot;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>theme<span class="op">:</span><span class="st"> </span>theme.css </span>
-<span id="cb2-4"><a href="#cb2-4"></a>(...the rest of your _site.yml)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>name<span class="sc">:</span> <span class="st">&quot;Your cool webpage&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;Your cool webpage title&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>theme<span class="sc">:</span> theme.css </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>(...the rest of your _site.yml)</span></code></pre></div>
 </div>
 <h1 id="pimp-your-content">Pimp your content</h1>
 <p>Most elements enhancing your content, like links, tables, plots, equations etc., are similar to the usual R Markdown syntax. Thus for a deeper insights go to the <a href="https://bookdown.org/yihui/rmarkdown/">R Markdown: The Definitive Guide</a> book, it’s online and free. Below I just display some quick “how to” examples and provide links to a more thorough online resources.</p>
@@ -2734,7 +2797,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h2 id="plots">Plots</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>hp</span>, <span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
   <span class='fu'>geom_smooth</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
@@ -2747,7 +2810,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>You can add external static and dynamic figures, plots, photos or diagrams by using <code>knitr::include_graphics()</code> function. <a href="https://rstudio.github.io/distill/figures.html">More on figures here</a>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/include_graphics.html'>include_graphics</a></span><span class='op'>(</span><span class='st'>"images/your_figure.png"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/include_graphics.html'>include_graphics</a></span><span class='op'>(</span><span class='st'>"images/your_figure.png"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -2763,7 +2826,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p><a href="https://rstudio.github.io/distill/tables.html">More on tables here</a>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("gtsummary")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("gtsummary")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ddsjoberg/gtsummary'>gtsummary</a></span><span class='op'>)</span>
 <span class='va'>iris</span> <span class='op'>%&gt;%</span> 
   <span class='fu'><a href='http://www.danieldsjoberg.com/gtsummary//reference/tbl_summary.html'>tbl_summary</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -2773,7 +2836,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#thydoqahrb .gt_table {
+#wakgsjwmrq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2798,7 +2861,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-left-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_heading {
+#wakgsjwmrq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2810,7 +2873,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_title {
+#wakgsjwmrq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2820,7 +2883,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-bottom-width: 0;
 }
 
-#thydoqahrb .gt_subtitle {
+#wakgsjwmrq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2830,13 +2893,13 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-top-width: 0;
 }
 
-#thydoqahrb .gt_bottom_border {
+#wakgsjwmrq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_col_headings {
+#wakgsjwmrq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2851,7 +2914,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_col_heading {
+#wakgsjwmrq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2871,7 +2934,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   overflow-x: hidden;
 }
 
-#thydoqahrb .gt_column_spanner_outer {
+#wakgsjwmrq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2883,15 +2946,15 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-right: 4px;
 }
 
-#thydoqahrb .gt_column_spanner_outer:first-child {
+#wakgsjwmrq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#thydoqahrb .gt_column_spanner_outer:last-child {
+#wakgsjwmrq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#thydoqahrb .gt_column_spanner {
+#wakgsjwmrq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2903,7 +2966,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   width: 100%;
 }
 
-#thydoqahrb .gt_group_heading {
+#wakgsjwmrq .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2925,7 +2988,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   vertical-align: middle;
 }
 
-#thydoqahrb .gt_empty_group_heading {
+#wakgsjwmrq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2940,15 +3003,15 @@ gtag('config', 'G-Q28WX9Y4VS');
   vertical-align: middle;
 }
 
-#thydoqahrb .gt_from_md > :first-child {
+#wakgsjwmrq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#thydoqahrb .gt_from_md > :last-child {
+#wakgsjwmrq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#thydoqahrb .gt_row {
+#wakgsjwmrq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2967,7 +3030,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   overflow-x: hidden;
 }
 
-#thydoqahrb .gt_stub {
+#wakgsjwmrq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2979,7 +3042,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-left: 12px;
 }
 
-#thydoqahrb .gt_summary_row {
+#wakgsjwmrq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2989,7 +3052,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-right: 5px;
 }
 
-#thydoqahrb .gt_first_summary_row {
+#wakgsjwmrq .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2999,7 +3062,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-top-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_grand_summary_row {
+#wakgsjwmrq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3009,7 +3072,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   padding-right: 5px;
 }
 
-#thydoqahrb .gt_first_grand_summary_row {
+#wakgsjwmrq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3019,11 +3082,11 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-top-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_striped {
+#wakgsjwmrq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#thydoqahrb .gt_table_body {
+#wakgsjwmrq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3032,7 +3095,7 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-bottom-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_footnotes {
+#wakgsjwmrq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3046,13 +3109,13 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_footnote {
+#wakgsjwmrq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#thydoqahrb .gt_sourcenotes {
+#wakgsjwmrq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3066,46 +3129,46 @@ gtag('config', 'G-Q28WX9Y4VS');
   border-right-color: #D3D3D3;
 }
 
-#thydoqahrb .gt_sourcenote {
+#wakgsjwmrq .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#thydoqahrb .gt_left {
+#wakgsjwmrq .gt_left {
   text-align: left;
 }
 
-#thydoqahrb .gt_center {
+#wakgsjwmrq .gt_center {
   text-align: center;
 }
 
-#thydoqahrb .gt_right {
+#wakgsjwmrq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#thydoqahrb .gt_font_normal {
+#wakgsjwmrq .gt_font_normal {
   font-weight: normal;
 }
 
-#thydoqahrb .gt_font_bold {
+#wakgsjwmrq .gt_font_bold {
   font-weight: bold;
 }
 
-#thydoqahrb .gt_font_italic {
+#wakgsjwmrq .gt_font_italic {
   font-style: italic;
 }
 
-#thydoqahrb .gt_super {
+#wakgsjwmrq .gt_super {
   font-size: 65%;
 }
 
-#thydoqahrb .gt_footnote_marks {
+#wakgsjwmrq .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="thydoqahrb" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="wakgsjwmrq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   
   <thead class="gt_col_headings">
     <tr>
@@ -3156,7 +3219,7 @@ gtag('config', 'G-Q28WX9Y4VS');
             <em>1</em>
           </sup>
            
-          Statistics presented: Median (IQR); n (%)
+          Median (IQR); n (%)
           <br />
         </p>
       </td>
@@ -3180,7 +3243,7 @@ Here the funny fact or some important info.
 <h2 id="equations">Equations</h2>
 <p>You can use a Latex syntax for it:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">$</span><span class="er">$</span>\sigma =<span class="st"> </span>\sqrt{ \frac{<span class="dv">1</span>}{N} \sum_{i=<span class="dv">1</span>}<span class="op">^</span><span class="kw">N</span> (x_i <span class="op">-</span>\mu)<span class="op">^</span><span class="dv">2</span>}<span class="op">$</span><span class="er">$</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span><span class="er">$</span>\sigma <span class="ot">=</span> \sqrt{ \frac{<span class="dv">1</span>}{N} \sum_{i<span class="ot">=</span><span class="dv">1</span>}<span class="sc">^</span><span class="fu">N</span> (x_i <span class="sc">-</span>\mu)<span class="sc">^</span><span class="dv">2</span>}<span class="sc">$</span><span class="er">$</span></span></code></pre></div>
 </div>
 <p><span class="math display">\[
 \sigma = \sqrt{ \frac{1}{N} \sum_{i=1}^N (x_i -\mu)^2}
@@ -3190,13 +3253,14 @@ Here the funny fact or some important info.
 <h2 id="thumbnails">Thumbnails</h2>
 <p>Thumbnails (or previews) are the images which are displayed along the post. They serve as an eye catcher. You can add a preview image into the post’s metadata by adding a “preview” field:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>title<span class="op">:</span><span class="st"> &quot;Blog post on how to write blog posts&quot;</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>description<span class="op">:</span><span class="st"> </span><span class="er">|</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span>Here we were out of ideas, and therefore we are proud to announce</span>
-<span id="cb4-4"><a href="#cb4-4"></a>our new post about how to write a post. Creativity is a b<span class="op">**</span>ch<span class="op">!</span><span class="st"> </span>... And I love her<span class="op">!</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>preview<span class="op">:</span><span class="st"> </span>images<span class="op">/</span>photo<span class="op">-</span>of<span class="op">-</span>me<span class="op">-</span>because<span class="op">-</span>I<span class="op">-</span>am<span class="op">-</span>sooo<span class="op">-</span>beautifuuulll<span class="op">-</span>toniiiight.png</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">&quot;Blog post on how to write blog posts&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>description<span class="sc">:</span> <span class="er">|</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  Here we were out of ideas, and therefore we are proud to announce</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>our new post about how to write a post. Creativity is a b<span class="sc">**</span>ch<span class="sc">!</span> ... And I love her<span class="sc">!</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>preview<span class="sc">:</span> images<span class="sc">/</span>photo<span class="sc">-</span>of<span class="sc">-</span>me<span class="sc">-</span>because<span class="sc">-</span>I<span class="sc">-</span>am<span class="sc">-</span>sooo<span class="sc">-</span>beautifuuulll<span class="sc">-</span>toniiiight.png</span></code></pre></div>
 </div>
 <p>If you don’t provide a picture for preview, the first plot or picture from your blog-post will be used as a thumbnail by default. To override this behavior, you can add the <code>preview = TRUE</code> in to the code-chunk, e.g.: <code>{r some_chunk, preview=TRUE}</code>.</p>
+<hr />
 <p>If you think, I missed something, please comment on it, and I’ll improve this tutorial.</p>
 <h2 id="citations">Citations</h2>
 <p>You either can include a BibTex-like citation of others or make your article citable (see the very bottom of this article). “How to cite” is best described in the <a href="https://rstudio.github.io/distill/citations.html">citation section of the Distill website</a>.</p>
@@ -3243,7 +3307,7 @@ Here the funny fact or some important info.
   </p>
   <script id="dsq-count-scr" src="https://yuzar-blog.disqus.com/count.js" async></script>
   <div id="disqus_thread" class="hidden"></div>
-  <script>
+  <script type="text/javascript" cookie-consent="functionality">
 var disqus_config = function () {
   this.page.url = 'https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/';
   this.page.identifier = 'posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/';
