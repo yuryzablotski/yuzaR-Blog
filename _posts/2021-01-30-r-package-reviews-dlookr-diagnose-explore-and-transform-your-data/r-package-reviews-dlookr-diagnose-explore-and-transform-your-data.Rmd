@@ -1,7 +1,7 @@
 ---
 title: "R package reviews {dlookr} diagnose, explore and transform your data"
 description: |
-  Raw data need to be diagnosed for existing problems, explored for new hypotheses and transformed in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. {dlookr} generates automated reports and perform compex operation, like imputing missing values or outliers, with simple functions. Moreover, {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2} to name just a few!
+  Raw data need to be diagnosed for existing problems, explored for new hypotheses and repaired in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. {dlookr} generates automated reports and performs compex operations, like imputing missing values or outliers, with simple functions. Moreover, {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2} to name just a few!
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -76,7 +76,7 @@ diagnose_numeric(diamonds) %>%
 
 ### Outliers
 
-By the way **outliers**, how would you **diagnose** them? Of coarse you would **count** them and get their **percentages** in every variable, right? Sure! Well {dlookr} does it for you. Moreover, if calculate three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. So, you can see how strong the influence of outliers for every variable is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. That's deep enough diagnoses of outliers already. And if that weren't enough, {dlookr} can visualize the distribution of data with and without outliers. Let's plot them!
+By the way **outliers**, how would you **diagnose** them? Of coarse you would **count** them and get their **percentages** in every variable, right? Sure! Well {dlookr} does it for you. Moreover, it calculates three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. So, you can see how strong the influence of outliers for every variable is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. That's deep enough diagnoses of outliers already. And if that weren't enough, {dlookr} can visualize the distribution of data with and without outliers. Let's plot them!
 
 ```{r}
 diagnose_outlier(diamonds) %>% flextable()
