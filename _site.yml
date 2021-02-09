@@ -18,7 +18,7 @@ navbar:
       href: index.html
     # - text: "TOPICS"
     #   menu:
-    #     - text: "(in progress) Package reviews"
+    #     - text: "(in progress) Package reviews" 
     #       href: welcome.html
     #     - text: "(in progress) Visualisation"
     #       href: welcome.html
