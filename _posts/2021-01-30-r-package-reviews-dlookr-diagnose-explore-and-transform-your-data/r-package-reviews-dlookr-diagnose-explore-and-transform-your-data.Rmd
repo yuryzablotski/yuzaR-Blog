@@ -12,6 +12,7 @@ categories:
   - data wrangling
   - R package reviews
   - visualization
+  
 preview: dlookr_thumbnail.png
 output:
   distill::distill_article:
