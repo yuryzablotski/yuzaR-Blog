@@ -45,6 +45,8 @@ library(visdat)
 library(summarytools)
 library(explore)
 library(knitr)
+library(funModeling)
+library(flextable)        # beutifying tables
 ```
 
 I love R, because it is reach and having ca. 17000 packages allows me to concur almost any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by different functions from different packages with different levels of effectiveness. Looking for the most effective way can be very time consuming! So, I hope this collection will save you some time. And if you know better functions or packages for EDA, than those provided here, please let me know in the comments below and let us together create a one-stop solution for EDA in R.
@@ -91,7 +93,7 @@ Instead of running *create_report()*, you may also run each function individuall
 ### DataExplorer
 
 ```{r}
-introduce(airquality)
+introduce(airquality) %>% t() 
 
 plot_intro(airquality)
 ```
@@ -99,19 +101,30 @@ plot_intro(airquality)
 ### SmartEDA
 
 ```{r}
-ExpData(data=diamonds,type=1)
-ExpData(data=diamonds,type=2)
+ExpData(data=iris,type=1) %>% 
+  flextable() %>% 
+  width(width = 1.9)
+
+ExpData(data=iris,type=2) %>% 
+  flextable() %>% 
+  width(width = 1.9)
 ```
 ### dlookr
 
 ```{r}
 diagnose(airquality) %>% 
-  kable()
+  flextable()
 ```
 
 
 ```{r eval=F}
 diagnose_report(airquality)
+```
+
+### funModeling
+
+```{r}
+status(airquality) %>% flextable()
 ```
 
 
@@ -166,7 +179,9 @@ diamonds %>%
 ### Hmisc
 
 ```{r}
-Hmisc::describe(mpg)
+diamonds %>% 
+  select(cut, price) %>%
+  Hmisc::describe()
 ```
 
 
@@ -324,6 +339,17 @@ plot_qq(airquality)
 ## View quantile-quantile plot of all continuous variables by feature `cut`
 plot_qq(airquality, by = "Month")
 ```
+
+### funModeling
+
+```{r}
+plot_num(airquality)
+
+profiling_num(airquality)
+
+freq
+```
+
 
 ### SmartEDA
 

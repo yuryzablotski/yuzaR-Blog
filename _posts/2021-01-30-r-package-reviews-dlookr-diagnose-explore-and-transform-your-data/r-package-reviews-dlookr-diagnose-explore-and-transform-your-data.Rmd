@@ -77,14 +77,16 @@ diagnose_numeric(diamonds) %>%
 
 ### Outliers
 
-By the way **outliers**, how would you **diagnose** them? Of coarse you would **count** them and get their **percentages** in every variable, right? Sure! Well {dlookr} does it for you. Moreover, it calculates three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. So, you can see how strong the influence of outliers for every variable is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. That's deep enough diagnoses of outliers already. And if that weren't enough, {dlookr} can visualize the distribution of data with and without outliers. Let's plot them!
+By the way **outliers**, how would we **diagnose** them? Of coarse we would **count** them and get their **percentages** in every variable. {dlookr} does it too. Moreover, it calculates three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. In this way we can see how strong the influence of outliers for every variable is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. That's deep enough diagnoses of outliers already. And if that weren't enough, {dlookr} can visualize the distribution of data with and without outliers. Let's plot them!
 
 ```{r}
 diagnose_outlier(diamonds) %>% flextable()
 ```
 
 
-First of all we'll quickly find the variables (or columns) with outliers using **find_outliers()** function. It gives you the index of the column. For example in "iris" dataset the second column contains outliers. Using the argument **index = FALSE** provides the name of the column, so that you can select only columns with outliers and plot them by a simple **plot_outlier()** function. If we don't specify any columns, **plot_outlier()** function will plot each numeric variable from your dataset. This plot displays the distribution of data **with and without outliers** in the form of box plots and histograms, so that we directly **see how our data changes if we remove outliers**.
+First of all we'll quickly find the variables (or columns) with outliers using **find_outliers()** function. It gives you the index of the column. For example in "iris" dataset the second column contains outliers. Using the argument **index = FALSE** provides the name of the column, so that you can select only columns with outliers and plot them by a simple **plot_outlier()** function. 
+
+If we don't specify any columns, **plot_outlier()** function will plot each numeric variable from our dataset. This plot displays the distribution of data **with and without outliers** in the form of box plots and histograms, so that we directly **see how our data changes if we remove outliers**.
 
 ```{r}
 find_outliers(iris)
@@ -107,7 +109,7 @@ Well amazingly, {dlookr} not only can visualize outliers, but can also do this i
 plot_na_pareto(airquality)
 ```
 
-In a **Pareto Chart counts and proportions of missing values** are represented in descending order by **bars**, and the **cumulative total** is represented by the **line**. It even tells you what the amount of missing values **means**, namely, missing around 24% of observations is still **OK**, while missing more then 40% of values would be **bad**. If you have a lot of variable and wanna display only the ones with missing values, use **only_na = TRUE** argument. The only problem with pareto plot is that we don't know whether missing values in different columns belong to the same observation.
+In a **Pareto Chart counts and proportions of missing values** are represented in descending order by **bars**, and the **cumulative total** is represented by the **line**. It even tells you what the amount of missing values **means**, namely, missing around 24% of observations is still **OK**, while missing more then 40% of values would be **bad**. If you have a lot of variables and wanna display only the ones with missing values, use **only_na = TRUE** argument. The only problem with pareto plot is that we don't know whether missing values in different columns belong to the same observation.
 
 
 ```{r fig.height=5}
@@ -118,13 +120,13 @@ airquality %>%
   plot_na_pareto(only_na = TRUE, plot = FALSE) %>% flextable()
 ```
 
-But that's where the second type of visualization of missing values comes into play - **plot_na_hclust()** - which shows you how missing values are **distributed** and whether there are **overlapping** of variables between then. The only which concerns me here was that overlapping itself could be hard to see if we'll get many variables with missing values, some with few and some with a lot of missing values.
+But that's where the second type of visualization of missing values comes into play - **plot_na_hclust()** - which shows you how missing values are **distributed** and whether there is any **overlapping** of variables between then. The only thing which is troublesome here is that overlapping itself could be difficult to see if some variables have very few and some variable have a lot of missing values.
 
 ```{r}
 plot_na_hclust(airquality)
 ```
 
-Third method of plotting missing values solves this problem. **plot_na_intersect()** function visualizes the **combinations of missing value across columns**. The **x-axis** shows the variables with missing values and the counts of missing values on the top of the plot as a bar graph. The **y-axis** represents the **combination of variables and their frequencies**. For instance, we see, that two of the observations are missing in both variables. We can also display complete cases if we want to.
+Third method of plotting missing values solves this problem. **plot_na_intersect()** function visualizes the **combinations of missing values across columns**. The **x-axis** shows the variables with missing values, while the counts of missing values are shown on the top of the plot as bars. The **y-axis** represents the **combination of variables and their frequencies**. For instance, we see, that two of the observations are missing in both variables, Ozone and Solar. 
 
 ```{r}
 plot_na_intersect(airquality)	
@@ -132,7 +134,7 @@ plot_na_intersect(airquality)
 
 ### Reporting
 
-**diagnose_report()** function combines most of what we just learned (but not all!) into one **PDF** or **HTML document** in seconds. Just run the line of code below and explore it. But the way - **exploring** - is the second thing {dlookr} package absolutely nails! So, let's get straight to it.
+So, let's close the **Diagnosis** chapter with the **diagnose_report()** function, which combines most of what we just learned (but not all!) into one **PDF** or **HTML document** in seconds. Just run this line of code and explore the document. But the way - **exploring** - is the second thing {dlookr} package absolutely nails! So, let's get straight to it.
 
 ```{r eval=F}
 diagnose_report(airquality) # pdf or html
@@ -147,12 +149,11 @@ diagnose_report(airquality) # pdf or html
 ```{r}
 # all numeric variables
 describe(iris) %>% flextable()
-
-# selected numeric variables
-# describe(airquality, Ozone, Temp)
 ```
 
+
 **describe()** function provides **descriptive statistics of ALL numeric variables at once** in your dataset, if you don't specify any. Among them are **standard deviation,  interquartile range, skewness and many quantiles**. However, **describe()** function becomes even more useful by **collaborating with {dplyr}** package. Particularly, we can **group the data by any categorical variable** and get **descriptive stats for each separate category**.
+
 
 ```{r}
 # per category
