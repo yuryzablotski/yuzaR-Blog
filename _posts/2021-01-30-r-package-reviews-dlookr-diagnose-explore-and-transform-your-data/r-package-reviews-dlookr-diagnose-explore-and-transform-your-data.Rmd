@@ -19,7 +19,7 @@ output:
     self_contained: false
     toc: true
     toc_float: true
-    toc_depth: 5
+    toc_depth: 6
     code_download: true
 ---
 
@@ -259,7 +259,7 @@ diamonds %>%
 
 {dlookr} can also check out **other kinds of relationships between two particular**, for example between two categorical, **variables**. You just need to specify the response (or target) variable with a function **target_by()** and the predictor with the function **relate()**. 
 
-#### categorical to categorical
+#### Categorical to categorical
 
 For instance, the influence of predictor "clarity" on our target "cut" in "diamonds" dataset, will be analyzed by a **Chi-Square Test for independence**. Plotting them will produce a **mosaic plot** with frequencies of both categorical variables. 
 
@@ -277,24 +277,29 @@ diamonds %>%
 ```
 
 
-#### categorical to numeric
+#### Categorical to numeric
 
 If our target variable is categorical and our predictor is numeric, **simple descriptive stats per category of a target variable and for the numeric variable without categorization and density plots** will be displayed.
 
+
+
 ```{r}
-iris %>% 
-  target_by(Species) %>%      
-  relate(Sepal.Length) %>% 
-  flextable()
+# iris %>% 
+#   target_by(Species) %>%      
+#   relate(Sepal.Length) %>% 
+#   flextable()
 
 iris %>% 
   target_by(Species) %>%      
   relate(Sepal.Length) %>% 
   plot()
+
 ```
 
 
-#### numeric to categorical
+
+
+#### Numeric to categorical
 
 If the response variable is numeric, while the predictor is categorical or numeric, **simple linear regression** will be applied. Using **summary()** or **tab_model()** would give you the **model output**, whith **coefficients and p-values**. Plotting the categorical predictor would produce a pretty boring **box-plot**, while visualization of the numeric variable would produce a nice **model fit with confidence intervals**.
 
@@ -310,7 +315,7 @@ iris %>%
   plot()
   #sjPlot::plot_model(type = "pred")
 ```
-#### numeric to numeric
+#### Numeric to numeric
 
 ```{r}
 airquality %>% 
