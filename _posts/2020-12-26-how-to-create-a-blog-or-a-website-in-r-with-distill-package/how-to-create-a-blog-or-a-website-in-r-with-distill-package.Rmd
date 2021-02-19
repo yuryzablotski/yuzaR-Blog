@@ -15,12 +15,13 @@ output:
     self_contained: false
     toc: true
     toc_float: true
+    toc_depth: 6
     code_download: true
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, eval=FALSE)
+knitr::opts_chunk$set(echo = T)
 ```
 
 # Why should we use *Distill*?
