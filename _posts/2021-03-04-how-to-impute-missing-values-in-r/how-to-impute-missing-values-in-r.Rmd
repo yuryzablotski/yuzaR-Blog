@@ -1,0 +1,205 @@
+---
+title: "How to impute missing values in R"
+description: |
+  Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this video we'll learn how to impute missing values easily and effectively.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-09-2021
+categories:
+  - EDA
+  - videos
+  - data wrangling
+  - visualization
+  - machine learning
+preview: 2.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+---
+
+
+```{r setup, include=FALSE, warning=F, message=F}
+knitr::opts_chunk$set(echo = T)
+```
+
+You can load all the packages at once to avoid interruptions. 
+
+```{r}
+library(dlookr)      # for exploratory data analysis and imputation
+library(visdat)      # for visualizing NAs
+library(plotly)      # for interactive visualization
+library(missRanger)  # to generate and impute NAs
+library(tidyverse)   # for almost everything ;) it's a must!
+```
+
+
+
+## Visualize missing values
+
+### dlookr
+
+First of all we have to make sure we have missing values in our dataset. Using *plot_na_pareto()* function from {dlookr} package we can produce a **Pareto chart**, which shows **counts and proportions of missing values** in every variable. It even tells you what the amount of missing values **means**, namely, missing around 24% of observations is still **OK**, while missing more then 40% of values would be **bad**. If you have a lot of variables and wanna display only the ones with missing values, use **only_na = TRUE** argument. The only problem with **Pareto chart** is that we don't know whether missing values in different columns belong to the same observation.
+
+
+```{r fig.height=5}
+library(dlookr)      # for exploratory data analysis and imputation
+plot_na_pareto(airquality, only_na = TRUE)
+```
+
+**plot_na_intersect()** function form {dlookr} package visualizes the **combinations of missing values across columns**. The **x-axis** shows the variables with missing values, while the counts of missing values are shown on the top of the plot as bars. The **y-axis** represents the **combination of variables and their frequencies**. For instance, we see, that two of the observations are missing in both variables, Ozone and Solar. 
+
+```{r fig.height=5}
+plot_na_intersect(airquality)
+```
+
+The only thing here is that we don't exactly know which two observation are the same. To get this problem solved we can use *vis_miss()* function from {visdat} package and wrap it up into *ggplotly()* command to get an *interactive plot*, which will show us the information of any point on which we hover the cursor. We can even zoom in a little bit if want to ;)
+
+### visdat
+
+```{r}
+library(visdat)      # for visualizing NAs
+library(plotly)      # for interactive visualization
+vis_miss(airquality) %>% ggplotly()
+```
+Now, since we know we have missing values in two variables, we can impute them in *every particular variable separately* using {dlookr} package, or, impute missing values in the *whole dataset at the same time* with the {missRanger} package. Let's do both and check the quality of our imputation by visualizing imputed values.
+
+
+## Univariate missing value imputation by {dlookr}
+
+### Univariate imputation of numeric variables
+
+*Dlookr* package provides numerous methods for imputation. However, here I would only present two of them, which are particularly useful, because they can be applied for both numeric and categorical variables. The first method is **rpart**, or *Recursive Partitioning and Regression Trees*, and the second is **mice**, or *Multivariate Imputation by Chained Equations*.
+
+Let's use both of them, and the imputation by the mean, just for sake of comparison, to see which method does the best job. And to make this even harder let's produce more missing values in our dataset and make sure that at least one variable is categorical.
+
+Now every variable in our dataset misses at least 10% of observations. Using the *imputate_na()* function, we only need to specify 4 arguments: 
+- the dataset
+- the variable with missing values, that would *Ozone*
+- the variable which will predict the missing values, for example *Temperature* and
+- the imputation method
+
+
+```{r fig.height=5}
+# produce more NAs with missRanger package
+library(missRanger)
+set.seed(111)
+airquality_NA <- generateNA(airquality) %>% 
+  mutate(Month = factor(Month))
+
+# check out NAs
+plot_na_pareto(airquality_NA)
+plot_na_intersect(airquality_NA)
+
+blip <- imputate_na(airquality_NA, Ozone, Temp, method = "mean")
+plot(blip)
+
+bla <- imputate_na(airquality_NA, Ozone, Temp, method = "rpart")
+summary(bla)
+plot(bla)
+```
+
+
+```{r echo=T, eval=F, fig.height=5}
+blup <- imputate_na(airquality_NA, Ozone, Temp, method = "mice", seed = 111)
+```
+
+```{r fig.height=5, include=FALSE}
+blup <- imputate_na(airquality_NA, Ozone, Temp, method = "mice", seed = 111)
+```
+
+
+```{r fig.height=5}
+plot(blup)
+```
+
+Comparing several methods would gives us a choice to *use the method which does not change the distribution too much or too weirdly*. For example, imputation by a simple *average* shown here is a strange one; it produces a bump in the middle of the plot which simply does not make any sense. In contrast, both machine learning methods did a great job, although I'd prefer to use *mice* instead of *rpart* for this particular dataset.
+
+### Univariate imputation of categorical variables
+
+Predicting a categorical variable, *Month*, is similarly easy. 
+
+```{r eval=F, echo=T}
+blah <- imputate_na(airquality_NA, Month, Temp, method = "mice", seed = 111)
+```
+
+
+```{r include=F}
+blah <- imputate_na(airquality_NA, Month, Temp, method = "mice", seed = 111)
+```
+
+
+```{r}
+plot(blah)
+```
+
+## Multivariate missing value imputation by {missRanger}
+
+### Multivariate imputation of numeric variables
+
+So, the *dlookr* package is **sweet** for a quick and controllable imputation! And I do talk about it more in the separate *dlookr* video. But we can go one step further using the *missRanger* package, which is **a real heavyweight** in data imputation!
+
+The **missRanger** approach, is a **non-parametric multivariate imputation by the chained random forest** [@Mayer2019]. Compared to *dlookr* approach, which used only one variable with missing values, *missRanger* predicts multiple variables at the same time by using all other variables in a dataset as predictors. This method combines the **random forest imputation**, which is cool on it's own, with the **mice** method (**Multivariate Imputation by Chained Equations**) using the predictive mean matching which we just saw in action. So, {missRanger} *iterates imputation for every missing value multiple times until the average (out-of-bag) prediction error stops to improve*. ...you know...machine learning stuff... This allows for a realistic imputation which avoids "new strange" values like 0.3 in a 0-1 coded variable and thus contains the original data structure. On top of this, {missRanger} is much quicker then {dlookr}, because it's written in C++!, and thus, can be used for a bid data.
+ 
+So, let's impute *all the missing values in our dataset at once*. For this we just need to specify our dataset and provide the formula. The formula is interesting: a point on the left side of the tilde will *find all the variables* with missing and fill them up, and the point on the right side of the tilde will *use all the predictors* in a dataset for imputation, even those with missing values ;). How amazing is that!?
+
+So, if we then plot the imputed dataset in red, and the original in black, we'll not only see that *missRanger* did not produce any weird values outside of the original distribution, but also that most of the new red points are placed in the area where the most of the old black points are. So, in a few lines of code and a few seconds we filled up all variables, numeric and categorical, without skewing our data. That's just madness!
+
+
+```{r warning=F, message=F}
+airquality_imputet <- missRanger(
+  airquality_NA, 
+  formula = . ~ . ,
+  num.trees = 1000, 
+  verbose = 1, seed = 111)
+
+# numeric imputation
+ggplot()+
+  geom_point(data = airquality_imputet, aes(Ozone, Solar.R), 
+             color = "red")+
+  geom_point(data = airquality_NA, aes(Ozone, Solar.R))+
+  theme_minimal()
+
+ggplot()+
+  geom_point(data = airquality_imputet, aes(Wind, Temp), 
+             color = "red")+
+  geom_point(data = airquality_NA, aes(Wind, Temp))+
+  theme_minimal()
+```
+
+
+### Multivariate imputation of categorical variables
+
+```{r}
+# caterogical imputation
+ggplot()+
+  geom_bar(data = airquality_NA, aes(Month), width = 0.3)+
+  geom_bar(data = airquality_imputet, aes(Month), fill = "red",
+           position = position_nudge(x = 0.25), width = 0.3)+
+  
+  theme_minimal()
+```
+That's it for today. If you found this useful and want to see more, feel free to like and subscribe. As always - thank for watching!, and I'll catch you again soon in the next video.
+
+**Thanks for learning ;) **
+
+---------------
+
+If you think, I missed something, please comment on it below, and I’ll improve this tutorial.
+
+# Useful ressources
+
+- Choonghyun Ryu (2021). dlookr: Tools for Data Diagnosis, Exploration, Transformation. R package version 0.4.0. https://CRAN.R-project.org/package=dlookr
+
+- Michael Mayer (2019). missRanger: Fast Imputation of Missing Values. R package version 2.1.0. https://CRAN.R-project.org/package=missRanger
+
+- Wright, M. N. & Ziegler, A. (2016). ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R. Journal of Statistical Software, in press. http://arxiv.org/abs/1508.04409.
+
+- Stekhoven, D.J. and Buehlmann, P. (2012). 'MissForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118. https://doi.org/10.1093/bioinformatics/btr597.
+
+- Van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. Journal of Statistical Software, 45(3), 1-67. http://www.jstatsoft.org/v45/i03/
+

@@ -1,7 +1,7 @@
 ---
-title: "Deep Exploratory Data Analysis (EDA) in R: or one-stop solution for EDA in R (in progress)"
+title: "Deep Exploratory Data Analysis (EDA) - or one-stop solution for EDA in R (in progress)"
 description: |
-  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it statistical inference in a published scientific paper or a machine learning algorithm in production. This way between EDA and final result is often rocky, bumpy, annoying and highly iterative. However, EDA is sometimes the most important and the most time consuming part of data analysis, because it helps to generate hypothesis, which then determine the final result. Unfortunatly EDA often remains unreported, simply because everyone focuses on the final result. So that we often don't know how EDA was conducted. Thus, in this article we'll provide the best (to my knowledge) ways to explore the data in R, which will signifiantly speed up and easy data exploration. Moreover we'll go one step beyond the EDA towards generating hypotheses by using some simple statistical tests. 
+  Exploratory Data Analysis (EDA) is an important first step on the long way to the final result, be it a statistical inference in a published scientific paper or a machine learning algorithm in production. This long way between EDA and final result is often bumpy, annoying, highly iterative and time consuming. However, EDA is sometimes the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Unfortunatly, EDA often remains unreported, simply because everyone focuses on the final result. So that we often don't know how EDA was conducted. Thus, in this video I'll provide (to my knowledge) the simplest and most effective ways to explore the data in R, which will signifiantly speed up your your work. Moreover we'll go one step beyond the EDA towards generating and testing hypotheses by using some simple statistical tests.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -26,44 +26,52 @@ output:
 knitr::opts_chunk$set(echo = T)
 ```
 
+You can run all packages at once, in order to avoid interruptions. You'd need to install some of them if you still aren't, using *install.packages("name_of_the_package")* command.
 
 ```{r}
-# install.packages("tidyverse")
-# install.packages("DataExplorer")
+library(DataExplorer)     # exploratory data analysis
+library(tidyverse)        # data wrangling and visualization
+library(SmartEDA)         # exploratory data analysis
+library(dlookr)           # exploratory data analysis
+library(flextable)        # beautifying tables
+library(funModeling)      # some quick statistics
+library(skimr)            # descriptive stats
+library(pastecs)          # regularization, decomposition and analysis of space-time series
+library(summarytools)     # descriptive stats and summaries
+library(psych)
+library(gtsummary)
 
-library(tidyverse)        # for data wrangling and visualization
-library(datasets)         # for getting the data 
-library(ISLR)
-library(DataExplorer)     # for exploratory data analysis
-library(SmartEDA)         # for exploratory data analysis
-library(skimr)            # for descriptive stats
+library(datasets)         # getting the data 
+library(ISLR)             # for data
+
+
 library(PerformanceAnalytics)
 library(ggstatsplot)
 library(performance)
-library(pastecs)
 library(dlookr)
 library(visdat)
-library(summarytools)
+library(car)
 library(explore)
 library(knitr)
-library(funModeling)
-library(flextable)        # beutifying tables
+library(fastStat)
 ```
 
-I love R, because it is reach and having ca. 17000 packages allows me to concur almost any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by different functions from different packages with different levels of effectiveness. Looking for the most effective way can be very time consuming! So, I hope this collection will save you some time. And if you know better functions or packages for EDA, than those provided here, please let me know in the comments below and let us together create a one-stop solution for EDA in R.
+I love R, because it is reach and generous. Having more than 17000 packages allows me to solve any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by **different functions** from **different packages** with **different levels of effectiveness**. So, looking for the most effective way can be very time consuming! Thus, I hope that this collection of functions will save you some time. And if you know better functions or packages for EDA, please let me know in the comments below and let us together create **the one-stop solution for EDA in R**.
 
 ## Creating visualised reports of the whole dataset with only one function!
 
-The most effective way to explore the data fast is a creation of automated reports. [DataExplorer package](https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/) creates the best reports in my opinion. [SmartEDA](https://daya6489.github.io/SmartEDA/) package is another good choice. 
+The most effective way to explore the data quick is the creation of **automated reports**. We'll have a look at three packages which are able to do this. [DataExplorer package](https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/) package creates the best report in my opinion. [SmartEDA](https://daya6489.github.io/SmartEDA/) and [dlookr](https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/) packages are also good choices. Only **three** functions you are going to see in a moment will cover all the basics of EDA in a few seconds.
 
 ### DataExplorer
 
+DataExplorer report will deliver **basic info** about your dataset, like number of rows and columns, number of categorical and numeric variables, number of missing values and number of complete rows. It will also show you a **missing data profile**, where percentages of missing values in every variable are displayed. It plots the **histograms** and **Quantile-Quantile plots** for every numeric variable and **bar-plots** for every categorical variable. It finally explores the combinations of different variables, by conducting **correlation analysis, principal component analysis, box and even scatter plots**.
+
 ```{r eval=F}
-airquality <- airquality %>% 
-  mutate(Month = factor(Month))
+library(DataExplorer) # for exploratory data analysis
+library(tidyverse)    # for data, data wrangling and visualization
 
 # report without a response variable
-create_report(airquality)
+create_report(diamonds)
 
 # report with a response variable
 create_report(diamonds, y = "price")
@@ -71,115 +79,166 @@ create_report(diamonds, y = "price")
 
 ### SmartEDA
 
+In addition to the similar results, SmartEDA report also delivers **descriptive statistics** for every numeric variable with all important metrics you could need, like **number of negative values, number of zeros, mean, median, standard deviation, IQR, bunch of different quantiles and even the number of outliers**. SmartEDA also displays the **density** of every numeric variables instead of histograms. And while DataExplorer package can visualize density too, density plots are not part of the automated DataExplorer report.
+
+What I found particularly useful in SmartEDA report is that it provides the code responsible for a particular result. For instance if I don't need the whole report, but wanna see descriptive stats, I just copy the code, change the "data" name and get the same table I see in the report without looking for such code in the documentation. **It saves time!** Moreover, in SmartEDA package, you can determine the output name of the report and the directory you  want to save it to.
+
 ```{r eval=F}
-ExpReport(airquality, op_dir  = 'other_docs/', op_file = 'smarteda.html')
+library(SmartEDA) # for exploratory data analysis
+
+ExpReport(diamonds, op_file = 'smarteda.html')
 ```
 
 ### dlookr
 
-The advantage of *dlookr* package is that you can choose to output to pdf (by default) and html files. Moreover, you can determine the output name, directory and even the font family.
+One of the most amazing features of {dlookr} package is that {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2}. This brings the output of {dlookr} on another level. But more about it later. Another advantage of *dlookr* package is that you can choose the output to be a PDF (by default) or HTML files. Moreover, it also separates between three kinds of reports: **diagnose report, EDA report and transformation report**. 
+
+The diagnose report delivers:
+
+- the number of missing and unique values,  
+- counts, proportions and ranks of categorical variables,
+- descriptive stats, number of zeros, negative values and number of outliers of numeric variables and finally
+- visualizes every numeric variables with and without outliers
 
 ```{r eval=F}
-eda_report(airquality)
+library(dlookr) # for exploratory data analysis
 
-diamonds %>% 
-  eda_report(price)
+# report without a response variable
+diagnose_report(diamonds) # pdf or html
+```
+
+Similarly to the DataExplorer report, we can get a much richer report by specifying the target variable. Let's export this report in the HTML format. The EDA report delivers:
+
+- visual Normality Tests of all Numerical Variables with a Histogram and Quantile-Quantile plot and even with two of the most common transformations of data, namely log- and Square-root transformation. This is quite useful, because we can immediately see whether we need to transform the data and which type of transformation is more useful;
+- this report also provides correlation coefficients and plots for all possible combinations of numeric variable, then
+- since our target variable is categorical, EDA report provides descriptive statistics for every category of our target variable vs. numeric variables, and contingency tables for with categorical variables.
+- it also visualizes the distribution of every other variable vs. the target variables using box-plots and density plots, with and without outliers.
+
+```{r eval=F}
+# report with a response variable and some dplyr sintax
+diamonds %>%
+  eda_report(
+    target        = cut, 
+    output_format = "html", 
+    output_file   = "EDA_diamonds.html")
 ```
 
 
-## Big Picture of your data, or some quick descriptive stats
 
-Instead of running *create_report()*, you may also run each function individually for your analysis, e.g. view basic description for *airquality* data.
+Finally the transformation report, which is my absolute favorite:
+
+- imputes missing values with multiple methods simultaneously, so that you can compare the distribution of the data after different imputation techniques and choose the best imputation method for every particular dataset,
+- similarly, transformation report also imputes outliers with different methods,
+- resolve skewness of the data with different methods and even
+- offers you to categorize some numeric variables, if you want to.
+
+
+```{r eval=F}
+# example with missing values
+transformation_report(airquality, target = Temp)
+
+# example with outliers
+transformation_report(diamonds, target = price)
+```
+
+
+## Big Picture of your data and some quick 
+
+These big reports might be overwhelming though, because we often need only a particular aspect of data exploration. Fortunately, you can get any part of the big report separately. For instance, the basic description for *airquality* dataset can be reached via functions *introduce()* and *plot_intro()* from DataExplorer package. 
 
 ### DataExplorer
 
-```{r}
+```{r cache=T}
 introduce(airquality) %>% t() 
 
 plot_intro(airquality)
 ```
 
-### SmartEDA
-
-```{r}
-ExpData(data=iris,type=1) %>% 
-  flextable() %>% 
-  width(width = 1.9)
-
-ExpData(data=iris,type=2) %>% 
-  flextable() %>% 
-  width(width = 1.9)
-```
-### dlookr
-
-```{r}
-diagnose(airquality) %>% 
-  flextable()
-```
-
-
-```{r eval=F}
-diagnose_report(airquality)
-```
 
 ### funModeling
 
-```{r}
+```{r cache=T}
 status(airquality) %>% flextable()
 ```
 
 
+## Descriptive stats
 
-### skimr
+Descriptive statistics is usually needed for either a whole numeric variable, or for a numeric variable separated in groups of some categorical variable, like control & treatment. Two functions from *dlookr*  package, namely *describe* and *univar_numeric* totally nail it. Be careful with the *describe* function though, because it also exist in other packages too, namely in *Hmisc* and *psych* packages. Thus, simple write *dlookr::* in front of it. Very useful is the collaboration with *tidyverse* packages, like *dplyr*!
 
-```{r}
-skim(diamonds)
+
+
+### dlookr
+
+```{r cache=T}
+
+dlookr::describe(iris) %>% flextable()
+
+iris %>% 
+  group_by(Species) %>% 
+  dlookr::describe() %>% 
+  flextable()
+
+iris %>% 
+  group_by(Species) %>%
+  univar_numeric() %>% knitr::kable()
+
+
 ```
 
-### pastecs
 
-```{r}
-stat.desc(airquality)
+
+
+
+skimr is another useful package which provides less basic descriptive stats per group, but it counts the categorical variables, so it gives you a quick overview about the whole dataset.
+
+
+```{r cache=T}
+library(skimr)
+skim(diamonds)
+
+iris %>% 
+  group_by(Species) %>% 
+  skim() 
+```
+
+
+
+
+*SmartEDA* with its *ExpNumStat* function provides much richer descriptive statistics. Moreover we can choose to describe the whole variables, grouped variables, or even both at the same time. If we call the argument *by* with a big *A* letter, we'll get statistics for every numeric variable in the dataset. If we use big *G*, which stands for - *GROUP*, we'll need to specify a group in the next argument *gr*. This will provide descriptive stats of every numeric variable per group. Using *GA* would give you both.
+
+
+
+```{r cache=T}
+ExpNumStat(iris, by="GA", gp="Species", Outlier=TRUE) %>% flextable()
 ```
 
 
 ### summarytools
 
-```{r}
+```{r cache=T}
 library(summarytools)
 dfSummary(diamonds)
 freq(diamonds)
-descr(airquality)
+
+iris %>% 
+  group_by(Species) %>% 
+  descr() 
 ```
 
 ### psych
 
-```{r}
+```{r cache=T}
 library(psych)
-describeBy(diamonds,
-           diamonds$cut) # grouping variable
+describeBy(iris,
+           iris$Species)
 ```
 
-### dlookr
 
-```{r}
-dlookr::describe(airquality)
-
-diamonds %>% 
-  dplyr::select(price, cut, carat) %>% 
-  group_by(cut) %>% 
-  dlookr::describe() %>% 
-  dplyr::select(variable, cut, n, na, mean, sd, IQR)
-
-diamonds %>% 
-  dplyr::select(price, cut, carat) %>% 
-  group_by(cut) %>%
-  univar_numeric()
-```
 
 ### Hmisc
 
-```{r}
+```{r cache=T}
 diamonds %>% 
   select(cut, price) %>%
   Hmisc::describe()
@@ -189,128 +248,51 @@ diamonds %>%
 
 ### gtsummary
 
-```{r}
+```{r cache=T}
 library(gtsummary)
 diamonds %>%
   tbl_summary(by = cut) %>% 
-  bold_labels() %>% 
-  add_p()
+  add_p() 
+
+mtcars %>%
+  tbl_summary(by = cyl) %>% 
+  add_p() 
 ```
 
 
-## View missing value distribution for airquality data
+
+## Explore categorical (discrete) variables
 
 ### DataExplorer
 
-```{r}
-plot_missing(airquality)
-```
-
-### dlookr
-
-Plot The Combination Variables That Is Include Missing Value
-Visualize the combinations of missing value across cases.
-
-```{r}
-plot_na_pareto(airquality)
-plot_na_hclust(airquality)
-plot_na_intersect(airquality)
-```
-
-### visdat
-
-```{r}
-vis_dat(airquality)
-
-plotly::ggplotly(vis_miss(airquality))
-
-vis_miss(airquality, 
-         cluster = TRUE)
-
-vis_guess(iris)
-plotly::ggplotly(vis_guess(airquality))
-```
-
-
-## Quickly impute missing values
-
-### dlookr
-
-*Dlookr* package provide numerous methods to impute missing values. However, it's not recommenden to use any specific number, like mean or median. Two of the methods from *Dlookr* package are particularly useful,
-- "rpart" : Recursive Partitioning and Regression Trees
-- "mice" : Multivariate Imputation by Chained Equations
-because they can be applied for both numerical and categorical variables, while additionally, the 
-- "knn" : K-nearest neighbors 
-method can be used for only numeric columns.
-
-One thing I found particularly interesting: we can use several methods and compare them visually. This gives us a choice to use the method which does not change the distribution too much or too weirdly. The example with *median* shown below is a weard one, so that I'd prefer to use *rpart* or *mice*.
-
-
-
-```{r}
-bla <- imputate_na(airquality, Ozone, Temp, method = "rpart")
-summary(bla)
-plot(bla)
-
-blup <- imputate_na(airquality, Ozone, Temp, method = "mice")
-summary(blup)
-plot(blup)
-
-blip <- imputate_na(airquality, Ozone, Temp, method = "median")
-summary(blip)
-plot(blip)
-```
-
-
-
-## Visualise distribution of categorical (discrete) variables
-
-### DataExplorer
-
-```{r}
-plot_bar(diamonds)
-
-plot_bar(diamonds, with = "price")
-
-## View frequency distribution by a discrete variable
+```{r cache=TRUE}
+## View frequency distribution by a discrete target variable
 plot_bar(diamonds, by = "cut")
 ```
-
-### dlookr
-
-```{r}
-compare_category(.data = diamonds, cut, clarity) %>% plot()
-
-diagnose_category(diamonds)
-```
-
 
 
 ### SmartEDA
 
-```{r}
+*ExpCatViz* from *SmartEDA* package automatically scans through each variable and creates bar plot for categorical variable.
+
+```{r cache=T}
 ExpCatViz(diamonds)
 
 ## Stacked bar graph
-ExpCatViz(diamonds,target="cut",fname=NULL,clim=10,col=NULL,margin=2,Page = c(2,1),sample=2)
-
-## Frequency or custom tables for categorical variables
-ExpCTable(diamonds, Target = "price")
-
-## Summary statistics of categorical variables
-ExpCatStat(diamonds, Target="price",result = "Stat")
-
-## Inforamtion value and Odds value
-ExpCatStat(diamonds, Target="price",result = "IV")
-
-## Variable importance graph using information values
-ExpCatStat(Carseats, Target="Urban", result = "Stat", clim=10, nlim=5, bins=10, Pclass="Yes", plot=TRUE, top=10, Round=2)
+ExpCatViz(
+  Wage %>% 
+    select(education, jobclass), 
+  target="education")
 ```
 
 ### ggstatsplot
 
-```{r}
-ggbarstats(data = diamonds, x = cut, y = clarity)
+```{r cache=TRUE}
+ggbarstats(
+  data  = Wage, 
+  x     = jobclass, 
+  y     = education, 
+  label = "both")
 ```
 
 
@@ -320,14 +302,14 @@ ggbarstats(data = diamonds, x = cut, y = clarity)
 
 Besides the usual descriptive statistics, *diagnose_numeric()* reports the number of zeros, negative values and outliers.
 
-```{r}
-diagnose_numeric(airquality)
+```{r cache=TRUE}
+diagnose_numeric(airquality) %>% flextable()
 ```
 
 
 ### DataExplorer
 
-```{r}
+```{r cache=TRUE}
 ## View histogram of all continuous variables
 plot_histogram(airquality)
 
@@ -343,18 +325,16 @@ plot_qq(airquality, by = "Month")
 
 ### funModeling
 
-```{r}
+```{r cache=TRUE}
 plot_num(airquality)
 
-profiling_num(airquality)
-
-freq
+profiling_num(airquality) %>% flextable()
 ```
 
 
 ### SmartEDA
 
-```{r}
+```{r cache=TRUE}
 ## View estimated density distribution of all continuous variables
 ExpNumViz(airquality)
 
@@ -365,61 +345,63 @@ ExpOutQQ(airquality)
 
 ### ggpubr
 
-```{r}
+```{r  cache=TRUE}
 library(ggpubr)
-ggqqplot(airquality$Temp)
 ggqqplot(airquality$Temp[airquality$Month == 5])
+ggqqplot(iris, "Sepal.Length", facet.by = "Species")
+
 ```
 
 ### car
 
-```{r}
+```{r cache=TRUE}
 car::qqPlot(mtcars$mpg, groups = mtcars$cyl)
+car::qqPlot(iris$Sepal.Length, groups = iris$Species)
 ```
 
 ### dlookr
 
 Shapiro-Wilk normality test is performed.
 
-```{r}
-normality(airquality)
-
-# amazingly it supports dplyr and therefore group_by
-mtcars %>%
-  group_by(am, cyl) %>%
-  normality(mpg, wt) %>% 
-  arrange(p_value)
-
-# get ca. 2000 tests in seconds
-diamonds %>% 
-  group_by(cut, color, clarity) %>% 
-  normality()
-
-plot_normality(airquality, Ozone, Wind)
-
-airquality %>% 
-  filter(Month %in% c(7, 9)) %>% 
-  group_by(Month) %>%
-  plot_normality(Ozone)
-
-method = c("zscore", "minmax", "log", "log+1", "sqrt", "1/x", "x^2", "x^3")
-transform(airquality$Ozone, method = "log+1") %>% plot()
-transform(airquality$Ozone, method = "log+1") %>% summary()
+```{r cache=TRUE}
+normality(iris)
 ```
+
+
+```{r cache=TRUE, eval=FALSE}
+# amazingly it supports dplyr and therefore group_by
+# get ca. 2000 tests in seconds
+diamonds %>%
+  group_by(cut, color, clarity) %>%
+  normality()
+```
+
+
+```{r cache=TRUE}
+plot_normality(airquality, Ozone, Wind)
+```
+
+
+```{r cache=TRUE}
+iris %>%
+  group_by(Species) %>%
+  plot_normality(Petal.Length)
+```
+
 
 
 ## Visualize correlation
 
 ### DataExplorer
 
-```{r}
+```{r cache=TRUE}
 ## View overall correlation heatmap
 plot_correlation(na.omit(airquality), type = "c")
 ```
 
 ### dlookr
 
-```{r}
+```{r cache=TRUE}
 correlate(airquality, Ozone)
 
 plot_correlate(airquality, method = "kendall")
@@ -430,15 +412,28 @@ diamonds %>%
   plot_correlate()
 ```
 
+### ggstatsplot
+
+```{r cache=TRUE}
+library(ggstatsplot)
+
+ggcorrmat(airquality)
+
+ggcorrmat(
+  data = airquality,
+  type = "np",
+  output = "dataframe"
+) %>% flextable()
+```
+
+
 ### PerformanceAnalytics
 
 Correlation coeffitients and correlation color are amazing, they give us an idea about where there is a potentias for further exploration. However, they are quite limited though. Firstly, we don't really know whether these correlations are significant, so there are no tests behind it. Secondly, we don't even know what correlation method produced these coeffitients in the first place, was it the Pearson correaltion, or Spearman. Finally we don't see how data are scattered, so that some relationships might be very non-linear and correlation analysis would be not appropriate at all. The solution for all three problems is provided by the *PerformanceAnalytics* package, which offers a *chart.Correlation()* function. It produces histograms for every particular numeric variable and the scatterplots for every combination of numeric variables. I found the significance stars particularly helpful. Besides, we can easily choose the method we measure the correlation by, for instance, in the example below we use a robust non-parametric *kendall* correlation which is more appropriate for non-normally and non-too-linearly distributed values with some outliers. If we do not specify the methos, we'll produce a parametric (usual) Pearson correlation which is only appropriate for perfect data, which ... rarely happens.
 
 
 
-```{r}
-PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month)) 
-# method = "kendall" or "spearman"
+```{r cache=TRUE}
 PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = "kendall") 
 ```
 
@@ -448,40 +443,43 @@ PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = 
 
 ### DataExplorer
 
-```{r}
+```{r cache=TRUE}
 ## View bivariate continuous distribution based on `cut`
 plot_boxplot(airquality, by = "Month")
 ```
 
 ### SmartEDA
 
-```{r}
-ExpNumViz(airquality, target = "Month")
+```{r cache=TRUE}
+ExpNumViz(iris, target = "Species")
 ```
 
 ### ggstatsplot
 
-```{r}
-ggstatsplot::ggbetweenstats(data = airquality, x = Month, y = Ozone, type = "np")
+```{r cache=TRUE}
+ggbetweenstats(
+  data = iris, 
+  x    = Species, 
+  y    = Sepal.Width, 
+  type = "np")
 ## I did 3 videos about these fancy box plots with statistics
-
 ```
+
+
 
 ## Visualize outlier
 
 The *performance* package provide an easy way to visualize outliers.
 
-```{r}
+```{r cache=TRUE}
 check_outliers(airquality$Ozone)
 plot(check_outliers(airquality$Ozone, method = "iqr"))
 ```
 
 ### dlookr
 
-
-
-```{r}
-diagnose_outlier(diamonds)
+```{r  cache=TRUE}
+diagnose_outlier(airquality)
 
 plot_outlier(airquality, Ozone)
 
@@ -499,6 +497,8 @@ diamonds %>%
 ```
 
 
+
+
 ## Impute outliers
 
 *Dlookr* package also provides an opportunity to impute outliers using several methods:
@@ -510,7 +510,7 @@ diamonds %>%
 
 Moreover, we can compare the results of a column before and after imputation via a plain table or via a plot.
 
-```{r}
+```{r cache=TRUE}
 bla <- imputate_outlier(diamonds, carat, method = "capping")
 summary(bla)
 plot(bla)
@@ -518,15 +518,17 @@ plot(bla)
 
 
 
+
+
 ## Scatter plots
 
-```{r}
+```{r cache=TRUE}
 plot(iris)
 ```
 
 ### SmartEDA
 
-```{r}
+```{r cache=TRUE}
 airquality %>% 
   select(1:3) %>% 
 ExpNumViz(scatter=TRUE)
@@ -536,16 +538,23 @@ ExpNumViz(scatter=TRUE)
 
 The *compare_numeric()* function examines the relationship between numerical variables with the help of (Pearson's) correlation and simple linear models.
 
-```{r}
+```{r cache=TRUE}
 compare_numeric(iris) %>% plot()
 
 compare_numeric(iris)
 ```
 
 
+### fastStat
+
+```{r cache=TRUE}
+iris %>% select_if(is.numeric) %>% cor_sig_star(method = "kendall")
+```
+
+
 ## Exploratory modelling
 
-```{r}
+```{r cache=TRUE}
 ggplot(airquality, aes(Solar.R, Temp))+
   geom_point()+
   geom_smooth()+
@@ -561,9 +570,12 @@ ggplot(diamonds, aes(price, carat))+
 
 ## Data transformation
 
+
+
+
 ### Dummify
 
-```{r}
+```{r cache=TRUE}
 ## Dummify diamonds dataset
 glimpse(dummify(diamonds, select = "cut"))
 glimpse(dummify(diamonds))
@@ -580,11 +592,22 @@ plot(tr)
 transformation_report(airquality)
 ```
 
+
+### funModeling
+
+Convert a numeric vector into a scale from 0 to 1 with 0 as the minimum and 1 as the maximum.
+
+```{r cache=TRUE}
+range01(airquality$Ozone) %>% densityplot()
+```
+
+
+
 ### Categorize numeric variables
 
 The binning() converts a numeric variable to a categorization variable. Choose from "quantile", "equal", "equal", "pretty", "kmeans" and "bclust". The "quantile" sets breaks with quantiles of the same interval. The "equal" sets breaks at the same interval. The "pretty" chooses a number of breaks not necessarily equal to nbins using base::pretty function. The "kmeans" uses stats::kmeans function to generate the breaks. The "bclust" uses e1071::bclust function to generate the breaks using bagged clustering. "kmeans" and "bclust" was implemented by classInt::classIntervals function.
 
-```{r}
+```{r  cache=TRUE}
 bin <- binning(airquality$Ozone, type = "bclust", nbins = 4,
               labels = c("LQ1", "UQ1", "LQ3", "UQ3"))
 
