@@ -12,7 +12,7 @@ categories:
   - data wrangling
   - visualization
   - machine learning
-preview: 2.png
+preview: thumbnail_impute_na.jpg
 output:
   distill::distill_article:
     self_contained: false
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(echo = T)
 
 You can load all the packages at once to avoid interruptions. 
 
-```{r}
+```{r warning=F, message=F}
 library(dlookr)      # for exploratory data analysis and imputation
 library(visdat)      # for visualizing NAs
 library(plotly)      # for interactive visualization
