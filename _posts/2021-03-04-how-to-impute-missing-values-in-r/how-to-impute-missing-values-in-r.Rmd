@@ -1,13 +1,12 @@
 ---
-title: "How to impute missing values in R"
+title: "How to impute missing values with Machine Learning in R"
 description: |
-  Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this video we'll learn how to impute missing values easily and effectively.
+  Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
 date: 01-09-2021
 categories:
-  - EDA
   - videos
   - data wrangling
   - visualization
@@ -25,6 +24,15 @@ output:
 
 ```{r setup, include=FALSE, warning=F, message=F}
 knitr::opts_chunk$set(echo = T)
+```
+
+
+## This post as a video
+
+If you are more of a visual learner, your can watch this post.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("Akb401i32Oc")
 ```
 
 You can load all the packages at once to avoid interruptions. 
@@ -78,6 +86,7 @@ Now, since we know we have missing values in two variables, we can impute them i
 Let's use both of them, and the imputation by the mean, just for sake of comparison, to see which method does the best job. And to make this even harder let's produce more missing values in our dataset and make sure that at least one variable is categorical.
 
 Now every variable in our dataset misses at least 10% of observations. Using the *imputate_na()* function, we only need to specify 4 arguments: 
+
 - the dataset
 - the variable with missing values, that would *Ozone*
 - the variable which will predict the missing values, for example *Temperature* and
@@ -141,7 +150,7 @@ plot(blah)
 
 ### Multivariate imputation of numeric variables
 
-So, the *dlookr* package is **sweet** for a quick and controllable imputation! And I do talk about it more in the separate *dlookr* video. But we can go one step further using the *missRanger* package, which is **a real heavyweight** in data imputation!
+So, the *dlookr* package is **sweet** for a quick and controllable imputation! And I do talk about it more in the separate *dlookr* [article](https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/). But we can go one step further using the *missRanger* package, which is **a real heavyweight** in data imputation!
 
 The **missRanger** approach, is a **non-parametric multivariate imputation by the chained random forest** [@Mayer2019]. Compared to *dlookr* approach, which used only one variable with missing values, *missRanger* predicts multiple variables at the same time by using all other variables in a dataset as predictors. This method combines the **random forest imputation**, which is cool on it's own, with the **mice** method (**Multivariate Imputation by Chained Equations**) using the predictive mean matching which we just saw in action. So, {missRanger} *iterates imputation for every missing value multiple times until the average (out-of-bag) prediction error stops to improve*. ...you know...machine learning stuff... This allows for a realistic imputation which avoids "new strange" values like 0.3 in a 0-1 coded variable and thus contains the original data structure. On top of this, {missRanger} is much quicker then {dlookr}, because it's written in C++!, and thus, can be used for a bid data.
  
@@ -183,7 +192,7 @@ ggplot()+
   
   theme_minimal()
 ```
-That's it for today. If you found this useful and want to see more, feel free to like and subscribe. As always - thank for watching!, and I'll catch you again soon in the next video.
+That's it for today. If you found this useful and want to see more, feel free to subscribe to my YouTube channel.
 
 **Thanks for learning ;) **
 
