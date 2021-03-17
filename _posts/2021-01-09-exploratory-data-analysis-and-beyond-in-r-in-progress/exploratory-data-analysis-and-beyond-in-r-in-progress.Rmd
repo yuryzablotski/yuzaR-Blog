@@ -180,8 +180,8 @@ plot_bar(diamonds, by = "cut")
 
 *ExpCatViz* from *{SmartEDA}* package also plots each categorical variable with a bar plot, but displays percents instead of counts. 
 
-```{r cache=T}
-ExpCatViz(diamonds)
+```{r fig.width=10}
+ExpCatViz(diamonds, Page = c(1,3))
 ```
 
 And here we finally come to the **DEEP** part of EDA. The plot below nearly "scrims" the hypothesis that education level is strongly associated with the job. Namely, the more educated we get, the more likely we'll end up working with information (e.g. with data ;) and the less likely we'll end up working in a factory. However, without a proper statistical test and a p-value this hypothesis can not be tested and remain, well ... a speculation. 
@@ -271,7 +271,7 @@ describeBy(iris,
 
 ## Summary tools
 
-This topic can be singled out because the functions presented below give you a quick overview about the whole dataset, and some of them also do test hypothesis.
+This topic can be singled out because functions presented below give you a quick overview about the whole dataset and some of them also test hypothesis with simple statistical tests.
 
 ### {summarytools}
 
@@ -294,7 +294,7 @@ skim(diamonds)
 
 ### {gtsummary}
 
-First of all, *tbl_summary()* function from {gtsummary} package summarizes all the data in the dataset by a **n (%)** for categorical and **Median (IQR)** for numeric variables. The argument "**by =**" inside of *tbl_summary()* suppose to contain a grouped categorical variable. The *add_p()* function then **conducts statistical tests with all variables and provides p-values**. For numeric variables it uses the **non-parametric Wilcoxon rank sum test** for comparing two groups and the **non-parametric Kruskal-Wallis rank sum test** for more then two groups. Categorical variables are checked with a **Pearson's Chi-squared test** in case enough data is provides and with a **Fisher's exact test**, if number of observations per group is below 5.
+First of all, *tbl_summary()* function from {gtsummary} package summarizes all categorical variables by **counts and percentages**, while all numeric variables by **median and IQR**. The argument "**by =**" inside of *tbl_summary()* specifies a grouping variable. The *add_p()* function then **conducts statistical tests with all variables and provides p-values**. For numeric variables it uses the **non-parametric Wilcoxon rank sum test** for comparing two groups and the **non-parametric Kruskal-Wallis rank sum test** for more then two groups. Categorical variables are checked with **Fisher's exact test**, if number of observations in any of the groups is below 5, or with **Pearson's Chi-squared test** for more data.
 
 ```{r}
 library(gtsummary)
@@ -321,7 +321,7 @@ Wage %>%
 ## Explore distribution of numeric variables
 
 
-{DataExplorer} provides very intuitive functions for getting histogram and density plots of all continuous variables, *plot_histogram()* and *plot_density()*. {funModeling} package provides *plot_num()* function which also plots the histograms, and {SmartEDA} with its *ExpNumViz()* function provides nice looking density plots with **Skewness** and **Kurtosis**.
+{DataExplorer} package provides very intuitive functions for getting histogram and density plots of all continuous variables at once, namely *plot_histogram()* and *plot_density()*. {SmartEDAs} function *ExpNumViz()* provides nice looking density plots with **Skewness** and **Kurtosis**.
 
 ### {DataExplorer}
 
@@ -331,11 +331,6 @@ plot_histogram(iris)
 plot_density(iris)
 ```
 
-### funModeling
-
-```{r cache=TRUE}
-plot_num(iris)
-```
 
 
 ### {SmartEDA}
@@ -359,39 +354,37 @@ plot_qq(iris, by = "Species")
 
 ### {ggpubr}
 
+However, {ggpubr} package shows the confidence intervals, which help to decide whether the deviation from normality is huge or not. However, in order to proverly check the normality, we'd need to actually do a statistical test for normality
+
 ```{r cache=TRUE}
 library(ggpubr)
 ggqqplot(iris, "Sepal.Length", facet.by = "Species")
 ```
 
-### {car}
-
-```{r cache=TRUE}
-car::qqPlot(iris$Sepal.Length, groups = iris$Species)
-```
 
 ### {dlookr}
 
-Shapiro-Wilk normality test is performed.
+So, *normality()* function from {dlookr} package performs Shapiro-Wilk normality tests with every numeric variable in the dataset. Moreover, via the collaboration with {dplyr} and therefore *group_by()* function we cat conduct ca. 2000 normality tests in seconds:
 
-```{r cache=TRUE}
-normality(iris)
+```{r}
+normality(iris) %>% knitr::kable()
 ```
 
 
-```{r cache=TRUE, eval=FALSE}
-# amazingly it supports dplyr and therefore group_by
-# get ca. 2000 tests in seconds
+```{r cache=TRUE}
 diamonds %>%
   group_by(cut, color, clarity) %>%
   normality()
 ```
 
+Moreover, **plot_normality()** function **visualizes the normality** of numeric data and two most common transformations of data, namely **log transformation & square root**, in case the normality assumption wasn't met. Particularly, we see:
 
-```{r cache=TRUE}
-plot_normality(airquality, Ozone, Wind)
-```
+- Histogram of the original data
+- Quantile-Quantile plot of the original data
+- Histogram of log transformed data and finally
+- Histogram of square root transformed data
 
+Now we can even see whether transformation improves something or not. 
 
 ```{r cache=TRUE}
 iris %>%
@@ -423,7 +416,7 @@ diamonds %>%
   plot_correlate()
 ```
 
-### ggstatsplot
+### {ggstatsplot}
 
 ```{r cache=TRUE}
 library(ggstatsplot)
@@ -438,11 +431,9 @@ ggcorrmat(
 ```
 
 
-### PerformanceAnalytics
+### {PerformanceAnalytics}
 
-Correlation coeffitients and correlation color are amazing, they give us an idea about where there is a potentias for further exploration. However, they are quite limited though. Firstly, we don't really know whether these correlations are significant, so there are no tests behind it. Secondly, we don't even know what correlation method produced these coeffitients in the first place, was it the Pearson correaltion, or Spearman. Finally we don't see how data are scattered, so that some relationships might be very non-linear and correlation analysis would be not appropriate at all. The solution for all three problems is provided by the *PerformanceAnalytics* package, which offers a *chart.Correlation()* function. It produces histograms for every particular numeric variable and the scatterplots for every combination of numeric variables. I found the significance stars particularly helpful. Besides, we can easily choose the method we measure the correlation by, for instance, in the example below we use a robust non-parametric *kendall* correlation which is more appropriate for non-normally and non-too-linearly distributed values with some outliers. If we do not specify the methos, we'll produce a parametric (usual) Pearson correlation which is only appropriate for perfect data, which ... rarely happens.
-
-
+Correlation coefficients and correlation color are amazing, they give us an idea about where there is a potentias for further exploration. However, they are quite limited though. Firstly, we don't really know whether these correlations are significant, so there are no tests behind it. Secondly, we don't even know what correlation method produced these coeffitients in the first place, was it the Pearson correaltion, or Spearman. Finally we don't see how data are scattered, so that some relationships might be very non-linear and correlation analysis would be not appropriate at all. The solution for all three problems is provided by the *PerformanceAnalytics* package, which offers a *chart.Correlation()* function. It produces histograms for every particular numeric variable and the scatterplots for every combination of numeric variables. I found the significance stars particularly helpful. Besides, we can easily choose the method we measure the correlation by, for instance, in the example below we use a robust non-parametric *kendall* correlation which is more appropriate for non-normally and non-too-linearly distributed values with some outliers. If we do not specify the **method**, we'll produce a **parametric (usual) Pearson correlation** which is only appropriate for perfect data, which ... rarely happens.
 
 ```{r cache=TRUE}
 PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = "kendall") 
@@ -465,7 +456,7 @@ plot_boxplot(airquality, by = "Month")
 ExpNumViz(iris, target = "Species")
 ```
 
-### ggstatsplot
+### {ggstatsplot}
 
 ```{r cache=TRUE}
 ggbetweenstats(
@@ -507,7 +498,12 @@ diamonds %>%
       pull())
 ```
 
+## Missing values
 
+```{r}
+# “knn” : K-nearest neighbors
+plot(imputate_na(airquality, Ozone, Temp, method = "knn"))
+```
 
 
 ## Impute outliers
