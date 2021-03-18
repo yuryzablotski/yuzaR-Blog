@@ -321,7 +321,7 @@ Wage %>%
 ## Explore distribution of numeric variables
 
 
-{DataExplorer} package provides very intuitive functions for getting histogram and density plots of all continuous variables at once, namely *plot_histogram()* and *plot_density()*. {SmartEDAs} function *ExpNumViz()* provides nice looking density plots with **Skewness** and **Kurtosis**.
+{DataExplorer} package provides very intuitive functions for getting histogram and density plots of all continuous variables at once, namely *plot_histogram()* and *plot_density()*. {SmartEDAs} function *ExpNumViz()* provides nice looking density plots with **Skewness** and **Kurtosis**. Why do need to see the distribution. Well, for example to check the normality of distribution. Namely, if the density curve looks like a bell, the data is normally distributed and we can use parametric tests, like t-test or ANOVA. If, however, the curve looks not like a bell, the data is probably not-normally distributed and we'd need non-parametric tests, like Mann-Whitney or Kruskal-Wallis. Even better way to check for normality of data is to look at the Quantile-Quantile plot.
 
 ### {DataExplorer}
 
@@ -341,12 +341,12 @@ ExpNumViz(iris, Page = c(2,2))
 
 ## Check the normality of distribution
 
-{DataExplorer} also provides a simple and elegant solution for checking normality. *plot_qq()* function produces **Quantile-Quantile plots** either for all continuous variables in the dataset or even for every group of a categorical variable.
+{DataExplorer} provides a simple and elegant *plot_qq()* function, which produces **Quantile-Quantile plots** either for all continuous variables in the dataset, or, even for every group of a categorical variable, if the argument **by = ** is specified.
 
 ### {DataExplorer}
 
 ```{r cache=TRUE}
-plot_qq(airquality)
+plot_qq(iris)
 
 plot_qq(iris, by = "Species")
 ```
@@ -354,7 +354,7 @@ plot_qq(iris, by = "Species")
 
 ### {ggpubr}
 
-However, {ggpubr} package shows the confidence intervals, which help to decide whether the deviation from normality is huge or not. However, in order to proverly check the normality, we'd need to actually do a statistical test for normality
+{ggpubr} package goes one step further and shows the confidence intervals, which help to decide whether the deviation from normality is big or not. However, in order to properly check the normality, we'd need to actually do a statistical test for normality, which is in most cases a Shapiro-Wilk test.
 
 ```{r cache=TRUE}
 library(ggpubr)
@@ -364,10 +364,10 @@ ggqqplot(iris, "Sepal.Length", facet.by = "Species")
 
 ### {dlookr}
 
-So, *normality()* function from {dlookr} package performs Shapiro-Wilk normality tests with every numeric variable in the dataset. Moreover, via the collaboration with {dplyr} and therefore *group_by()* function we cat conduct ca. 2000 normality tests in seconds:
+*normality()* function from {dlookr} package performs Shapiro-Wilk normality tests with every numeric variable in the dataset. Moreover, via the collaboration with {dplyr} and therefore *group_by()* function we cat conduct ca. 2000 normality tests in seconds:
 
 ```{r}
-normality(iris) %>% knitr::kable()
+normality(iris) %>% flextable()
 ```
 
 
@@ -377,14 +377,7 @@ diamonds %>%
   normality()
 ```
 
-Moreover, **plot_normality()** function **visualizes the normality** of numeric data and two most common transformations of data, namely **log transformation & square root**, in case the normality assumption wasn't met. Particularly, we see:
-
-- Histogram of the original data
-- Quantile-Quantile plot of the original data
-- Histogram of log transformed data and finally
-- Histogram of square root transformed data
-
-Now we can even see whether transformation improves something or not. 
+Moreover, **plot_normality()** function from {dlookr} package **visualizes** not only **Histogram** and **Quantile-Quantile of the original data**, but also **two of the most common transformations of data**, namely **log transformation & square root**, in case the normality assumption wasn't met. This allows us to see, whether transformation actually improves something or not. Here we could again use *group_by()* function in order to quickly visualize several groups.
 
 ```{r cache=TRUE}
 iris %>%
@@ -499,6 +492,8 @@ diamonds %>%
 ```
 
 ## Missing values
+
+I found this topic actually so cool, that I produced a separate video and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/) on it. Here I just give you the glimpse on it. For instance 
 
 ```{r}
 # “knn” : K-nearest neighbors
