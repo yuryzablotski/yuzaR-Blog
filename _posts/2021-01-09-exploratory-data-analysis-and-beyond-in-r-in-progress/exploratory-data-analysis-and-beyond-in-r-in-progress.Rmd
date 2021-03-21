@@ -507,7 +507,7 @@ ExpNumViz(iris, target = "Species", Page = c(2,2))
 
 ## Explore correlations
 
-### {dlookr}
+### {dlookr} - correlation
 
 In order to quickly **check the relationship between numeric variables** we can use **correlate()** function from {dlookr} package, which delivers **correlation coefficients**. If we don't specify any target variable or the method, **Pearson's correlation between ALL variables** will be calculated pairwisely. 
 
@@ -552,6 +552,7 @@ ggcorrmat(
 ```
 
 
+
 ### {PerformanceAnalytics}
 
 However, my favorite way to conduct correlation analysis is supported by the *chart.Correlation()* function from {PerformanceAnalytics} package. It displays not only (1) correlation coefficients, but also (2) **histograms** for every particular numeric variable and even (3) **scatterplots** for every combination of numeric variables, which show whether relationships are non-linear and whether correlation analysis makes sense at all. Besides, the (4) significance stars are particularly helpful, because they describe the strength of correlation. Here we can of coarse also specify the (5) method we measure the correlation by.
@@ -561,7 +562,47 @@ library(PerformanceAnalytics)
 chart.Correlation(iris %>% select(-Species), method = "kendall") 
 ```
 
+### {fastStat}
 
+If the distribution and the spread of data does not of a big interest for you, you can use *cor_sig_star()* fucntion from {fastStat} package, which displays all the useful information in a form of a table with correlation coefficients and p-values.
+
+```{r cache=TRUE}
+library(fastStat)
+iris %>% select_if(is.numeric) %>% cor_sig_star(method = "kendall")
+```
+
+
+
+### {dlookr} - linear models
+
+The *compare_numeric()* function examines the relationship between numerical variables with the help of **(Pearson's) correlation** and **simple linear models**. The correlation results are a little boring because they only provide correlation coefficients (therefore not shown). However, the results of pairwise linear regressions are interesting, because they not only produce p-values, but also other useful metrics, like $R^2$, AIC etc. On top of this, we could plot all the results of *compare_numeric()* function showing: 
+
+- the strength of the correlation with circles,
+- the spread of data with box-plots and 
+- the linear regression, just to quickly see whether it makes sense
+
+```{r cache=TRUE}
+bla <- compare_numeric(iris) 
+
+bla$linear %>% 
+  mutate_if(is.numeric, ~round(.,2)) %>% 
+  flextable()
+
+plot(bla)
+```
+
+
+
+## Exploratory modelling
+
+However, how can we explore the whether linear model makes sense at all? Wenn the easiest way is to plot the data with {ggplot2} package and use *geom_smooth()* function to display a non-linear model fit of usually generalized additive models:
+
+```{r cache=TRUE}
+ggplot(airquality, aes(Solar.R, Temp))+
+  geom_point()+
+  geom_smooth()+
+  facet_wrap(~Month)
+```
 
 
 ## Explore missing values
@@ -645,104 +686,11 @@ plot(bla)
 
 
 
+## Conclusion
 
-## Scatter plots
+So, the usual Exploratory Data Analysis allows us to have a look at the data and form the hypothesis. In this video we not only did that, but also went one step further and started to explore (or test) the hypotheses themselves with simple statistical tests. This can help us to decide which complex statistics we need to use next in order to produce the final result, for example inference and predictions from a multivariate model. 
 
-```{r cache=TRUE}
-plot(iris)
-```
-
-### {SmartEDA}
-
-```{r cache=TRUE}
-airquality %>% 
-  select(1:3) %>% 
-ExpNumViz(scatter=TRUE, Page = c(1,3))
-```
-
-### {dlookr}
-
-The *compare_numeric()* function examines the relationship between numerical variables with the help of (Pearson's) correlation and simple linear models.
-
-```{r cache=TRUE}
-compare_numeric(iris) %>% plot()
-
-compare_numeric(iris)
-```
-
-
-### fastStat
-
-```{r cache=TRUE}
-iris %>% select_if(is.numeric) %>% cor_sig_star(method = "kendall")
-```
-
-
-## Exploratory modelling
-
-```{r cache=TRUE}
-ggplot(airquality, aes(Solar.R, Temp))+
-  geom_point()+
-  geom_smooth()+
-  facet_wrap(~Month)
-  
-
-ggplot(diamonds, aes(price, carat))+
-  geom_point()+
-  geom_smooth()+
-  facet_grid(cut ~ clarity)
-```
-
-
-## Data transformation
-
-
-
-
-### Dummify
-
-```{r cache=TRUE}
-## Dummify diamonds dataset
-glimpse(dummify(diamonds, select = "cut"))
-glimpse(dummify(diamonds))
-```
-
-
-### Normalize the variables
-
-```{r eval=F}
-tr <- transform(airquality$Ozone, method = "log+1")
-summary(tr)
-plot(tr)
-
-transformation_report(airquality)
-```
-
-
-### funModeling
-
-Convert a numeric vector into a scale from 0 to 1 with 0 as the minimum and 1 as the maximum.
-
-```{r cache=TRUE}
-range01(airquality$Ozone) %>% densityplot()
-```
-
-
-
-### Categorize numeric variables
-
-The binning() converts a numeric variable to a categorization variable. Choose from "quantile", "equal", "equal", "pretty", "kmeans" and "bclust". The "quantile" sets breaks with quantiles of the same interval. The "equal" sets breaks at the same interval. The "pretty" chooses a number of breaks not necessarily equal to nbins using base::pretty function. The "kmeans" uses stats::kmeans function to generate the breaks. The "bclust" uses e1071::bclust function to generate the breaks using bagged clustering. "kmeans" and "bclust" was implemented by classInt::classIntervals function.
-
-```{r  cache=TRUE}
-bin <- binning(airquality$Ozone, type = "bclust", nbins = 4,
-              labels = c("LQ1", "UQ1", "LQ3", "UQ3"))
-
-summary(bin)
-
-plot(bin)
-```
-
-
+All right, that's it for today. If this video provided some value for you, feel free to like and subscribe. Thanks a lot for watching and I'll catch you again soon in the next video. 
 
 --------------------------------
 
@@ -752,6 +700,4 @@ If you think, I missed something, please comment on it, and I'll improve this tu
 
 ## Further readings and references
 
-- One of the best places to learn R is R-Bloggers platform: http://www.R-bloggers.com 
-
-- https://www.groundai.com/project/the-landscape-of-r-packages-for-automated-exploratory-data-analysis/1
+- here is an amazing paper, which describes the most used EDA packages in R: https://www.groundai.com/project/the-landscape-of-r-packages-for-automated-exploratory-data-analysis/1
