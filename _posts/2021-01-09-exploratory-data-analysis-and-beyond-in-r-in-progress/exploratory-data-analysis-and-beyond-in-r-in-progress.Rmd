@@ -321,29 +321,74 @@ Wage %>%
 ## Explore distribution of numeric variables
 
 
-{DataExplorer} package provides very intuitive functions for getting histogram and density plots of all continuous variables at once, namely *plot_histogram()* and *plot_density()*. {SmartEDAs} function *ExpNumViz()* provides nice looking density plots with **Skewness** and **Kurtosis**. Why do need to see the distribution. Well, for example to check the normality of distribution. Namely, if the density curve looks like a bell, the data is normally distributed and we can use parametric tests, like t-test or ANOVA. If, however, the curve looks not like a bell, the data is probably not-normally distributed and we'd need non-parametric tests, like Mann-Whitney or Kruskal-Wallis. Even better way to check for normality of data is to look at the Quantile-Quantile plot.
-
 ### {DataExplorer}
 
-```{r cache=TRUE}
-plot_histogram(iris)
 
-plot_density(iris)
+**Why do we need to explore the distribution?** Well, many statistical tests depend on **symmetric and normally distributed data**. Histograms and density plots allow us the first glimpse on the data. For example, {DataExplorer} package provides very intuitive functions for getting **histogram and density plots of all continuous variables at once**, namely *plot_histogram()* and *plot_density()*. Moreover, they both collaborate perfectly with {dplyr} package, which is always a good think! So, looking at two variables displayed here, we can see that *Wind* is distributed kind of symmetric while *Ozone* not. **But how can we measure the symmetry of data? And when is data symmetric enough?**
+
+```{r cache=TRUE}
+plot_histogram(Wage)
+
+plot_density(Wage)
+
+# works perfectly with dplyr!
+airquality %>% 
+  select(Ozone, Wind) %>% 
+  plot_density()
 ```
 
+### {moments}
 
+#### Skewness
 
-### {SmartEDA}
+The symmetry can be described by two measures: **skewness and kurtosis**. They are useful, because **significant skewness and kurtosis** clearly indicate that data are not normal.
+
+Skewness measures **the lack of symmetry**. A data is symmetric if it **looks the same to the left and to the right of the central point**. The skewness for a perfectly normal distribution is zero, so that any symmetric data should have a skewness near zero. Positive values for the skewness indicate data that are skewed to the right, which means that most of the data is actually on the left side of the plot, like on our Ozone plot. Negative values would then indicate skewness to the left, with most of data being on the right side of the plot. Using *skewness()* function from {moments} package shows that the skewness of Ozone is indeed positive and is far away from the zero, which suggests that Ozone is not-normally distributed. 
+
+General guidelines for the measure of **skewness** are following:
+
+- If skewness is less than -1 or greater than 1, the distribution is highly skewed.
+- If skewness is between -1 and -0.5 or between 0.5 and 1, the distribution is moderately skewed.
+- If skewness is between -0.5 and 0.5, the distribution is approximately symmetric.
+
+But here again, **how far from zero would be far enough in order to say that data is significantly skewed and therefore not-normally distributed?** Well, **D'Agostino skewness test** from {momenta} package provides a p-value for that. For instance, a p-value for *Ozone* is small, which rejects the Null Hypothesis about not-skewed data, saying that *Ozone* data is actually significantly skewed. In contrast the p-value for *Wind* is above the usual significance threshold of 0.05, so that we can treat Wind data as not-skewed, and therefore - normal.
+
 
 ```{r}
-ExpNumViz(iris, Page = c(2,2))
+library(moments)
+skewness(airquality$Ozone, na.rm = T)   
+skewness(airquality$Wind, na.rm = T)  
+
+agostino.test(airquality$Ozone)
+agostino.test(airquality$Wind)
 ```
+
+#### Kurtosis
+
+Kurtosis is a measure of **heavy tails, or outliers** present in the distribution. The kurtosis value for a normal distribution is around **three**. Here again, we'd need to do a proper statistical test which will give us a p-value saying whether kurtosis result is **significantly far away from three**. {moments} package provides **Anscombe-Glynn kurtosis test** for that. For instance, *Ozone* has a Kurtosis value of 4.1 which is significantly far away from 3, indicating a not normally distributed data and probable presence of outliers while the Kurtosis for *Wind* is around 3 and the p-value tells us that *Wind* distribution is fine.
+
+```{r}
+kurtosis(airquality$Ozone, na.rm = T)
+kurtosis(airquality$Wind, na.rm = T)
+
+anscombe.test(airquality$Ozone)
+anscombe.test(airquality$Wind)
+```
+
+
+
+
+
 
 ## Check the normality of distribution
 
-{DataExplorer} provides a simple and elegant *plot_qq()* function, which produces **Quantile-Quantile plots** either for all continuous variables in the dataset, or, even for every group of a categorical variable, if the argument **by = ** is specified.
+Now, finally, **the normality of the distribution itself** can be checked. It's useful, because it helps us to determine a correct statistical test. For instance, if the data is normally distributed, we should use parametric tests, like t-test or ANOVA. If, however, the data is not-normally distributed, we should use non-parametric tests, like Mann-Whitney or Kruskal-Wallis. 
+
+There are two main ways to check the normality: using a **Quantile-Quantile plot or a statistical test**.
 
 ### {DataExplorer}
+
+{DataExplorer} package provides a simple and elegant *plot_qq()* function, which produces **Quantile-Quantile plots** either for all continuous variables in the dataset, or, even for every group of a categorical variable, if the argument **by = ** is specified. 
 
 ```{r cache=TRUE}
 plot_qq(iris)
@@ -352,9 +397,23 @@ plot_qq(iris, by = "Species")
 ```
 
 
+### {dlookr} visualization
+
+Cool, right? But **plot_normality()** function from {dlookr} package **visualizes** not only **Histogram** and **Quantile-Quantile of the original data**, but also **two of the most common transformations of data**, namely **log transformation & square root**, in case the normality assumption wasn't met. This allows us to see, whether transformation actually improves something or not. Here we could also use {dplyr} syntaxis in order to quickly visualize several groups.
+
+```{r cache=TRUE}
+iris %>%
+  group_by(Species) %>%
+  plot_normality(Petal.Length)
+```
+
+
+However, we still not exactly know, when our data is normally distributed. The QQ-plot can be interpreted in following way: if points are situated close to the diagonal line, the data is probably normally distributed. **But here we go again! How close is close enough?** It's actually very subjective! That is why, I like to explore QQ-plots using {ggpubr} package...(read on the next chapter)
+
+
 ### {ggpubr}
 
-{ggpubr} package goes one step further and shows the confidence intervals, which help to decide whether the deviation from normality is big or not. However, in order to properly check the normality, we'd need to actually do a statistical test for normality, which is in most cases a Shapiro-Wilk test.
+... which goes one step further and shows confidence intervals, which help to decide whether the deviation from normality is big or not. For example, if all or most of the data fall into these confidence intervals, we can conclude that data is normally distributed. However, in order to to be sure, we'd need to actually do a statistical test, which is in most cases a **Shapiro-Wilk Normality test**.
 
 ```{r cache=TRUE}
 library(ggpubr)
@@ -362,14 +421,18 @@ ggqqplot(iris, "Sepal.Length", facet.by = "Species")
 ```
 
 
-### {dlookr}
+### {dlookr} Shapiro-Wilk normality tests
 
-*normality()* function from {dlookr} package performs Shapiro-Wilk normality tests with every numeric variable in the dataset. Moreover, via the collaboration with {dplyr} and therefore *group_by()* function we cat conduct ca. 2000 normality tests in seconds:
+
+Very intuitive *normality()* function from {dlookr} package performs **Shapiro-Wilk Normality test** with every numeric variable in the dataset. For example, we have seen that variable *Wind* in *airquality* dataset has a nice skewness and kurtosis, so, it suppose to be normally distributed, while variable *Ozone* suppose to be not-normally distributed, right? And indeed, *normality()* function totally confirms that.
+
 
 ```{r}
-normality(iris) %>% flextable()
+normality(airquality) %>% flextable()
 ```
 
+
+Moreover, via the collaboration with {dplyr} package and it's *group_by()* function we can conduct around 2000 normality tests in seconds and only few line of code:
 
 ```{r cache=TRUE}
 diamonds %>%
@@ -377,12 +440,24 @@ diamonds %>%
   normality()
 ```
 
-Moreover, **plot_normality()** function from {dlookr} package **visualizes** not only **Histogram** and **Quantile-Quantile of the original data**, but also **two of the most common transformations of data**, namely **log transformation & square root**, in case the normality assumption wasn't met. This allows us to see, whether transformation actually improves something or not. Here we could again use *group_by()* function in order to quickly visualize several groups.
 
-```{r cache=TRUE}
-iris %>%
-  group_by(Species) %>%
-  plot_normality(Petal.Length)
+
+**But why don't we just do our Shapiro-Wilk tests all the time and forget all those skewnesses and  visualizations?** Well, because given enough data, Shapiro-Wilk test will always find some non-normality even in perfectly symmetric bell-shaped data. Here is an example of a vector with less than 300 values, where Shapiro-Wilk test shows highly significant deviation from normality, while a density plot shows a bell curved data distribution. Moreover, tests or skewness, kurtosis and Quantile-Quantile plot all indicate normally distributed data. Thus, it's always better to check several options before making a conclusion about normality of the data.
+
+```{r}
+bla <- Wage %>%
+  filter(education == "1. < HS Grad") %>% 
+  select(age)
+
+normality(bla)
+
+plot_density(bla)
+
+agostino.test(bla$age)
+
+anscombe.test(bla$age)
+
+ggqqplot(bla$age)
 ```
 
 
