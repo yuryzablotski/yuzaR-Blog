@@ -106,6 +106,10 @@ iris %>%
   select(Sepal.Width) %>% 
 plot_outlier()
 
+airquality %>% 
+  select(find_outliers(airquality)) %>% 
+plot_outlier()
+
 plot_outlier(ISLR::Default)
 ```
 
@@ -573,7 +577,8 @@ plot(bla)
 ```{r}
 find_skewness(mtcars, index = F)
 
-plot( transform(mtcars$hp, method = "log+1") )
+transform(mtcars$hp, method = "log+1") %>% 
+  plot(ylim=c(0,10))
 ```
 
 

@@ -213,7 +213,7 @@ ggbarstats(
 ```
 
 
-## Descriptive stats
+## Explore numeric variables with descriptive statistics
 
 ### {dlookr}
 
@@ -415,7 +415,7 @@ However, we still not exactly know, when our data is normally distributed. The Q
 
 ... which goes one step further and shows confidence intervals, which help to decide whether the deviation from normality is big or not. For example, if all or most of the data fall into these confidence intervals, we can conclude that data is normally distributed. However, in order to to be sure, we'd need to actually do a statistical test, which is in most cases a **Shapiro-Wilk Normality test**.
 
-```{r cache=TRUE}
+```{r}
 library(ggpubr)
 ggqqplot(iris, "Sepal.Length", facet.by = "Species")
 ```
@@ -460,18 +460,59 @@ anscombe.test(bla$age)
 ggqqplot(bla$age)
 ```
 
+## Explore categorical and numeric variables with Box-Plots
 
-
-## Visualize correlation
+Box-plots help us to explore a combination of numeric and categorical variables? Put near each other, box-plots show whether distribution of several groups differ.
 
 ### {DataExplorer}
 
+For example, using the intuitive *plot_boxplot()* function from {DataExplorer} package with an argument **by = ** which specifies a categorical, or grouping, variable, will put **all groups of all numeric variables into the boxes**. Such exploration immediately creates the next question - **are these groups differ significantly?** We can't tell from just staring at the picture...
+
 ```{r cache=TRUE}
-## View overall correlation heatmap
-plot_correlation(na.omit(airquality), type = "c")
+## View bivariate continuous distribution based on `cut`
+plot_boxplot(iris, by = "Species")
 ```
 
+
+
+### {ggstatsplot}
+
+...but if use a *ggbetweenstats()* function from {ggstatsplot} package, we'd check tons of hypothesis using only few intuitive arguments:
+
+- data
+- x axis, where we determine the grouping categorical variable
+- y axis, where we have our numeric variable of interest and
+- the **type of the test**, which I would always set to *non-parametric* for exploratory analysis.
+
+This simple code not only provides you with a p-value which tells you whether there are significant differences between groups, but also conducts multiple pairwise comparisons to see between which groups exactly these differences are, and even adjusts the p-values for multiple comparisons with Holm method automatically. Moreover, it also produces bunch of other statistical details on top of amazing visualization. If fact, I found *ggbetweenstats()* function sooo useful, that I did two separate videos on it already.
+
+```{r cache=TRUE}
+ggbetweenstats(
+  data = iris, 
+  x    = Species, 
+  y    = Sepal.Length, 
+  type = "np")
+```
+
+### {SmartEDA}
+
+The only useful thing here, compared to function provided above, is plotting of the whole variable near the the same variables splitted into groups.
+
+```{r cache=TRUE}
+ExpNumViz(iris, target = "Species", Page = c(2,2))
+```
+
+
+
+
+## Explore correlations
+
 ### {dlookr}
+
+In order to quickly **check the relationship between numeric variables** we can use **correlate()** function from {dlookr} package, which delivers **correlation coefficients**. If we don't specify any target variable or the method, **Pearson's correlation between ALL variables** will be calculated pairwisely. 
+
+{dlookr's} **plot_correlate()** function is even more useful, because it **visualizes these relationships**. We can of course determine the **method of calculations**, be it a default "pearson", or a non-parametric "kendall" or "spearman" correlations, which are more appropriate for **non-normally and non-very-linearly distributed values with some outliers**. The **shape** of each subplot shows the **strength of the correlation**, while the **color** shows the **direction**, where blue is **positive** and red is **negative correlation**. It's fine for the pure exploratory analysis, but, as always, the next logical step would be to test hypothesis and figure out which correlations are significant.
+
 
 ```{r cache=TRUE}
 correlate(airquality, Ozone)
@@ -484,75 +525,91 @@ diamonds %>%
   plot_correlate()
 ```
 
+
 ### {ggstatsplot}
+
+And that's exactly what *ggcorrmat()* function from {ggstatsplot} package does! Namely, it displays: 
+
+- correlation coefficients
+- a colored heatmap showing positive or negative correlations and finally
+- whether a particular correlation is significant or not, where not-significant correlations are simply crossed out.
+
+Moreover, we can get the results in a table form with p-values and confidence intervals for correlation coefficients, if we need to.
+
 
 ```{r cache=TRUE}
 library(ggstatsplot)
 
-ggcorrmat(airquality)
+ggcorrmat(data = iris)
 
 ggcorrmat(
-  data = airquality,
-  type = "np",
+  data   = airquality,
+  type   = "np",
   output = "dataframe"
-) %>% flextable()
+) %>% 
+  mutate_if(is.numeric, ~round(., 2)) %>% 
+  flextable()
 ```
 
 
 ### {PerformanceAnalytics}
 
-Correlation coefficients and correlation color are amazing, they give us an idea about where there is a potentias for further exploration. However, they are quite limited though. Firstly, we don't really know whether these correlations are significant, so there are no tests behind it. Secondly, we don't even know what correlation method produced these coeffitients in the first place, was it the Pearson correaltion, or Spearman. Finally we don't see how data are scattered, so that some relationships might be very non-linear and correlation analysis would be not appropriate at all. The solution for all three problems is provided by the *PerformanceAnalytics* package, which offers a *chart.Correlation()* function. It produces histograms for every particular numeric variable and the scatterplots for every combination of numeric variables. I found the significance stars particularly helpful. Besides, we can easily choose the method we measure the correlation by, for instance, in the example below we use a robust non-parametric *kendall* correlation which is more appropriate for non-normally and non-too-linearly distributed values with some outliers. If we do not specify the **method**, we'll produce a **parametric (usual) Pearson correlation** which is only appropriate for perfect data, which ... rarely happens.
+However, my favorite way to conduct correlation analysis is supported by the *chart.Correlation()* function from {PerformanceAnalytics} package. It displays not only (1) correlation coefficients, but also (2) **histograms** for every particular numeric variable and even (3) **scatterplots** for every combination of numeric variables, which show whether relationships are non-linear and whether correlation analysis makes sense at all. Besides, the (4) significance stars are particularly helpful, because they describe the strength of correlation. Here we can of coarse also specify the (5) method we measure the correlation by.
 
 ```{r cache=TRUE}
-PerformanceAnalytics::chart.Correlation(airquality %>% select(-Month), method = "kendall") 
+library(PerformanceAnalytics)
+chart.Correlation(iris %>% select(-Species), method = "kendall") 
 ```
 
 
 
-## Visualize box plots
 
-### {DataExplorer}
+## Explore missing values
 
-```{r cache=TRUE}
-## View bivariate continuous distribution based on `cut`
-plot_boxplot(airquality, by = "Month")
-```
+### {dlookr}
 
-### {SmartEDA}
+I found this topic actually so cool, that I produced a separate video and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/) on it while doing this one. So, for a deeper insight on how to impute numeric and categorical missing values with fancy machine learning methods, check out the other video on my channel. 
 
-```{r cache=TRUE}
-ExpNumViz(iris, target = "Species")
-```
+Here I just give you two useful functions from {dlookr} package. The first one - *plot_na_intersect()* shows you which variables have missing values and how many. And the second function *imputate_na()* imputes missing values with several machine learning methods.
+For instance, using "K nearest neighbors" algorithm, we could impute 37 missing values in Ozone variable, and even visually check the quality of our imputation in only one line of code. Using the *imputate_na()* function, we only need to specify 4 arguments:
 
-### {ggstatsplot}
+- the dataset
+- the variable with missing values, that would Ozone
+- the variable which will predict the missing values, for example Temperature and
+- the imputation method
 
-```{r cache=TRUE}
-ggbetweenstats(
-  data = iris, 
-  x    = Species, 
-  y    = Sepal.Width, 
-  type = "np")
-## I did 3 videos about these fancy box plots with statistics
+
+```{r}
+plot_na_intersect(airquality)
+
+plot(imputate_na(airquality, Ozone, Temp, method = "knn"))
 ```
 
 
+## Explore outliers
 
-## Visualize outlier
 
-The *performance* package provide an easy way to visualize outliers.
+### {performance}
+
+*check_outliers()* fucntion from {performance} package provides an easy way to identify and visualize outliers with different methods. If you want to have an aggressive method and cleap out a lot of outliers, go with the *zscore* method, but if you don't have much data, go with less conservative method, for example *interquartile range*.
 
 ```{r cache=TRUE}
-check_outliers(airquality$Ozone)
-plot(check_outliers(airquality$Ozone, method = "iqr"))
+library(performance)
+plot(check_outliers(airquality$Wind, method = "zscore"))
+check_outliers(airquality$Wind, method = "iqr")
 ```
 
 ### {dlookr}
 
-```{r  cache=TRUE}
-diagnose_outlier(airquality)
+**diagnose_outlier()** function from {dlookr} not only counts outliers in every variable using *interquartile range* method, but also get their percentages. Moreover, it calculates three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. In this way we can see how strong the influence of outliers for every variable actually is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. 
 
-plot_outlier(airquality, Ozone)
+```{r}
+diagnose_outlier(diamonds) %>% flextable()
+```
 
+Besides, {dlookr} can visualize the distribution of data with and without outliers, and, thank to collaboration with {dplyr}, we could choose to visualize only variables with over 5% of values being outliers. So, let's plot them!
+
+```{r}
 airquality %>% 
   dplyr::select(Ozone, Wind) %>% 
   plot_outlier()
@@ -561,31 +618,23 @@ airquality %>%
 diamonds %>%
   plot_outlier(diamonds %>%
       diagnose_outlier() %>%
-      filter(outliers_ratio > 3) %>%
+      filter(outliers_ratio > 5) %>%
       select(variables) %>%
       pull())
 ```
 
-## Missing values
 
-I found this topic actually so cool, that I produced a separate video and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/) on it. Here I just give you the glimpse on it. For instance 
-
-```{r}
-# “knn” : K-nearest neighbors
-plot(imputate_na(airquality, Ozone, Temp, method = "knn"))
-```
 
 
 ## Impute outliers
 
-*{dlookr}* package also provides an opportunity to impute outliers using several methods:
+Similarly, using *imputate_outlier()* fucntionn from {dlookr} package, we can impute outliers with several methods:
 
 - "mean" : arithmetic mean
 - "median" : median
 - "mode" : mode
 - "capping" : Impute the upper outliers with 95 percentile, and Impute the bottom outliers with 5 percentile.
 
-Moreover, we can compare the results of a column before and after imputation via a plain table or via a plot.
 
 ```{r cache=TRUE}
 bla <- imputate_outlier(diamonds, carat, method = "capping")
@@ -608,7 +657,7 @@ plot(iris)
 ```{r cache=TRUE}
 airquality %>% 
   select(1:3) %>% 
-ExpNumViz(scatter=TRUE)
+ExpNumViz(scatter=TRUE, Page = c(1,3))
 ```
 
 ### {dlookr}
