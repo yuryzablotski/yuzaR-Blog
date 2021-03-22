@@ -1,7 +1,7 @@
 ---
 title: "Deep Exploratory Data Analysis (EDA) in R"
 description: |
-  EDA is an important first step on the long way to the final result, be it a statistical inference in a published scientific paper or a Machine Learning Algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this video I'll provide the simplest and most effective ways to explore data in R, which will signifiantly speed up your work. Moreover, we'll go one step beyond the EDA by starting to test our hypotheses by simple statistical tests.
+  Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this video I'll provide the simplest and most effective ways to explore data in R, which will signifiantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -25,37 +25,29 @@ output:
 knitr::opts_chunk$set(echo = T)
 ```
 
-You can run all packages at once, in order to avoid interruptions. You'd need to install some of them if you still aren't, using *install.packages("name_of_the_package")* command.
+You can run all packages at once, in order to avoid interruptions. You'd need to install some of them if you still didn't, using *install.packages("name_of_the_package")* command.
 
 ```{r}
-library(DataExplorer)     # exploratory data analysis
-library(tidyverse)        # data wrangling and visualization
-library(SmartEDA)         # exploratory data analysis
-library(dlookr)           # exploratory data analysis
-library(flextable)        # beautifying tables
-library(funModeling)      # some quick statistics
-library(skimr)            # descriptive stats
-library(pastecs)          # regularization, decomposition and analysis of space-time series
-library(summarytools)     # descriptive stats and summaries
-library(psych)
-library(gtsummary)
-
-library(datasets)         # getting the data 
-library(ISLR)             # for data
-
-
-library(PerformanceAnalytics)
-library(ggstatsplot)
-library(performance)
-library(dlookr)
-library(visdat)
-library(car)
-library(explore)
-library(knitr)
-library(fastStat)
+library(DataExplorer)       # EDA
+library(tidyverse)          # for everything good in R ;)
+library(SmartEDA)           # EDA
+library(dlookr)             # EDA
+library(funModeling)        # EDA
+library(ISLR)               # for the Wage dataset
+library(ggstatsplot)        # publication ready visualizations with statistical details
+library(flextable)          # beautifying tables
+library(summarytools)       # EDA
+library(psych)              # psychological research: descr. stats, FA, PCA etc.
+library(skimr)              # summary stats
+library(gtsummary)          # publication ready summary tables
+library(moments)            # skewness, kurtosis and related tests
+library(ggpubr)             # publication ready data visualization in R
+library(PerformanceAnalytics) # econometrics for performance and risk analysis
+library(fastStat)           # well :) you've guessed it
+library(performance)        # Assessment of Regression Models Performance (for outliers here)
 ```
 
-I love R, because it is reach and generous. Having more than 17000 packages allows me to solve any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by **different functions** from **different packages** with **different levels of effectiveness**. So, looking for the most effective way can be very time consuming! Thus, I hope that this collection of functions will save you some time. And if you know better functions or packages for EDA, please let me know in the comments below and let us together create **the one-stop solution for EDA in R**. If one of the variables is of a particular importance for you, you can specify it and get much richer report. Simply execute the code below and see it for yourself.
+I love R, because it is reach and generous. Having around 17.000 packages allows me to solve any data science problem. However, such abundance can be overwhelming, especially because one task can be accomplished by **different functions** from **different packages** with **different levels of effectiveness**. So, looking for the most effective way can be very time consuming! Thus, I hope that this collection of functions will save you some time. And if you know better functions or packages for EDA, please let me know in the comments below and **let us together create here the one-stop solution for Deep EDA in R**. 
 
 ## Creating visualised reports of the whole dataset with only one function!
 
@@ -63,12 +55,17 @@ The most effective way to explore the data quick is the creation of **automated 
 
 ### {DataExplorer}
 
-{DataExplorer} report will deliver **basic info** about your dataset, like number of rows and columns, number of categorical and numeric variables, number of missing values and number of complete rows. It will also show you a **missing data profile**, where percentages of missing values in every variable are displayed. It plots the **histograms** and **Quantile-Quantile plots** for every numeric variable and **bar-plots** for every categorical variable. It finally explores the combinations of different variables, by conducting **correlation analysis, principal component analysis, box and even scatter plots**.
+{DataExplorer} report will deliver **basic info** about your dataset, like number of rows and columns, number of categorical and numeric variables, number of missing values and number of complete rows. It will also show you a **missing data profile**, where percentages of missing values in every variable are displayed. It plots the **histograms** and **Quantile-Quantile plots** for every numeric variable and **bar-plots** for every categorical variable. It finally explores the combinations of different variables, by conducting **correlation analysis, principal component analysis, box and even scatter plots**. 
 
-```{r eval=F}
+If one of the variables is of a particular importance for you, you can specify it and get much richer report. Simply execute the code below and see it for yourself.
+
+```{r}
 library(DataExplorer) # for exploratory data analysis
 library(tidyverse)    # for data, data wrangling and visualization
+```
 
+
+```{r eval=F}
 # report without a response variable
 create_report(diamonds)
 
@@ -80,7 +77,7 @@ create_report(diamonds, y = "price")
 
 In addition to the similar results, {SmartEDA} report also delivers **descriptive statistics** for every numeric variable with all important metrics you could need, like **number of negative values, number of zeros, mean, median, standard deviation, IQR, bunch of different quantiles and even the number of outliers**. {SmartEDA} also displays the **density** of every numeric variables instead of histograms. And while {DataExplorer} package can visualize density too, density plots are not part of the automated {DataExplorer} report.
 
-What I found particularly useful in {SmartEDA} report is that **it provides the code** responsible for a particular result. For instance, if I don't need the whole report, but wanna see descriptive stats, I just copy the code, change the name of my dataset instead of generic "data" and get the same table I see in the report without looking for such code in the documentation. **It saves time!** Moreover, in {SmartEDA} package, you can give your report a name and save it in the directory of your choice.
+What I found particularly useful in {SmartEDA} report is that **it provides the code** responsible for a particular result. For instance, if I don't need the whole report, but wanna see descriptive stats, you just copy the code, change the name of your dataset instead of generic "data" and get the same table you see in the report without looking for such code in the documentation. **It saves time!** Moreover, in {SmartEDA} package, you can give your report a name and save it in the directory of your choice.
 
 ```{r eval=F}
 library(SmartEDA) # for exploratory data analysis
@@ -106,11 +103,11 @@ library(dlookr) # for exploratory data analysis
 diagnose_report(diamonds) # pdf by default
 ```
 
-Similarly to the {DataExplorer} report, we can get much richer **EDA report** from {dlookr} by specifying the target variable. Let's export this report in the HTML format. This **EDA report** delivers:
+Similarly to the {DataExplorer} report, we can get much richer **EDA report** from {dlookr} by specifying the target variable. Let's export the **EDA report** in the HTML format and look at it. This **EDA report** delivers:
 
 - **visual normality tests** of all numerical variables with **a histogram and a Quantile-Quantile plot** plus two **histograms** of the most common **transformations of data**, namely **log- and square-root**. This is quite useful, because we can immediately see whether we need to transform the data and which type of transformation is more useful;
 - this report also provides **correlation coefficients and plots** for all possible combinations of numeric variable, then
-- since our target variable is categorical, EDA report provides **descriptive statistics for every category of our target variable vs. every numeric variable**, and **contingency tables for with categorical variables**;
+- since our target variable is categorical, EDA report provides **descriptive statistics for every category of our target variable and every numeric variable**, and **contingency tables for every category of our target variable and every categorical variables**;
 - it also visualizes the distribution of every other variable vs. the target variables using **box-plots and density plots, with and without outliers**.
 
 ```{r eval=F}
@@ -126,10 +123,10 @@ diamonds %>%
 
 Finally the **transformation report**, which is my **absolute favorite**:
 
-- **imputes missing values** with multiple methods simultaneously, so that you can compare the distribution of the data after different imputation techniques and choose the best imputation method for every particular dataset,
-- **imputes outliers**, also with different methods,
-- **resolve skewness** of the data with different methods and even
-- is able to **categorize numeric variables**, if needed.
+- **imputes missing values** with multiple methods simultaneously, so that you can compare the distribution of the data after different imputation techniques and choose the best imputation method for every particular variable,
+- it also **imputes outliers** with different methods,
+- **resolve skewness** of the data with different methods and 
+- is even able to **categorize numeric variables**, if needed.
 
 
 ```{r eval=F}
@@ -159,7 +156,7 @@ plot_intro(airquality)
 {funModeling} package provides a similar function with some useful metrics, like **number of zeros, NAs or unique values** for every variable. 
 
 ```{r cache=T}
-library(funModeling)
+library(funModeling)    # EDA
 status(airquality) %>% flextable()
 ```
 
@@ -168,9 +165,9 @@ status(airquality) %>% flextable()
 
 ### {DataExplorer}
 
-Simple bar plots with frequency distribution of all numeric variables are already quite useful, because they provide a quick overview about the meaningfulness of the categorization, and whether there are some typing mistakes in the data. However, plotting a target discrete variable by another discrete variable is even more useful. It is some sort of a visual contingency table (see the second plot below).
+Simple bar plots with **frequency distribution of all categorical variables** are already quite useful, because they provide a quick overview about the **meaningfulness of the categorization**, and whether there are some typing mistakes in the data. {DataExplorer} package provides a simple *plot_bar()* function which does just that. However, plotting a **target discrete variable by another discrete variable** is even more useful. It is some sort of a **visual frequency table** (see the second plot below). For this use the **by = ** argument and give it the second categorical variable.
 
-```{r cache=TRUE}
+```{r }
 plot_bar(diamonds)
 plot_bar(diamonds, by = "cut")
 ```
@@ -178,16 +175,15 @@ plot_bar(diamonds, by = "cut")
 
 ### {SmartEDA}
 
-*ExpCatViz* from *{SmartEDA}* package also plots each categorical variable with a bar plot, but displays percents instead of counts. 
+*ExpCatViz* function from *{SmartEDA}* package also plots each categorical variable with a bar plot, but displays proportions instead of counts. 
 
 ```{r fig.width=10}
 ExpCatViz(diamonds, Page = c(1,3))
 ```
 
-And here we finally come to the **DEEP** part of EDA. The plot below nearly "scrims" the hypothesis that education level is strongly associated with the job. Namely, the more educated we get, the more likely we'll end up working with information (e.g. with data ;) and the less likely we'll end up working in a factory. However, without a proper statistical test and a p-value this hypothesis can not be tested and remain, well ... a speculation. 
+And here we finally come to the **DEEP** part of EDA. The plot below nearly "scrims" the hypothesis that education level is strongly associated with the job. Namely, the more educated we get, the more likely we'll end up working with information (e.g. with data ;) and the less likely we'll end up working in a factory. However, without a proper statistical test and a p-value this hypothesis can not be tested and remains ... well ... a speculation. 
 
-```{r cache=T}
-## Stacked bar graph
+```{r}
 library(ISLR)      # for the Wage dataset
 ExpCatViz(
   Wage %>% 
@@ -197,14 +193,14 @@ ExpCatViz(
 
 ### {ggstatsplot}
 
-Fortunately, the {ggstatsplot} package does all the above in one line of code and goes one step further. Namely:
+Fortunately, the *ggbarstats()* function from {ggstatsplot} package does all the above in one line of code and even goes one step further. Namely:
 
 - it **counts and calculates percentages** for every category,
-- it **visualizes** the "frequency table" in the form of **stacked bar plots** and
+- it **visualizes** the "frequency table" in the form of **stacked bars** and
 - **provides numerous statistical details (including p-value) in addition to visualization**, which allows us to make a conclusion or inference already in the exploratory phase of the project!
 
-```{r cache=TRUE, fig.width=8}
-library(ggstatsplot)
+```{r  fig.width=8}
+library(ggstatsplot)     # visualization with statistical details
 ggbarstats(
   data  = Wage, 
   x     = jobclass, 
@@ -217,7 +213,7 @@ ggbarstats(
 
 ### {dlookr}
 
-Descriptive statistics is usually needed for either a whole numeric variable, or for a numeric variable separated in groups of some categorical variable, like *control & treatment*. Three functions from {dlookr} package, namely *describe()*, *univar_numeric()* and *diagnose_numeric()* do totally nail it. Be careful with the *describe()* function though, because it also exists in {Hmisc} and {psych} packages too. Thus, in order to avoid the confusion, simply write **dlookr::** in front of *describe()*. Here, we can see how useful can be the collaboration of *{dlookr}* with *{tidyverse}* packages, like *{dplyr}* and its *group_by()* function! {dlookr} provides the most common descriptive stats, like **N, NAs, mean, sd, se_mean, IQR, skewness, kurtosis and 17 quantiles**. 
+Descriptive statistics is usually needed for either a whole numeric variable, or for a numeric variable separated in groups of some categorical variable, like *control & treatment*. Three functions from {dlookr} package, namely *describe()*, *univar_numeric()* and *diagnose_numeric()* do totally nail it. Be careful with the *describe()* function though, because it also exists in {Hmisc} and {psych} packages too. Thus, in order to avoid the confusion, simply write **dlookr::** in front of *describe()* function, which then provides the most common descriptive stats, like **counts, number o missing values, mean, standard deviation, standard error of the mean, IQR, skewness, kurtosis and 17 quantiles**. 
 
 
 ```{r, layout="l-screen-inset"}
@@ -225,7 +221,7 @@ library(flextable)        # beautifying tables
 dlookr::describe(iris) %>% flextable()
 ```
 
-If you don't need such a monstrous table, but only want to have the *median()* instead of all those quantiles, use *univar_numeric()* function.
+Here, we can also see how useful can be collaboration of *{dlookr}* with *{tidyverse}* packages, like *{dplyr}* and its *group_by()* function!, which calculates descriptive statistics per group. And if you don't need such a monstrous table, but only want to have the *median()* instead of 17 quantiles, use *univar_numeric()* function.
 
 ```{r}
 iris %>% 
@@ -245,9 +241,14 @@ iris %>%
 
 ### {SmartEDA}
 
-{SmartEDA} with its *ExpNumStat()* function provides richest and most comprehensive descriptive statistics table. Moreover we can choose to describe the whole variables, grouped variables, or even both at the same time. If we call the argument "**by =**" with a big letter **A**, we'll get statistics for every numeric variable in the dataset. The big **G** delivers descriptive stats per **GROUP**, but we'll need to specify a group in the next argument "**gr =**". Using **GA**, as shown below, would give you both. We can specify the quantiles we need and identify the lower hinge, upper hinge and number of outliers. 
+{SmartEDA} with its *ExpNumStat()* function provides, in my opinion, the **richest and the most comprehensive descriptive statistics** table. Moreover we can choose to describe the whole variables, grouped variables, or even both at the same time. If we call the argument "**by =**" with a big letter **A**, we'll get statistics for every numeric variable in the dataset. The big **G** delivers descriptive stats per **GROUP**, but we'll need to specify a group in the next argument "**gr =**". Using **GA**, would give you **both**. We can also specify the quantiles we need and identify the lower hinge, upper hinge and number of outliers, if we want to. 
 
 
+```{r eval=FALSE}
+ExpNumStat(iris, by="A", Outlier=TRUE, Qnt = c(.25, .75), round = 2) %>% flextable()
+
+ExpNumStat(iris, by="G", gp="Species", Outlier=TRUE, Qnt = c(.25, .75), round = 2) %>% flextable()
+```
 
 ```{r, layout="l-screen-inset"}
 ExpNumStat(iris, by="GA", gp="Species", Outlier=TRUE, Qnt = c(.25, .75), round = 2) %>% flextable()
@@ -271,19 +272,20 @@ describeBy(iris,
 
 ## Summary tools
 
-This topic can be singled out because functions presented below give you a quick overview about the whole dataset and some of them also test hypothesis with simple statistical tests.
+This topic can be singled out because functions presented below give you a quick overview about the whole dataset and some of them also check hypothesis with simple statistical tests.
 
 ### {summarytools}
 
-For instance, *dfSummary()* function from {summarytools} package provides some basic descriptive stats for numeric and counts with proportions for categorical variables. It even tries to somehow plot the distribution of both, but I found it very weird and not too useful. What is useful though, is that *dfSummary()* provides a number of duplicates and missing values.
+For instance, *dfSummary()* function from {summarytools} package provides **some basic descriptive stats for numeric and counts with proportions for categorical variables**. It even tries to somehow plot the distribution of both, but I didn't find those plots useful. What is useful though, is that *dfSummary()* provides a number of duplicates and missing values.
 
 ```{r}
+library(summarytools)
 dfSummary(diamonds)
 ```
 
 ### {skimr}
 
-{skimr} is another useful package which provides both some basic descriptive stats of numeric variables, and counts for categorical variables. Besides, it is also able to use {dplyr's} *group_by()* function (not shown).
+{skimr} is another useful package which provides both some basic descriptive stats of numeric variables and counts for categorical variables. Besides, it is also able to use {dplyr's} *group_by()* function (not shown).
 
 ```{r}
 library(skimr)
@@ -294,7 +296,7 @@ skim(diamonds)
 
 ### {gtsummary}
 
-First of all, *tbl_summary()* function from {gtsummary} package summarizes all categorical variables by **counts and percentages**, while all numeric variables by **median and IQR**. The argument "**by =**" inside of *tbl_summary()* specifies a grouping variable. The *add_p()* function then **conducts statistical tests with all variables and provides p-values**. For numeric variables it uses the **non-parametric Wilcoxon rank sum test** for comparing two groups and the **non-parametric Kruskal-Wallis rank sum test** for more then two groups. Categorical variables are checked with **Fisher's exact test**, if number of observations in any of the groups is below 5, or with **Pearson's Chi-squared test** for more data.
+First of all, *tbl_summary()* function from {gtsummary} package summarizes all categorical variables by **counts and percentages**, while all numeric variables by **median and IQR**. The argument **by =** inside of *tbl_summary()* specifies a grouping variable. The *add_p()* function then **conducts statistical tests with all variables and provides p-values**. For numeric variables it uses the **non-parametric Wilcoxon rank sum test** for comparing two groups and the **non-parametric Kruskal-Wallis rank sum test** for more then two groups. Categorical variables are checked with **Fisher's exact test**, if number of observations in any of the groups is below 5, or with **Pearson's Chi-squared test** for more data.
 
 ```{r}
 library(gtsummary)
@@ -324,9 +326,9 @@ Wage %>%
 ### {DataExplorer}
 
 
-**Why do we need to explore the distribution?** Well, many statistical tests depend on **symmetric and normally distributed data**. Histograms and density plots allow us the first glimpse on the data. For example, {DataExplorer} package provides very intuitive functions for getting **histogram and density plots of all continuous variables at once**, namely *plot_histogram()* and *plot_density()*. Moreover, they both collaborate perfectly with {dplyr} package, which is always a good think! So, looking at two variables displayed here, we can see that *Wind* is distributed kind of symmetric while *Ozone* not. **But how can we measure the symmetry of data? And when is data symmetric enough?**
+**Why do we need to explore the distribution?** Well, many statistical tests depend on **symmetric and normally distributed data**. Histograms and density plots allow us the first glimpse on the data. For example, {DataExplorer} package provides very intuitive functions for getting **histogram and density plots of all continuous variables at once**, namely *plot_histogram()* and *plot_density()*. Moreover, they both collaborate perfectly with {dplyr} package, which is always a good think! So, looking at two variables displayed here, we can see that *Wind* is distributed kind of symmetric while *Ozone* is not. **But how can we measure the symmetry of data? And when is data symmetric enough?**
 
-```{r cache=TRUE}
+```{r }
 plot_histogram(Wage)
 
 plot_density(Wage)
@@ -341,17 +343,17 @@ airquality %>%
 
 #### Skewness
 
-The symmetry can be described by two measures: **skewness and kurtosis**. They are useful, because **significant skewness and kurtosis** clearly indicate that data are not normal.
+The symmetry can be described by two measures: **skewness and kurtosis**. They are useful, because **significant skewness and kurtosis** clearly indicate not-normally distributed data.
 
 Skewness measures **the lack of symmetry**. A data is symmetric if it **looks the same to the left and to the right of the central point**. The skewness for a perfectly normal distribution is zero, so that any symmetric data should have a skewness near zero. Positive values for the skewness indicate data that are skewed to the right, which means that most of the data is actually on the left side of the plot, like on our Ozone plot. Negative values would then indicate skewness to the left, with most of data being on the right side of the plot. Using *skewness()* function from {moments} package shows that the skewness of Ozone is indeed positive and is far away from the zero, which suggests that Ozone is not-normally distributed. 
 
 General guidelines for the measure of **skewness** are following:
 
-- If skewness is less than -1 or greater than 1, the distribution is highly skewed.
-- If skewness is between -1 and -0.5 or between 0.5 and 1, the distribution is moderately skewed.
-- If skewness is between -0.5 and 0.5, the distribution is approximately symmetric.
+- if skewness is less than -1 or greater than 1, the distribution is highly skewed,
+- if skewness is between -1 and -0.5 or between 0.5 and 1, the distribution is moderately skewed and
+- if skewness is between -0.5 and 0.5, the distribution is approximately symmetric.
 
-But here again, **how far from zero would be far enough in order to say that data is significantly skewed and therefore not-normally distributed?** Well, **D'Agostino skewness test** from {momenta} package provides a p-value for that. For instance, a p-value for *Ozone* is small, which rejects the Null Hypothesis about not-skewed data, saying that *Ozone* data is actually significantly skewed. In contrast the p-value for *Wind* is above the usual significance threshold of 0.05, so that we can treat Wind data as not-skewed, and therefore - normal.
+But here again, **how far from zero would be far enough in order to say that data is significantly skewed and therefore not-normally distributed?** Well, **D'Agostino skewness test** from {moments} package provides a p-value for that. For instance, a p-value for *Ozone* is small, which rejects the Null Hypothesis about not-skewed data, saying that *Ozone* data is actually significantly skewed. In contrast the p-value for *Wind* is above the usual significance threshold of 0.05, so that we can treat Wind data as not-skewed, and therefore - normal.
 
 
 ```{r}
@@ -365,12 +367,9 @@ agostino.test(airquality$Wind)
 
 #### Kurtosis
 
-Kurtosis is a measure of **heavy tails, or outliers** present in the distribution. The kurtosis value for a normal distribution is around **three**. Here again, we'd need to do a proper statistical test which will give us a p-value saying whether kurtosis result is **significantly far away from three**. {moments} package provides **Anscombe-Glynn kurtosis test** for that. For instance, *Ozone* has a Kurtosis value of 4.1 which is significantly far away from 3, indicating a not normally distributed data and probable presence of outliers while the Kurtosis for *Wind* is around 3 and the p-value tells us that *Wind* distribution is fine.
+Kurtosis is a measure of **heavy tails, or outliers** present in the distribution. The kurtosis value for a normal distribution is around **three**. Here again, we'd need to do a proper statistical test which will give us a p-value saying whether kurtosis result is **significantly far away from three**. {moments} package provides **Anscombe-Glynn kurtosis test** for that. For instance, *Ozone* has a Kurtosis value of 4.1 which is significantly far away from 3, indicating a not normally distributed data and probable presence of outliers. In contrast, the Kurtosis for *Wind* is around 3 and the p-value tells us that *Wind* distribution is fine.
 
 ```{r}
-kurtosis(airquality$Ozone, na.rm = T)
-kurtosis(airquality$Wind, na.rm = T)
-
 anscombe.test(airquality$Ozone)
 anscombe.test(airquality$Wind)
 ```
@@ -382,15 +381,15 @@ anscombe.test(airquality$Wind)
 
 ## Check the normality of distribution
 
-Now, finally, **the normality of the distribution itself** can be checked. It's useful, because it helps us to determine a correct statistical test. For instance, if the data is normally distributed, we should use parametric tests, like t-test or ANOVA. If, however, the data is not-normally distributed, we should use non-parametric tests, like Mann-Whitney or Kruskal-Wallis. 
+Now, finally, **the normality of the distribution itself** can, and should be always checked. It's useful, because it helps us to determine a correct statistical test. For instance, if the data is normally distributed, we should use parametric tests, like t-test or ANOVA. If, however, the data is not-normally distributed, we should use non-parametric tests, like Mann-Whitney or Kruskal-Wallis. So, the normality check is not just another strange statistical concept we need to learn, but it's actually helpful.
 
-There are two main ways to check the normality: using a **Quantile-Quantile plot or a statistical test**.
+There are two main ways to check the normality: using a **Quantile-Quantile plot** and **using a proper statistical test**. And, we need them both!
 
 ### {DataExplorer}
 
 {DataExplorer} package provides a simple and elegant *plot_qq()* function, which produces **Quantile-Quantile plots** either for all continuous variables in the dataset, or, even for every group of a categorical variable, if the argument **by = ** is specified. 
 
-```{r cache=TRUE}
+```{r }
 plot_qq(iris)
 
 plot_qq(iris, by = "Species")
@@ -399,16 +398,16 @@ plot_qq(iris, by = "Species")
 
 ### {dlookr} visualization
 
-Cool, right? But **plot_normality()** function from {dlookr} package **visualizes** not only **Histogram** and **Quantile-Quantile of the original data**, but also **two of the most common transformations of data**, namely **log transformation & square root**, in case the normality assumption wasn't met. This allows us to see, whether transformation actually improves something or not. Here we could also use {dplyr} syntaxis in order to quickly visualize several groups.
+Cool, right? But **plot_normality()** function from {dlookr} package **visualizes** not only **Quantile-Quantile plot**, but also the **histogram of the original data** and **histograms of two of the most common transformations of data**, namely **log & square root transformations**, in case the normality assumption wasn't met. This allows us to see, whether transformation actually improves something or not, because its not always the case. Here we could also use {dplyr} syntax in order to quickly visualize several groups.
 
-```{r cache=TRUE}
+```{r }
 iris %>%
   group_by(Species) %>%
   plot_normality(Petal.Length)
 ```
 
 
-However, we still not exactly know, when our data is normally distributed. The QQ-plot can be interpreted in following way: if points are situated close to the diagonal line, the data is probably normally distributed. **But here we go again! How close is close enough?** It's actually very subjective! That is why, I like to explore QQ-plots using {ggpubr} package...(read on the next chapter)
+However, we still don't know, when our data is normally distributed. The **QQ-plot** can be interpreted in following way: if points are situated close to the diagonal line, the data is probably normally distributed. **But here we go again! How close is close enough?** It's actually very subjective! That is why, I like to explore QQ-plots using {ggpubr} package...(read on the next chapter)
 
 
 ### {ggpubr}
@@ -428,13 +427,15 @@ Very intuitive *normality()* function from {dlookr} package performs **Shapiro-W
 
 
 ```{r}
-normality(airquality) %>% flextable()
+normality(airquality) %>%
+  mutate_if(is.numeric, ~round(., 3)) %>% 
+  flextable()
 ```
 
 
-Moreover, via the collaboration with {dplyr} package and it's *group_by()* function we can conduct around 2000 normality tests in seconds and only few line of code:
+Moreover, via the collaboration with {dplyr} package and it's *group_by()* function we can conduct around 2000 normality tests in seconds and only few lines of code:
 
-```{r cache=TRUE}
+```{r }
 diamonds %>%
   group_by(cut, color, clarity) %>%
   normality()
@@ -442,14 +443,14 @@ diamonds %>%
 
 
 
-**But why don't we just do our Shapiro-Wilk tests all the time and forget all those skewnesses and  visualizations?** Well, because given enough data, Shapiro-Wilk test will always find some non-normality even in perfectly symmetric bell-shaped data. Here is an example of a vector with less than 300 values, where Shapiro-Wilk test shows highly significant deviation from normality, while a density plot shows a bell curved data distribution. Moreover, tests or skewness, kurtosis and Quantile-Quantile plot all indicate normally distributed data. Thus, it's always better to check several options before making a conclusion about normality of the data.
+**So, why don't we just do our Shapiro-Wilk tests all the time and forget all those skewnesses and  visualizations?** Well, because given enough data, Shapiro-Wilk test will always find some non-normality even in perfectly symmetric bell-shaped data. Here is an example of a vector with less than 300 values, where Shapiro-Wilk test shows highly significant deviation from normality, while a density plot shows a bell curved data distribution. Moreover, tests or skewness, kurtosis and Quantile-Quantile plot all indicate normally distributed data. Thus, it's always better to check several options before making a conclusion about normality of the data.
 
 ```{r}
 bla <- Wage %>%
   filter(education == "1. < HS Grad") %>% 
   select(age)
 
-normality(bla)
+normality(bla) %>% flextable()
 
 plot_density(bla)
 
@@ -466,10 +467,9 @@ Box-plots help us to explore a combination of numeric and categorical variables?
 
 ### {DataExplorer}
 
-For example, using the intuitive *plot_boxplot()* function from {DataExplorer} package with an argument **by = ** which specifies a categorical, or grouping, variable, will put **all groups of all numeric variables into the boxes**. Such exploration immediately creates the next question - **are these groups differ significantly?** We can't tell from just staring at the picture...
+For example, using the intuitive *plot_boxplot()* function from {DataExplorer} package with an argument **by = ** which specifies a categorical, or grouping, variable, will put **all groups of all numeric variables into the boxes**. Such exploration immediately creates the next question - **do these groups differ significantly?** We can not tell that from just staring at the picture...
 
-```{r cache=TRUE}
-## View bivariate continuous distribution based on `cut`
+```{r }
 plot_boxplot(iris, by = "Species")
 ```
 
@@ -477,16 +477,16 @@ plot_boxplot(iris, by = "Species")
 
 ### {ggstatsplot}
 
-...but if use a *ggbetweenstats()* function from {ggstatsplot} package, we'd check tons of hypothesis using only few intuitive arguments:
+...but if we use a *ggbetweenstats()* function from {ggstatsplot} package, **we'd check tons of hypothesis using only a few intuitive arguments**. For instance:
 
-- data
-- x axis, where we determine the grouping categorical variable
-- y axis, where we have our numeric variable of interest and
+- **data**
+- **x axis**, where we determine the grouping categorical variable
+- **y axis**, where we have our numeric variable of interest and
 - the **type of the test**, which I would always set to *non-parametric* for exploratory analysis.
 
-This simple code not only provides you with a p-value which tells you whether there are significant differences between groups, but also conducts multiple pairwise comparisons to see between which groups exactly these differences are, and even adjusts the p-values for multiple comparisons with Holm method automatically. Moreover, it also produces bunch of other statistical details on top of amazing visualization. If fact, I found *ggbetweenstats()* function sooo useful, that I did two separate videos on it already.
+This simple code not only provides you with a **p-value which tells you whether there are significant differences between groups**, but also conducts **a correct multiple pairwise comparisons to see between which groups exactly these differences are**, and with correct, I mean suited for your main test. *ggbetweenstats()* even **adjusts the p-values for multiple comparisons with Holm method automatically** and produces bunch of other statistical details on top of the **amazing visualization**. If fact, I found *ggbetweenstats()* function sooo useful, that I did two separate videos on it already.
 
-```{r cache=TRUE}
+```{r }
 ggbetweenstats(
   data = iris, 
   x    = Species, 
@@ -496,9 +496,9 @@ ggbetweenstats(
 
 ### {SmartEDA}
 
-The only useful thing here, compared to function provided above, is plotting of the whole variable near the the same variables splitted into groups.
+(not part of the video) The only useful thing here, compared to function provided above, is plotting of the whole variable near the the same variables splitted into groups.
 
-```{r cache=TRUE}
+```{r }
 ExpNumViz(iris, target = "Species", Page = c(2,2))
 ```
 
@@ -511,10 +511,10 @@ ExpNumViz(iris, target = "Species", Page = c(2,2))
 
 In order to quickly **check the relationship between numeric variables** we can use **correlate()** function from {dlookr} package, which delivers **correlation coefficients**. If we don't specify any target variable or the method, **Pearson's correlation between ALL variables** will be calculated pairwisely. 
 
-{dlookr's} **plot_correlate()** function is even more useful, because it **visualizes these relationships**. We can of course determine the **method of calculations**, be it a default "pearson", or a non-parametric "kendall" or "spearman" correlations, which are more appropriate for **non-normally and non-very-linearly distributed values with some outliers**. The **shape** of each subplot shows the **strength of the correlation**, while the **color** shows the **direction**, where blue is **positive** and red is **negative correlation**. It's fine for the pure exploratory analysis, but, as always, the next logical step would be to test hypothesis and figure out which correlations are significant.
+{dlookr's} **plot_correlate()** function is a bit more useful, because it **visualizes these relationships**. We can of course determine the **method of calculations** if we need to, be it a default "pearson", or a non-parametric "kendall" or "spearman" correlations, which are more appropriate for **not-normally or non-very-linearly distributed values with some outliers**. The **shape** of each subplot shows the **strength of the correlation**, while the **color** shows the **direction**, where blue is **positive** and red is **negative correlation**. It's fine for the pure exploratory analysis, but, as always, the next logical step would be to test hypothesis and figure out which correlations are significant.
 
 
-```{r cache=TRUE}
+```{r }
 correlate(airquality, Ozone)
 
 plot_correlate(airquality, method = "kendall")
@@ -530,43 +530,65 @@ diamonds %>%
 
 And that's exactly what *ggcorrmat()* function from {ggstatsplot} package does! Namely, it displays: 
 
-- correlation coefficients
-- a colored heatmap showing positive or negative correlations and finally
-- whether a particular correlation is significant or not, where not-significant correlations are simply crossed out.
+- **correlation coefficients**,
+- a **colored heatmap** showing positive or negative correlations, and, finally
+- whether a particular correlation is **significant or not**, where not-significant correlations are simply crossed out.
 
-Moreover, we can get the results in a table form with p-values and confidence intervals for correlation coefficients, if we need to.
+Moreover, we can get the results in a table form with **p-values and confidence intervals for correlation coefficients**, if we want to, but simply using **output = "dataframe"** argument.
 
 
-```{r cache=TRUE}
-library(ggstatsplot)
-
+```{r}
 ggcorrmat(data = iris)
 
 ggcorrmat(
-  data   = airquality,
+  data   = iris,
   type   = "np",
   output = "dataframe"
 ) %>% 
   mutate_if(is.numeric, ~round(., 2)) %>% 
   flextable()
 ```
+If any particular correlation catches your attention during the Exploratory Data Analysis, and you want to display it professionally, use the *ggscatterstats()* function from {ggstatsplot} package, which delivers **statistical details, that matter**, namely:
+
+- the **statterplot**, which helps you to decide to go for **a parametric, non-parametric or even robust correlation analysis**, if needed,
+- the **correlation coefficient** itself with the **name of the method and 95% confidence intervals**,
+- the **p-value of the correlation**, and it even displays ...
+- the **distribution of both numeric variables** in different ways, for example *densigram* which combines a density plot and histogram, as you see on the current plot, or *boxplot* as you can see in the outcommented line.
+
+So, you see, in just a few seconds we went from the exploration of our data to the publication ready plot with a tested hypothesis, namely: growing ozone concentration leads to a significant increase in temperature. Nice, right?
+
+```{r}
+ggscatterstats(
+  data = airquality,
+  x = Ozone,
+  y = Temp,
+  type = "np" # try the "robust" correlation too! It might be even better here
+  #, marginal.type = "boxplot"
+)
+```
 
 
 
 ### {PerformanceAnalytics}
 
-However, my favorite way to conduct correlation analysis is supported by the *chart.Correlation()* function from {PerformanceAnalytics} package. It displays not only (1) correlation coefficients, but also (2) **histograms** for every particular numeric variable and even (3) **scatterplots** for every combination of numeric variables, which show whether relationships are non-linear and whether correlation analysis makes sense at all. Besides, the (4) significance stars are particularly helpful, because they describe the strength of correlation. Here we can of coarse also specify the (5) method we measure the correlation by.
+Another effective way to conduct multiple correlation analysis is supported by the *chart.Correlation()* function from {PerformanceAnalytics} package. It displays not only 
 
-```{r cache=TRUE}
+1. **correlation coefficients**, but also 
+2. **histograms** for every particular numeric variable, and 
+3. **scatterplots** for every combination of numeric variables. 
+4. Besides, **significance stars** are particularly helpful, because they describe the strength of correlation. 
+5. Here we can of coarse also specify the **method, we measure the correlation by**.
+
+```{r}
 library(PerformanceAnalytics)
 chart.Correlation(iris %>% select(-Species), method = "kendall") 
 ```
 
 ### {fastStat}
 
-If the distribution and the spread of data does not of a big interest for you, you can use *cor_sig_star()* fucntion from {fastStat} package, which displays all the useful information in a form of a table with correlation coefficients and p-values.
+If don't care about the distribution and the spread of data, but only need **correlation coefficients and p-values**, you can use *cor_sig_star()* function from {fastStat} package.
 
-```{r cache=TRUE}
+```{r }
 library(fastStat)
 iris %>% select_if(is.numeric) %>% cor_sig_star(method = "kendall")
 ```
@@ -575,13 +597,13 @@ iris %>% select_if(is.numeric) %>% cor_sig_star(method = "kendall")
 
 ### {dlookr} - linear models
 
-The *compare_numeric()* function examines the relationship between numerical variables with the help of **(Pearson's) correlation** and **simple linear models**. The correlation results are a little boring because they only provide correlation coefficients (therefore not shown). However, the results of pairwise linear regressions are interesting, because they not only produce p-values, but also other useful metrics, like $R^2$, AIC etc. On top of this, we could plot all the results of *compare_numeric()* function showing: 
+*The *compare_numeric()* function from {dlookr} package examines the relationship between numerical variables with the help of **(Pearson's) correlation** and **simple linear models**. The correlation results are a little boring because they only provide correlation coefficients (therefore not shown). However, the results of pairwise linear regressions are interesting, because they not only produce p-values, but also other useful metrics, like $R^2$, AIC etc. On top of this, we could plot all the results of *compare_numeric()* function showing: 
 
-- the strength of the correlation with circles,
-- the spread of data with box-plots and 
-- the linear regression, just to quickly see whether it makes sense
+- the **strength of the correlation with circles**,
+- the **spread of data with box-plots** and 
+- the **linear regression itself**, just to quickly see whether it makes sense
 
-```{r cache=TRUE}
+```{r }
 bla <- compare_numeric(iris) 
 
 bla$linear %>% 
@@ -595,9 +617,9 @@ plot(bla)
 
 ## Exploratory modelling
 
-However, how can we explore the whether linear model makes sense at all? Wenn the easiest way is to plot the data with {ggplot2} package and use *geom_smooth()* function to display a non-linear model fit of usually generalized additive models:
+However, how can we explore whether linear model makes any sense? Well, I think the easiest way is to plot the data with {ggplot2} package and use *geom_smooth()* function which always fits the data not matter what shape. Such exploration may point out the neccessity to use non-linear models, like GAM or LOESS:
 
-```{r cache=TRUE}
+```{r }
 ggplot(airquality, aes(Solar.R, Temp))+
   geom_point()+
   geom_smooth()+
@@ -609,15 +631,14 @@ ggplot(airquality, aes(Solar.R, Temp))+
 
 ### {dlookr}
 
-I found this topic actually so cool, that I produced a separate video and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/) on it while doing this one. So, for a deeper insight on how to impute numeric and categorical missing values with fancy machine learning methods, check out the other video on my channel. 
+I found this topic actually so cool, that I produced a small separate video of 7 minutes (and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/)) on it while doing this one. So, for a deeper insight on **how to impute numeric and categorical missing values with fancy machine learning methods**, check out the other [video on my channel](https://www.youtube.com/watch?v=Akb401i32Oc&ab_channel=YuryZablotski). 
 
-Here I just give you two useful functions from {dlookr} package. The first one - *plot_na_intersect()* shows you which variables have missing values and how many. And the second function *imputate_na()* imputes missing values with several machine learning methods.
-For instance, using "K nearest neighbors" algorithm, we could impute 37 missing values in Ozone variable, and even visually check the quality of our imputation in only one line of code. Using the *imputate_na()* function, we only need to specify 4 arguments:
+Here I'll just give you two useful functions from {dlookr} package. The first one - *plot_na_intersect()* shows you **which variables have missing values and how many**. And the second function *imputate_na()* **imputes missing values with different machine learning methods**. For instance, using **"K nearest neighbors" algorithm**, we could impute 37 missing values in Ozone variable, and even **visually check the quality of our imputation** in only one line of code. Using the *imputate_na()* function, we only need to specify 4 arguments:
 
-- the dataset
-- the variable with missing values, that would Ozone
-- the variable which will predict the missing values, for example Temperature and
-- the imputation method
+- the **dataset**
+- the **variable with missing values**, that would Ozone
+- the **variable which will predict the missing values**, for example Temperature and
+- the **imputation method**
 
 
 ```{r}
@@ -632,9 +653,9 @@ plot(imputate_na(airquality, Ozone, Temp, method = "knn"))
 
 ### {performance}
 
-*check_outliers()* fucntion from {performance} package provides an easy way to identify and visualize outliers with different methods. If you want to have an aggressive method and cleap out a lot of outliers, go with the *zscore* method, but if you don't have much data, go with less conservative method, for example *interquartile range*.
+*check_outliers()* function from {performance} package provides an easy way to identify and visualize outliers with different methods. If you want to have an aggressive method and clean out a lot of outliers, go with the *zscore* method, but if you don't have much data, go with less conservative method, for example *interquartile range*.
 
-```{r cache=TRUE}
+```{r }
 library(performance)
 plot(check_outliers(airquality$Wind, method = "zscore"))
 check_outliers(airquality$Wind, method = "iqr")
@@ -642,20 +663,20 @@ check_outliers(airquality$Wind, method = "iqr")
 
 ### {dlookr}
 
-**diagnose_outlier()** function from {dlookr} not only counts outliers in every variable using *interquartile range* method, but also get their percentages. Moreover, it calculates three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. In this way we can see how strong the influence of outliers for every variable actually is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. 
+**diagnose_outlier()** function from {dlookr} not only counts outliers in every variable using *interquartile range* method, but also gets their percentages. Moreover, it calculates three different averages: the **mean** of every variable **with outliers, without outliers** and the **mean of the outliers themselves**. In this way we can see how strong the influence of outliers for every variable actually is. For instance the variable "depth" in "diamonds" data has over 2500 outliers. That's a lot! However, the **means with and without outliers** are almost identical. Besides, the **average of the outliers themselves** is very similar to the original average of the whole data. In contrast, the variable "price" with over 3500 outliers is heavily influenced by them. The **average of the outliers** is almost 5 times higher, than the **average without them**. 
 
 ```{r}
 diagnose_outlier(diamonds) %>% flextable()
 ```
 
-Besides, {dlookr} can visualize the distribution of data with and without outliers, and, thank to collaboration with {dplyr}, we could choose to visualize only variables with over 5% of values being outliers. So, let's plot them!
+Besides, {dlookr} can visualize the distribution of data with and without outliers, and, thank to collaboration with {dplyr}, we could choose to visualize only variables with over 5% of values being outliers:
 
 ```{r}
 airquality %>% 
   dplyr::select(Ozone, Wind) %>% 
   plot_outlier()
 
-# Visualize variables with a ratio of outliers greater than 3%
+# Visualize variables with a ratio of outliers greater than 5%
 diamonds %>%
   plot_outlier(diamonds %>%
       diagnose_outlier() %>%
@@ -669,18 +690,13 @@ diamonds %>%
 
 ## Impute outliers
 
-Similarly, using *imputate_outlier()* fucntionn from {dlookr} package, we can impute outliers with several methods:
-
-- "mean" : arithmetic mean
-- "median" : median
-- "mode" : mode
-- "capping" : Impute the upper outliers with 95 percentile, and Impute the bottom outliers with 5 percentile.
+Similarly to *imputate_na()* function, {dlookr} package provides the *imputate_outlier()* function too, which allows us to impute outliers with several methods: mean, median, mode and cupping. The last one, "capping", is the fanciest, and it imputes the upper outliers with 95th percentile, and the bottom outliers with 5th percentile. Wrapping a simple *plot()* command around our result, would give us the opportunity to check the quality of imputation.
 
 
-```{r cache=TRUE}
+```{r }
 bla <- imputate_outlier(diamonds, carat, method = "capping")
-summary(bla)
 plot(bla)
+# summary(bla)  # if needed
 ```
 
 
@@ -688,7 +704,7 @@ plot(bla)
 
 ## Conclusion
 
-So, the usual Exploratory Data Analysis allows us to have a look at the data and form the hypothesis. In this video we not only did that, but also went one step further and started to explore (or test) the hypotheses themselves with simple statistical tests. This can help us to decide which complex statistics we need to use next in order to produce the final result, for example inference and predictions from a multivariate model. 
+So, the usual Exploratory Data Analysis allows us to have a look at the data and form the hypothesis. In this video we not only did that, but also went one step further and started to explore (or test) the hypotheses themselves with simple statistical tests. This can help us to decide which complex statistics we need to use next, in order to produce the final result, for example inference and predictions from a multivariate model, which would be a completely new story. 
 
 All right, that's it for today. If this video provided some value for you, feel free to like and subscribe. Thanks a lot for watching and I'll catch you again soon in the next video. 
 
