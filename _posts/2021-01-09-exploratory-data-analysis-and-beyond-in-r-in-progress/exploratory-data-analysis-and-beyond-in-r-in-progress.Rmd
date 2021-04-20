@@ -11,7 +11,7 @@ categories:
   - videos
   - data wrangling
   - visualization
-preview: DEDA_thumbnail.png
+preview: DEDA_thumbnail.jpg
 output:
   distill::distill_article:
     self_contained: false
