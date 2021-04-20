@@ -1,7 +1,7 @@
 ---
 title: "Deep Exploratory Data Analysis (EDA) in R"
 description: |
-  Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this video I'll provide the simplest and most effective ways to explore data in R, which will signifiantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.
+  Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this post I'll provide the simplest and most effective ways to explore data in R, which will significantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -11,7 +11,7 @@ categories:
   - videos
   - data wrangling
   - visualization
-preview: 2.png
+preview: DEDA_thumbnail.png
 output:
   distill::distill_article:
     self_contained: false
@@ -51,7 +51,14 @@ I love R, because it is reach and generous. Having around 17.000 packages allows
 
 ## Creating visualised reports of the whole dataset with only one function!
 
-The most effective way to explore the data quick is the creation of **automated reports**. We'll have a look at three packages which are able to do this. [DataExplorer package](https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/) package creates the best report in my opinion. [SmartEDA](https://daya6489.github.io/SmartEDA/) and [dlookr](https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/) packages are also good choices. **Three** functions you are going to see in a moment will cover all the basics of EDA in a few seconds.
+The most effective way to explore the data quick is the creation of **automated reports**. We'll have a look at three packages which are able to do this. [DataExplorer](https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/) package creates the best report in my opinion. [SmartEDA](https://daya6489.github.io/SmartEDA/) and [dlookr](https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/) packages are also good choices. **Three** functions you are going to see in a moment will cover all the basics of EDA in a few seconds.
+
+If you are more of a visual person, you can watch the R demo of automated data exploration here:
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("sKrWYE63Vk4")
+```
+
 
 ### {DataExplorer}
 
@@ -77,7 +84,7 @@ create_report(diamonds, y = "price")
 
 In addition to the similar results, {SmartEDA} report also delivers **descriptive statistics** for every numeric variable with all important metrics you could need, like **number of negative values, number of zeros, mean, median, standard deviation, IQR, bunch of different quantiles and even the number of outliers**. {SmartEDA} also displays the **density** of every numeric variables instead of histograms. And while {DataExplorer} package can visualize density too, density plots are not part of the automated {DataExplorer} report.
 
-What I found particularly useful in {SmartEDA} report is that **it provides the code** responsible for a particular result. For instance, if I don't need the whole report, but wanna see descriptive stats, you just copy the code, change the name of your dataset instead of generic "data" and get the same table you see in the report without looking for such code in the documentation. **It saves time!** Moreover, in {SmartEDA} package, you can give your report a name and save it in the directory of your choice.
+What I found particularly useful in {SmartEDA} report is that **it provides the code** responsible for a particular result. For instance, if you don't need the whole report, but wanna see only descriptive statistics, you just copy the code, change the name of your dataset and get the same table you see in the report without looking for such code in the documentation. **It saves time!** Moreover, in {SmartEDA} package, you can give your report a name and save it in the directory of your choice.
 
 ```{r eval=F}
 library(SmartEDA) # for exploratory data analysis
@@ -138,7 +145,7 @@ transformation_report(diamonds, target = price)
 ```
 
 
-## Big Picture of your data and some quick 
+## Big Picture of your data 
 
 Big reports might be overwhelming though, and we often need only a particular aspect of data exploration. Fortunately, you can get any part of the big report separately. For instance, the basic description for *airquality* dataset can be reached via functions *introduce()* and *plot_intro()* from {DataExplorer} package. 
 
@@ -160,6 +167,12 @@ library(funModeling)    # EDA
 status(airquality) %>% flextable()
 ```
 
+If you are tired of reading, you can watch the rest of this post in action as a video:
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("Swcp0_l65lw")
+```
+
 
 ## Explore categorical (discrete) variables
 
@@ -167,7 +180,7 @@ status(airquality) %>% flextable()
 
 Simple bar plots with **frequency distribution of all categorical variables** are already quite useful, because they provide a quick overview about the **meaningfulness of the categorization**, and whether there are some typing mistakes in the data. {DataExplorer} package provides a simple *plot_bar()* function which does just that. However, plotting a **target discrete variable by another discrete variable** is even more useful. It is some sort of a **visual frequency table** (see the second plot below). For this use the **by = ** argument and give it the second categorical variable.
 
-```{r }
+```{r}
 plot_bar(diamonds)
 plot_bar(diamonds, by = "cut")
 ```
@@ -463,11 +476,11 @@ ggqqplot(bla$age)
 
 ## Explore categorical and numeric variables with Box-Plots
 
-Box-plots help us to explore a combination of numeric and categorical variables? Put near each other, box-plots show whether distribution of several groups differ.
+Box-plots help us to explore a combination of numeric and categorical variables. Put near each other, box-plots show whether distribution of several groups differ.
 
 ### {DataExplorer}
 
-For example, using the intuitive *plot_boxplot()* function from {DataExplorer} package with an argument **by = ** which specifies a categorical, or grouping, variable, will put **all groups of all numeric variables into the boxes**. Such exploration immediately creates the next question - **do these groups differ significantly?** We can not tell that from just staring at the picture...
+For example, using the intuitive *plot_boxplot()* function from {DataExplorer} package with an argument **by = ** which specifies a  grouping, variable, will put **all groups of all numeric variables into the boxes**. Such exploration however immediately creates the next question - **do these groups differ significantly?** We can not tell that from just staring at the picture...
 
 ```{r }
 plot_boxplot(iris, by = "Species")
@@ -484,7 +497,7 @@ plot_boxplot(iris, by = "Species")
 - **y axis**, where we have our numeric variable of interest and
 - the **type of the test**, which I would always set to *non-parametric* for exploratory analysis.
 
-This simple code not only provides you with a **p-value which tells you whether there are significant differences between groups**, but also conducts **a correct multiple pairwise comparisons to see between which groups exactly these differences are**, and with correct, I mean suited for your main test. *ggbetweenstats()* even **adjusts the p-values for multiple comparisons with Holm method automatically** and produces bunch of other statistical details on top of the **amazing visualization**. If fact, I found *ggbetweenstats()* function sooo useful, that I did two separate videos on it already.
+This simple code not only provides you with a **p-value which tells you whether there are significant differences between groups**, but also conducts **a correct multiple pairwise comparisons to see between which groups exactly these differences are**. *ggbetweenstats()* even **adjusts the p-values for multiple comparisons with Holm method automatically** and produces bunch of other statistical details on top of the **amazing visualization**. If fact, I found *ggbetweenstats()* function sooo useful, that I did two separate videos on it already.
 
 ```{r }
 ggbetweenstats(
@@ -496,7 +509,7 @@ ggbetweenstats(
 
 ### {SmartEDA}
 
-(not part of the video) The only useful thing here, compared to function provided above, is plotting of the whole variable near the the same variables splitted into groups.
+The only useful thing here, compared to function provided above, is plotting of the whole variable near the the same variables splitted into groups.
 
 ```{r }
 ExpNumViz(iris, target = "Species", Page = c(2,2))
@@ -531,10 +544,10 @@ diamonds %>%
 And that's exactly what *ggcorrmat()* function from {ggstatsplot} package does! Namely, it displays: 
 
 - **correlation coefficients**,
-- a **colored heatmap** showing positive or negative correlations, and, finally
+- a **colored heatmap** showing positive or negative correlations, and, finally shows
 - whether a particular correlation is **significant or not**, where not-significant correlations are simply crossed out.
 
-Moreover, we can get the results in a table form with **p-values and confidence intervals for correlation coefficients**, if we want to, but simply using **output = "dataframe"** argument.
+Moreover, we can get the results in a table form with **p-values and confidence intervals for correlation coefficients**, if we want to, by simply using **output = "dataframe"** argument.
 
 
 ```{r}
@@ -586,7 +599,7 @@ chart.Correlation(iris %>% select(-Species), method = "kendall")
 
 ### {fastStat}
 
-If don't care about the distribution and the spread of data, but only need **correlation coefficients and p-values**, you can use *cor_sig_star()* function from {fastStat} package.
+If you don't care about the distribution and the spread of data, but only need **correlation coefficients and p-values**, you can use *cor_sig_star()* function from {fastStat} package.
 
 ```{r }
 library(fastStat)
@@ -597,11 +610,11 @@ iris %>% select_if(is.numeric) %>% cor_sig_star(method = "kendall")
 
 ### {dlookr} - linear models
 
-*The *compare_numeric()* function from {dlookr} package examines the relationship between numerical variables with the help of **(Pearson's) correlation** and **simple linear models**. The correlation results are a little boring because they only provide correlation coefficients (therefore not shown). However, the results of pairwise linear regressions are interesting, because they not only produce p-values, but also other useful metrics, like $R^2$, AIC etc. On top of this, we could plot all the results of *compare_numeric()* function showing: 
+*The *compare_numeric()* function from {dlookr} package examines the relationship between numerical variables with the help of **(Pearson's) correlation** and **simple linear models**. The correlation results are a little boring because they only provide correlation coefficients (therefore not shown). However, the results of pairwise linear regressions are interesting, because they not only produce p-values, but also other useful metrics, like $R^2$, AIC etc. On top of this, we could plot all the results of *compare_numeric()* function, which would display: 
 
 - the **strength of the correlation with circles**,
 - the **spread of data with box-plots** and 
-- the **linear regression itself**, just to quickly see whether it makes sense
+- the **linear regression itself**
 
 ```{r }
 bla <- compare_numeric(iris) 
@@ -617,7 +630,7 @@ plot(bla)
 
 ## Exploratory modelling
 
-However, how can we explore whether linear model makes any sense? Well, I think the easiest way is to plot the data with {ggplot2} package and use *geom_smooth()* function which always fits the data not matter what shape. Such exploration may point out the neccessity to use non-linear models, like GAM or LOESS:
+However, how can we explore whether linear model makes any sense? Well, I think the easiest way is to plot the data with {ggplot2} package and use *geom_smooth()* function which always fits the data no matter what shape. Such exploration may point out the necessity to use non-linear models, like GAM or LOESS:
 
 ```{r }
 ggplot(airquality, aes(Solar.R, Temp))+
@@ -629,9 +642,13 @@ ggplot(airquality, aes(Solar.R, Temp))+
 
 ## Explore missing values
 
-### {dlookr}
+I found this topic actually so cool, that I produced a small separate video of 7 minutes (and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/)):
 
-I found this topic actually so cool, that I produced a small separate video of 7 minutes (and [article](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/)) on it while doing this one. So, for a deeper insight on **how to impute numeric and categorical missing values with fancy machine learning methods**, check out the other [video on my channel](https://www.youtube.com/watch?v=Akb401i32Oc&ab_channel=YuryZablotski). 
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("Akb401i32Oc")
+```
+
+### {dlookr}
 
 Here I'll just give you two useful functions from {dlookr} package. The first one - *plot_na_intersect()* shows you **which variables have missing values and how many**. And the second function *imputate_na()* **imputes missing values with different machine learning methods**. For instance, using **"K nearest neighbors" algorithm**, we could impute 37 missing values in Ozone variable, and even **visually check the quality of our imputation** in only one line of code. Using the *imputate_na()* function, we only need to specify 4 arguments:
 
@@ -704,9 +721,8 @@ plot(bla)
 
 ## Conclusion
 
-So, the usual Exploratory Data Analysis allows us to have a look at the data and form the hypothesis. In this video we not only did that, but also went one step further and started to explore (or test) the hypotheses themselves with simple statistical tests. This can help us to decide which complex statistics we need to use next, in order to produce the final result, for example inference and predictions from a multivariate model, which would be a completely new story. 
+So, the usual Exploratory Data Analysis allows us to have a look at the data and form the hypothesis. In this post we not only did that, but also went one step further and started to explore (or test) the hypotheses themselves with simple statistical tests. This can help us to decide which complex statistics we need to use next, in order to produce the final result, for example inference and predictions from a multivariate model, which would be a completely new story... 
 
-All right, that's it for today. If this video provided some value for you, feel free to like and subscribe. Thanks a lot for watching and I'll catch you again soon in the next video. 
 
 --------------------------------
 
