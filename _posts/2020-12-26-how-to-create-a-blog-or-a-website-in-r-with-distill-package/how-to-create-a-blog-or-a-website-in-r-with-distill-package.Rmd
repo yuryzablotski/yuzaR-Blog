@@ -41,7 +41,7 @@ vembedr::embed_youtube("p9nuRKaF4nM")
 
 ## 1. Install *Distill* package
 
-```{r}
+```{r eval=FALSE}
 install.packages("distill")
 ```
 
@@ -142,7 +142,7 @@ vembedr::embed_youtube("WZt4H-ogH3s")
 
 ## 1. Install *distill* and *usethis* packages
 
-```{r}
+```{r eval=FALSE}
 install.packages("distill")
 install.packages("usethis")
 ```
@@ -302,7 +302,7 @@ Or add **draft: true** to the post’s metadata. When you are ready, delete **dr
 
 - Open "_site.yml". You'll see something like that:
 
-```{r}
+```{r eval=FALSE}
 name: "Your cool webpage"
 title: "Your cool webpage title"
 description: |
@@ -338,7 +338,7 @@ distill::create_theme(name = "theme")
 
 To activate a custom theme site-wide, add a theme key to the top-level of your "_site.yml" configuration file:
 
-```{r}
+```{r eval=FALSE}
 name: "Your cool webpage"
 title: "Your cool webpage title"
 theme: theme.css 
@@ -369,7 +369,7 @@ ggplot(mtcars, aes(hp, mpg)) +
 
 You can add external static and dynamic figures, plots, photos or diagrams by using `knitr::include_graphics()` function. [More on figures here](https://rstudio.github.io/distill/figures.html).
 
-```{r echo=T}
+```{r echo=T, eval=FALSE}
 knitr::include_graphics("images/your_figure.png")
 ```
 
@@ -425,7 +425,7 @@ ggplot(mtcars, aes(hp, mpg)) +
 
 You can use a Latex syntax for it:
 
-```{r echo=T}
+```{r echo=T, eval=FALSE}
 $$\sigma = \sqrt{ \frac{1}{N} \sum_{i=1}^N (x_i -\mu)^2}$$
 ```
 
@@ -442,7 +442,7 @@ Footnotes are created in the usual RMarkdown way, namely `^[here is the content 
 
 Thumbnails (or previews) are the images which are displayed along the post. They serve as an eye catcher. You can add a preview image into the post’s metadata by adding a "preview" field:
 
-```{r}
+```{r eval=FALSE}
 title: "Blog post on how to write blog posts"
 description: |
   Here we were out of ideas, and therefore we are proud to announce

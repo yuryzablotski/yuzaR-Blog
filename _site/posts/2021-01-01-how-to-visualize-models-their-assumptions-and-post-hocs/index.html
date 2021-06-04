@@ -20,19 +20,19 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -52,11 +52,11 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -135,7 +135,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["how-to-visualize-models-their-assumptions-and-post-hocs_files/anchor-4.2.2/anchor.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/bowser-1.9.3/bowser.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/distill-2.2.21/template.v2.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-10-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-12-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-12-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-15-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-19-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-19-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-2-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-20-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-20-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-20-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-22-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-22-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-22-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-23-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-23-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-24-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-24-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-24-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-27-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-27-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-28-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-28-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-29-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-29-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-3-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-3-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-30-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-31-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-32-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-33-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-4-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-4-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-5-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-5-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-8-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/jquery-1.11.3/jquery.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/vembedr-0.1.4/css/vembedr.css","how-to-visualize-models-their-assumptions-and-post-hocs_files/webcomponents-2.0.0/webcomponents.js","thumbnail_visualize_models.png"]}
+  {"type":"character","attributes":{},"value":["how-to-visualize-models-their-assumptions-and-post-hocs_files/anchor-4.2.2/anchor.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/bowser-1.9.3/bowser.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/distill-2.2.21/template.v2.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-10-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-12-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-12-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-13-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-15-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-16-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-17-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-19-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-19-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-2-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-20-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-20-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-20-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-22-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-22-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-22-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-23-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-23-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-24-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-24-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-24-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-27-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-27-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-28-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-28-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-29-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-29-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-3-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-3-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-30-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-31-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-32-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-33-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-4-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-4-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-5-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-5-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-7-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-8-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-1.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-2.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-3.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-4.png","how-to-visualize-models-their-assumptions-and-post-hocs_files/header-attrs-2.8.6/header-attrs.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/jquery-1.11.3/jquery.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/popper-2.6.0/popper.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/tippy-6.2.7/tippy-bundle.umd.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/tippy-6.2.7/tippy-light-border.css","how-to-visualize-models-their-assumptions-and-post-hocs_files/tippy-6.2.7/tippy.css","how-to-visualize-models-their-assumptions-and-post-hocs_files/tippy-6.2.7/tippy.umd.min.js","how-to-visualize-models-their-assumptions-and-post-hocs_files/vembedr-0.1.4/css/vembedr.css","how-to-visualize-models-their-assumptions-and-post-hocs_files/webcomponents-2.0.0/webcomponents.js","thumbnail_visualize_models.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2376,8 +2376,13 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8.6/header-attrs.js"></script>
   <link href="../../site_libs/vembedr-0.1.4/css/vembedr.css" rel="stylesheet" />
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
   <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
@@ -2461,30 +2466,36 @@ gtag('config', 'G-Q28WX9Y4VS');
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#a-demo-for-the-first-7-linear-models">A demo for the first 7 linear models</a><ul>
+<li><a href="#a-demo-for-the-first-7-linear-models">A demo for the first 7 linear models</a>
+<ul>
 <li><a href="#simple-linear-model-with-one-categorical-predictor">1. Simple linear model with one categorical predictor</a></li>
 <li><a href="#simple-linear-model-with-one-numeric-predictor">2. Simple linear model with one numeric predictor</a></li>
 <li><a href="#multiple-linear-model-with-several-categorical-predictors">3. Multiple linear model with several categorical predictors</a></li>
 <li><a href="#multiple-linear-model-with-several-numeric-predictors">4. Multiple linear model with several numeric predictors</a></li>
 <li><a href="#multiple-linear-model-with-numeric-and-categorical-predictors">5. Multiple linear model with numeric and categorical predictors</a></li>
 </ul></li>
-<li><a href="#bonus-1-check-all-the-assumption-in-one-line-of-code">Bonus 1: check all the assumption in one line of code</a><ul>
+<li><a href="#bonus-1-check-all-the-assumption-in-one-line-of-code">Bonus 1: check all the assumption in one line of code</a>
+<ul>
 <li><a href="#multiple-linear-model-with-interactions">6. Multiple linear model with interactions</a></li>
 </ul></li>
-<li><a href="#bonus-2-easy-post-hocs">Bonus 2: easy post-hocs</a><ul>
+<li><a href="#bonus-2-easy-post-hocs">Bonus 2: easy post-hocs</a>
+<ul>
 <li><a href="#multiple-linear-model-with-interactions-bwtween-numeric-predictors">7. Multiple linear model with interactions bwtween numeric predictors</a></li>
 </ul></li>
 <li><a href="#bonus-3-quick-multiple-models-with-ggplot">Bonus 3: quick multiple models with ggplot</a></li>
-<li><a href="#a-demo-for-the-next-9-models-non-linear-logistic-multinomial-mixed-effects-survival">A demo for the next 9 models: non-linear, logistic, multinomial, mixed-effects, survival…</a><ul>
+<li><a href="#a-demo-for-the-next-9-models-non-linear-logistic-multinomial-mixed-effects-survival">A demo for the next 9 models: non-linear, logistic, multinomial, mixed-effects, survival…</a>
+<ul>
 <li><a href="#multiple-non-linear-polynomial-model-with-interactions">8. Multiple non-linear polynomial model with interactions</a></li>
 <li><a href="#multiple-non-linear-generalized-additive-models-gam">9. Multiple non-linear Generalized Additive Models (GAM)</a></li>
 <li><a href="#multiple-logistic-regression-with-interactions">10. Multiple logistic regression with interactions</a></li>
 </ul></li>
-<li><a href="#bonus-4-visualize-the-post-hoc-analysis-with-the-pairwise-p-value-plot-pwpp">Bonus 4: visualize the post-hoc analysis with the PairWise P-value Plot (pwpp)</a><ul>
+<li><a href="#bonus-4-visualize-the-post-hoc-analysis-with-the-pairwise-p-value-plot-pwpp">Bonus 4: visualize the post-hoc analysis with the PairWise P-value Plot (pwpp)</a>
+<ul>
 <li><a href="#multinomial-logistic-regression-models-via-neural-networks">11. Multinomial logistic regression models via neural networks</a></li>
 <li><a href="#multiple-linear-mixed-effects-model-with-interactions">12. Multiple Linear Mixed-Effects-Model with interactions</a></li>
 </ul></li>
-<li><a href="#bonus-5-how-to-choose-the-best-model">Bonus 5: how to choose the best model</a><ul>
+<li><a href="#bonus-5-how-to-choose-the-best-model">Bonus 5: how to choose the best model</a>
+<ul>
 <li><a href="#gamms---multiple-generalised-additive-non-linear-mixed-effects-models">13. GAMMs - Multiple Generalised Additive (non-linear) Mixed Effects Models</a></li>
 <li><a href="#kaplan-meier-survival-model">14. Kaplan-Meier survival model</a></li>
 <li><a href="#exponential-parametric-models">15. Exponential Parametric Models</a></li>
@@ -2506,9 +2517,9 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Let’s get our first data. We’ll use several dataset through out this article.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("tidyverse") </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("tidyverse") </span>
 <span class='co'># install.packages("ISLR") </span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span> <span class='co'># data wrangling</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span> <span class='co'># data wrangling</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://www.StatLearning.com'>ISLR</a></span><span class='op'>)</span>      <span class='co'># get "Wage" dataset</span>
 
 <span class='co'># reproducibility: the same seed grows the same tree</span>
@@ -2524,23 +2535,23 @@ gtag('config', 'G-Q28WX9Y4VS');
 </div>
 <pre><code>Rows: 1,000
 Columns: 11
-$ year       &lt;int&gt; 2004, 2003, 2007, 2006, 2004, 2006, 2004, 2003, …
-$ age        &lt;int&gt; 59, 45, 21, 49, 59, 41, 63, 42, 46, 42, 50, 26, …
-$ maritl     &lt;fct&gt; 2. Married, 2. Married, 1. Never Married, 2. Mar…
-$ race       &lt;fct&gt; 1. White, 1. White, 1. White, 1. White, 1. White…
-$ education  &lt;fct&gt; 5. Advanced Degree, 4. College Grad, 2. HS Grad,…
-$ region     &lt;fct&gt; 2. Middle Atlantic, 2. Middle Atlantic, 2. Middl…
-$ jobclass   &lt;fct&gt; 2. Information, 2. Information, 2. Information, …
-$ health     &lt;fct&gt; 2. &gt;=Very Good, 2. &gt;=Very Good, 1. &lt;=Good, 2. &gt;=…
-$ health_ins &lt;fct&gt; 1. Yes, 1. Yes, 2. No, 1. Yes, 1. Yes, 1. Yes, 1…
-$ logwage    &lt;dbl&gt; 5.204120, 4.602060, 4.565848, 5.107210, 4.490520…
-$ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</code></pre>
+$ year       &lt;int&gt; 2004, 2003, 2007, 2006, 2004, 2006, 2004, 2003, 2…
+$ age        &lt;int&gt; 59, 45, 21, 49, 59, 41, 63, 42, 46, 42, 50, 26, 5…
+$ maritl     &lt;fct&gt; 2. Married, 2. Married, 1. Never Married, 2. Marr…
+$ race       &lt;fct&gt; 1. White, 1. White, 1. White, 1. White, 1. White,…
+$ education  &lt;fct&gt; 5. Advanced Degree, 4. College Grad, 2. HS Grad, …
+$ region     &lt;fct&gt; 2. Middle Atlantic, 2. Middle Atlantic, 2. Middle…
+$ jobclass   &lt;fct&gt; 2. Information, 2. Information, 2. Information, 1…
+$ health     &lt;fct&gt; 2. &gt;=Very Good, 2. &gt;=Very Good, 1. &lt;=Good, 2. &gt;=V…
+$ health_ins &lt;fct&gt; 1. Yes, 1. Yes, 2. No, 1. Yes, 1. Yes, 1. Yes, 1.…
+$ logwage    &lt;dbl&gt; 5.204120, 4.602060, 4.565848, 5.107210, 4.490520,…
+$ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.1678…</code></pre>
 </div>
 <h2 id="simple-linear-model-with-one-categorical-predictor">1. Simple linear model with one categorical predictor</h2>
 <p>The <em>effects()</em> package is the main visualization package we’ll use. It can visualize results of almost any model. We’ll start with the visualization of predicted values.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>jobclass</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>jobclass</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='co'># install.packages("effects")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r-project.org'>effects</a></span><span class='op'>)</span>    <span class='co'># for model visualization &amp; more</span>
@@ -2554,7 +2565,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p>Here we’ll add <em>grid = TRUE</em> for a better readability, so that we don’t need to stare on the y-axis and guess the result.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, grid <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </code></pre>
@@ -2565,14 +2576,14 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p>We can visualize all predictors at once, or any particular predictor from a multiple model individually.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>+</span> <span class='va'>education</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>+</span> <span class='va'>education</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/predictorEffects.html'>predictorEffect</a></span><span class='op'>(</span>predictor <span class='op'>=</span> <span class='st'>"education"</span>, mod <span class='op'>=</span> <span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/predictorEffects.html'>predictorEffect</a></span><span class='op'>(</span>predictor <span class='op'>=</span> <span class='st'>"education"</span>, mod <span class='op'>=</span> <span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-5-2.png" width="624" /></p>
@@ -2581,19 +2592,19 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p>Here we’ll see how to change the appearance of confidence intervals and introduce another amazing model-visualization package - <em>sjPlot</em>. In this chapter we’ll use the <em>effects</em> package for the visualization of the predicted values and <em>sjPlot</em> package for the visualization of the estimates with their confidence intervals.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>year</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>year</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, confint<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>style<span class='op'>=</span><span class='st'>"bars"</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, confint<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>style<span class='op'>=</span><span class='st'>"bars"</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-6-2.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("sjPlot")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("sjPlot")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span>    <span class='co'># for model visualization</span>
 <span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
 </code></pre>
@@ -2604,7 +2615,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p>We can change design of the plot by determining the number of <em>rows</em> and <em>columns</em> in the <em>plot(allEffects())</em>. The <em>plot_model()</em> function can also display the numeric values of the estimates and the significance stars, which is often all we need. Besides, it looks much better than a table-looking output of the model results.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>education</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>education</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
@@ -2613,14 +2624,14 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, rows <span class='op'>=</span> <span class='fl'>2</span>, cols <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, rows <span class='op'>=</span> <span class='fl'>2</span>, cols <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, show.values <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, show.values <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-9-1.png" width="672" /></p>
@@ -2629,7 +2640,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p><em>check_model</em> is just awesome! One of my favorite R functions! I get a “<strong>nerdgasm</strong>” every time I use it 😂. The video explains it very well.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("performance")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("performance")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/performance/'>performance</a></span><span class='op'>)</span>    <span class='co'># model assumptions &amp; performance</span>
 <span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
 </code></pre>
@@ -2640,7 +2651,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p>First of all, the <em>allEffects()</em> functions visualizes interactions easily! Secondly, we can put several lines on the same plot with or without confidence intervals by using argument <em>multiline = TRUE</em>. “T” instead of “TRUE” also works. The <em>sjPlot</em> package is not only able to also easily visualize interactions, but can in addition be extended with the usual <em>ggplot2</em> syntax, which can greatly improve the appearance of the plot.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>education</span> <span class='op'>*</span> <span class='va'>jobclass</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>education</span> <span class='op'>*</span> <span class='va'>jobclass</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='co'># not too neat representation!</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
@@ -2648,7 +2659,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-11-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='co'># better representation</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># better representation</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, lines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>multiline <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2656,7 +2667,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># perfect representation</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># perfect representation</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, 
   lines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>multiline <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>, 
@@ -2665,7 +2676,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-12-1.png" width="768" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/sjPlot-themes.html'>theme_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span><span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/sjPlot-themes.html'>theme_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span><span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-12-2.png" width="768" /></p>
@@ -2674,7 +2685,7 @@ $ salary     &lt;dbl&gt; 182.02062, 99.68946, 96.14407, 165.20877, 89.167…</co
 <p>The <em>emmeans</em> package is one of my favorite for conducting post-hocs. In this chapter we only display the results in the text/table form. Later we’ll also visualize post-hocs.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("emmeans")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("emmeans")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rvlenth/emmeans'>emmeans</a></span><span class='op'>)</span>      <span class='co'># for post-hocs</span>
 <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>|</span> <span class='va'>education</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
 </code></pre>
@@ -2702,7 +2713,7 @@ education = 5. Advanced Degree:
 <h2 id="multiple-linear-model-with-interactions-bwtween-numeric-predictors">7. Multiple linear model with interactions bwtween numeric predictors</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>*</span> <span class='va'>health</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>salary</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>*</span> <span class='va'>health</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, 
@@ -2712,7 +2723,7 @@ education = 5. Advanced Degree:
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-14-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span><span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span>
 </code></pre>
@@ -2721,7 +2732,7 @@ education = 5. Advanced Degree:
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-15-1.png" width="624" /></p>
@@ -2730,7 +2741,7 @@ education = 5. Advanced Degree:
 <p>We do not always need to explicitly model things in order to explore our data. A <em>geom_smooth()</em> function from <em>ggplot2</em> package will automatically fit numeric data. Mostly with non-linear models (e.g. GAM), but the argument <em>method=“lm”</em> can force it to take the linear one. Moreover, we could also use any formula inside of the <em>geom_smooth()</em>, but if we need to write the formula anyway, we’d rather produce an explicit model. However, the code presented below is quick and easy, and therefore very practical! On this note we’ll enter the world of non-linear models and I recommend to watch the second video first, before checking out the code.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>d</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>age</span>, <span class='va'>salary</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>d</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>age</span>, <span class='va'>salary</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>geom_point</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>geom_smooth</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>    <span class='co'># the quickest way to model numeric data</span>
   <span class='fu'>facet_grid</span><span class='op'>(</span><span class='va'>education</span><span class='op'>~</span><span class='va'>jobclass</span>, scales <span class='op'>=</span> <span class='st'>"free"</span><span class='op'>)</span> <span class='co'># quick multiple model </span>
@@ -2750,7 +2761,7 @@ education = 5. Advanced Degree:
 <p>The <em>allEffects</em> function can also easily handle polynomial non-linear models. In contrast, the <em>plot_model</em> function can’t. However, we still can plot the estimates.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>salary</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/stats/poly.html'>poly</a></span><span class='op'>(</span><span class='va'>age</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='op'>*</span> <span class='va'>health</span>, <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>salary</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/stats/poly.html'>poly</a></span><span class='op'>(</span><span class='va'>age</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='op'>*</span> <span class='va'>health</span>, <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, 
@@ -2760,7 +2771,7 @@ education = 5. Advanced Degree:
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-18-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, show.values <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, show.values <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>theme_bw</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2768,7 +2779,7 @@ education = 5. Advanced Degree:
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-19-1.png" width="624" /></p>
@@ -2778,7 +2789,7 @@ education = 5. Advanced Degree:
 <p><em>s()</em> function indicates that we would like to use smoothing splines.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("gam")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("gam")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>gam</span><span class='op'>)</span>
 
 <span class='va'>gam1</span> <span class='op'>&lt;-</span> <span class='fu'>gam</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/gam/man/gam.html'>gam</a></span><span class='op'>(</span><span class='va'>salary</span><span class='op'>~</span><span class='fu'><a href='https://rdrr.io/pkg/gam/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>year</span>, df <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://rdrr.io/pkg/gam/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>age</span>, df <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>+</span><span class='va'>education</span> <span class='op'>+</span> <span class='va'>jobclass</span>, data<span class='op'>=</span><span class='va'>d</span><span class='op'>)</span>
@@ -2793,19 +2804,19 @@ education = 5. Advanced Degree:
 <p>Interactions in logistic regression are not a problem for both packages. Moreover, have a look at three different displays of post-hocs from the same model and find code differences. Hint: I love the “|” part of it!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>health</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>*</span> <span class='va'>health_ins</span>, <span class='va'>d</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>health</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>*</span> <span class='va'>health_ins</span>, <span class='va'>d</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span>
 </code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-21-2.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>|</span> <span class='va'>health_ins</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>|</span> <span class='va'>health_ins</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
 </code></pre>
 </div>
 <pre><code>health_ins = 1. Yes:
@@ -2818,7 +2829,7 @@ health_ins = 2. No:
 
 Results are given on the log odds ratio (not the response) scale. </code></pre>
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>health_ins</span> <span class='op'>|</span> <span class='va'>jobclass</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>health_ins</span> <span class='op'>|</span> <span class='va'>jobclass</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
 </code></pre>
 </div>
 <pre><code>jobclass = 1. Industrial:
@@ -2833,7 +2844,7 @@ Results are given on the log odds ratio (not the response) scale. </code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>health_ins</span> <span class='op'>*</span> <span class='va'>jobclass</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>health_ins</span> <span class='op'>*</span> <span class='va'>jobclass</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span>
 </code></pre>
 </div>
 <pre><code> contrast                                     estimate    SE  df
@@ -2858,7 +2869,7 @@ P value adjustment: fdr method for 6 tests </code></pre>
 <p>As promised, here is the visualization of the post-hocs. Notice the marginal means on the y axis and color-coded design of the plot, which connects the pairs the p-values for which were calculated and adjusted (x-axis).</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/pwpp.html'>pwpp</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>health_ins</span> <span class='op'>*</span> <span class='va'>jobclass</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"response"</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/pwpp.html'>pwpp</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>health_ins</span> <span class='op'>*</span> <span class='va'>jobclass</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"response"</span>, adjust <span class='op'>=</span> <span class='st'>"fdr"</span>
      <span class='op'>)</span><span class='op'>+</span><span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2868,7 +2879,7 @@ P value adjustment: fdr method for 6 tests </code></pre>
 <p>No special treatment of the fancy neural networks needed. <em>plot(allEffects())</em> just works!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># get the data</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># get the data</span>
 <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>foreign</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreign/man/read.dta.html'>read.dta</a></span><span class='op'>(</span><span class='st'>"https://stats.idre.ucla.edu/stat/data/hsbdemo.dta"</span><span class='op'>)</span>
 
 <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>nnet</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/nnet/man/multinom.html'>multinom</a></span><span class='op'>(</span><span class='va'>prog</span> <span class='op'>~</span> <span class='va'>ses</span> <span class='op'>+</span> <span class='va'>write</span>, <span class='va'>d</span><span class='op'>)</span>
@@ -2880,7 +2891,7 @@ iter  10 value 179.985215
 final  value 179.981726 
 converged</code></pre>
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, 
      lines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>multiline <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>, 
      confint <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>style <span class='op'>=</span> <span class='st'>"auto"</span><span class='op'>)</span>, rows <span class='op'>=</span> <span class='fl'>2</span>, cols <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </code></pre>
@@ -2891,7 +2902,7 @@ converged</code></pre>
 <p>The mixed-effects models are very complex. But fortunately, all 4 main functions, namely <em>plot(allEffects())</em>, <em>plot_model()</em>, <em>emmeans()</em> and <em>check_model()</em> work flawlessly and <strong>simply deliver!</strong> The <em>check_model()</em> even checks the assumptions for the random effects! The random effects themselves can also be visualized, but they are rarely interpreted, so, why bother?</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("lme4")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("lme4")</span>
 <span class='co'># install.packages("lmerTest")</span>
 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/lme4/lme4/'>lme4</a></span><span class='op'>)</span>
@@ -2914,14 +2925,14 @@ converged</code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-1.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m1</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span><span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m1</span>, type <span class='op'>=</span> <span class='st'>"int"</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/sjPlot-themes.html'>theme_blank</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"top"</span><span class='op'>)</span>
 </code></pre>
 </div>
 <img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-25-2.png" width="624" />
 <div class="sourceCode">
-<pre><code><span class='co'># post-hocs</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># post-hocs</span>
 <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>service</span> <span class='op'>|</span> <span class='va'>studage</span>, adjust <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span> 
 </code></pre>
 </div>
@@ -2943,7 +2954,7 @@ studage = 8:
 
 Degrees-of-freedom method: kenward-roger </code></pre>
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/pwpp.html'>pwpp</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='op'>~</span> <span class='va'>service</span> <span class='op'>*</span> <span class='va'>studage</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"response"</span>, adjust <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span><span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/pwpp.html'>pwpp</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='op'>~</span> <span class='va'>service</span> <span class='op'>*</span> <span class='va'>studage</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"response"</span>, adjust <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2951,7 +2962,7 @@ Degrees-of-freedom method: kenward-roger </code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># check model assumptions</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># check model assumptions</span>
 <span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m1</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2961,7 +2972,7 @@ Degrees-of-freedom method: kenward-roger </code></pre>
 <p>The <em>performance</em> package, near the already insanely useful <em>check_model()</em> function, provides a <em>compare_performance()</em> function, which compares models with multiple quality indicators, e.g. <span class="math inline">\(R^2\)</span> or AIC. It is not only more informative as compared to the <em>anova()</em> function, which is often used for model comparison, but also works much better, because it displays a warning when two models shouldn’t be compared, while <em>anova(m, m1)</em> simply fails, when models aren’t supposed to be compared, but can be tricked by placing the mixed effects model (m1) first.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>service</span> <span class='op'>*</span> <span class='va'>studage</span>, data<span class='op'>=</span><span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>service</span> <span class='op'>*</span> <span class='va'>studage</span>, data<span class='op'>=</span><span class='va'>d</span><span class='op'>)</span>
 <span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>service</span> <span class='op'>*</span> <span class='va'>studage</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span><span class='op'>|</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span><span class='op'>|</span><span class='va'>d</span><span class='op'>)</span>, data<span class='op'>=</span><span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://easystats.github.io/performance/reference/compare_performance.html'>compare_performance</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>m1</span><span class='op'>)</span>
@@ -2970,12 +2981,12 @@ Degrees-of-freedom method: kenward-roger </code></pre>
 <pre><code>Random effect variances not available. Returned R2 does not account for random effects.</code></pre>
 <pre><code># Comparison of Model Performance Indices
 
-Model |            Type |     AIC |     BIC |      BF | RMSE | Sigma |   R2 | R2 (adj.) | R2 (cond.) | R2 (marg.)
------------------------------------------------------------------------------------------------------------------
-m     |              lm | 2702.04 | 2744.21 |    1.00 | 1.30 |  1.30 | 0.02 |  6.68e-03 |            |           
-m1    | lmerModLmerTest | 2709.21 | 2760.74 | &lt; 0.001 | 1.09 |  1.18 |      |           |            |       0.02</code></pre>
+Name |           Model |      AIC |      BIC |  RMSE | Sigma |    R2 | R2 (adj.) | R2 (cond.) | R2 (marg.)
+----------------------------------------------------------------------------------------------------------
+m    |              lm | 2702.044 | 2744.205 | 1.295 | 1.302 | 0.015 |     0.007 |            |           
+m1   | lmerModLmerTest | 2709.212 | 2760.743 | 1.088 | 1.181 |       |           |            |      0.018</code></pre>
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/stats/anova.html'>anova</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='va'>m</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/anova.html'>anova</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='va'>m</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>Data: d
@@ -2992,7 +3003,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>These kind of models are just madness, can be easily visualized though.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("mgcViz")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("mgcViz")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/mfasiolo/mgcViz'>mgcViz</a></span><span class='op'>)</span>
 
 <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/mgcViz/man/gammV.html'>gammV</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/pkg/gam/man/s.html'>s</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>)</span>, k <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>lectage</span>, random<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>s<span class='op'>=</span><span class='op'>~</span><span class='fl'>1</span><span class='op'>)</span>, data<span class='op'>=</span> <span class='va'>InstEval</span> <span class='op'>%&gt;%</span> 
@@ -3010,10 +3021,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>Survival models can be visualized with <em>survminer</em> package. Even some statistical details can be displayed. I still did not figured out how to visualize the post-hocs for survival analysis. It you know how, please let me know. Thus, I here simply provide the p-values of the post-hocs.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("survival")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("survival")</span>
 <span class='co'># install.packages("survminer")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://www.sthda.com/english/rpkgs/survminer/'>survminer</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/survminer/index.html'>survminer</a></span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>lung</span> <span class='op'>%&gt;%</span> 
@@ -3030,7 +3041,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># fancy plot</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># fancy plot</span>
 <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/ggsurvplot.html'>ggsurvplot</a></span><span class='op'>(</span><span class='va'>m</span>, 
            pval <span class='op'>=</span> <span class='cn'>TRUE</span>, 
            risk.table <span class='op'>=</span> <span class='st'>"abs_pct"</span>, 
@@ -3041,7 +3052,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># post-hocs for survival analysis</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># post-hocs for survival analysis</span>
 <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/pairwise_survdiff.html'>pairwise_survdiff</a></span><span class='op'>(</span>
   formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>ph.ecog</span>, data <span class='op'>=</span> <span class='va'>d</span>, p.adjust.method <span class='op'>=</span> <span class='st'>"fdr"</span>
 <span class='op'>)</span>
@@ -3062,7 +3073,7 @@ P value adjustment method: fdr </code></pre>
 <p>These models are very rarely used.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("flexsurv")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("flexsurv")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/chjackson/flexsurv-dev'>flexsurv</a></span><span class='op'>)</span>    <span class='co'># for Parametric Survival Modelling</span>
 
 <span class='va'>ex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/flexsurv/man/flexsurvreg.html'>flexsurvreg</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>ph.ecog</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>d</span>, dist<span class='op'>=</span><span class='st'>"exponential"</span><span class='op'>)</span>
@@ -3076,7 +3087,7 @@ P value adjustment method: fdr </code></pre>
 <p>Cox models are more common as compared to the exponential models and can be visualized with a beautiful <em>ggforest()</em> plot.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>sex</span> <span class='op'>+</span> <span class='va'>ph.ecog</span>, data <span class='op'>=</span>  <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>sex</span> <span class='op'>+</span> <span class='va'>ph.ecog</span>, data <span class='op'>=</span>  <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/ggforest.html'>ggforest</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>d</span><span class='op'>)</span>
 </code></pre>
