@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>yuzaR-Blog</title>
+    <link>https://yuzar-blog.netlify.app/</link>
+    <atom:link href="https://yuzar-blog.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Data Science with R
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sat, 30 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R package reviews {dlookr} diagnose, explore and transform your data</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</link>
+      <description>Raw data need to be diagnosed for existing problems, explored for new hypotheses and repaired in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. {dlookr} generates automated reports and performs compex operations, like imputing missing values or outliers, with simple functions. Moreover, {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2} to name just a few!</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>R package reviews</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</guid>
+      <pubDate>Sat, 30 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/dlookr_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Deep Exploratory Data Analysis (EDA) in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</link>
+      <description>Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this post I'll provide the simplest and most effective ways to explore data in R, which will significantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/DEDA_thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>How to impute missing values with Machine Learning in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</link>
+      <description>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</description>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <category>machine learning</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_impute_na.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {DataExplorer} explore your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</link>
+      <description>What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...</description>
+      <category>R package reviews</category>
+      <category>EDA</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 2: parametric survival models</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</link>
+      <description>The non-parametric Kaplan-Meier method (KM) can not describe survival probability by a smooth function, which means it can not predict anything. The parametric models (e.g. Exponential, Weibull etc.) can! Besides, in case where parametric models are appropriate, they are more exact, more effective and more informative than KM or Cox. However, unfortunately, this step is often left out due to the rear use of parametric models. In this post we’ll try to close this gap.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {performance} check how good your model is! </title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</link>
+      <description>There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/14.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 1: a gentle introduction into Kaplan-Meier Curves</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</link>
+      <description>Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/thumbnail_survival_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {janitor} clean your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</link>
+      <description>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</guid>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/11.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to visualize models, their assumptions and post-hocs</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</link>
+      <description>A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code &amp; maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.</description>
+      <category>visualization</category>
+      <category>videos</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</guid>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to create a blog or a website in R with {Distill} package</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</link>
+      <description>If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.</description>
+      <category>R &amp; the Web</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/images/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+  </channel>
+</rss>
