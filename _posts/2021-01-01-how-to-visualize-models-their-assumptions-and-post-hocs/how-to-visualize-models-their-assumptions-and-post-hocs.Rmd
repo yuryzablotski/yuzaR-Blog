@@ -362,7 +362,7 @@ pwpp(emmeans(m1, ~ service * studage), type = "response", adjust = "none")+
 ```
 
 
-```{r fig.height=9, fig.width=9}
+```{r fig.height=11, fig.width=11}
 # check model assumptions
 check_model(m1)
 ```

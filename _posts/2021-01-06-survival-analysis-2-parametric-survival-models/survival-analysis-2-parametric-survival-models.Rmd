@@ -330,7 +330,6 @@ Such survival model is in fact the Poisson model. Thus, it might help if you alr
 3. and finally, it will greatly increase the interpretability, because the Hazard-Ratios (HRs) (that's what exponential model delivers) can be interpreted exactly like the Odds-Ratios (ORs) from the logistic regression (as described in my posts on logistic regression). Similarly to the Odds in the logistic regression, **the Hazard itself, which it the probability of dying NOW**, is less useful then the Hazard-Ratios. A Hazard-Ratio is the ratio of hazard of somebody who is exposed (sick) to somebody who is not exposed (healthy). For instance if HR = 2, the risk of dying of somebody who is exposed is double compared to somebody who is not exposed. 
 
 
-
 ## Final thoughts
 
 **Are parametric models useful? Of coarse!**

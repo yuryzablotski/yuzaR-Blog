@@ -2966,7 +2966,7 @@ Degrees-of-freedom method: kenward-roger </code></pre>
 <span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m1</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-1.png" width="864" /></p>
+<p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-1.png" width="1056" /></p>
 </div>
 <h1 id="bonus-5-how-to-choose-the-best-model">Bonus 5: how to choose the best model</h1>
 <p>The <em>performance</em> package, near the already insanely useful <em>check_model()</em> function, provides a <em>compare_performance()</em> function, which compares models with multiple quality indicators, e.g. <span class="math inline">\(R^2\)</span> or AIC. It is not only more informative as compared to the <em>anova()</em> function, which is often used for model comparison, but also works much better, because it displays a warning when two models shouldn’t be compared, while <em>anova(m, m1)</em> simply fails, when models aren’t supposed to be compared, but can be tricked by placing the mixed effects model (m1) first.</p>
@@ -3102,6 +3102,47 @@ P value adjustment method: fdr </code></pre>
 </ul>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=How%20to%20visualize%20models%2C%20their%20assumptions%20and%20post-hocs&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs%2F&amp;title=How%20to%20visualize%20models%2C%20their%20assumptions%20and%20post-hocs">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs%2F">
+        <i class="fab fa-facebook"></i>
+      </a>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs%2F">
+        <i class="fab fa-google-plus"></i>
+      </a>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs%2F&amp;description=How%20to%20visualize%20models%2C%20their%20assumptions%20and%20post-hocs">
+        <i class="fab fa-pinterest"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://yuzar-blog.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script type="text/javascript" cookie-consent="functionality">
+var disqus_config = function () {
+  this.page.url = 'https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/';
+  this.page.identifier = 'posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://yuzar-blog.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
 <!--/radix_placeholder_article_footer-->
 </div>
 

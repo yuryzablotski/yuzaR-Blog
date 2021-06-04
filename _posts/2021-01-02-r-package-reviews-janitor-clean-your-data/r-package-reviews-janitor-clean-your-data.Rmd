@@ -1,7 +1,7 @@
 ---
 title: "R package reviews {janitor} clean your data!"
 description: |
-  Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.
+  Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess. 
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/

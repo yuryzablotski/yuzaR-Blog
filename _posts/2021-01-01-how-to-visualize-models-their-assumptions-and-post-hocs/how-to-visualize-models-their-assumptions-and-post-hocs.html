@@ -1991,7 +1991,7 @@ Degrees-of-freedom method: kenward-roger </code></pre>
 <span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m1</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-1.png" width="864" /></p>
+<p><img src="how-to-visualize-models-their-assumptions-and-post-hocs_files/figure-html5/unnamed-chunk-26-1.png" width="1056" /></p>
 </div>
 <h1 id="bonus-5-how-to-choose-the-best-model">Bonus 5: how to choose the best model</h1>
 <p>The <em>performance</em> package, near the already insanely useful <em>check_model()</em> function, provides a <em>compare_performance()</em> function, which compares models with multiple quality indicators, e.g. <span class="math inline">\(R^2\)</span> or AIC. It is not only more informative as compared to the <em>anova()</em> function, which is often used for model comparison, but also works much better, because it displays a warning when two models shouldn’t be compared, while <em>anova(m, m1)</em> simply fails, when models aren’t supposed to be compared, but can be tricked by placing the mixed effects model (m1) first.</p>
