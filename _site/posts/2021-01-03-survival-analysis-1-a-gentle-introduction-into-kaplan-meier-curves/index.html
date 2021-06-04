@@ -20,19 +20,19 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -52,11 +52,11 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -135,7 +135,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["death.jpeg","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/anchor-4.2.2/anchor.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/bowser-1.9.3/bowser.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/distill-2.2.21/template.v2.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-17-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-19-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-20-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-23-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-25-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-4-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-5-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-6-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/jquery-1.11.3/jquery.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/vembedr-0.1.4/css/vembedr.css","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/webcomponents-2.0.0/webcomponents.js","Survivorship-bias.png","thumbnail_survival_1.png","titanic.jpg"]}
+  {"type":"character","attributes":{},"value":["death.jpeg","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/anchor-4.2.2/anchor.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/bowser-1.9.3/bowser.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/distill-2.2.21/template.v2.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-17-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-19-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-20-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-23-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-25-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-4-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-5-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/figure-html5/unnamed-chunk-6-1.png","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/header-attrs-2.8.6/header-attrs.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/jquery-1.11.3/jquery.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/popper-2.6.0/popper.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/tippy-6.2.7/tippy-bundle.umd.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/tippy-6.2.7/tippy-light-border.css","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/tippy-6.2.7/tippy.css","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/tippy-6.2.7/tippy.umd.min.js","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/vembedr-0.1.4/css/vembedr.css","survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves_files/webcomponents-2.0.0/webcomponents.js","Survivorship-bias.png","thumbnail_survival_1.png","titanic.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2376,8 +2376,13 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.8.6/header-attrs.js"></script>
   <link href="../../site_libs/vembedr-0.1.4/css/vembedr.css" rel="stylesheet" />
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
   <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
@@ -2461,17 +2466,21 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h3>Contents</h3>
 <ul>
 <li><a href="#previous-topics">Previous topics</a></li>
-<li><a href="#why-do-we-need-survival-analysis">Why do we need survival analysis?</a><ul>
+<li><a href="#why-do-we-need-survival-analysis">Why do we need survival analysis?</a>
+<ul>
 <li><a href="#death-is-not-the-only-option-or-what-is-an-event">Death is not the only option! Or: “What is an event?”</a></li>
 <li><a href="#censoring">Censoring</a></li>
 </ul></li>
-<li><a href="#how-to-calculate-kaplan-meier-survival-curve-manually-step-by-step">How to calculate Kaplan-Meier survival curve “manually” step by step</a><ul>
+<li><a href="#how-to-calculate-kaplan-meier-survival-curve-manually-step-by-step">How to calculate Kaplan-Meier survival curve “manually” step by step</a>
+<ul>
 <li><a href="#survival-probability">Survival probability</a></li>
 </ul></li>
-<li><a href="#how-to-compute-kaplan-meier-survival-curve">How to compute Kaplan-Meier survival curve</a><ul>
+<li><a href="#how-to-compute-kaplan-meier-survival-curve">How to compute Kaplan-Meier survival curve</a>
+<ul>
 <li><a href="#interpretation-of-kaplan-meier-curve">Interpretation of Kaplan-Meier Curve</a></li>
 </ul></li>
-<li><a href="#comparing-survival-of-groups">Comparing survival of groups</a><ul>
+<li><a href="#comparing-survival-of-groups">Comparing survival of groups</a>
+<ul>
 <li><a href="#groups">2 groups</a></li>
 <li><a href="#interpretation-of-groups-comparison-using-4-benchmarks">Interpretation of groups comparison using 4 benchmarks</a></li>
 <li><a href="#log-rank-test">Log-Rank test</a></li>
@@ -2486,11 +2495,11 @@ gtag('config', 'G-Q28WX9Y4VS');
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>  <span class='co'># data wrangling and visualization</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>  <span class='co'># data wrangling and visualization</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span>     <span class='co'># for plotting results of log.regr.</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r-project.org'>effects</a></span><span class='op'>)</span>    <span class='co'># for probability output and plots</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>   <span class='co'># for core survival analysis routines</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://www.sthda.com/english/rpkgs/survminer/'>survminer</a></span><span class='op'>)</span>  <span class='co'># for drawing survival curves</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/survminer/index.html'>survminer</a></span><span class='op'>)</span>  <span class='co'># for drawing survival curves</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span>      <span class='co'># for a wonderful-looking tables</span>
 </code></pre>
 </div>
@@ -2516,7 +2525,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <h2 id="why-do-we-need-survival-analysis">Why do we need survival analysis?</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
 
 <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='op'>(</span>
   time   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>7</span>,<span class='fl'>10</span><span class='op'>)</span>, 
@@ -2580,7 +2589,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>To answer this question, let’s start with a small example of Titanic survivors: only 10 people and only 10 days on the sea after the crash and analyse it with the classic statistical methods, linear and logistic regressions. We are interested in how many people and how long survived and how many died on a particular day. Thus, <strong>two main parameters of interest</strong> for us are (1) <strong>time</strong> (in days) and (2) “<strong>life-status</strong>” of people, where “status = 1” means death and “status = 0” means not-death. And having the status of people we could just have counted survivors and not-survivors at each particular day to understand what was going on, wright?</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>d</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>time</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>status</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>d</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>time</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>status</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_dodge</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
   <span class='fu'>theme_bw</span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
@@ -2598,7 +2607,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ol>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>time</span> <span class='op'>~</span> <span class='va'>status</span>, <span class='va'>d</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>status</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>time</span> <span class='op'>~</span> <span class='va'>status</span>, <span class='va'>d</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>status <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>status</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r-project.org'>effects</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/effects/man/effect.html'>allEffects</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span><span class='op'>)</span>
@@ -2612,7 +2621,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ol>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>status</span> <span class='op'>~</span> <span class='va'>time</span>, <span class='va'>d</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>status</span> <span class='op'>~</span> <span class='va'>time</span>, <span class='va'>d</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span>
 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"pred"</span>, ci.lvl <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
@@ -2648,7 +2657,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>For a better representation, let’s put all the numbers in one single table:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>tribble</span><span class='op'>(</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tribble</span><span class='op'>(</span>
   <span class='op'>~</span><span class='va'>time_in_days</span>, <span class='op'>~</span><span class='va'>N_at_risk</span>, <span class='op'>~</span><span class='va'>N_died</span>, <span class='op'>~</span><span class='va'>P_dying</span>, <span class='op'>~</span><span class='va'>`P_surviving`</span>,
   <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>0</span>, <span class='st'>"0/10 = 0"</span>, <span class='st'>"10/10 = 1"</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -2691,7 +2700,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>tribble</span><span class='op'>(</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tribble</span><span class='op'>(</span>
   <span class='op'>~</span><span class='va'>time_in_days</span>, <span class='op'>~</span><span class='va'>N_at_risk</span>, <span class='op'>~</span><span class='va'>N_died</span>, <span class='op'>~</span><span class='va'>P_dying</span>, <span class='op'>~</span><span class='va'>`P_surviving`</span>,
   <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>0</span>, <span class='st'>"0/10 = 0"</span>,   <span class='st'>"10/10      = 1"</span>,
   <span class='fl'>1</span>, <span class='fl'>10</span>, <span class='fl'>3</span>, <span class='st'>"3/10 = 0.3"</span>, <span class='st'>"1 * (7/10) = 0.7"</span>,
@@ -2730,7 +2739,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>But since we are also not sure whether this person is still alive, we can’t say - the person survived. That produces a dilemma: despite not being dead, the person is not part of our experiment anymore and we have to remove it from the number of people at risk. So, while the <strong>second day</strong> would have 7 people at risk left (since 3 have died at the very first day), the <strong>third day</strong> would be left with only 5 people, because 1 person died and one disappeared (was censored) as compared to day two. Similarly to the first day, the survival probability is cumulative and always includes the probability of the day before.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>tribble</span><span class='op'>(</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tribble</span><span class='op'>(</span>
   <span class='op'>~</span><span class='va'>time_in_days</span>, <span class='op'>~</span><span class='va'>N_at_risk</span>, <span class='op'>~</span><span class='va'>N_died</span>, <span class='op'>~</span><span class='va'>P_dying</span>, <span class='op'>~</span><span class='va'>`P_surviving`</span>,
   <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>0</span>, <span class='st'>"0/10 = 0"</span>,    <span class='st'>"10/10       = 1"</span>,
   <span class='fl'>1</span>, <span class='fl'>10</span>, <span class='fl'>3</span>, <span class='st'>"3/10 = 0.3"</span>,  <span class='st'>"1 * (7/10)  = 0.7"</span>,
@@ -2784,7 +2793,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>The <strong>next two days</strong> two people disappeared, so, we censor them. There is no need to calculate something for censored data in survival analysis, because we don’t know whether they survived or not. And since we are interested in either survival or death, the final table below contains <strong>only dead</strong> cases. At <strong>day 6</strong> nobody died or disappeared, that is why we do not calculate anything for that day either. The last person in our experiment died at <strong>day 7</strong>. So, “N_died” will be 1, and “N_at_risk” will be 2, since 1 out of remaining 5 has died and 2 were censored. Thus, the full “manually” calculated table will look like this:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'>tribble</span><span class='op'>(</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>tribble</span><span class='op'>(</span>
   <span class='op'>~</span><span class='va'>time_in_days</span>, <span class='op'>~</span><span class='va'>N_at_risk</span>, <span class='op'>~</span><span class='va'>N_died</span>, <span class='op'>~</span><span class='va'>P_dying</span>, <span class='op'>~</span><span class='va'>`P_surviving`</span>,
   <span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>0</span>, <span class='st'>"0/10 = 0"</span>,    <span class='st'>"10/10        = 1"</span>,
   <span class='fl'>1</span>, <span class='fl'>10</span>, <span class='fl'>3</span>, <span class='st'>"3/10 = 0.3"</span>,  <span class='st'>"1 * (7/10)   = 0.7"</span>,
@@ -2854,12 +2863,12 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Load all needed packages at once to avoid interruptions.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>  <span class='co'># data wrangling and visualization</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>  <span class='co'># data wrangling and visualization</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span>      <span class='co'># beautifying tables</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-forge.r-project.org/projects/car/'>car</a></span><span class='op'>)</span>        <span class='co'># for checking assumptions, e.g. vif etc.</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span>      <span class='co'># for tidy model output</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span>     <span class='co'># for plotting results of log.regr.</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjmisc'>sjmisc</a></span><span class='op'>)</span>     <span class='co'># for plotting results of log.regr.</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjmisc/'>sjmisc</a></span><span class='op'>)</span>     <span class='co'># for plotting results of log.regr.</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r-project.org'>effects</a></span><span class='op'>)</span>    <span class='co'># for probability output and plots</span>
 </code></pre>
 </div>
@@ -2867,7 +2876,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>First of all, please, be sure you know exactly what 0s and 1s in your data mean! Because in a <em>logistic regression</em> 1 is the survival, while in a <em>survival analysis</em> 1 is death! Secondly, we have to differentiate censored cases somehow, e.g. we can mark them with a <strong>plus sign</strong> in the data or on the plot. The data below shows that people were censored on days 2+, 4+, 5+ and 10+. Install and load a <code>survival</code> package to be able to execute the code below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("survival")</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("survival")</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/therneau/survival'>survival</a></span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span>time <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>time</span>, event <span class='op'>=</span> <span class='va'>d</span><span class='op'>$</span><span class='va'>status</span><span class='op'>)</span>
@@ -2878,7 +2887,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>The <code>Surv</code> function unites “time” and “status” data into a single <strong>“survival” object</strong>, which allows to <strong>account for censored observations</strong>. This object can then be used to model survival probability by the <code>survfit</code> function. We model the survival by adding “~ 1” to the object, where 1 means <em>no variables</em> which could have influenced the survival. Our survival object on the left side of the <em>tilde</em> is then the response variable and on the right site of the ~ (<em>tilde</em>) are predictors, or in our case of “1” - nothing. Let’s produce our fist survival model and have a look at the model output:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>survival_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>1</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>survival_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>1</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
 
 <span class='co'># small summary</span>
 <span class='va'>survival_model</span>
@@ -2899,7 +2908,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Much more information can be assessed by the <code>summary</code> function, which, surprisingly 😉, delivers the same table which we just calculated above manually:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># big summary</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># big summary</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>survival_model</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -2914,7 +2923,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Now you can be sure, our calculations were correct and you have successfully learned how to do survival analysis. Congrats! So that from now on you can start using software. It has a lot of advantages! For instance, a <code>summary</code> function, which only displays the result of dead cases, can be filled with an additional argument <code>censored = TRUE</code>, which displays all, dead and censored cases:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>survival_model</span>, censored <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>survival_model</span>, censored <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>Call: survfit(formula = Surv(time, status) ~ 1, data = d)
@@ -2931,7 +2940,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Great! Right? But what if you have thousands of days (your table would be huge!), but you are interested in only a few of them? Well, you can specify the results of which day you want to see by adding a <code>times = ...</code> argument to the <code>summary</code> function. A cool 😎 thing about it is that you can even ask for the days, where no data were available for, e.g. day 8 or 9 in our simple example. For instance, the probability of survival beyond day 8 is 24%:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>survival_model</span>, times <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>survival_model</span>, times <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>Call: survfit(formula = Surv(time, status) ~ 1, data = d)
@@ -2943,8 +2952,8 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Now, since we know the exact probability of survival on <strong>each day</strong>, even on days we did not have the data for, we can visualize the model results. Install and load a <code>survminer</code> package to be able to execute the code below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='co'># install.packages("survminer")</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://www.sthda.com/english/rpkgs/survminer/'>survminer</a></span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("survminer")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/survminer/index.html'>survminer</a></span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/ggsurvplot.html'>ggsurvplot</a></span><span class='op'>(</span>
   <span class='va'>survival_model</span>, 
@@ -2966,7 +2975,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>The <strong>x-axis</strong> represents time in days, and the <strong>y-axis</strong> shows the probability of surviving or the proportion of people surviving. So, the <strong>curve itself</strong> shows the exact <strong>survival probability over time</strong>. A <strong>vertical drop</strong> in the curve indicates at least one <strong>event</strong>. The <strong>height of a vertical drop</strong> shows the change in cumulative survival probability. A <strong>horizontal part</strong> of the curve represents survival duration for the <strong>certain time interval</strong>, which is terminated by the next event (and drop of the curve). The KM curve looks like a strange <strong>staircase</strong> with uneven <strong>steps</strong>, where survival probability is constant between the events, and is therefore a <strong>step function</strong> that changes value only at the time of each event. In this way each patient contributes valuable information to the calculations for as long as it is alive. <strong>Censored</strong> people are shown exactly like in the survival object, with <strong>pluses</strong>, as you can see on the day 2. However, most of the pluses look like <strong>vertical ticks</strong>, since they lie on the horizontal part of the curve, i.e. days 4 and 5. The tick marks are shown by default, but could be suppressed using the argument <code>censor = FALSE</code>. The <strong>risk table below the plot</strong> shows the <strong>number of people at risk</strong>, which are actually <strong>all “really alive” people in the experiment</strong> which did not experience the event or censoring at a particular time point. <strong>Dashed line</strong> represents the <strong>median survival time</strong> which corresponds to a <strong>survival probability of 50%</strong>. And if we ignore censoring and simply estimate the median of time (for only dead people), we’ll get 1.5 instead of 3, which will increase the survival provability from 48% to 70%. Again, ignoring censoring will result into overestimation of survival probability due to a survivorship bias.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>d</span> <span class='op'>%&gt;%</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'>%&gt;%</span> 
   <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>status</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>summarize</span><span class='op'>(</span>median_survival_whithout_censoring <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>time</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
@@ -2981,8 +2990,8 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>Now, let’s follow 100 people after Titanic crash instead of 10 and look at their survival using the Kaplan-Meier curve below. The numbers in the risk table are getting bigger and we’d better display the percentages at risk in brackets near the absolute values. The <code>risk.table = "abs_pct"</code> argument helps with that. The “round” example of 100 people gives us exactly the same percentages as the absolute numbers, however with a less “round” number or several groups the percentages would become very useful. The median survival time of people in the cold ocean is around 70 days and the confidence intervals aren’t very wide, so that we can be pretty confident in our numbers:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>999</span><span class='op'>)</span> <span class='co'># for reproducible example</span>
-<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>ggstatsplot</span><span class='fu'>::</span><span class='va'><a href='https://indrajeetpatil.github.io/ggstatsplot//reference/Titanic_full.html'>Titanic_full</a></span> <span class='op'>%&gt;%</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>999</span><span class='op'>)</span> <span class='co'># for reproducible example</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>ggstatsplot</span><span class='fu'>::</span><span class='va'><a href='https://indrajeetpatil.github.io/ggstatsplot/reference/Titanic_full.html'>Titanic_full</a></span> <span class='op'>%&gt;%</span> 
   <span class='fu'>mutate</span><span class='op'>(</span>survived <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>Survived</span> <span class='op'>==</span> <span class='st'>"No"</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,
          time     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>2201</span>, min<span class='op'>=</span><span class='fl'>1</span>, max<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
   <span class='fu'>sample_n</span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span> 
@@ -3000,7 +3009,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p>But can we have two survival curves on the same plot and compare them somehow? Of coarse! In fact, that is the moment where the fun starts. For instance, we can compare survival probabilities of males vs. females. For this we only need to replace <code>~1</code> in the model formula with the name of a categorical variable of interest, e.g. <code>sex</code>. Survival plot then displays a Kaplan-Meier curve for every category of your variable:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Sex</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Sex</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/ggsurvplot.html'>ggsurvplot</a></span><span class='op'>(</span><span class='va'>m</span>, 
            pval <span class='op'>=</span> <span class='cn'>TRUE</span>, 
@@ -3019,7 +3028,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ol>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span>
 </code></pre>
 </div>
 <pre><code>Call: survfit(formula = Surv(time, survived) ~ Sex, data = d)
@@ -3047,7 +3056,7 @@ Sex=Male   69     54   64.5    53.6    72.9</code></pre>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Sex</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Sex</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>Call:
@@ -3064,7 +3073,7 @@ Sex=Male   69       54     44.7      1.92      6.46
 <p>Log-Rank test can compare more then two groups and say whether there is a significant (p-value &lt; 0.05) difference among these groups. The test results displayed in the table and KM curve below show that there is a significant difference in survival (p-value = 0.024) among groups of people in different ticket classes. However, like the most other tests (e.g. ANOVA) it does not say between which groups exactly. That is why we need an additional analysis which pairwisely compares each group to each other group. Such analysis is often called a <strong>post-hoc</strong>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/survival/man/survdiff.html'>survdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>Call:
@@ -3078,7 +3087,7 @@ Class=Crew 36       25    22.68     0.238     0.383
 
  Chisq= 9.5  on 3 degrees of freedom, p= 0.02 </code></pre>
 <div class="sourceCode">
-<pre><code><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/ggsurvplot.html'>ggsurvplot</a></span><span class='op'>(</span><span class='va'>m</span>, 
            pval <span class='op'>=</span> <span class='cn'>TRUE</span>, 
@@ -3102,7 +3111,7 @@ Class=Crew 36       25    22.68     0.238     0.383
 <p>The <strong>median survival</strong> is ca. 90 days for the passengers in the 1st and 2nd classes, 58 days for the 3rd class and 65 days for the crew of the Titanic, suggesting a good survival of rich people, as compared to the rest. A <strong>low p-value (p = 0.024) suggests that there is a significant difference in survival among groups</strong>. Among which, only post-hoc can tell. The results of such <strong>post-hoc Log-Rank analysis</strong> can be conducted with <code>pairwise_survdiff</code> function form the <code>survminer</code> package and are displayed below. As usual, if we have <strong>multiple comparisons</strong>, we run into a risk of making a false discovery or missing an important discovery. Thus, we have to <strong>adjust the p-values</strong> in order to reduce the probability of making an error. I personally prefer the <strong>Benjamini &amp; Hochberg (1995) adjustment</strong> method to the famous but conservative <strong>Bonferroni</strong> method:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='fu'><a href='https://rdrr.io/pkg/survminer/man/pairwise_survdiff.html'>pairwise_survdiff</a></span><span class='op'>(</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/pkg/survminer/man/pairwise_survdiff.html'>pairwise_survdiff</a></span><span class='op'>(</span>
   formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span>, p.adjust.method <span class='op'>=</span> <span class='st'>"fdr"</span>
   <span class='op'>)</span>
 </code></pre>
@@ -3124,7 +3133,7 @@ P value adjustment method: fdr </code></pre>
 <p>As mentioned above, the Log-Rank test can not be applied to several variables. However, we still can plot survival curves of several variables in order to get some intuition for our data. Further methods, e.g. Cox models, are able to estimate difference among several variables, but they are more complex than the KM-method and thus will be covered in future posts.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre><code><span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Sex</span> <span class='op'>+</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span> <span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/survfit.html'>survfit</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>survived</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Sex</span> <span class='op'>+</span> <span class='va'>Class</span>, data <span class='op'>=</span> <span class='va'>d</span> <span class='op'>)</span>
 
 <span class='va'>ggsurv</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/survminer/man/ggsurvplot.html'>ggsurvplot</a></span><span class='op'>(</span><span class='va'>m2</span>, conf.int <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
    
