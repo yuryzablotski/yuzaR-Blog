@@ -1888,7 +1888,10 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2397,7 +2400,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"R package reviews {performance} check how good your model is! ","description":"There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-03T00:00:00.000+00:00","citationText":"Zablotski, 2021"}
+{"title":"R package reviews {performance} check how good your model is! ","description":"There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-03T00:00:00.000+01:00","citationText":"Zablotski, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->

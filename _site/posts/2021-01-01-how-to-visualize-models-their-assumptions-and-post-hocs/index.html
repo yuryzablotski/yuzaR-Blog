@@ -1888,7 +1888,10 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2397,7 +2400,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"How to visualize models, their assumptions and post-hocs","description":"A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code & maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-01T00:00:00.000+00:00","citationText":"Zablotski, 2021"}
+{"title":"How to visualize models, their assumptions and post-hocs","description":"A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code & maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-01T00:00:00.000+01:00","citationText":"Zablotski, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->

@@ -1888,7 +1888,10 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2397,7 +2400,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Survival analysis 1: a gentle introduction into Kaplan-Meier Curves","description":"Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-03T00:00:00.000+00:00","citationText":"Zablotski, 2021"}
+{"title":"Survival analysis 1: a gentle introduction into Kaplan-Meier Curves","description":"Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-03T00:00:00.000+01:00","citationText":"Zablotski, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
