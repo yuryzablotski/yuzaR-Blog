@@ -42,8 +42,8 @@ theme: theme.css
 google_analytics: "G-Q28WX9Y4VS"
 rss:
   full_content: true
-collections:
-  posts:
-    disqus: yuzar-blog
-    share: [twitter, linkedin, facebook, google-plus, pinterest]
+# collections:
+#   posts:
+#     disqus: yuzar-blog
+#     share: [twitter, linkedin, facebook, google-plus, pinterest]
     #subscribe: _subscribe.html
