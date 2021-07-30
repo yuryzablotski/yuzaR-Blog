@@ -9,7 +9,7 @@ date: 01-09-2021
 categories:
   - videos
   - statistics
-preview: thumbnail_impute_na.jpg
+preview: thumbnail.jpg
 output:
   distill::distill_article:
     self_contained: false
