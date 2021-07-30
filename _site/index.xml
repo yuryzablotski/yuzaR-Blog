@@ -49,6 +49,130 @@
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_impute_na.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
+      <title>Null Hypothesis, Alternative Hypothesis and Hypothesis Testing</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/nFlTr_1GXXg" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="the-essence-of-hypothesis-testing"&gt;The essence of Hypothesis Testing&lt;/h2&gt;
+&lt;p&gt;Hypothesis testing can be summarized in only 5 points:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;p&gt;Collect &lt;strong&gt;data&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Clearly define &lt;strong&gt;Null (&lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;) and Alternate (&lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;) Hypotheses&lt;/strong&gt;. That’s the most important point!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Get &lt;strong&gt;p-value&lt;/strong&gt; through something called a &lt;strong&gt;statistical test&lt;/strong&gt;. Every modern software will calculate it for you.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Define your &lt;strong&gt;rejection threshold&lt;/strong&gt;, e.g. &lt;strong&gt;p-value &amp;lt; 0.05&lt;/strong&gt; (or &amp;lt;5%) and finally&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Make a &lt;strong&gt;conclusion&lt;/strong&gt;, e.g. if p = 0.03, we reject the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; in favor of &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That’s actually enough to get you started with Hypothesis Testing. But if you want to know what exactly &lt;strong&gt;Null (&lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;) and Alternate (&lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;) Hypotheses&lt;/strong&gt; are, why we &lt;strong&gt;only reject the null but never accept it&lt;/strong&gt;, what is &lt;strong&gt;p-value&lt;/strong&gt; or &lt;strong&gt;why do we need hypothesis testing&lt;/strong&gt; at all, continue reading. So…&lt;/p&gt;
+&lt;h2 id="why-do-we-actually-need-hypothesis-testing"&gt;Why do we actually need hypothesis testing?&lt;/h2&gt;
+&lt;p&gt;The short answer: &lt;strong&gt;TO MAKE SENSE OF THE DATA.&lt;/strong&gt; The long answer … where should I start?&lt;/p&gt;
+&lt;p&gt;I’ll start with the first time I have got my own data. I was super motivated, because this data seemed to be a golden ticket to writing a thesis and finally getting a degree. The only thing I needed to do is &lt;strong&gt;to analyze this data&lt;/strong&gt;. I couldn’t wait to start working, so I opened my Excel table and started to look at it. However, the more I looked at it, the more puzzled I became. &lt;strong&gt;How the heck does one actually analyzes data?&lt;/strong&gt; I asked my boss, and she said:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“Just test some hypothesis.”&lt;/li&gt;
+&lt;li&gt;“Cool! Thanks! That helps!” - I said and slowly started to panic 😱, because I had no idea how hypothesis testing works. So, I had no choice but to figure it out! What a pain!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;However, after a bit of research I realized that the &lt;strong&gt;hypothesis testing&lt;/strong&gt; is not a pain at all, but &lt;strong&gt;is actually a huge help for analyzing data!&lt;/strong&gt; And here is why. Having a data - we want to make a &lt;strong&gt;claim or a statement&lt;/strong&gt;. For example: sport reduces weight. This &lt;strong&gt;claim IS our hypothesis&lt;/strong&gt;. Having several claims creates a compelling story for a thesis or a scientific paper. There is only one problem with that: why should anyone believe our story? This could be a science fiction story. Thus, in order to make it a real science, not science fiction, we need to make it believable and solid. How? Well, we &lt;strong&gt;test every of our hypothesis against the null hypothesis.&lt;/strong&gt; Wait, what the hell is the null hypothesis?&lt;/p&gt;
+&lt;h2 id="null-hypothesis-and-alternative-hypothesis"&gt;Null Hypothesis and Alternative Hypothesis&lt;/h2&gt;
+&lt;p&gt;The null hypothesis is … absolutely, &lt;strong&gt;nothing! Empty, boring, zero, null!&lt;/strong&gt;. For instance:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;when &lt;strong&gt;nothing&lt;/strong&gt; happens,&lt;/li&gt;
+&lt;li&gt;when there is &lt;strong&gt;no effect&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;when there is &lt;strong&gt;no difference&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;when &lt;strong&gt;nothing new&lt;/strong&gt; was learned&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For instance, if our research hypothesis is - &lt;strong&gt;sport reduces weight&lt;/strong&gt;, then our null hypothesis is - &lt;strong&gt;sport DOES NOT reduce weight&lt;/strong&gt;. So, we actually need &lt;strong&gt;ONLY these TWO hypothesis&lt;/strong&gt; to make any of our claims solid! And since our research hypothesis is the only &lt;strong&gt;Alternative&lt;/strong&gt; to the null hypothesis, it is often called &lt;strong&gt;the Alternative Hypothesis&lt;/strong&gt;. Let’s have 3 examples and clearly &lt;strong&gt;define both Null and Alternative hypotheses.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="theoretical-examples"&gt;3 theoretical examples&lt;/h3&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;if you measure the effect of sports on muscles:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;muscle gain (or measurable effect)&lt;/strong&gt; is your research or alternative hypothesis &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NO muscle gain (NO effect)&lt;/strong&gt; is your null hypothesis &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/effect.jpg" /&gt;&lt;/p&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;if you don’t believe previous studies, or accepted value, for example that the average weight loss from a fancy diet is 3 kilos per week, you make an experiment in order to test this accepted value. Then:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;average weight loss ≠ 3 kg/week&lt;/strong&gt; is our &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;average weight loss = 3 kg/week&lt;/strong&gt; is our &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/weight_loss.jpg" /&gt;&lt;/p&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;if you study any difference between anything (groups, treatments etc.):&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NO difference&lt;/strong&gt; is our &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;THERE IS a difference&lt;/strong&gt; is our &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/difference.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NO difference&lt;/strong&gt; expressed mathematically means - the difference is equal to &lt;em&gt;zero&lt;/em&gt;. Writing this null hypothesis down in a simple formula makes it even easier to understand:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ average \ 1 - average \ 2 = 0\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;and if we add &lt;span class="math inline"&gt;\(average \ 2\)&lt;/span&gt; to both sides of the formula, we’ll get:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ average \ 1 = average \ 2\]&lt;/span&gt; …which, again, means that if the difference between samples &lt;span class="math inline"&gt;\(= 0\)&lt;/span&gt;, than the averages of both groups are the same.&lt;/p&gt;
+&lt;p&gt;For the &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt; it would be:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ average \ 1 - average \ 2 ≠ 0\]&lt;/span&gt; &lt;span class="math display"&gt;\[ average \ 1 ≠ average \ 2\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;…which is saying that samples (or their averages) differ. So, &lt;strong&gt;the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; and &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt; are always mathematical opposites!&lt;/strong&gt; Which makes the &lt;strong&gt;hypothesis testing really simple&lt;/strong&gt;:&lt;/p&gt;
+&lt;h3 id="summary-for-h_0-and-h_a"&gt;Summary for &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; and &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;in order to answer a question or make a solid claim from our data &lt;strong&gt;we only need two hypotheses&lt;/strong&gt;, &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; and its only alternative - &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;your question (claim or statement) is in fact your &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the best part of the &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt; is that we can create tons of &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;, because we can ask thousands of different questions, or make thousands of different claims.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;but &lt;strong&gt;we always have only one &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the beauty of the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; is that it is always &lt;strong&gt;the mathematical opposite&lt;/strong&gt; of the &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt;, doesn’t matter what the alternative is. The &lt;span class="math inline"&gt;\(H_A\)&lt;/span&gt; is always what &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; is NOT&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;and the best part of the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; is that we do not need any preliminary data for it. It’s always there, e.g. &lt;strong&gt;NO difference&lt;/strong&gt; or &lt;strong&gt;NO effect&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ok, we just learned about what &lt;strong&gt;hypotheses&lt;/strong&gt; are, but how do we test them? And what’s the point of &lt;strong&gt;testing&lt;/strong&gt; anyway? Well…&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The only goal&lt;/strong&gt; of hypothesis testing is to &lt;strong&gt;(1) reject or (2) fail to reject the null hypothesis&lt;/strong&gt;. There are really &lt;strong&gt;only these two possible outcomes&lt;/strong&gt;. We can &lt;strong&gt;never accept the null&lt;/strong&gt; hypothesis. Why? Let’s figure out on some examples?&lt;/p&gt;
+&lt;h2 id="never-accept-null-hypothesis-only-try-to-refect"&gt;Never accept null hypothesis! Only try to refect!&lt;/h2&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;p&gt;Imagine you travel to a completely new country for hiking. You discover a beautiful lake and start to fish. After 3 hours of fishing you didn’t catch anything and you even failed to have a single bite. Can you accept the null hypothesis that &lt;strong&gt;there is NO fish in that lake&lt;/strong&gt;? Of course not! You only failed to reject it during 3 hours. May be you just need to fish a little longer. So, you fish for another hour and finally catch your first fish. In that case the null hypothesis that &lt;strong&gt;there is NO fish in that lake&lt;/strong&gt; is destroyed by the “fishy” evidence. That’s why &lt;strong&gt;we cannot accept the null hypothesis until we reject it; we can only fail to reject it&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now imagine you explore life on an alien planet. Your &lt;strong&gt;null hypothesis (&lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;)&lt;/strong&gt; is that &lt;strong&gt;there is NO life on this planet&lt;/strong&gt;. You drive around a few hours and look for life. If you see any alien, you can happily reject the null hypothesis in favor of the alternative, because further believing the null hypotheses that &lt;strong&gt;there is NO life on the planet&lt;/strong&gt; after you just saw one - seems ridiculous. But if you don’t see any aliens, can you definitively say that there is no alien life on this planet, or accept the null hypotheses? Again, no! Because if we would have explored longer we might have found an alien life. And since we are not sure about the absence of life on this new planet &lt;strong&gt;we cannot accept the null hypothesis; we can only fail to reject it&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The last intuitive example comes from trial courts. If you are accused of a crime, you presumed to be &lt;strong&gt;NOT-guilty&lt;/strong&gt;. So, the null hypothesis is that - &lt;strong&gt;you are NOT guilty&lt;/strong&gt;. The court tries to reject it. If there is a clear evidence against you, like a videotape, it would be ridiculous to still believe the null hypothesis, that &lt;strong&gt;you are NOT guilty&lt;/strong&gt;, because the evidence is recorded, so, the judges can reject the null hypothesis that &lt;strong&gt;you are NOT guilty&lt;/strong&gt; in favor of the alternative hypothesis that &lt;strong&gt;you are actually guilty&lt;/strong&gt;. But if there is not enough evidence against you, for example no tape or no fingerprints, the judges cannot say &lt;strong&gt;you are guilty&lt;/strong&gt;. But they also can NOT say &lt;strong&gt;you are NOT guilty&lt;/strong&gt;! Imagine, you did actually commit a crime. But nobody can prove it, because there is absolutely no evidence. May be if Sherlock Holmes looked for evidence, he would have found some. But until then, judges can not accept that - &lt;strong&gt;you are NOT guilty&lt;/strong&gt;, they only can fail to reject the presumption that - &lt;strong&gt;you are NOT guilty&lt;/strong&gt;. In other words, judges can’t say &lt;strong&gt;you are innocent&lt;/strong&gt;, but rather &lt;strong&gt;you are STILL NOT guilty&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Everything is clear in the case of aliens on a new planet or fish in the lake. If you found any evidence against the null hypothesis, you simply reject it. But comparing averages of two groups is a bit more complex? Remember our very first hypothesis - sport reduces weight? Let’s test that one.&lt;/p&gt;
+&lt;h2 id="how-far-is-far-enough"&gt;How far is far enough?&lt;/h2&gt;
+&lt;p&gt;We first collect some data from people who did not exercise for one year. Some people in this group gained a bit of weight, because they eat a lot, while some people lost a bit of weight, because they were sick or on a diet. Despite this mild random variable &lt;strong&gt;ON AVERAGE the weight change in this group was zero&lt;/strong&gt;. And that’s our &lt;strong&gt;Null Hypothesis - NO change in weight.&lt;/strong&gt; We’ll call this group - a control group.&lt;/p&gt;
+&lt;p&gt;Then we’ll find another group or people who has exercised for one year and measure their weight before and after one year of exercise. Well, imagine we have an average loss in weight of only 1 kilo. It’s not 0 change, but it’s too close to 0 for being taken seriously. It could be just due to the same random variation we have had in the control group. Then, imagine we sampled a different group where people lost 3 kilos on average. Here I am starting to feel uncomfortable to think that the change is close to 0, and I start to think whether I should reject the null hypothesis. Finally, the last group of people who exercised for one year lost 10 kilos on average. Now, it’s soo far away from 0 that the &lt;strong&gt;null hypothesis - that there is NO change in weight&lt;/strong&gt; seems ridiculous. Therefore we’ll reject it in favor of the alternative hypothesis - &lt;strong&gt;sport reduces weight&lt;/strong&gt;. Interestingly, for the weight loss of 10 kilograms everyone would agree that sport works, while for a loss of only 1 kilo people would agree that sport does not work. But for 3 kilos some people would say yes while some would say no. And all their opinions would be highly subjective and not concrete, making us not confident about our conclusion any more. Well, &lt;strong&gt;hypothesis testing offers a concrete way to decide&lt;/strong&gt; when we reject and when we fail to reject the null hypothesis. And that is where &lt;strong&gt;p-value&lt;/strong&gt; comes into play and help us solve this problem numerically.&lt;/p&gt;
+&lt;div id="hello" class="greeting message" style="color: blue;"&gt;
+&lt;p&gt;The &lt;strong&gt;p&lt;/strong&gt; stands for the &lt;strong&gt;probability&lt;/strong&gt;. And it refers to the probability that we would have gotten the results we did &lt;strong&gt;just by chance&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;In order to understand it better, let’s test the last hypothesis (comming from on an amazing YouTuber - MrNystrom):&lt;/p&gt;
+&lt;p&gt;If you throw a fair coin, you have only 2 possible outcomes: tales or heads. The chances to get tails are 50%. Clear and boring result. The chances to get 2 tails in a row are 25%, because we have 4 possible outcomes: 1/4 = 25%. It’s pretty likely to get 2 tails in a row. So, nothing unusual here. The coin must be fair. However, 3 tails in a row starts to feel strange. The chances to get 3 tails in a row are low, 1/8 = 12.5%, but still possible. But the chances to get 4 tails in a row are only 6.25%. And if we get 4 tails in a row we start to doubt whether the coin is actually fair. And if you get 6 tails in a row despite only 1.5% chances (probability) to get them, the null hypothesis that &lt;strong&gt;this is a fair coin&lt;/strong&gt; would seem ridiculous and you’ll reject it, because it’s simply too unlikely to happen randomly (or by chance).&lt;/p&gt;
+&lt;p&gt;A widely accepted, but by no means the best, cut off for a p-value is 5%. That means, that if your p-value (your probability that would have gotten the results you did &lt;strong&gt;just by chance&lt;/strong&gt;) is below 0.05, you can reject the null hypothesis, while if a p-value is above 0.05, you fail to reject the null. So, &lt;strong&gt;p-values provide concrete boundaries for making a decision about hypothesis testing and are therefore useful.&lt;/strong&gt; However, p-values are one of the most misunderstood and misused concepts in statistics. Thus, p-values deserve a separate video. Here I would like to point out only one, but the most frequent misuse of p-values, which, if eliminated could dramatically increase the quality of science.&lt;/p&gt;
+&lt;p&gt;Researchers always want to reject the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; in favour of the research hypothesis, because that would mean - that they found something interesting or new. But if the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; can not be rejected, it seems like a tragedy and failure. All the efforts of making experiments, collecting and analyzing data seem useless and there is nothing to be published. However, &lt;strong&gt;it’s not true! We always can say - we learned nothing new.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;goal of science is NOT to find an effect or a difference, but to figure out whether there is an effect or difference&lt;/strong&gt;. If there is NO effect, it is a perfectly valid and equally important result. But some scientists insist on finding something significant and continue looking for it till they found it, a phenomenon known as - &lt;strong&gt;p-hacking&lt;/strong&gt;. Well, p-hacking also deserves a separate video. Until then I’d love to finish with the quote of Cassie Kozyrkov:&lt;/p&gt;
+&lt;h2 id="stop-trying-to-learn-something"&gt;Stop trying to learn something!&lt;/h2&gt;
+&lt;div id="hello" class="greeting message" style="color: blue;"&gt;
+&lt;p&gt;“&lt;strong&gt;You should get into the habit of learning nothing more often, because if you insist on learning something beyond the data every time you test hypotheses, you will learn something stupid.&lt;/strong&gt;”&lt;/p&gt;
+&lt;/div&gt;
+&lt;hr /&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=VK-rnA3-41c&amp;amp;t=1s&amp;amp;ab_channel=MathandScience" class="uri"&gt;https://www.youtube.com/watch?v=VK-rnA3-41c&amp;amp;t=1s&amp;amp;ab_channel=MathandScience&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=0oc49DyA3hU&amp;amp;ab_channel=StatQuestwithJoshStarmer" class="uri"&gt;https://www.youtube.com/watch?v=0oc49DyA3hU&amp;amp;ab_channel=StatQuestwithJoshStarmer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://medium.com/hackernoon/statistical-inference-in-one-sentence-33a4683a6424" class="uri"&gt;https://medium.com/hackernoon/statistical-inference-in-one-sentence-33a4683a6424&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://medium.com/@kozyrkov?source=post_page-----33a4683a6424-------------------" class="uri"&gt;https://medium.com/@kozyrkov?source=post_page-----33a4683a6424-------------------&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=-MKT3yLDkqk" class="uri"&gt;https://www.youtube.com/watch?v=-MKT3yLDkqk&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=5koKb5B_YWo&amp;amp;ab_channel=StatQuestwithJoshStarmer" class="uri"&gt;https://www.youtube.com/watch?v=5koKb5B_YWo&amp;amp;ab_channel=StatQuestwithJoshStarmer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=zR2QLacylqQ&amp;amp;ab_channel=zedstatistics" class="uri"&gt;https://www.youtube.com/watch?v=zR2QLacylqQ&amp;amp;ab_channel=zedstatistics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=tLM7xS6t4FE&amp;amp;ab_channel=SciShow" class="uri"&gt;https://www.youtube.com/watch?v=tLM7xS6t4FE&amp;amp;ab_channel=SciShow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>4475a79d2a2548787f9f4e63174e7589</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</guid>
+      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>R package reviews {DataExplorer} explore your data!</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</link>

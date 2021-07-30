@@ -1,0 +1,185 @@
+---
+title: "Null Hypothesis, Alternative Hypothesis and Hypothesis Testing"
+description: |
+  Hypothesis testing is one of the most important concepts in (frequentiest) statistics and science. However, most people who test hypotheses are scientists, but not statisticians. That's why scientists often do not test hypotheses properly, without any bad intensionс. So, in this blog-post we'll break down hypothesis testing in small parts and try to properly understand every of them.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-09-2021
+categories:
+  - videos
+  - statistics
+preview: thumbnail_impute_na.jpg
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+---
+
+
+```{r setup, include=FALSE, warning=F, message=F}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+## This post as a video
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("nFlTr_1GXXg")
+```
+
+
+## The essence of Hypothesis Testing
+
+Hypothesis testing can be summarized in only 5 points:
+
+1. Collect **data** 
+
+2. Clearly define **Null ($H_0$) and Alternate ($H_A$) Hypotheses**. That's the most important point!
+	
+3. Get **p-value** through something called a **statistical test**. Every modern software will calculate it for you.
+
+4. Define your **rejection threshold**, e.g. **p-value < 0.05** (or <5%) and finally
+
+5. Make a **conclusion**, e.g. if p = 0.03, we reject the $H_0$ in favor of $H_A$
+
+That's actually enough to get you started with Hypothesis Testing. But if you want to know what exactly **Null ($H_0$) and Alternate ($H_A$) Hypotheses** are, why we **only reject the null but never accept it**, what is **p-value** or **why do we need hypothesis testing** at all, continue reading. So...
+
+## Why do we actually need hypothesis testing?
+
+The short answer: **TO MAKE SENSE OF THE DATA.** The long answer ... where should I start?
+
+I'll start with the first time I have got my own data. I was super motivated, because this data seemed to be a golden ticket to writing a thesis and finally getting a degree. The only thing I needed to do is **to analyze this data**. I couldn't wait to start working, so I opened my Excel table and started to look at it. However, the more I looked at it, the more puzzled I became. **How the heck does one actually analyzes data?** I asked my boss, and she said:
+
+- "Just test some hypothesis." 
+- "Cool! Thanks! That helps!" - I said and slowly started to panic 😱, because I had no idea how hypothesis testing works. So, I had no choice but to figure it out! What a pain!
+
+However, after a bit of research I realized that the **hypothesis testing** is not a pain at all, but **is actually a huge help for analyzing data!** And here is why. Having a data - we want to make a **claim or a statement**. For example: sport reduces weight. This **claim IS our hypothesis**. Having several claims creates a compelling story for a thesis or a scientific paper. There is only one problem with that: why should anyone believe our story? This could be a science fiction story. Thus, in order to make it a real science, not science fiction, we need to make it believable and solid. How? Well, we **test every of our hypothesis against the null hypothesis.** Wait, what the hell is the null hypothesis?
+
+## Null Hypothesis and Alternative Hypothesis
+
+The null hypothesis is ... absolutely, **nothing! Empty, boring, zero, null!**. For instance:
+
+- when **nothing** happens,
+- when there is **no effect**, 
+- when there is **no difference**,
+- when **nothing new** was learned
+
+For instance, if our research hypothesis is - **sport reduces weight**, then our null hypothesis is - **sport DOES NOT reduce weight**. So, we actually need **ONLY these TWO hypothesis** to make any of our claims solid! And since our research hypothesis is the only **Alternative** to the null hypothesis, it is often called **the Alternative Hypothesis**. Let's have 3 examples and clearly **define both Null and Alternative hypotheses.**
+
+### 3 theoretical examples
+
+1) if you measure the effect of sports on muscles:
+- **muscle gain (or measurable effect)** is your research or alternative hypothesis $H_A$
+- **NO muscle gain (NO effect)** is your null hypothesis $H_0$
+
+![](effect.jpg) 
+
+2) if you don't believe previous studies, or accepted value, for example that the average weight loss from a fancy diet is 3 kilos per week, you make an experiment in order to test this accepted value. Then:
+
+- **average weight loss ≠ 3 kg/week** is our $H_A$
+- **average weight loss = 3 kg/week** is our $H_0$ 
+
+![](weight_loss.jpg)
+
+3) if you study any difference between anything (groups, treatments etc.):
+
+- **NO difference** is our $H_0$
+- **THERE IS a difference** is our $H_A$
+
+![](difference.jpg) 
+
+**NO difference** expressed mathematically means - the difference is equal to *zero*. Writing this null hypothesis down in a simple formula makes it even easier to understand:
+
+$$ average \ 1 - average \ 2 = 0$$
+
+
+and if we add $average \ 2$ to both sides of the formula, we'll get:
+
+$$ average \ 1 = average \ 2$$
+...which, again, means that if the difference between samples $= 0$, than the averages of both groups are the same.
+
+For the $H_A$ it would be: 
+
+$$ average \ 1 - average \ 2 ≠ 0$$
+$$ average \ 1 ≠ average \ 2$$
+
+...which is saying that samples (or their averages) differ. So, **the $H_0$ and $H_A$ are always mathematical opposites!** Which makes the **hypothesis testing really simple**:
+
+### Summary for $H_0$ and $H_A$
+
+- in order to answer a question or make a solid claim from our data **we only need two hypotheses**, $H_0$ and its only alternative - $H_A$
+
+- your question (claim or statement) is in fact your $H_A$
+
+- the best part of the $H_A$ is that we can create tons of $H_A$, because we can ask thousands of different questions, or make thousands of different claims. 
+
+- but **we always have only one $H_0$**
+
+- the beauty of the $H_0$ is that it is always **the mathematical opposite** of the $H_A$, doesn't matter what the alternative is. The $H_A$ is always what $H_0$ is NOT
+
+- and the best part of the $H_0$ is that we do not need any preliminary data for it. It's always there, e.g. **NO difference** or **NO effect**
+
+Ok, we just learned about what **hypotheses** are, but how do we test them? And what's the point of **testing** anyway? Well... 
+
+**The only goal** of hypothesis testing is to **(1) reject or (2) fail to reject the null hypothesis**. There are really **only these two possible outcomes**. We can **never accept the null** hypothesis. Why? Let's figure out on some examples?
+
+
+## Never accept null hypothesis! Only try to refect!
+
+1) Imagine you travel to a completely new country for hiking. You discover a beautiful lake and start to fish. After 3 hours of fishing you didn't catch anything and you even failed to have a single bite. Can you accept the null hypothesis that **there is NO fish in that lake**? Of course not! You only failed to reject it during 3 hours. May be you just need to fish a little longer. So, you fish for another hour and finally catch your first fish. In that case the null hypothesis that **there is NO fish in that lake** is destroyed by the "fishy" evidence. That's why **we cannot accept the null hypothesis until we reject it; we can only fail to reject it**. 
+
+2) Now imagine you explore life on an alien planet. Your **null hypothesis ($H_0$)** is that **there is NO life on this planet**. You drive around a few hours and look for life. If you see any alien, you can happily reject the null hypothesis in favor of the alternative, because further believing the null hypotheses that **there is NO life on the planet** after you just saw one - seems ridiculous. But if you don’t see any aliens, can you definitively say that there is no alien life on this planet, or accept the null hypotheses? Again, no! Because if we would have explored longer we might have found an alien life. And since we are not sure about the absence of life on this new planet **we cannot accept the null hypothesis; we can only fail to reject it**. 
+ 
+3) The last intuitive example comes from trial courts. If you are accused of a crime, you presumed to be **NOT-guilty**. So, the null hypothesis is that - **you are NOT guilty**. The court tries to reject it. If there is a clear evidence against you, like a videotape, it would be ridiculous to still believe the null hypothesis, that **you are NOT guilty**, because the evidence is recorded, so, the judges can reject the null hypothesis that **you are NOT guilty** in favor of the alternative hypothesis that **you are actually guilty**. But if there is not enough evidence against you, for example no tape or no fingerprints, the judges cannot say **you are guilty**. But they also can NOT say **you are NOT guilty**! Imagine, you did actually commit a crime. But nobody can prove it, because there is absolutely no evidence. May be if Sherlock Holmes looked for evidence, he would have found some. But until then, judges can not accept that - **you are NOT guilty**, they only can fail to reject the presumption that - **you are NOT guilty**. In other words, judges can't say **you are innocent**, but rather **you are STILL NOT guilty**.
+
+Everything is clear in the case of aliens on a new planet or fish in the lake. If you found any evidence against the null hypothesis, you simply reject it. But comparing averages of two groups is a bit more complex? Remember our very first hypothesis - sport reduces weight? Let's test that one.
+
+## How far is far enough?
+
+We first collect some data from people who did not exercise for one year. Some people in this group gained a bit of weight, because they eat a lot, while some people lost a bit of weight, because they were sick or on a diet. Despite this mild random variable **ON AVERAGE the weight change in this group was zero**. And that's our **Null Hypothesis - NO change in weight.** We'll call this group - a control group.
+
+Then we'll find another group or people who has exercised for one year and measure their weight before and after one year of exercise. Well, imagine we have an average loss in weight of only 1 kilo. It's not 0 change, but it's too close to 0 for being taken seriously. It could be just due to the same random variation we have had in the control group. Then, imagine we sampled a different group where people lost 3 kilos on average. Here I am starting to feel uncomfortable to think that the change is close to 0, and I start to think whether I should reject the null hypothesis. Finally, the last group of people who exercised for one year lost 10 kilos on average. Now, it's soo far away from 0 that the **null hypothesis - that there is NO change in weight** seems ridiculous. Therefore we'll reject it in favor of the alternative hypothesis - **sport reduces weight**. Interestingly, for the weight loss of 10 kilograms everyone would agree that sport works, while for a loss of only 1 kilo people would agree that sport does not work. But for 3 kilos some people would say yes while some would say no. And all their opinions would be highly subjective and not concrete, making us not confident about our conclusion any more. Well, **hypothesis testing offers a concrete way to decide** when we reject and when we fail to reject the null hypothesis. And that is where **p-value** comes into play and help us solve this problem numerically.
+
+::: {#hello .greeting .message style="color: blue;"}
+The **p** stands for the **probability**. And it refers to the probability that we would have gotten the results we did **just by chance**. 
+::: 
+
+In order to understand it better, let's test the last hypothesis (comming from on an amazing YouTuber - MrNystrom):
+
+If you throw a fair coin, you have only 2 possible outcomes: tales or heads. The chances to get tails are 50%. Clear and boring result. The chances to get 2 tails in a row are 25%, because we have 4 possible outcomes: 1/4 = 25%. It's pretty likely to get 2 tails in a row. So, nothing unusual here. The coin must be fair. However, 3 tails in a row starts to feel strange. The chances to get 3 tails in a row are low, 1/8 = 12.5%, but still possible. But the chances to get 4 tails in a row are only 6.25%. And if we get 4 tails in a row we start to doubt whether the coin is actually fair. And if you get 6 tails in a row despite only 1.5% chances (probability) to get them, the null hypothesis that **this is a fair coin** would seem ridiculous and you'll reject it, because it’s simply too unlikely to happen randomly (or by chance). 
+
+A widely accepted, but by no means the best, cut off for a p-value is 5%. That means, that if your p-value (your probability that would have gotten the results you did **just by chance**) is below 0.05, you can reject the null hypothesis, while if a p-value is above 0.05, you fail to reject the null. So, **p-values provide concrete boundaries for making a decision about hypothesis testing and are therefore useful.** However, p-values are one of the most misunderstood and misused concepts in statistics. Thus, p-values deserve a separate video. Here I would like to point out only one, but the most frequent misuse of p-values, which, if eliminated could dramatically increase the quality of science.
+
+Researchers always want to reject the $H_0$ in favour of the research hypothesis, because that would mean - that they found something interesting or new. But if the $H_0$ can not be rejected, it seems like a tragedy and failure. All the efforts of making experiments, collecting and analyzing data seem useless and there is nothing to be published. However, **it’s not true! We always can say - we learned nothing new.**
+
+The **goal of science is NOT to find an effect or a difference, but to figure out whether there is an effect or difference**. If there is NO effect, it is a perfectly valid and equally important result. But some scientists insist on finding something significant and continue looking for it till they found it, a phenomenon known as - **p-hacking**. Well, p-hacking also deserves a separate video. Until then I’d love to finish with the quote of Cassie Kozyrkov:
+
+
+
+## Stop trying to learn something!
+
+::: {#hello .greeting .message style="color: blue;"}
+"**You should get into the habit of learning nothing more often, because if you insist on learning something beyond the data every time you test hypotheses, you will learn something stupid.**"  
+::: 
+
+
+---
+
+References:
+
+- https://www.youtube.com/watch?v=VK-rnA3-41c&t=1s&ab_channel=MathandScience
+- https://www.youtube.com/watch?v=0oc49DyA3hU&ab_channel=StatQuestwithJoshStarmer
+- https://medium.com/hackernoon/statistical-inference-in-one-sentence-33a4683a6424
+- https://medium.com/@kozyrkov?source=post_page-----33a4683a6424------------------- 
+- https://www.youtube.com/watch?v=-MKT3yLDkqk
+- https://www.youtube.com/watch?v=5koKb5B_YWo&ab_channel=StatQuestwithJoshStarmer
+- https://www.youtube.com/watch?v=zR2QLacylqQ&ab_channel=zedstatistics
+- https://www.youtube.com/watch?v=tLM7xS6t4FE&ab_channel=SciShow
+
+
+
+
