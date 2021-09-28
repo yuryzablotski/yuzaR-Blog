@@ -167,6 +167,15 @@ The **goal of science is NOT to find an effect or a difference, but to figure ou
 ::: 
 
 
+## What's next?
+
+You should definitely get an intuitive understanding of p-values!
+
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
 ---
 
 References:

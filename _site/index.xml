@@ -153,6 +153,10 @@
 &lt;div id="hello" class="greeting message" style="color: blue;"&gt;
 &lt;p&gt;“&lt;strong&gt;You should get into the habit of learning nothing more often, because if you insist on learning something beyond the data every time you test hypotheses, you will learn something stupid.&lt;/strong&gt;”&lt;/p&gt;
 &lt;/div&gt;
+&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
+&lt;p&gt;You should definitely get an intuitive understanding of p-values!&lt;/p&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ul&gt;
@@ -170,8 +174,206 @@
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</guid>
-      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>What is p-value and why we need it (in progress)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/Dldutns6Tig" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;Since p-values are mostly used for testing hypothesis, you should definitely check out the previous post - &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt;, where I superficially introduced the p-value already.&lt;/p&gt;
+&lt;h2 id="p-value-definition-n1-its-a-probability"&gt;P-value definition N°1: it’s a probability&lt;/h2&gt;
+&lt;p&gt;The most intuitive explanation of p-values I have found came from Andrew Vickers’ book “What is a p-value anyway? 34 Stories to Help You Actually Understand Statistics”: &lt;strong&gt;“P-value is the probability of the toothbrush being dry if you’ve just cleaned your teeth.”&lt;/strong&gt; Let’s start with that.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;P&lt;/strong&gt; stands for &lt;strong&gt;probability&lt;/strong&gt;. And it refers to &lt;strong&gt;the probability to observe the results we did just by chance&lt;/strong&gt;. In order to understand this definition a little better, let’s have an example:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/coin.png" /&gt;&lt;/p&gt;
+&lt;p&gt;If we throw a fair coin, we have only &lt;strong&gt;2 possible outcomes&lt;/strong&gt;: heads or tales. The chances to get &lt;strong&gt;tails are obviously 50%&lt;/strong&gt;. Then we throw our coin a second time. The chances to get &lt;strong&gt;2 tails in a row are 25%&lt;/strong&gt;, because we have 4 possible outcomes after two throws, with only one of those four outcomes having &lt;strong&gt;two tails in a row&lt;/strong&gt;, so 1/4 = 0.25 = 25%. It’s actually pretty likely to get 2 tails in a row. So, nothing unusual here. The coin must be fair. But 3 tails in a row starts to feel strange. The chances to get &lt;strong&gt;3 tails in a row are low, only 12.5%&lt;/strong&gt;, but still possible. However, if we get 3 tails in a row we start to doubt whether the coin is actually fair. And if we get &lt;strong&gt;6 tails in a row despite only 1.5% probability to get them&lt;/strong&gt;, the null hypothesis - &lt;em&gt;that this is a fair coin&lt;/em&gt; - would seem ridiculous and we’ll reject it, because it’s simply &lt;strong&gt;too unlikely to happen randomly (or by chance)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/6_tails.png" /&gt;&lt;/p&gt;
+&lt;p&gt;This example, which defines the p-value as &lt;strong&gt;ONE particular&lt;/strong&gt; probability of having &lt;strong&gt;only tales&lt;/strong&gt;, is clear, intuitive, but &lt;strong&gt;only ONE sided&lt;/strong&gt;. It isn’t wrong, but &lt;strong&gt;ONE-sided p-values&lt;/strong&gt; coming from &lt;strong&gt;only ONE probability&lt;/strong&gt; is not what people use. The &lt;strong&gt;“real p-values”&lt;/strong&gt; are &lt;strong&gt;TWO sided&lt;/strong&gt;. Then why did we learned about one-sided p-values at all, you might ask??? Well, it was totally necessary for a better understanding of the second definition of p-values. And this is actually one of those definitions from the book, where people start to run away from statistics :) namely:&lt;/p&gt;
+&lt;div id="hello" class="greeting message" style="color: blue;"&gt;
+&lt;p&gt;P.S.: &lt;strong&gt;One-sided p-values are rare and dangerous&lt;/strong&gt;, so, please don’t use them to avoid confusion, especially if you just started to learn about p-values.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id="p-value-definition-n2-three-probabilities-learned-from-josh-starmer"&gt;P-value definition N°2: three probabilities (learned from &lt;a href="https://www.youtube.com/watch?v=5Z9OIYA8He8&amp;amp;ab_channel=StatQuestwithJoshStarmer"&gt;Josh Starmer!&lt;/a&gt;)&lt;/h2&gt;
+&lt;p&gt;P-value is the probability to get &lt;strong&gt;(1) the data we have collected, (2) as extreme or (3) more extreme data&lt;/strong&gt; just by chance, assuming our null hypothesis is true.&lt;/p&gt;
+&lt;p&gt;Two tailed p-values are determined by adding up &lt;strong&gt;three probabilities&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/3_probs.png" /&gt;&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;p&gt;Remember our coin example? The probability of having &lt;em&gt;two tails&lt;/em&gt; in a row is 25% (or 0.25), because there are 4 equally possible outcomes after flipping a coin 2 times. These 4 possible outcomes is our &lt;em&gt;distribution.&lt;/em&gt; And &lt;strong&gt;the data we have got&lt;/strong&gt; - &lt;em&gt;two tails&lt;/em&gt; - is only one side of this distribution.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Likewise, the probability of getting &lt;em&gt;two heads&lt;/em&gt; is also 0.25, and since &lt;em&gt;two heads&lt;/em&gt; are &lt;strong&gt;as extreme&lt;/strong&gt; as &lt;em&gt;two tales&lt;/em&gt;, we have to add the probability of &lt;em&gt;two tails&lt;/em&gt; to the probability of &lt;em&gt;two heads&lt;/em&gt;: 1/4 + 1/4 = 2/4 = 0.5. Now we have a &lt;strong&gt;two sided probability&lt;/strong&gt; but the p-values still need one last part.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;The third and the last part of the p-value is - the probability of observing &lt;strong&gt;something rarer or more extreme&lt;/strong&gt;. In this case it is 0, because &lt;strong&gt;no other outcomes are rarer then two tails or two heads&lt;/strong&gt;. Thus, if we add this 0 to the probability of having either two tales or two heads, we’ll get a final p-value of 0.5. And since our p-value is way above the significance threshold of 0.05, we failed to reject the null hypothesis, so that our null hypothesis is still TRUE - our coin must be fare.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Thus: the p-value is the probability of getting the &lt;strong&gt;(1) data we collected (two tails = 0.25), as extreme (two heads = 0.25) or more extreme data (0) is&lt;/strong&gt;: 0.25 + 0.25 + 0 = 0.5.&lt;/p&gt;
+&lt;p&gt;Now let’s calculate the p-value for a slightly more complicated outcome: &lt;strong&gt;3 heads and 1 tail&lt;/strong&gt;. This is one of the 16 possible outcomes, when we flip the coin 4 times. The null hypothesis would be that our data - 3 heads and 1 tail - is nothing special, but belongs to this exact distribution.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/3h1t.png" /&gt;&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;p&gt;The probability we randomly get &lt;strong&gt;3 heads and 1 tail&lt;/strong&gt; is 4/16 = 0.25. That would be &lt;strong&gt;our data&lt;/strong&gt; and with that &lt;strong&gt;the first part of the p-value&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The probability that we randomly get something equally rare, namely &lt;strong&gt;3 tails and 1 head&lt;/strong&gt;, is also 4/16 = 0.25, which will be &lt;strong&gt;the second part of the p-values&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The probability that we randomly get something rarer or more extreme, which in our case are &lt;strong&gt;4 heads and 4 tails&lt;/strong&gt; is 2/16 = 0.125, and are &lt;strong&gt;the last part of our p-value&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Adding them all together would result into a p-value of 0.625, so we would fail to reject the null hypothesis - that our data (3 heads and 1 tail) is nothing special, and would need to conclude that 3 heads and 1 tail belong to this distribution.&lt;/p&gt;
+&lt;h2 id="p-value-definition-n3-cumulative-probability-area-under-the-curve"&gt;P-value definition N°3: cumulative probability (area under the curve)&lt;/h2&gt;
+&lt;p&gt;Calculating a p-value from discrete numbers is kind of easy, but how do we do it for continuous numbers? Plotting our discrete data will help to understand that. If we plot our values from the last example, we would find the &lt;strong&gt;most probable&lt;/strong&gt; outcomes (&lt;span style="color: green;"&gt;green&lt;/span&gt;) in the middle, a bit &lt;strong&gt;less probable&lt;/strong&gt; (black and &lt;span style="color: blue;"&gt;blue&lt;/span&gt;) on both sides of the middle, and finally &lt;strong&gt;the least probable&lt;/strong&gt; values (&lt;span style="color: red;"&gt;red&lt;/span&gt;) very far away from the middle. This will become &lt;strong&gt;the probability distribution of our discrete values&lt;/strong&gt;. We can also cover plotted values with a &lt;strong&gt;curve&lt;/strong&gt; to better visualize this distribution. Now, if we mark our discrete values with discrete numbers on the x-axis, we’ll see that we’ll be able to add any &lt;strong&gt;continuous value&lt;/strong&gt; in between those discrete numbers, e.g. 0.3 or 0.333. And for every of these &lt;strong&gt;continuous value&lt;/strong&gt; we can calculate &lt;strong&gt;probability&lt;/strong&gt; in the exact same way as we just did for &lt;em&gt;2 tails&lt;/em&gt;, or &lt;em&gt;3 heads and 1 tail&lt;/em&gt;. That’s how we arrive at the &lt;strong&gt;continuous probability&lt;/strong&gt;. The p-values for such continuous probability are also calculated in the same way. But instead of adding up only 3 discrete probabilities (our data, as extreme and more extreme data), we add up 2 discrete parts (our data and similarly extreme data) and 1 continuous part (more extreme data from both tails of the distribution):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;and since we calculate probabilities of many points &lt;strong&gt;under the curve&lt;/strong&gt; and&lt;/li&gt;
+&lt;li&gt;add all of them together, or &lt;strong&gt;ACCUMULATE those probabilities under the curve&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;we’ll get the &lt;strong&gt;AREA under the curve&lt;/strong&gt; - which then &lt;strong&gt;IS&lt;/strong&gt; our p-value as a &lt;strong&gt;cumulative probability&lt;/strong&gt;, including all the values which are as extreme or more extreme than our data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/distribution.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;An example of such curve could be the weight of people. For instance, the average weight of German males is 80 kilos with 95% of them weighting between 70 and 90 kilos (these numbers are totally made up ;). 2.5% of them will weight &amp;lt;70 and 2.5% will weight &amp;gt;90 kilos. If we get a new data point - namely a weight of a new person, we can calculate the p-value for that point. Our null hypothesis is - that the persons weight is &lt;strong&gt;NOT different&lt;/strong&gt; from our distribution. If this person weights 75 kilos, the area under the curve (or a p-value!), which includes all the values &lt;strong&gt;as extreme or more extreme&lt;/strong&gt; than 75, will be ca. 0.6 (or 60%), which is fairly big. So, we would fail to reject the null hypothesis, concluding that the person could be a German male, or is at least not different from German males. However, if the weight is 65 kilos, the area under the curve is quite small, let’s say 2%. Here, we can reject the null hypothesis and conclude that this person must belong to a different population, e.g. women, or a man from a different country.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;So you see the p-value is not a simple probability, but 3 probabilities (parts) added together!&lt;/strong&gt; A simple probability is the number of outcomes of interest, divided by the total number of outcomes (it’s not even the one-sided p-value). While &lt;strong&gt;a p-value is the probability that random chance generated the&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;data we observed, or the data that is&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;equally rare or 3. rarer for &lt;strong&gt;discrete&lt;/strong&gt; values, or&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;equally extreme or 3. more extreme for &lt;strong&gt;continuous&lt;/strong&gt; values,&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;if the null hypothesis is true.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="p-value-definition-n4-original-fishers-definition"&gt;P-value definition N°4: original Fisher’s definition&lt;/h2&gt;
+&lt;p&gt;All right, &lt;strong&gt;p-value is a cumulative probability&lt;/strong&gt;. And since a probability is a &lt;strong&gt;continues&lt;/strong&gt; measure from 0 to 1 (or from 0% to 100%), the &lt;strong&gt;p-value also IS any number between 0 &amp;amp; 1&lt;/strong&gt;. If we look for a difference between two groups, we can see a p-value &lt;strong&gt;as a measure of similarity&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/similarity.png" /&gt;&lt;/p&gt;
+&lt;p&gt;For examples if two samples are identical, there is &lt;strong&gt;100% similarity and 0% difference&lt;/strong&gt;. So, our p-value is equal to 1. If &lt;strong&gt;similarity is only 60%, then the difference is 40%&lt;/strong&gt;, which is much bigger then 0, but is still small. But &lt;strong&gt;if the similarity drops to 5% or below, then the difference of 95% is often considered significant&lt;/strong&gt;, and we can confidently reject the null hypothesis - that there is NO difference between samples, in favour of the alternative hypothesis - that such difference exists.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;But wait!!!&lt;/strong&gt;, does it make any sense to &lt;strong&gt;dichotomize a continuous number&lt;/strong&gt; (from 0 to 1) into only two categories - &lt;strong&gt;significant and not-significant? Of coarse, not!&lt;/strong&gt; The p-value is not black and white, but everything in between … like 50 shades of gray …&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/Fifty_Shades_of_Grey_poster.jpeg" /&gt;&lt;/p&gt;
+&lt;p&gt;… ups, sorry, not that 50 shades of gray … that one :) &lt;span class="citation"&gt;(&lt;a href="#ref-Sterne2001" role="doc-biblioref"&gt;Sterne, Smith, and Cox 2001&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/interpretation.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Hmm, but if dichotomizing continuous p-values into two categories - &lt;strong&gt;significant and not-significant&lt;/strong&gt; - doesn’t make much sense, &lt;strong&gt;why is the whole world doing exactly that&lt;/strong&gt;? “The basic explanation is neither philosophical nor scientific, but sociologic - &lt;strong&gt;everyone uses them&lt;/strong&gt;.” &lt;span class="citation"&gt;(&lt;a href="#ref-Goodman2019" role="doc-biblioref"&gt;Goodman 2019&lt;/a&gt;)&lt;/span&gt;. But in order to answer this question more thoroughly, we’d need to briefly explore the history of p-values …&lt;/p&gt;
+&lt;p&gt;Ronald Fisher, the father of modern statistics, saw the &lt;strong&gt;P value as an index measuring the strength of evidence against the null hypothesis&lt;/strong&gt; (see the picture above). Fisher himself proposed: &lt;strong&gt;“if P-value is between 0.1 and 0.9 there is certainly no reason to suspect the hypothesis tested. If it’s below 0.02 it is strongly indicated that the hypothesis fails to account for the whole of the facts.”&lt;/strong&gt; He sometimes used the threshold for the p-value of 0.05 (&amp;lt; 5%) himself to reject the null hypothesis, but &lt;strong&gt;without any clear reason&lt;/strong&gt;. Moreover, he recommended to treat a &lt;strong&gt;p-value around 0.05 as inconclusive, where we’d need to repeat the experiment.&lt;/strong&gt; The reason Fisher used p-values at all was - to reduce the probability of the &lt;strong&gt;type I error&lt;/strong&gt; - the probability to find something what is not there - &lt;strong&gt;false positive&lt;/strong&gt;, e.g. that somebody has cancer, while being totally healthy. The most typical type I error happens when we measure a difference between two groups and find this difference to be significant, while both samples came from the same population:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/type_1_errors.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Having a stiff threshold of 0.05 can be:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Good&lt;/strong&gt;: because from all H0 you test, in the long run you will falsely reject at most 5% of the correct ones, but it’s also&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;BAD&lt;/strong&gt;: because it statistically guarantees that 1 in 20 healthy people, will “have” cancer just by chance, or in 1 out of 20 statistical tests we’ll find nonsense just by chance.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Thus, &lt;strong&gt;lowering the p-value to, let’s say 0.01, reduces the probability of finding nonsense and ensures we find something what is really there&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Along the &lt;strong&gt;type I error&lt;/strong&gt;, Neyman and Pearson also advocated the &lt;strong&gt;type II error&lt;/strong&gt;, that could be made in interpreting the results of an experiment. The type II error is the probability to miss something what is there - &lt;strong&gt;false negative&lt;/strong&gt;, e.g. failing to detect cancer, when cancer is already in the body.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/type_2_errors.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Neyman and Pearson’s idea of &lt;strong&gt;hypothesis testing&lt;/strong&gt; was actually really good, because it supposed to reduce the number of mistakes by &lt;strong&gt;keeping the rates of both type I and type II errors low&lt;/strong&gt;. However, only the easy part of their approach — that the null hypothesis can be rejected if P &amp;lt; 0.05 (type I error rate of 5%) — has been widely adopted and stuck in the medical research, causing current dichotomy of results into &lt;strong&gt;significant&lt;/strong&gt; or &lt;strong&gt;not significant&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Two serious consequences of this are that&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;potentially clinically important differences observed in small studies are denoted as non-significant and ignored, while&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;all significant findings are assumed to result from real treatment effects.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Well, how do we deal with type II errors? &lt;strong&gt;Increasing the sample size will increase the power of the experiment and therefore decrease the probability of type II error&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;So, now we know that hypothesis testing can produce two types of mistakes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;The type I error IS an ERROR, because p-values help to maintain nonsense&lt;/strong&gt;. While&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;The type II error IS an ERROR, because p-values help to miss something important&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Therefore, &lt;strong&gt;we should stop dichotomising our results into significant and not significant&lt;/strong&gt;! But, if after reading this you still want to continue dichotomising your results into &lt;strong&gt;significant&lt;/strong&gt; or &lt;strong&gt;not significant&lt;/strong&gt;, please, answer a following question: &lt;strong&gt;is the difference between a P-value of 0.051 and 0.049 statistically significant?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The answer is - a clear NO! However, if using a p-value continuously totally blows your mind, and you still need some pragmatic decision making tool, consider using a hybrid approach, which singles out 5 instead of only 2 categories of &lt;strong&gt;the strength of the evidence against the null hypothesis in favor of the alternative:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;P &amp;gt; 0.10 The data shows &lt;strong&gt;NO evidence&lt;/strong&gt; against the null hypothesis&lt;/li&gt;
+&lt;li&gt;0.05 &amp;lt; P &amp;lt; 0.10 &lt;strong&gt;Weak evidence&lt;/strong&gt; against the null hypothesis in favor of the alternative. It is sometimes reported as a dot: ‘.’&lt;/li&gt;
+&lt;li&gt;0.01 &amp;lt; P &amp;lt; 0.05 &lt;strong&gt;Moderate evidence&lt;/strong&gt; against the null hypothesis in favor of the alternative. It is sometimes reported as one star: ‘*’&lt;/li&gt;
+&lt;li&gt;0.001 &amp;lt; P &amp;lt; 0.01 &lt;strong&gt;Strong evidence&lt;/strong&gt; against the null hypothesis in favor of the alternative. It is sometimes reported as two stars: ‘**’&lt;/li&gt;
+&lt;li&gt;P &amp;lt; 0.001 &lt;strong&gt;Very strong evidence&lt;/strong&gt; against the null hypothesis in favor of the alternative. It is sometimes reported as three stars: ‘***’&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="dont-follow-any-cut-off-the-cut-off-should-follow-you"&gt;Don’t follow any cut-off, the cut-off should follow you!&lt;/h2&gt;
+&lt;p&gt;Any cut-off splits the probability into two parts:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Level of confidence&lt;/strong&gt; - beta (β), e.g. 95%, tells how confident are we in our decision and&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Level of significance&lt;/strong&gt; - alpha (⍺), e.g. 5%, tells us when to &lt;strong&gt;reject or fail to reject the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;&lt;/strong&gt;. Namely, (1) if p-value &amp;lt;= ⍺, we reject the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;; (2) if p-value &amp;gt; ⍺, we fail to reject the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both &lt;strong&gt;⍺&lt;/strong&gt; &amp;amp; &lt;strong&gt;β&lt;/strong&gt; add up to 1 and tell you the same thing - how sure are you about your decision:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;for 95% confidence: ⍺ = 1 - β = 1 - 0.95 = 0.05&lt;/li&gt;
+&lt;li&gt;for 99% confidence: ⍺ = 1 - β = 1 - 0.99 = 0.01&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;strong&gt;cut-off itself is up to you&lt;/strong&gt; and is &lt;strong&gt;highly dependent on the experiment&lt;/strong&gt;. It might sound fuzzy, but it actually gives you a freedom to adjust the decision-making to reality. On the other hand, clinging to the cut-off of 0.05 may actually increase the rates of both type I and type II errors. Let’s have a look at two examples:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Imagine you study a new treatment for a deadly disease and your p-value for the difference between control and treatment groups is 0.15. If you strictly follow the 0.05 cut-off, you’ll fail to reject the &lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt; and would conclude that the treatment does not work. The p-value of 0.15 makes you “&lt;em&gt;only&lt;/em&gt;” 85% sure that such difference exists, making this difference “&lt;em&gt;not significant enough&lt;/em&gt;.” However, if you don’t &lt;span style="color: red;"&gt;blindly&lt;/span&gt; follow the 0.05, you could &lt;span style="color: blue;"&gt;look&lt;/span&gt; at your experiment in a completely new way by saying: &lt;strong&gt;I am 85% confident that new treatment works and we found a new way of treating a deadly disease&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Similarly, if I was 85% confident of winning the lottery I would definitely play! However, if I’d strictly follow the cut-off of 0.05, I would “&lt;em&gt;be not confident enough&lt;/em&gt;” that I will win (which is ridiculous) and I won’t play.&lt;/p&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;On the opposite side, if an airline company welcomes you aboard with a catchy phrase: “We are 95% confident that you’ll survive, so your probability of crashing with us is below 5% (p &amp;lt; 0.05),” would you go aboard? I personally would run away! The airline company would chase me though and scrim: "Stop running away! We &lt;strong&gt;successfully rejected the Null Hypothesis that you will die!!!&lt;/strong&gt; But I would only be willing to fly .. if my level of confidence in survival increases to 99.9999% or if my chances to die would become 1 to a million (⍺ = 0,000001) flights.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;So, you see?, the freedom to set up your own level of significance (the cut-off) depending on the situation makes you a better scientist, while blindly following the cut-off of 0.05 would either keep you pure or just kill you.&lt;/p&gt;
+&lt;div id="hello" class="greeting message" style="color: blue;"&gt;
+&lt;p&gt;P.S.: the dramatic effect of the last sentence serves solely educational purposes … while hoping to significantly (p &amp;lt; 0.05 😉) increase the &lt;strong&gt;probability&lt;/strong&gt; that you’ll remember the material :)&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Does it mean that any threshold is evil? Well, no! &lt;strong&gt;The threshold of 0.05 means that if there is no difference between Group 1 and Group 2, and if we did this exact experiment 100 times, then only 5 of these experiments would result in a wrong decision.&lt;/strong&gt; These would be 5 &lt;strong&gt;false positives&lt;/strong&gt; (type I error). Lowering the threshold to let’s say 0.001 would reduce the number of false positives to 1 out of 1000 experiments. &lt;strong&gt;But the costs of doing 1000 experiments are often much higher then it is worth.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="a-single-article-you-need-to-read-moving-to-a-world-beyond-p0.05"&gt;A single article you need to read: “Moving to a World Beyond “p&amp;lt;0.05” "&lt;/h2&gt;
+&lt;p&gt;If you want to know what statisticians themselves think about p-value, read the following article: &lt;a href="https://www.tandfonline.com/doi/full/10.1080/00031305.2019.1583913"&gt;Moving to a World Beyond “p&amp;lt;0.05”&lt;/a&gt; &lt;span class="citation"&gt;(&lt;a href="#ref-Wasserstein2019" role="doc-biblioref"&gt;Wasserstein, Schirm, and Lazar 2019&lt;/a&gt;)&lt;/span&gt;. Here I would just sum up some recommendations the authors provided. These recommendations would enable you to find &lt;strong&gt;fewer false alarms (false positives, type I error), and to overlook fewer discoveries (false negatives, type II error)&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id="what-to-do"&gt;What to do:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;report precise continuous p-values&lt;/strong&gt; without reference to arbitrary thresholds. For example, P = 0.023 rather than P &amp;lt; 0.05.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;lower the 0.05 “&lt;em&gt;statistical significance&lt;/em&gt;” threshold for claims of novel discoveries to a 0.005 threshold and refer to p-values between 0.05 and 0.005 as “&lt;em&gt;suggestive&lt;/em&gt;.”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;remember, &lt;strong&gt;the p-value as only one aspect of a complete data analysis&lt;/strong&gt;. Thus, supplement the p-value with visualizations of confidence intervals on effect sizes or likelihood ratios, justify the adequacy of the sample size and &lt;strong&gt;the reasons various statistical methods were employed&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;clarify objectives, invest into careful planning &amp;amp; design, invest into producing solid data, use more descriptive stats, use more of the regularized, robust, nonlinear and nonparametric methods for exploratory research, check the robustness of your methods and use several different data analysis techniques for testing the same hypothesis.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;look for both (1) a small p-value and (2) a large effect size before declaring a result “significant,” instead of dichotomized p-values alone.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;interpret the p-value in the context of sample size. A large study can detect a small, clinically unimportant finding. The larger the sample the more likely a difference to be detected. Lower the p-value threshold (e.g. to 0.001) for large studies.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;reduce unplanned and uncontrolled modeling/testing (p-hacking). &lt;strong&gt;Examining 20 associations will produce one result that is “significant at P = 0.05” by chance alone.&lt;/strong&gt; Thus, testing multiple variables, using long questionnaires with hundreds of variables and measuring a wide range of potential outcomes, would &lt;strong&gt;guarantee several false positive findings&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;“Accept uncertainty and embrace variation in effects” &lt;span class="citation"&gt;(&lt;a href="#ref-McShane2019" role="doc-biblioref"&gt;McShane et al. 2019&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="what-not-to-do"&gt;What not to do:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Don’t make decisions based solely on some arbitrary threshold such as p &amp;lt; 0.05. Dichotomizing p-values into “significant” and “non significant” one loses information. A P-value is not black and white, but ≈ 50 shades of grey 😂&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Don’t treat &lt;strong&gt;“p = 0.051” and “p = 0.049” as being categorically different. 🙂 As &lt;span class="citation"&gt;&lt;a href="#ref-Gelman2006" role="doc-biblioref"&gt;Gelman and Stern&lt;/a&gt; (&lt;a href="#ref-Gelman2006" role="doc-biblioref"&gt;2006&lt;/a&gt;)&lt;/span&gt; famously observed, the difference between “significant” and “not significant” is not itself statistically significant.&lt;/strong&gt; Don’t discard a well-designed, excellently conducted, thoughtfully analyzed, and scientifically important experiment only because it failed to cross the threshold of 0.05 (e.g. p-value = 0.09).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Don’t believe that an association or effect exists just because it was “statistically significant.”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Don’t believe that an association or effect is absent just because it was not “statistically significant.”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Don’t conclude anything about practical importance based on “statistical significance” (or lack thereof).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In fact - don’t say “statistically significant” at all … whether expressed in words or by asterisks in a table.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Don’t believe that your p-value gives the probability that your test hypothesis is TRUE. &lt;strong&gt;P-value is the probability of the data, not of (any) hypothesis!&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="what-about-bayesian-statistical-inference"&gt;What about Bayesian statistical inference?&lt;/h2&gt;
+&lt;p&gt;The switch to the use of Bayesian statistical inference in medical research was proposed for several decades, but is barely possible. A major reason is that &lt;strong&gt;prior knowledge can be difficult to quantify&lt;/strong&gt;. The major reason for that is that science suppose to produce NEW knowledge. Thus, repeated experiments are necessary, but few scientist want to do them. Moreover, if the priors are flat (a wide range of values is considered to be equally likely), then the &lt;em&gt;Frequentist&lt;/em&gt; and &lt;em&gt;Bayesian&lt;/em&gt; results are similar, while computing power required for Bayesian analysis is “significantly” ;) higher. Two approaches will give different results, however, if our prior opinion is not vague. Besides, we can’t ignore the fact that &lt;em&gt;Bayesian statistics&lt;/em&gt; is even less intuitive to the majority of scientists then &lt;em&gt;Frequentists statistics&lt;/em&gt;. Otherwise everybody would have already used it. Thus, until an alternative, simple and widely accepted approach to the p-values exists, banning p-values is of no help to anyone.&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Most of the scientist can’t tell you what the p-value is. Most of the statisticians can, but can’t explain it to intuitively. So, don’t give yourself a hard time if you still a bit confused. It’s normal. Instead, I’d suggest we stop caring about understanding the p-value, but start caring to use it properly. And remember, &lt;strong&gt;you don’t need to understand how the car works, you only need to know how to drive&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-07-31-p-value-intuitive-explanation/impossible-parking.gif" /&gt;&lt;/p&gt;
+&lt;h2 id="whats-next-to-learn"&gt;What’s next to learn?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;misinterpretations of p-values (only if you are interested)&lt;/li&gt;
+&lt;li&gt;effect size and&lt;/li&gt;
+&lt;li&gt;power analysis&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;that’s an amazing video: &lt;a href="https://www.youtube.com/watch?v=tLM7xS6t4FE&amp;amp;ab_channel=SciShow" class="uri"&gt;https://www.youtube.com/watch?v=tLM7xS6t4FE&amp;amp;ab_channel=SciShow&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="http://www.stat.ualberta.ca/~hooper/teaching/misc/Pvalue.pdf" class="uri"&gt;http://www.stat.ualberta.ca/~hooper/teaching/misc/Pvalue.pdf&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div id="refs" class="references csl-bib-body hanging-indent"&gt;
+&lt;div id="ref-Gelman2006" class="csl-entry"&gt;
+Gelman, Andrew, and Hal Stern. 2006. &lt;span&gt;“&lt;span class="nocase"&gt;The difference between "significant" and "not significant" is not itself statistically significant&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;American Statistician&lt;/em&gt; 60 (4). &lt;a href="https://doi.org/10.1198/000313006X152649"&gt;https://doi.org/10.1198/000313006X152649&lt;/a&gt;.
+&lt;/div&gt;
+&lt;div id="ref-Goodman2019" class="csl-entry"&gt;
+Goodman, Steven N. 2019. &lt;span&gt;“&lt;span class="nocase"&gt;Why is Getting Rid of P-Values So Hard? Musings on Science and Statistics&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;American Statistician&lt;/em&gt; 73 (sup1). &lt;a href="https://doi.org/10.1080/00031305.2018.1558111"&gt;https://doi.org/10.1080/00031305.2018.1558111&lt;/a&gt;.
+&lt;/div&gt;
+&lt;div id="ref-McShane2019" class="csl-entry"&gt;
+McShane, Blakeley B., David Gal, Andrew Gelman, Christian Robert, and Jennifer L. Tackett. 2019. &lt;span&gt;“&lt;span&gt;Abandon Statistical Significance&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;American Statistician&lt;/em&gt; 73 (sup1). &lt;a href="https://doi.org/10.1080/00031305.2018.1527253"&gt;https://doi.org/10.1080/00031305.2018.1527253&lt;/a&gt;.
+&lt;/div&gt;
+&lt;div id="ref-Sterne2001" class="csl-entry"&gt;
+Sterne, Jonathan A. C., George Davey Smith, and D. R. Cox. 2001. &lt;span&gt;“&lt;span class="nocase"&gt;Sifting the evidence—what’s wrong with significance tests?&lt;/span&gt;”&lt;/span&gt; &lt;em&gt;BMJ&lt;/em&gt; 322 (7280). &lt;a href="https://doi.org/10.1136/bmj.322.7280.226"&gt;https://doi.org/10.1136/bmj.322.7280.226&lt;/a&gt;.
+&lt;/div&gt;
+&lt;div id="ref-Wasserstein2019" class="csl-entry"&gt;
+Wasserstein, Ronald L, Allen L Schirm, and Nicole A Lazar. 2019. &lt;span&gt;“&lt;span class="nocase"&gt;Moving to a World Beyond "p &lt;span&gt;&amp;lt;&lt;/span&gt; 0.05"&lt;/span&gt;.”&lt;/span&gt; &lt;a href="https://doi.org/10.1080/00031305.2019.1583913"&gt;https://doi.org/10.1080/00031305.2019.1583913&lt;/a&gt;.
+&lt;/div&gt;
+&lt;/div&gt;</description>
+      <distill:md5>fbe358502d16d4b3c983e5217d5bc6d2</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</guid>
+      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>R package reviews {DataExplorer} explore your data!</title>
