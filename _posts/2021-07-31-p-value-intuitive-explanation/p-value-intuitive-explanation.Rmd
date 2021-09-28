@@ -1,5 +1,5 @@
 ---
-title: "What is p-value and why we need it (in progress)"
+title: "What is p-value and why we need it"
 description: |
   Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.
 author:
