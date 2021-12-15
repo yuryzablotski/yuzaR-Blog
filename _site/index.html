@@ -2425,7 +2425,7 @@ function init_posts_list() {
     var src = $(img).attr('data-src');
     if (src) {
       $(img).attr('src', src);
-      $(img).load(function() {
+      $(img).on("load", function() {
         img.removeAttribute('data-src');
       });
     }
@@ -2640,7 +2640,7 @@ function init_posts_list() {
 <a href="posts/2021-07-31-p-value-intuitive-explanation/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
 <div class="metadata">
-<div class="publishedDate">Jan. 8, 2021</div>
+<div class="publishedDate">Jan. 9, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
@@ -2655,6 +2655,26 @@ function init_posts_list() {
 <div class="dt-tag">statistics</div>
 </div>
 <p>Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.</p>
+</div>
+</a>
+<a href="posts/2021-12-14-how-to-conduct-chi-square-test-in-r/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 8, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/2021-12-14-how-to-conduct-chi-square-test-in-r/how-to-conduct-chi-square-test-in-r_files/figure-html5/unnamed-chunk-3-1.png"/>
+</div>
+<div class="description">
+<h2>R demo | Chi-Square Test | how to conduct, visualize &amp; interpret | + pairwise post-hoc tests</h2>
+<div class="dt-tags">
+<div class="dt-tag">videos</div>
+<div class="dt-tag">statistics</div>
+</div>
+<p>Chi-Square test checks the independence between two categorical variables. Both variables can have two or more categories.</p>
 </div>
 </a>
 <a href="posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/" class="post-preview">
@@ -2807,7 +2827,7 @@ function init_posts_list() {
 <ul>
 <li>
 <a href="#category:Articles">Articles</a>
-<span class="category-count">(12)</span>
+<span class="category-count">(13)</span>
 </li>
 <li>
 <a href="#category:data_wrangling">data wrangling</a>
@@ -2835,7 +2855,7 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#category:statistics">statistics</a>
-<span class="category-count">(2)</span>
+<span class="category-count">(3)</span>
 </li>
 <li>
 <a href="#category:survival_analysis">survival analysis</a>
@@ -2843,7 +2863,7 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#category:videos">videos</a>
-<span class="category-count">(12)</span>
+<span class="category-count">(13)</span>
 </li>
 <li>
 <a href="#category:visualization">visualization</a>

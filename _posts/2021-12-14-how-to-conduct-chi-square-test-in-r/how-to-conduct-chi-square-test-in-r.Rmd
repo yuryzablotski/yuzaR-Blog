@@ -1,0 +1,155 @@
+---
+title: "R demo | Chi-Square Test | how to conduct, visualize & interpret | + pairwise post-hoc tests"
+description: |
+  Chi-Square test checks the independence between two categorical variables. Both variables can have two or more categories.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-09-2021
+categories:
+  - videos
+  - statistics
+preview: thumbnail.jpg
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+# draft: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+## This post as a video
+
+```{r, eval=T, echo=F}
+#vembedr::embed_youtube("Dldutns6Tig")
+```
+
+## Previous topics
+
+Understanding [hypothesis testing](https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/) and [p-values](https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/) would be very helpful. 
+
+## How to conduct Chi-Squared test in R
+
+If you have installed and loaded `ggstatsplot` package, you can use `ggbarstats` function to conduct and visualize Chi-Square test of independence between two categorical variables. Withing this function we need to specify only four arguments: 
+
+- **our data**, for example let's take `mtcars`, which you already have in R, so you don't need to look for it
+- **x** - as one of your categorical variables, for example *Transmission* of the car (with 0 being automatic, and 1 being manual transmission)
+- **y** - would be your second variable, let's take the *Number of cylinders* (4, 6 or 8) and
+- **the label** argument - which displays **both** numbers and percentages of observations in each category.
+
+This simple command results in a statistically rich and publication ready plot! Now, let's interpret the results.
+
+
+```{r eval=FALSE}
+install.packages("ggstatsplot")
+```
+
+```{r}
+library(ggstatsplot)
+
+ggbarstats(
+  data = mtcars, 
+  x = am, 
+  y = cyl, 
+  label = "both", 
+)
+```
+
+
+## Interpretation
+
+- **Chi-Square statistics** was previously used to calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it
+
+- **P-value** in our test can be seen as the probability of independence between two variables, low p-value (usually p < 0.05), like in our example, indicates that number of cylinders and transmission of cars *are dependent on each other*. In other words - *there is a relationship between them*.
+
+Indeed, the plot shows that the number of cars using automatic transmission (am = 0) increases with increasing number of cylinders. The opposite is true for cars with manual transmission (am = 1), their frequency declines as number of cylinders increases.
+
+So, we can conclude, that *the relationship between transmission and number of cylinders exists*. However, p-value doesn't say *how strong this relationship is*.
+
+- That's why we have **V Cramer** value with its 95% confidence intervals as **the effect size** next to p-value. Our effect size of 0.46 indicates a **relatively strong relationship**, which supports the conclusion made by the p-value. The confidence intervals do not make much sense though, since *V cramer* goes from 0 to 1.
+
+![](v_cramer.png)
+
+- However, `ggbarstats` provides a second **Bayesian V Cramer effect size**, which delivers much more useful 95% Highest Density Intervals. The interpretation of the Bayesian effect size is the same, so the relationship between our variables is **relatively strong**.
+
+
+
+- If that's not enough, we can look at the **Bayes Factor** (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of - 2.82 in our example indicates a **strong evidence for the alternative hypothesis** - that the relationship exists, which IS in line with the frequentists statistics on the top of the plot. 
+
+
+![](bf_interpretation.png)
+
+
+- We can also see the **Proportion Test** for transmissions to be carried out fo each cylinders category. It shows whether proportions inside every cylinder differ. Our Null Hypothesis ($H_0$) here is that there are equal proportions of different transmissions in a particular category of cylinder. Our Alternative Hypothesis ($H_alt$) is that the proportions differ.
+
+## Pairwise Chi-Sqared Tests ... or post-hoc tests
+
+If you find a significant relationship between variables and you have more then two categories in any of your variables, like in our example, we might be interested to compare proportions of cylinders with each other, namely 4 with 6, 4 with 8 and 6 with 8. Such simple pairwise comparisons is often called with an unnecessary fancy name - **post-hoc tests**.
+
+```{r eval=FALSE}
+install.packages("rstatix")
+```
+
+
+```{r}
+library(rstatix)
+```
+
+
+```{r eval=FALSE}
+pairwise_prop_test(table(mtcars$cyl, mtcars$am)) 
+```
+
+
+```{r echo=F, message=F, warning=F}
+library(flextable)
+pairwise_prop_test(table(mtcars$cyl, mtcars$am)) %>% 
+  regulartable() %>% 
+  autofit()
+```
+
+
+
+## What's next?
+
+- first of all, never forget to cite this amazing package!
+
+```{r}
+citation("ggstatsplot")
+```
+
+
+- learn more about [Chi-Squared Test](https://yury-zablotski.netlify.app/post/chi-square-2/)
+
+- have a look at the [Chi-Squared Test Goodness of Fit](https://yury-zablotski.netlify.app/post/goodness-of-fit/)
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+## Further readings and watchings
+
+- Jeffreys, H. 1961. Theory of Probability. 3rd ed. Oxford: Oxford University Press.
+
+
+
+
+
+
+
+
