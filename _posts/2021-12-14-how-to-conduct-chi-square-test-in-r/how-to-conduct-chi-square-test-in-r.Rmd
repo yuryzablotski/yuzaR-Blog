@@ -31,7 +31,9 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
-## This post as a video (in progress)
+## This post as a video
+
+I recommend to watch a video first, because I highlight things, I talk about. It's ca. 5 minutes long.
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("8Tj0-yMPO64")
@@ -43,9 +45,9 @@ Understanding [hypothesis testing](https://yuzar-blog.netlify.app/posts/2021-06-
 
 ## How to conduct Chi-Squared test in R
 
-If you have installed and loaded `ggstatsplot` package, you can use `ggbarstats` function to conduct and visualize Chi-Square test of independence between two categorical variables, where variables can have two or more categories. Within this function we need to specify only four arguments: 
+If you have installed and loaded {ggstatsplot} package, you can use {ggbarstats} function to conduct and visualize Chi-Square test of independence between two categorical variables, where variables can have two or more categories. Within this function we need to specify only four arguments: 
 
-- first, **our data**, for example let's take `mtcars`, which you already have in R, so you don't need to look for it
+- **our data**, e.g. let's take `mtcars`, which you already have in R, so you don't need to look for it
 - **x** - as one of your categorical variables, for example *Transmission* of the car (with 0 being automatic, and 1 being manual transmission)
 - **y** - would be your second variable, let's take the *Number of cylinders* (4, 6 or 8) and
 - **the label** argument - which displays **both** numbers and percentages of observations in each category.
@@ -61,9 +63,9 @@ install.packages("ggstatsplot")
 library(ggstatsplot)
 
 ggbarstats(
-  data = mtcars, 
-  x = am, 
-  y = cyl, 
+  data  = mtcars, 
+  x     = am, 
+  y     = cyl, 
   label = "both", 
 )
 ```
@@ -85,21 +87,19 @@ So, we can conclude, that *the relationship between transmission and number of c
 
 - However, `ggbarstats` also provides a second **Bayesian V Cramer effect size**, which delivers much more useful 95% Highest Density Intervals. The interpretation of the Bayesian effect size is the same, so the relationship between our variables is **relatively strong**.
 
-
-
 - If that's not enough, we can look at the **Bayes Factor** (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of - 2.82 in our example indicates a **strong evidence for the alternative hypothesis** - that the relationship exists, which IS in line with the frequentists statistics on the top of the plot. 
 
 
 ![](bf_interpretation.png)
 
 
-- We can also see **proportion Tests** for transmissions in each cylinder. They show whether proportions inside every cylinder differ. Our Null Hypothesis ($H_0$) here is that there are equal proportions of different transmissions in a particular category of cylinder. Which is the case for cylinders 4 and 6. While, our Alternative Hypothesis ($H_alt$) is that the proportions differ, which is the case for cylinder 8.
+- We can also see **Proportion Tests** for transmissions in each cylinder. They show whether proportions inside every cylinder differ. Our Null Hypothesis ($H_0$) here is that there are equal proportions of different transmissions in a particular category of a cylinder. Which is the case for cylinders 4 and 6. While, our Alternative Hypothesis ($H_alt$) is that the proportions differ, which is the case for the cylinder 8.
 
-## Pairwise Chi-Sqared Tests ... or post-hoc tests
+## Pairwise Proportion Tests ... or post-hoc tests
 
 If you find a significant relationship between variables and you have more then two categories in any of your variables, like in our example, you might be interested to compare proportions of cylinders with each other, namely 4 with 6, 4 with 8 and 6 with 8. Such simple pairwise comparisons is often called with an unnecessary fancy name - **post-hoc tests**.
 
-The easiest was to make pairwise proportions tests is to use `pairwise_prop_test()` function from `rstatix` package. Thus, first, install and load `rstatix` package, then use `table()` function for a contingency table of your variables. And finally, simply apply `pairwise_prop_test()` function to your contingency table. The results show two kinds of p-values, normal and adjusted for multiple comparisons. Always use the adjusted ones. So, we see that there is a significant association between cylinders 4 and 8, where cylinder 4 has more manual transmission, while cylinder 8 has more automatic transmission. 
+The easiest was to make pairwise proportions tests is to use {pairwise_prop_test} function from {rstatix} package. Thus, first, install and load {rstatix} package, then use {table} function for a contingency table of your variables. And finally, simply apply {pairwise_prop_test} function to your contingency table. The results show two kinds of p-values, normal and adjusted for multiple comparisons. Always use the adjusted ones. So, we see that there is a significant association between cylinders 4 and 8, where cylinder 4 has more cars with manual transmission, while cylinder 8 has more cars with automatic transmission. 
 
 ```{r eval=FALSE}
 install.packages("rstatix")
@@ -143,9 +143,6 @@ citation("ggstatsplot")
 ---
 
 If you think, I missed something, please comment on it, and I’ll improve this tutorial.
-
-So, thanks for watching. If you did like this video, feel free to
-subscribe and I'll catch you again soon for the next one.
 
 **Thank you for learning!**
 
