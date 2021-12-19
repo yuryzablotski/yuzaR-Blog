@@ -1,7 +1,7 @@
 ---
 title: "R demo | Chi-Square Test | how to conduct, visualize & interpret | + pairwise post-hoc tests"
 description: |
-  Chi-Square test checks the independence between two categorical variables, where variables can have two or more categories. Take a close look at this statistics rich picture. It looks like a lot of work, but it can actually be done with only one line of code. So, in this video we'll learn how to do that and how to interpret all these results. Let's get into it.
+  Chi-Square Test checks the independence between two categorical variables, where variables can have two or more categories. Need to do Chi-Square test? It can actually be done with only one line of code. There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. In this short blog-post you'll learn how to conduct, visualize and interpret Chi-Square test & pairwise post-hoc tests in R.
 author:
   - name: Yury Zablotski
     url: https://yury-zablotski.netlify.app/
@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = T)
 ## This post as a video (in progress)
 
 ```{r, eval=T, echo=F}
-#vembedr::embed_youtube("Dldutns6Tig")
+vembedr::embed_youtube("8Tj0-yMPO64")
 ```
 
 ## Previous topics
