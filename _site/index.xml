@@ -265,7 +265,7 @@ Wasserstein, Ronald L, Allen L Schirm, and Nicole A Lazar. 2019. &lt;span&gt;“
 
 
 &lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things, I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
 &lt;div class="vembedr"&gt;
 &lt;div&gt;
 &lt;iframe src="https://www.youtube.com/embed/8Tj0-yMPO64" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
@@ -291,7 +291,7 @@ ggbarstats(
   y     = cyl, 
   label = &amp;quot;both&amp;quot;, 
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filef55c3c35a5d6_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file17a21833267c_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
@@ -319,7 +319,7 @@ ggbarstats(
 &lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
 contingency_table
 pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
-&lt;template id="be653a51-1c7e-465a-8a9b-39c8b315a1ec"&gt;&lt;style&gt;
+&lt;template id="13bf81d1-681f-429b-a130-a9c65bcf952c"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -353,12 +353,12 @@ pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-179e8482{}.cl-179906ce{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-179914e8{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-179914f2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1799422e{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1799422f{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994238{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994239{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994242{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994243{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994244{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994245{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1799424c{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1799424d{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994256{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-17994257{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-179e8482'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1799424d"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1799424d"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994256"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994256"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994257"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1799422e"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1799422e"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1799422f"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1799422f"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994238"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-17994239"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994239"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994242"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994242"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994243"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-17994244"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994244"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994245"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-17994245"&gt;&lt;p class="cl-179914f2"&gt;&lt;span class="cl-179906ce"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1799424c"&gt;&lt;p class="cl-179914e8"&gt;&lt;span class="cl-179906ce"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="eb6d47e0-1414-484c-8a39-c17478122beb"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-ed1a5392{}.cl-ed10f590{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ed110d28{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ed110d32{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ed114df6{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e0a{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e14{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e15{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e1e{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e1f{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e20{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e32{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e3c{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e46{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e47{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ed114e48{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-ed1a5392'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ed114e46"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e46"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e47"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e47"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e48"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ed114df6"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114df6"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e0a"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e0a"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e14"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ed114e15"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e15"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e1e"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e1e"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e1f"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ed114e20"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e20"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e32"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e32"&gt;&lt;p class="cl-ed110d32"&gt;&lt;span class="cl-ed10f590"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ed114e3c"&gt;&lt;p class="cl-ed110d28"&gt;&lt;span class="cl-ed10f590"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="e0217c64-ec22-473d-9c46-babcbb4a3c67"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("eb6d47e0-1414-484c-8a39-c17478122beb");
-var template = document.getElementById("be653a51-1c7e-465a-8a9b-39c8b315a1ec");
+var dest = document.getElementById("e0217c64-ec22-473d-9c46-babcbb4a3c67");
+var template = document.getElementById("13bf81d1-681f-429b-a130-a9c65bcf952c");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -411,8 +411,209 @@ A BibTeX entry for LaTeX users is
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
-      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others.</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/to-do-list.jpg" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# 1. simulate your to-do results
+
+# install.packages(&amp;quot;tidyverse&amp;quot;)
+library(tidyverse)
+
+set.seed(1)  # stabilizes random output, so you always get the same result
+my_to_dos &amp;lt;- round(rnorm(n = 21, mean = 7, sd = 3)) 
+
+my_to_dos&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1]  5  8  4 12  8  5  8  9  9  6 12  8  5  0 10  7  7 10  9  9 10&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When you collect your to-do lists for the last 21 days, you find out that you finish 7 out of 10 tasks per day on average … ± 3. Now, since we have our data we can compare your average of 7 to the average of others, which is 6 our of 10, or 60%, according to &lt;a href="https://www.huffpost.com/entry/forty-one-percent-of-tasks-on-to-do-lists-are-never-done_b_9308978?guccounter=1&amp;amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;amp;guce_referrer_sig=AQAAANQ9AhoKTEu0BJFpJJbnXQLY_7SeRTIybJaZEHrK2N0bi1lPpFSByEH5kUdhBXNRo93VwzVF_ZLIkjBOCxhVzkK8I4CFTm0XPXsPQ1Rnl-Q77Q7RXpmcKQkrmr9QlKXKxEDFxoxsrkXwbe_wF2fNSsqotvBAE472NESpYzs7nY2v"&gt;this article&lt;/a&gt;. Is 7 significantly different from 6? &lt;strong&gt;One-sample t-test&lt;/strong&gt; or &lt;strong&gt;One-sample Wilcoxon test&lt;/strong&gt; can tell that, but how do we know which test we take?&lt;/p&gt;
+&lt;h2 id="choose-the-test"&gt;Choose the test&lt;/h2&gt;
+&lt;p&gt;Well, we’ll simply check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;first, with &lt;em&gt;Shapiro-Wilk normality test&lt;/em&gt;, where p-value &amp;gt; 0.05 would mean normally distributed data,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If data is normally distributed, like in our example, &lt;strong&gt;the mean&lt;/strong&gt; is a good representative for our sample, in this case we’ll use &lt;strong&gt;one-sample t-test&lt;/strong&gt;. But, if data is skewed, we choose &lt;a href="https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/"&gt;&lt;strong&gt;one-sample Wilcoxon test&lt;/strong&gt;&lt;/a&gt; which uses &lt;strong&gt;median&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# 2. check for normality
+
+shapiro.test(my_to_dos) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Shapiro-Wilk normality test
+
+data:  my_to_dos
+W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggpubr&amp;quot;)
+library(ggpubr)
+
+ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file17a216e8a1608_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
+&lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected mean:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;our &lt;strong&gt;null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;)&lt;/strong&gt; suggests that the means are similar, while&lt;/li&gt;
+&lt;li&gt;our &lt;strong&gt;alternative hypothesis (H&lt;sub&gt;alt&lt;/sub&gt;)&lt;/strong&gt; suggests that means differ&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The presence of similarity or difference is not good or bad per se. If the mean of others is known to be correct, and your experiment shows no difference from that, be glad, your results are plausible. But if your results are different from the expected mean, you either did something wrong, or you might have discovered something new.&lt;/p&gt;
+&lt;p&gt;{gghistostats} function from {ggstatsplot} package is probably the best way for our test. Within this function we need to specify only 5 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, which we just created and called &lt;strong&gt;my_to_dos&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - is the numeric variable in our data&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;test.value&lt;/strong&gt; is the productivity of others we want to compare to&lt;/li&gt;
+&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. We choose &lt;strong&gt;parametric&lt;/strong&gt; for &lt;strong&gt;One-sample t-test&lt;/strong&gt;, and we’ll get back to other approaches later and finally…&lt;/li&gt;
+&lt;li&gt;we set the &lt;strong&gt;normal.curve&lt;/strong&gt; argument to TRUE, only because it looks cool ;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This simple command results in a statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# 3. compare your mean to the other mean (6 tasks = 60%)
+
+# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+gghistostats(
+    data       = my_to_dos %&amp;gt;% as_tibble,
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = &amp;quot;p&amp;quot;, 
+    normal.curve = T
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file17a216e8a1608_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# save your plot
+ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;t-value&lt;/strong&gt; is the &lt;strong&gt;measure of similarity&lt;/strong&gt; between compared means measured in units of standard error. The further &lt;em&gt;t-value&lt;/em&gt; is from zero, the more different are the means:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }\]&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;DF&lt;/strong&gt; (not shown) stands for &lt;strong&gt;degrees of freedom&lt;/strong&gt;. &lt;em&gt;DF&lt;/em&gt; is always equal to the sample size - 1. For our 20 measurements, &lt;em&gt;DF&lt;/em&gt; = 10 - 1 = 19.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;t-values&lt;/strong&gt; and &lt;strong&gt;DFs&lt;/strong&gt; were previously used to calculate &lt;strong&gt;p-values&lt;/strong&gt;. But, modern statistical software always report &lt;em&gt;p-values&lt;/em&gt;, so, we can safely ignore &lt;em&gt;t&lt;/em&gt;. &lt;em&gt;P-values&lt;/em&gt; can also be seeing as the measure of similarity, the smaller p-value, the less similar the means are. Our &lt;em&gt;p-value&lt;/em&gt; of 0.013 indicates that our means are different. Actually, significantly different, if we follow the threshold of 0.05. Thus, we can conclude that we are significantly more productive than other people. So, we can feel proud about ourselves for a second… and then get back to work ;).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Indeed, if you imagine doing 1.7 tasks more every day for one year, at the end of this year you’ll accomplish over 620 more tasks then the average person. &lt;strong&gt;But, more importantly&lt;/strong&gt;, this will make &lt;strong&gt;YOU&lt;/strong&gt; significantly better then yourself-one-year-ago &lt;strong&gt;in whatever you do.&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Hedges’ g&lt;/em&gt; is the estimated &lt;em&gt;standardized&lt;/em&gt; difference between the means, and is the &lt;strong&gt;Effect Size&lt;/strong&gt;. It goes from zero to one and is interpreted in the same way as &lt;em&gt;Cohen’s d&lt;/em&gt; Effect size. In our example the effect is &lt;em&gt;medium strong&lt;/em&gt;, which supports the conclusion of the p-value that difference exists.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_hedges_d.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;There is one problem with &lt;em&gt;Hedges’ g&lt;/em&gt; though - it is a &lt;strong&gt;standardized difference&lt;/strong&gt; between the means, not the normal difference. And that is where &lt;strong&gt;Bayesian Difference&lt;/strong&gt; with it’s 95% Highest Density Intervals on the bottom of the plot seems more intuitive and is a second measure of the effect size here. It shows that the average person accomplishes 1.56 tasks less then you.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If that’s not enough, we can look at the &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of -1.37 in our example indicates a &lt;strong&gt;substantial evidence for the alternative hypothesis&lt;/strong&gt; - that our productivity is above average, which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;h3 id="the-old-way-to-do-one-sample-t-test-in-r"&gt;The old way to do one-sample t-test in R&lt;/h3&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One Sample t-test
+
+data:  my_to_dos
+t = 2.7116, df = 20, p-value = 0.01343
+alternative hypothesis: true mean is not equal to 6
+95 percent confidence interval:
+ 6.384558 8.948776
+sample estimates:
+mean of x 
+ 7.666667 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can also conduct the t-test in a classical way in R, which gives us some additional metrics, for instance, &lt;strong&gt;95% confidence intervals (CI)&lt;/strong&gt; of the mean. The previous results of 6 [tasks/day] is outside of our &lt;strong&gt;95% CI&lt;/strong&gt; [6.38, 8.95], thus our result is indeed different. It also gives us the &lt;em&gt;Degrees of freedom&lt;/em&gt;, which were used to get p-values.&lt;/p&gt;
+&lt;h3 id="one-sided-one-sample-t-test-do-them-only-if-you-really-know-what-you-are-doing"&gt;One-sided one-sample t-test (do them only if you really know what you are doing)&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;R&lt;/em&gt; performs a two-sided test by default. Performing a one-sided test allows us to say whether our result is &lt;strong&gt;significantly lower&lt;/strong&gt; or &lt;strong&gt;significantly greater&lt;/strong&gt;. We could also change the confidence level, to i.e. &lt;code&gt;conf.level = 0.99&lt;/code&gt; to be 99% sure of our conclusion:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6, alternative = &amp;quot;less&amp;quot;,    conf.level = 0.99) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One Sample t-test
+
+data:  my_to_dos
+t = 2.7116, df = 20, p-value = 0.9933
+alternative hypothesis: true mean is less than 6
+99 percent confidence interval:
+     -Inf 9.220453
+sample estimates:
+mean of x 
+ 7.666667 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6, alternative = &amp;quot;greater&amp;quot;, conf.level = 0.99)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One Sample t-test
+
+data:  my_to_dos
+t = 2.7116, df = 20, p-value = 0.006716
+alternative hypothesis: true mean is greater than 6
+99 percent confidence interval:
+ 6.11288     Inf
+sample estimates:
+mean of x 
+ 7.666667 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first &lt;em&gt;one-sided t-test&lt;/em&gt; shows that your mean performance is &lt;strong&gt;definitely not lower&lt;/strong&gt; (p&amp;gt;0.05 and expected average of 6 is included in 99% CI) then the average. The second &lt;em&gt;one-sided t-test&lt;/em&gt; indicates that your performance is &lt;strong&gt;significantly greater&lt;/strong&gt; then the average (p&amp;lt;0.05 and 6 is not included in 99% CI).&lt;/p&gt;
+&lt;h2 id="one-sample-wilcoxon-test"&gt;One-sample Wilcoxon test&lt;/h2&gt;
+&lt;p&gt;If our data is not normally distributed, the &lt;strong&gt;median&lt;/strong&gt; would describe our data much better than the average. And that’s what &lt;strong&gt;One-sample Wilcoxon test&lt;/strong&gt; does. The good news about {gghistostats} function is that, the only thing you need to change is the &lt;strong&gt;type&lt;/strong&gt; argument, from “parametric” to “nonparametric.” By the way, I encourage you to explore the function for yourself by simply asking R about it.&lt;/p&gt;
+&lt;p&gt;If our data would have been not-normally distributed, your productivity would be even better, which you can see from&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the higher median to-do, namely 8, as compared with the mean of 7.7,&lt;/li&gt;
+&lt;li&gt;lower p-value if we consider a p-value a measure of similarity (0.01 vs. 0.013) and&lt;/li&gt;
+&lt;li&gt;stronger effect size (0.66 vs. 0.57).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?gghistostats
+
+gghistostats(
+    data       = my_to_dos %&amp;gt;% as_tibble(),
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = &amp;quot;np&amp;quot;, 
+    normal.curve = T,
+    xlab = &amp;quot;tasks done&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file17a216e8a1608_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_rank_biserial.png" /&gt;&lt;/p&gt;
+&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+  Patil, I. (2021). Visualizations with statistical details:
+  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
+  6(61), 3167, doi:10.21105/joss.03167
+
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    doi = {10.21105/joss.03167},
+    url = {https://doi.org/10.21105/joss.03167},
+    year = {2021},
+    publisher = {{The Open Journal}},
+    volume = {6},
+    number = {61},
+    pages = {3167},
+    author = {Indrajeet Patil},
+    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
+    journal = {{Journal of Open Source Software}},
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Need to do Chi-Square test? There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. Here is [R demo on how to conduct, visualize and interpret Chi-Square test &amp;amp; pairwise post-hoc tests] (&lt;a href="https://youtu.be/8Tj0-yMPO64" class="uri"&gt;https://youtu.be/8Tj0-yMPO64&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;a href="http://www.sthda.com/english/wiki/one-sample-t-test-in-r" class="uri"&gt;http://www.sthda.com/english/wiki/one-sample-t-test-in-r&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/" class="uri"&gt;http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Funder, D. C., &amp;amp; Ozer, D. J. (2019). Evaluating effect size in psychological research: sense and nonsense. Advances in Methods and Practices in Psychological Science.&lt;/li&gt;
+&lt;li&gt;Gignac, Gilles E, and Eva T Szodorai. 2016. “Effect Size Guidelines for Individual Differences Researchers.” Personality and Individual Differences 102: 74–78.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>ad2dcf8028cf2b8022b134c6631af623</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</guid>
+      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>R package reviews {DataExplorer} explore your data!</title>

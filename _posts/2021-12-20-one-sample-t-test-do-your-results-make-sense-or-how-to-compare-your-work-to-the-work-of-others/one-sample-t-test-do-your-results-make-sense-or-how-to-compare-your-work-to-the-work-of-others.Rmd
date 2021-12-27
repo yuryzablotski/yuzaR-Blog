@@ -1,0 +1,221 @@
+---
+title: "One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others."
+description: |
+  Imagine you get 7 out of 10 to-dos from your list done on average. Are you then more productive then others? One-sample t-test and One-sample Wilcoxon test can answer this question. So, in this blog-post you'll learn how to conduct and visualize these tests with only one simple command, how to interpret all these results and how to choose the right test in the first place. Let's get straight into it.
+author:
+  - name: Yury Zablotski
+    url: https://yury-zablotski.netlify.app/
+date: 01-09-2021
+categories:
+  - videos
+  - statistics
+preview: thumbnail.jpg
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+# draft: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+# draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 5 minutes long.
+
+```{r, eval=T, echo=F}
+#vembedr::embed_youtube("8Tj0-yMPO64")
+```
+
+## Previous topics
+
+Understanding [hypothesis testing](https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/) and [p-values](https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/) would be very helpful. 
+
+![](to-do-list.jpg)
+
+```{r}
+# 1. simulate your to-do results
+
+# install.packages("tidyverse")
+library(tidyverse)
+
+set.seed(1)  # stabilizes random output, so you always get the same result
+my_to_dos <- round(rnorm(n = 21, mean = 7, sd = 3)) 
+
+my_to_dos
+```
+
+When you collect your to-do lists for the last 21 days, you find out that you finish 7 out of 10 tasks per day on average ... ± 3. Now, since we have our data we can compare your average of 7 to the average of others, which is 6 our of 10, or 60%, according to [this article](https://www.huffpost.com/entry/forty-one-percent-of-tasks-on-to-do-lists-are-never-done_b_9308978?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAANQ9AhoKTEu0BJFpJJbnXQLY_7SeRTIybJaZEHrK2N0bi1lPpFSByEH5kUdhBXNRo93VwzVF_ZLIkjBOCxhVzkK8I4CFTm0XPXsPQ1Rnl-Q77Q7RXpmcKQkrmr9QlKXKxEDFxoxsrkXwbe_wF2fNSsqotvBAE472NESpYzs7nY2v). Is 7 significantly different from 6? **One-sample t-test** or **One-sample Wilcoxon test** can tell that, but how do we know which test we take? 
+
+## Choose the test
+
+Well, we'll simply check whether our data is bell shaped, or **normally distributed**. This can be done in two ways.
+
+- first, with *Shapiro-Wilk normality test*, where p-value > 0.05 would mean normally distributed data, 
+
+- or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.
+
+If data is normally distributed, like in our example, **the mean** is a good representative for our sample, in this case we'll use **one-sample t-test**. But, if data is skewed, we choose [**one-sample Wilcoxon test**](https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/) which uses **median**.
+
+
+```{r}
+# 2. check for normality
+
+shapiro.test(my_to_dos) 
+
+# install.packages("ggpubr")
+library(ggpubr)
+
+ggqqplot(my_to_dos)
+```
+
+
+## One-sample t-test
+
+Since *one-sample t-test* checks the **similarity** between our sample's mean and the expected mean:
+
+1. our **null hypothesis (H~0~)** suggests that the means are similar, while
+2. our **alternative hypothesis (H~alt~)** suggests that means differ
+
+The presence of similarity or difference is not good or bad per se. If the mean of others is known to be correct, and your experiment shows no difference from that, be glad, your results are plausible. But if your results are different from the expected mean, you either did something wrong, or you might have discovered something new.
+
+{gghistostats} function from {ggstatsplot} package is probably the best way for our test. Within this function we need to specify only 5 arguments: 
+
+- **our data**, which we just created and called **my_to_dos**
+- **x** - is the numeric variable in our data
+- **test.value** is the productivity of others we want to compare to
+- the **type** of statistical approach. We choose **parametric** for **One-sample t-test**, and we'll get back to other approaches later and finally...
+- we set the **normal.curve** argument to TRUE, only because it looks cool ;)
+
+This simple command results in a statistically rich and publication ready plot! Now, let's interpret the results.
+
+
+```{r}
+# 3. compare your mean to the other mean (6 tasks = 60%)
+
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+gghistostats(
+    data       = my_to_dos %>% as_tibble,
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = "p", 
+    normal.curve = T
+    )
+
+# save your plot
+ggsave("ostt.jpg", plot = last_plot(), width = 5.5)
+```
+
+
+## Interpretation
+
+- **t-value** is the **measure of similarity** between compared means measured in units of standard error. The further *t-value* is from zero, the more different are the means:
+
+$$t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }$$ 
+
+- **DF** (not shown) stands for **degrees of freedom**. *DF* is always equal to the sample size - 1. For our 20 measurements, *DF* = 10 - 1 = 19.
+
+- **t-values** and **DFs** were previously used to calculate **p-values**. But, modern statistical software always report *p-values*, so, we can safely ignore *t*. *P-values* can also be seeing as the measure of similarity, the smaller p-value, the less similar the means are. Our *p-value* of 0.013 indicates that our means are different. Actually, significantly different, if we follow the threshold of 0.05. Thus, we can conclude that we are significantly more productive than other people. So, we can feel proud about ourselves for a second... and then get back to work ;).
+
+Indeed, if you imagine doing 1.7 tasks more every day for one year, at the end of this year you'll accomplish over 620 more tasks then the average person. **But, more importantly**, this will make **YOU** significantly better then yourself-one-year-ago **in whatever you do.**
+
+- *Hedges' g* is the estimated *standardized* difference between the means, and is the **Effect Size**. It goes from zero to one and is interpreted in the same way as *Cohen's d* Effect size. In our example the effect is *medium strong*, which supports the conclusion of the p-value that difference exists.
+
+
+![](effect_size_hedges_d.png)
+
+- There is one problem with *Hedges' g* though - it is a **standardized difference** between the means, not the normal difference. And that is where **Bayesian Difference** with it's 95% Highest Density Intervals on the bottom of the plot seems more intuitive and is a second measure of the effect size here. It shows that the average person accomplishes 1.56 tasks less then you.
+
+- If that's not enough, we can look at the **Bayes Factor** (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of -1.37 in our example indicates a **substantial evidence for the alternative hypothesis** - that our productivity is above average, which IS in line with the frequentists statistics on the top of the plot. 
+
+![](bf_interpretation.png)
+
+### The old way to do one-sample t-test in R
+
+```{r}
+t.test(my_to_dos, mu = 6) 
+```
+
+We can also conduct the t-test in a classical way in R, which gives us some additional metrics, for instance, **95% confidence intervals (CI)**  of the mean. The previous results of 6 [tasks/day] is outside of our **95% CI** [6.38, 8.95], thus our result is indeed different. It also gives us the *Degrees of freedom*, which were used to get p-values.
+
+### One-sided one-sample t-test (do them only if you really know what you are doing)
+
+*R* performs a two-sided test by default. Performing a one-sided test allows us to say whether our result is **significantly lower** or **significantly greater**. We could also change the confidence level, to i.e. `conf.level = 0.99` to be 99% sure of our conclusion:
+
+```{r}
+t.test(my_to_dos, mu = 6, alternative = "less",    conf.level = 0.99) 
+t.test(my_to_dos, mu = 6, alternative = "greater", conf.level = 0.99)
+```
+
+The first *one-sided t-test* shows that your mean performance is **definitely not lower** (p>0.05 and expected average of 6 is included in 99% CI) then the average. The second *one-sided t-test* indicates that your performance is **significantly greater** then the average (p<0.05 and 6 is not included in 99% CI). 
+
+## One-sample Wilcoxon test
+
+If our data is not normally distributed, the **median** would describe our data much better than the average. And that's what **One-sample Wilcoxon test** does. The good news about {gghistostats} function is that, the only thing you need to change is the **type** argument, from "parametric" to "nonparametric". By the way, I encourage you to explore the function for yourself by simply asking R about it. 
+
+If our data would have been not-normally distributed, your productivity would be even better, which you can see from 
+
+- the higher median to-do, namely 8, as compared with the mean of 7.7, 
+- lower p-value if we consider a p-value a measure of similarity (0.01 vs. 0.013) and 
+- stronger effect size (0.66 vs. 0.57).
+
+```{r}
+?gghistostats
+
+gghistostats(
+    data       = my_to_dos %>% as_tibble(),
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = "np", 
+    normal.curve = T,
+    xlab = "tasks done"
+    )
+
+ggsave("oswt.jpg", plot = last_plot(), width = 5.5)
+```
+
+
+Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size
+
+![](effect_size_rank_biserial.png)
+
+
+## What's next?
+
+- first of all, never forget to cite this amazing package!
+
+```{r}
+citation("ggstatsplot")
+```
+
+- Need to do Chi-Square test? There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. Here is [R demo on how to conduct, visualize and interpret Chi-Square test & pairwise post-hoc tests] (https://youtu.be/8Tj0-yMPO64)
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+## Further readings and watchings
+
+1. http://www.sthda.com/english/wiki/one-sample-t-test-in-r
+2. http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/
+3. Funder, D. C., & Ozer, D. J. (2019). Evaluating effect size in psychological research: sense and nonsense. Advances in Methods and Practices in Psychological Science.
+4. Gignac, Gilles E, and Eva T Szodorai. 2016. “Effect Size Guidelines for Individual Differences Researchers.” Personality and Individual Differences 102: 74–78.
+
+
