@@ -128,7 +128,7 @@ ggsave("ostt.jpg", plot = last_plot(), width = 5.5)
 
 $$t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }$$ 
 
-- **DF** (not shown) stands for **degrees of freedom**. *DF* is always equal to the sample size - 1. For our 20 measurements, *DF* = 10 - 1 = 19.
+- **DF** (not shown) stands for **degrees of freedom**. *DF* is always equal to the sample size - 1. For our 21 measurements, *DF* = 21 - 1 = 20.
 
 - **t-values** and **DFs** were previously used to calculate **p-values**. But, modern statistical software always report *p-values*, so, we can safely ignore *t*. *P-values* can also be seeing as the measure of similarity, the smaller p-value, the less similar the means are. Our *p-value* of 0.013 indicates that our means are different. Actually, significantly different, if we follow the threshold of 0.05. Thus, we can conclude that we are significantly more productive than other people. So, we can feel proud about ourselves for a second... and then get back to work ;).
 
