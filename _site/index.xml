@@ -291,7 +291,7 @@ ggbarstats(
   y     = cyl, 
   label = &amp;quot;both&amp;quot;, 
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0c16e13572_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe44d4a1f8f_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
@@ -319,7 +319,7 @@ ggbarstats(
 &lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
 contingency_table
 pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
-&lt;template id="337931a7-5939-437a-9a66-33d6989ff528"&gt;&lt;style&gt;
+&lt;template id="9e667d26-9ccf-4c99-a9dd-dd83584d6dc1"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -353,12 +353,12 @@ pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-868c5b98{}.cl-8685d516{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8685f618{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8685f62c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-86863326{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863330{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8686333a{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863344{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863345{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863346{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8686334e{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8686334f{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863358{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863359{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8686335a{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86863362{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-868c5b98'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-86863359"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863359"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8686335a"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8686335a"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863362"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-86863326"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863326"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863330"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863330"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8686333a"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-86863344"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863344"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863345"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863345"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863346"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8686334e"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8686334e"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8686334f"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8686334f"&gt;&lt;p class="cl-8685f62c"&gt;&lt;span class="cl-8685d516"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-86863358"&gt;&lt;p class="cl-8685f618"&gt;&lt;span class="cl-8685d516"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="02e4b99c-4a1c-4311-b210-ce66390f08ca"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-cf443192{}.cl-cf3d9418{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cf3db4a2{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf3db4b6{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf3def26{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def30{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def3a{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def3b{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def44{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def45{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def4e{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def4f{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def50{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def58{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def59{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def62{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-cf443192'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def58"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def58"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def59"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def59"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def62"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def26"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def26"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def30"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def30"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def3a"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def3b"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def3b"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def44"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def44"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def45"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def4e"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def4e"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def4f"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def4f"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def50"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="0930e3d1-e8f8-4416-8c90-14bc75ef6137"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("02e4b99c-4a1c-4311-b210-ce66390f08ca");
-var template = document.getElementById("337931a7-5939-437a-9a66-33d6989ff528");
+var dest = document.getElementById("0930e3d1-e8f8-4416-8c90-14bc75ef6137");
+var template = document.getElementById("9e667d26-9ccf-4c99-a9dd-dd83584d6dc1");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -461,7 +461,7 @@ W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
 library(ggpubr)
 
 ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0ca58618c_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe467ede564_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
 &lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected mean:&lt;/p&gt;
 &lt;ol style="list-style-type: decimal"&gt;
@@ -490,7 +490,7 @@ gghistostats(
     type       = &amp;quot;p&amp;quot;, 
     normal.curve = T
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0ca58618c_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe467ede564_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
@@ -571,7 +571,7 @@ gghistostats(
     normal.curve = T,
     xlab = &amp;quot;tasks done&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0ca58618c_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe467ede564_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_rank_biserial.png" /&gt;&lt;/p&gt;
@@ -621,14 +621,19 @@ A BibTeX entry for LaTeX users is
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
-      <title>Correlation in R (in progress)</title>
+      <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</link>
       <description>
 
 
 &lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. &lt;!-- It's ca. 5 minutes long. --&gt;&lt;/p&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 4 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/eXczd0ewVgE" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
 &lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
 &lt;h2 id="the-most-effective-way-to-compute-correlation-in-r"&gt;The most effective way to compute correlation in R&lt;/h2&gt;
@@ -649,7 +654,7 @@ ggscatterstats(
     y    = qsec,
     type = &amp;quot;parametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0c21b5bb1b_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggscatterstats
 
 # install.packages(&amp;quot;ggplot2&amp;quot;)
@@ -688,21 +693,20 @@ ggsave(&amp;quot;corr_p.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code
     y    = qsec,
     type = &amp;quot;nonparametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0c21b5bb1b_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;corr_np.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="robust-method-if-you-have-outliers"&gt;Robust method if you have outliers&lt;/h2&gt;
 &lt;p&gt;Moreover, if we find some outliers in our data, we could apply a “robust” correlation to decrease the influence of outliers.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(data = mtcars, x = hp, y = qsec, type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0c21b5bb1b_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="checking-for-normality-and-linearity"&gt;Checking for normality and linearity&lt;/h2&gt;
-&lt;p&gt;Plotting the relationships before making conclusions, will allow your to make sure they are linear.&lt;/p&gt;
+&lt;p&gt;Plotting the relationships before making conclusions, will &lt;strong&gt;allow your to make sure they are linear&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Here is some code to check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;first, with &lt;em&gt;Shapiro-Wilk normality test&lt;/em&gt;, where p-value &amp;gt; 0.05 would mean normally distributed data,&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;If data is normally distributed, like in our example, &lt;strong&gt;the mean&lt;/strong&gt; is a good representative for our sample, in this case we’ll use &lt;strong&gt;one-sample t-test&lt;/strong&gt;. But, if data is skewed, we choose &lt;a href="https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/"&gt;&lt;strong&gt;one-sample Wilcoxon test&lt;/strong&gt;&lt;/a&gt; which uses &lt;strong&gt;median&lt;/strong&gt;.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggpubr&amp;quot;)
 library(ggpubr)
 
@@ -713,7 +717,7 @@ shapiro.test(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$hp
 W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0c21b5bb1b_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shapiro.test(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;
     Shapiro-Wilk normality test
@@ -721,7 +725,7 @@ W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$qsec
 W = 0.97325, p-value = 0.5935&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filefd0c21b5bb1b_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
 &lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
@@ -747,9 +751,8 @@ A BibTeX entry for LaTeX users is
     journal = {{Journal of Open Source Software}},
   }&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, &lt;a href="https://youtu.be/8Tj0-yMPO64"&gt;this video will shown you a quick and effective way&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, &lt;a href="https://youtu.be/8Tj0-yMPO64"&gt;this video will shown you a quick and effective way&lt;/a&gt;. It shows you how to conduct, visualize and interpret Chi-Square test &amp;amp; pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- It shows you how to conduct, visualize and interpret Chi-Square test &amp; pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦. --&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;

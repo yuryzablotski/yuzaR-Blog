@@ -1,7 +1,7 @@
 ---
-title: "Correlation in R (in progress)"
+title: "Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret"
 description: |
-  Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place.  
+  Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place.  
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -33,11 +33,10 @@ knitr::opts_chunk$set(echo = T)
 
 ## This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. 
-<!-- It's ca. 5 minutes long. -->
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 4 minutes long.
 
 ```{r, eval=T, echo=F}
-# vembedr::embed_youtube("")
+vembedr::embed_youtube("eXczd0ewVgE")
 ```
 
 ## Previous topics
@@ -142,15 +141,13 @@ ggscatterstats(data = mtcars, x = hp, y = qsec, type = "robust")
 
 ## Checking for normality and linearity
 
-Plotting the relationships before making conclusions, will allow your to make sure they are linear.
+Plotting the relationships before making conclusions, will **allow your to make sure they are linear**.
 
 Here is some code to check whether our data is bell shaped, or **normally distributed**. This can be done in two ways.
 
 - first, with *Shapiro-Wilk normality test*, where p-value > 0.05 would mean normally distributed data, 
 
 - or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.
-
-If data is normally distributed, like in our example, **the mean** is a good representative for our sample, in this case we'll use **one-sample t-test**. But, if data is skewed, we choose [**one-sample Wilcoxon test**](https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/) which uses **median**.
 
 
 ```{r}
@@ -163,10 +160,7 @@ ggqqplot(mtcars$hp)
 shapiro.test(mtcars$qsec) 
 ggqqplot(mtcars$qsec) 
 ```
-
-
-
-
+**Conclusion:** Our data is linear and normally distributed, so we are fine with the classic Pearson's correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (>3) of outliers, use the Robust correlation method.
 
 
 
@@ -178,9 +172,7 @@ ggqqplot(mtcars$qsec)
 citation("ggstatsplot")
 ```
 
-- Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, [this video will shown you a quick and effective way](https://youtu.be/8Tj0-yMPO64).
-
-<!-- It shows you how to conduct, visualize and interpret Chi-Square test & pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦. -->
+- Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, [this video will shown you a quick and effective way](https://youtu.be/8Tj0-yMPO64). It shows you how to conduct, visualize and interpret Chi-Square test & pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦.
 
 ---
 

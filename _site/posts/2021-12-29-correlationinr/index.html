@@ -87,9 +87,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-<title>yuzaR-Blog: Correlation in R (in progress)</title>
+<title>yuzaR-Blog: Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
 
-<meta property="description" itemprop="description" content="Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let&#39;s learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place."/>
+<meta property="description" itemprop="description" content="Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let&#39;s learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place."/>
 
 <link rel="canonical" href="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"/>
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
@@ -100,9 +100,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta name="article:author" content="Yury Zablotski"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="yuzaR-Blog: Correlation in R (in progress)"/>
+<meta property="og:title" content="yuzaR-Blog: Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let&#39;s learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place."/>
+<meta property="og:description" content="Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let&#39;s learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place."/>
 <meta property="og:url" content="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"/>
 <meta property="og:image" content="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/thumbnail.jpg"/>
 <meta property="og:locale" content="en_US"/>
@@ -110,14 +110,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary_large_image"/>
-<meta property="twitter:title" content="yuzaR-Blog: Correlation in R (in progress)"/>
-<meta property="twitter:description" content="Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let&#39;s learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place."/>
+<meta property="twitter:title" content="yuzaR-Blog: Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret"/>
+<meta property="twitter:description" content="Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let&#39;s learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place."/>
 <meta property="twitter:url" content="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"/>
 <meta property="twitter:image" content="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/thumbnail.jpg"/>
 <meta property="twitter:site" content="@yuzaR___"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
-<meta name="citation_title" content="yuzaR-Blog: Correlation in R (in progress)"/>
+<meta name="citation_title" content="yuzaR-Blog: Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret"/>
 <meta name="citation_fulltext_html_url" content="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"/>
 <meta name="citation_fulltext_world_readable" content=""/>
 <meta name="citation_online_date" content="2021/01/09"/>
@@ -128,7 +128,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","categories","preview","output","bibliography","biblio-style","link-citations","linkcolor","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["Correlation in R (in progress)"]},{"type":"character","attributes":{},"value":["Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-09-2021"]},{"type":"character","attributes":{},"value":["videos","statistics"]},{"type":"character","attributes":{},"value":["thumbnail.jpg"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","categories","preview","output","bibliography","biblio-style","link-citations","linkcolor","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret"]},{"type":"character","attributes":{},"value":["Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-09-2021"]},{"type":"character","attributes":{},"value":["videos","statistics"]},{"type":"character","attributes":{},"value":["thumbnail.jpg"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2375,6 +2375,7 @@ d-appendix d-footnote-list a.footnote-backlink {
 }</style>
 <!--/radix_placeholder_distill-->
   <script src="../../site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <link href="../../site_libs/vembedr-0.1.4/css/vembedr.css" rel="stylesheet" />
   <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2402,7 +2403,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Correlation in R (in progress)","description":"Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place.","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-09T00:00:00.000+01:00","citationText":"Zablotski, 2021"}
+{"title":"Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret","description":"Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place.","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-09T00:00:00.000+01:00","citationText":"Zablotski, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2441,14 +2442,14 @@ gtag('config', 'G-Q28WX9Y4VS');
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Correlation in R (in progress)</h1>
+<h1>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</h1>
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
   <a href="../../index.html#category:videos" class="dt-tag">videos</a>
   <a href="../../index.html#category:statistics" class="dt-tag">statistics</a>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let’s learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place.</p></p>
+<p><p>Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let’s learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place.</p></p>
 </div>
 
 <div class="d-byline">
@@ -2475,9 +2476,13 @@ gtag('config', 'G-Q28WX9Y4VS');
 </nav>
 </div>
 <h2 id="this-post-as-a-video">This post as a video</h2>
-<p>I recommend to watch a video first, because I highlight things I talk about. <!-- It's ca. 5 minutes long. --></p>
+<p>I recommend to watch a video first, because I highlight things I talk about. It’s ca. 4 minutes long.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/eXczd0ewVgE" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
 </div>
 <h2 id="previous-topics">Previous topics</h2>
 <p>Understanding <a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/">hypothesis testing</a> and <a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/">p-values</a> would be very helpful.</p>
@@ -2567,13 +2572,12 @@ gtag('config', 'G-Q28WX9Y4VS');
 <p><img src="correlationinr_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
 <h2 id="checking-for-normality-and-linearity">Checking for normality and linearity</h2>
-<p>Plotting the relationships before making conclusions, will allow your to make sure they are linear.</p>
+<p>Plotting the relationships before making conclusions, will <strong>allow your to make sure they are linear</strong>.</p>
 <p>Here is some code to check whether our data is bell shaped, or <strong>normally distributed</strong>. This can be done in two ways.</p>
 <ul>
 <li><p>first, with <em>Shapiro-Wilk normality test</em>, where p-value &gt; 0.05 would mean normally distributed data,</p></li>
 <li><p>or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.</p></li>
 </ul>
-<p>If data is normally distributed, like in our example, <strong>the mean</strong> is a good representative for our sample, in this case we’ll use <strong>one-sample t-test</strong>. But, if data is skewed, we choose <a href="https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/"><strong>one-sample Wilcoxon test</strong></a> which uses <strong>median</strong>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("ggpubr")</span>
@@ -2607,6 +2611,7 @@ W = 0.97325, p-value = 0.5935</code></pre>
 </div>
 <p><img src="correlationinr_files/figure-html5/unnamed-chunk-5-2.png" width="624" /></p>
 </div>
+<p><strong>Conclusion:</strong> Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&gt;3) of outliers, use the Robust correlation method.</p>
 <h2 id="whats-next">What’s next?</h2>
 <ul>
 <li>first of all, never forget to cite this amazing package!</li>
@@ -2637,9 +2642,8 @@ A BibTeX entry for LaTeX users is
   }</code></pre>
 </div>
 <ul>
-<li>Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, <a href="https://youtu.be/8Tj0-yMPO64">this video will shown you a quick and effective way</a>.</li>
+<li>Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, <a href="https://youtu.be/8Tj0-yMPO64">this video will shown you a quick and effective way</a>. It shows you how to conduct, visualize and interpret Chi-Square test &amp; pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦.</li>
 </ul>
-<!-- It shows you how to conduct, visualize and interpret Chi-Square test & pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦. -->
 <hr />
 <p>If you think, I missed something, please comment on it, and I’ll improve this tutorial.</p>
 <p><strong>Thank you for learning!</strong></p>
@@ -2667,10 +2671,10 @@ A BibTeX entry for LaTeX users is
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=Correlation%20in%20R%20%28in%20progress%29&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F">
+      <a href="https://twitter.com/share?text=Correlation%20Analysis%20in%20R%20%7C%20Pearson%2C%20Spearman%2C%20Robust%2C%20Bayesian%20%7C%20How%20to%20conduct%2C%20visualise%20and%20interpret&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F&amp;title=Correlation%20in%20R%20%28in%20progress%29">
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F&amp;title=Correlation%20Analysis%20in%20R%20%7C%20Pearson%2C%20Spearman%2C%20Robust%2C%20Bayesian%20%7C%20How%20to%20conduct%2C%20visualise%20and%20interpret">
         <i class="fab fa-linkedin"></i>
       </a>
       <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F">
@@ -2679,7 +2683,7 @@ A BibTeX entry for LaTeX users is
       <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F">
         <i class="fab fa-google-plus"></i>
       </a>
-      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F&amp;description=Correlation%20in%20R%20%28in%20progress%29">
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-29-correlationinr%2F&amp;description=Correlation%20Analysis%20in%20R%20%7C%20Pearson%2C%20Spearman%2C%20Robust%2C%20Bayesian%20%7C%20How%20to%20conduct%2C%20visualise%20and%20interpret">
         <i class="fab fa-pinterest"></i>
       </a>
     </span>
@@ -2718,11 +2722,11 @@ var disqus_config = function () {
   <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/yuryzablotski/yuzaR-Blog">https://github.com/yuryzablotski/yuzaR-Blog</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
   <h3 id="citation">Citation</h3>
   <p>For attribution, please cite this work as</p>
-  <pre class="citation-appendix short">Zablotski (2021, Jan. 9). yuzaR-Blog: Correlation in R (in progress). Retrieved from https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/</pre>
+  <pre class="citation-appendix short">Zablotski (2021, Jan. 9). yuzaR-Blog: Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret. Retrieved from https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/</pre>
   <p>BibTeX citation</p>
   <pre class="citation-appendix long">@misc{zablotski2021correlation,
   author = {Zablotski, Yury},
-  title = {yuzaR-Blog: Correlation in R (in progress)},
+  title = {yuzaR-Blog: Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret},
   url = {https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/},
   year = {2021}
 }</pre>
