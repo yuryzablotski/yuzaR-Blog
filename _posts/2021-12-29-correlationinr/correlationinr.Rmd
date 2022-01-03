@@ -1,0 +1,199 @@
+---
+title: "Correlation in R (in progress)"
+description: |
+  Having two numeric variables, we often wanna know whether they are corelated and how. One simple command can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all these results and how to choose the right correlation method in the first place.  
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: 01-09-2021
+categories:
+  - videos
+  - statistics
+preview: thumbnail.jpg
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+# draft: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. 
+<!-- It's ca. 5 minutes long. -->
+
+```{r, eval=T, echo=F}
+# vembedr::embed_youtube("")
+```
+
+## Previous topics
+
+Understanding [hypothesis testing](https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/) and [p-values](https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/) would be very helpful. 
+
+
+## The most effective way to compute correlation in R
+
+{ggscatterstats} function from {ggstatsplot} package is probably the best way to conduct correlation analysis. Within this function we need to specify only 4 arguments:
+
+- **our data**, e.g. let's take `mtcars`, which you already have in R, so you don't need to look for it
+- **x** - as one of your numeric variables, for example *horsepower* of cars
+- **y** - would be your second numeric variable, let's take the *Acceleration to a quarter mile* and
+- the **type** of statistical approach. We choose **parametric** for the classic **Pearson’s correlation**, and we'll get back to other approaches later.
+
+{?ggscatterstats} function has of coarse many more useful arguments, but using **only 4 of them already results in this statistically rich and publication ready plot!** Now, let's interpret the results.
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+ggscatterstats(
+    data = mtcars, 
+    x    = hp,
+    y    = qsec,
+    type = "parametric"
+    )
+
+?ggscatterstats
+
+# install.packages("ggplot2")
+library(ggplot2)
+
+# save your plot
+ggsave("corr_p.jpg", plot = last_plot(), width = 5.5)
+```
+
+## Interpretation
+
+- **t statistics** was previously used to manually calculate p-value, but nowadays, since p-values are calculated by computers, we can safely ignore it
+
+- our very low **P-value** shows a very strong evidence against the null hypothesis, that there is no correlation between our variables, in favor of the alternative hypothesis, that horsepower of cars and their acceleration *are correlated* (Raiola, 2012)
+
+![](p_value_interpretation.png)
+
+- The **Bayes Factor** (Jeffreys, 1961) of - 8.25 in our example agrees with a **p-value** by showing a **decisive evidence for the alternative hypothesis** - that correlation exists
+
+![](bf_interpretation.png)
+
+
+However, neither **p-value** nor **Bayes Factor** can say **how strong this correlation is** and **in which direction, positive or negative, it goes**.
+
+- **Pearson's correlation coefficient**, however, can say both. 
+
+First: **the minus in front of our correlation coefficient** points to a negative correlation, namely, the increase in horsepower of cars decreases their quarter mile time. In other words, the stronger the car, the faster it accelerates.
+
+Secondly: **Correlation coefficient r** itself is the effect size and ranges from -1, for the perfect negative correlation, to 1 for the perfect positive correlation. The further **r** is from zero and the closer **r** is to 1 or -1, the stronger the correlation between two variables is: [^1]
+
+[^1]: https://en.wikipedia.org/wiki/Correlation_and_dependence
+
+![](correlation_examples.png)
+
+Our coefficient of -0.71 shows **high negative correlation**. But since no statistical method is perfect we should use several methods for the same question in order to be more certain. And that's exactly what {ggscatterstats} does! (interpretation of the correlation coefficient in the picture below after Hinkle 2003). 
+
+![](correlation_interpretation.png)
+
+
+
+- it provides a second measure of the effect size, namely **Bayesian Pearson's correlation coefficient** with 95% Highest Density Intervals. Interestingly, Bayesian correlation is not high, like in the frequentist example, but **moderately negative**. So, if two methods don't agree, which of them should we trust?
+
+
+## Spearman nonparametric correlation for not-linearly and not-normally distributed data
+
+Well, I would take the Bayesian one, because it is less susceptible to not-linearly or not-normally distributed data. However, if the data is non-linear or not normally distributed, it is much better to use a non-parametric Spearman rank-based correlation analysis instead of Pearson.
+
+Fortunately, the only thing you need to change in {ggscatterstats} function - is the **type** argument, from "parametric" to "nonparametric". 
+
+```{r}
+ggscatterstats(
+    data = mtcars, 
+    x    = hp,
+    y    = qsec,
+    type = "nonparametric"
+    )
+
+# save your plot
+ggsave("corr_np.jpg", plot = last_plot(), width = 5.5)
+```
+
+
+## Robust method if you have outliers
+
+Moreover, if we find some outliers in our data, we could apply a "robust" correlation to decrease the influence of outliers.
+
+
+```{r}
+ggscatterstats(data = mtcars, x = hp, y = qsec, type = "robust")
+```
+
+
+
+## Checking for normality and linearity
+
+Plotting the relationships before making conclusions, will allow your to make sure they are linear.
+
+Here is some code to check whether our data is bell shaped, or **normally distributed**. This can be done in two ways.
+
+- first, with *Shapiro-Wilk normality test*, where p-value > 0.05 would mean normally distributed data, 
+
+- or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.
+
+If data is normally distributed, like in our example, **the mean** is a good representative for our sample, in this case we'll use **one-sample t-test**. But, if data is skewed, we choose [**one-sample Wilcoxon test**](https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/) which uses **median**.
+
+
+```{r}
+# install.packages("ggpubr")
+library(ggpubr)
+
+shapiro.test(mtcars$hp) 
+ggqqplot(mtcars$hp) 
+
+shapiro.test(mtcars$qsec) 
+ggqqplot(mtcars$qsec) 
+```
+
+
+
+
+
+
+
+## What's next?
+
+- first of all, never forget to cite this amazing package!
+
+```{r}
+citation("ggstatsplot")
+```
+
+- Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, [this video will shown you a quick and effective way](https://youtu.be/8Tj0-yMPO64).
+
+<!-- It shows you how to conduct, visualize and interpret Chi-Square test & pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦. -->
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+## Further readings and watchings
+
+- For more info about correlation and older, but maybe more familiar R code, check my older article on correlation: https://yury-zablotski.netlify.app/post/correlation/#how-to-compute-correlation
+
+- Hinkle DE, Wiersma W, Jurs SG. Applied Statistics for the Behavioral Sciences. 5th ed. Boston: Houghton Mifflin; 2003.
+
+- Jeffreys, H. 1961. Theory of Probability. 3rd ed. Oxford: Oxford University Press.
+
+- Raiola, Gaetano & Di tore, Pio. (2012). Statistical study on bodily communication skills in volleyball to improve teaching methods. Journal of Human Sport and Exercise. 7. 10.4100/jhse.2012.72.12. 
