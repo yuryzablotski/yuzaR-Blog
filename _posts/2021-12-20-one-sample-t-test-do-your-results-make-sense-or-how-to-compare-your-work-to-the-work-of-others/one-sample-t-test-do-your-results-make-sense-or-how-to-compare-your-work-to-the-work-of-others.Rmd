@@ -4,8 +4,8 @@ description: |
   Imagine you get 7 out of 10 to-dos from your list done on average. Are you then more productive then others? One-sample t-test and One-sample Wilcoxon test can answer this question. So, in this blog-post you'll learn how to conduct and visualize these tests with only one simple command, how to interpret all these results and how to choose the right test in the first place. Let's get straight into it.
 author:
   - name: Yury Zablotski
-    url: https://yury-zablotski.netlify.app/
-date: 01-09-2021
+    url: https://yuzar-blog.netlify.app/
+date: 12-27-2021
 categories:
   - videos
   - statistics

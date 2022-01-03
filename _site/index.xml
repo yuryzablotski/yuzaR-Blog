@@ -7,7 +7,527 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 30 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 4 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/eXczd0ewVgE" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
+&lt;h2 id="the-most-effective-way-to-compute-correlation-in-r"&gt;The most effective way to compute correlation in R&lt;/h2&gt;
+&lt;p&gt;{ggscatterstats} function from {ggstatsplot} package is probably the best way to conduct correlation analysis. Within this function we need to specify only 4 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, e.g. let’s take &lt;code&gt;mtcars&lt;/code&gt;, which you already have in R, so you don’t need to look for it&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as one of your numeric variables, for example &lt;em&gt;horsepower&lt;/em&gt; of cars&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - would be your second numeric variable, let’s take the &lt;em&gt;Acceleration to a quarter mile&lt;/em&gt; and&lt;/li&gt;
+&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. We choose &lt;strong&gt;parametric&lt;/strong&gt; for the classic &lt;strong&gt;Pearson’s correlation&lt;/strong&gt;, and we’ll get back to other approaches later.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{?ggscatterstats} function has of coarse many more useful arguments, but using &lt;strong&gt;only 4 of them already results in this statistically rich and publication ready plot!&lt;/strong&gt; Now, let’s interpret the results.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+ggscatterstats(
+    data = mtcars, 
+    x    = hp,
+    y    = qsec,
+    type = &amp;quot;parametric&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?ggscatterstats
+
+# install.packages(&amp;quot;ggplot2&amp;quot;)
+library(ggplot2)
+
+# save your plot
+ggsave(&amp;quot;corr_p.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;t statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;our very low &lt;strong&gt;P-value&lt;/strong&gt; shows a very strong evidence against the null hypothesis, that there is no correlation between our variables, in favor of the alternative hypothesis, that horsepower of cars and their acceleration &lt;em&gt;are correlated&lt;/em&gt; (Raiola, 2012)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/p_value_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961) of - 8.25 in our example agrees with a &lt;strong&gt;p-value&lt;/strong&gt; by showing a &lt;strong&gt;decisive evidence for the alternative hypothesis&lt;/strong&gt; - that correlation exists&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;p&gt;However, neither &lt;strong&gt;p-value&lt;/strong&gt; nor &lt;strong&gt;Bayes Factor&lt;/strong&gt; can say &lt;strong&gt;how strong this correlation is&lt;/strong&gt; and &lt;strong&gt;in which direction, positive or negative, it goes&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Pearson’s correlation coefficient&lt;/strong&gt;, however, can say both.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;First: &lt;strong&gt;the minus in front of our correlation coefficient&lt;/strong&gt; points to a negative correlation, namely, the increase in horsepower of cars decreases their quarter mile time. In other words, the stronger the car, the faster it accelerates.&lt;/p&gt;
+&lt;p&gt;Secondly: &lt;strong&gt;Correlation coefficient r&lt;/strong&gt; itself is the effect size and ranges from -1, for the perfect negative correlation, to 1 for the perfect positive correlation. The further &lt;strong&gt;r&lt;/strong&gt; is from zero and the closer &lt;strong&gt;r&lt;/strong&gt; is to 1 or -1, the stronger the correlation between two variables is:&lt;a href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/correlation_examples.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Our coefficient of -0.71 shows &lt;strong&gt;high negative correlation&lt;/strong&gt;. But since no statistical method is perfect we should use several methods for the same question in order to be more certain. And that’s exactly what {ggscatterstats} does! (interpretation of the correlation coefficient in the picture below after Hinkle 2003).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/correlation_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;it provides a second measure of the effect size, namely &lt;strong&gt;Bayesian Pearson’s correlation coefficient&lt;/strong&gt; with 95% Highest Density Intervals. Interestingly, Bayesian correlation is not high, like in the frequentist example, but &lt;strong&gt;moderately negative&lt;/strong&gt;. So, if two methods don’t agree, which of them should we trust?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="spearman-nonparametric-correlation-for-not-linearly-and-not-normally-distributed-data"&gt;Spearman nonparametric correlation for not-linearly and not-normally distributed data&lt;/h2&gt;
+&lt;p&gt;Well, I would take the Bayesian one, because it is less susceptible to not-linearly or not-normally distributed data. However, if the data is non-linear or not normally distributed, it is much better to use a non-parametric Spearman rank-based correlation analysis instead of Pearson.&lt;/p&gt;
+&lt;p&gt;Fortunately, the only thing you need to change in {ggscatterstats} function - is the &lt;strong&gt;type&lt;/strong&gt; argument, from “parametric” to “nonparametric.”&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(
+    data = mtcars, 
+    x    = hp,
+    y    = qsec,
+    type = &amp;quot;nonparametric&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# save your plot
+ggsave(&amp;quot;corr_np.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="robust-method-if-you-have-outliers"&gt;Robust method if you have outliers&lt;/h2&gt;
+&lt;p&gt;Moreover, if we find some outliers in our data, we could apply a “robust” correlation to decrease the influence of outliers.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(data = mtcars, x = hp, y = qsec, type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="checking-for-normality-and-linearity"&gt;Checking for normality and linearity&lt;/h2&gt;
+&lt;p&gt;Plotting the relationships before making conclusions, will &lt;strong&gt;allow your to make sure they are linear&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Here is some code to check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;first, with &lt;em&gt;Shapiro-Wilk normality test&lt;/em&gt;, where p-value &amp;gt; 0.05 would mean normally distributed data,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggpubr&amp;quot;)
+library(ggpubr)
+
+shapiro.test(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Shapiro-Wilk normality test
+
+data:  mtcars$hp
+W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;shapiro.test(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Shapiro-Wilk normality test
+
+data:  mtcars$qsec
+W = 0.97325, p-value = 0.5935&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
+&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+  Patil, I. (2021). Visualizations with statistical details:
+  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
+  6(61), 3167, doi:10.21105/joss.03167
+
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    doi = {10.21105/joss.03167},
+    url = {https://doi.org/10.21105/joss.03167},
+    year = {2021},
+    publisher = {{The Open Journal}},
+    volume = {6},
+    number = {61},
+    pages = {3167},
+    author = {Indrajeet Patil},
+    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
+    journal = {{Journal of Open Source Software}},
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, &lt;a href="https://youtu.be/8Tj0-yMPO64"&gt;this video will shown you a quick and effective way&lt;/a&gt;. It shows you how to conduct, visualize and interpret Chi-Square test &amp;amp; pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;For more info about correlation and older, but maybe more familiar R code, check my older article on correlation: &lt;a href="https://yury-zablotski.netlify.app/post/correlation/#how-to-compute-correlation" class="uri"&gt;https://yury-zablotski.netlify.app/post/correlation/#how-to-compute-correlation&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Hinkle DE, Wiersma W, Jurs SG. Applied Statistics for the Behavioral Sciences. 5th ed. Boston: Houghton Mifflin; 2003.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Jeffreys, H. 1961. Theory of Probability. 3rd ed. Oxford: Oxford University Press.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Raiola, Gaetano &amp;amp; Di tore, Pio. (2012). Statistical study on bodily communication skills in volleyball to improve teaching methods. Journal of Human Sport and Exercise. 7. 10.4100/jhse.2012.72.12.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="footnotes"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1"&gt;&lt;p&gt;&lt;a href="https://en.wikipedia.org/wiki/Correlation_and_dependence" class="uri"&gt;https://en.wikipedia.org/wiki/Correlation_and_dependence&lt;/a&gt;&lt;a href="#fnref1" class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+      <distill:md5>08a8c2e0187452b8d18b5e153478dcb9</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</guid>
+      <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others.</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/x5RcZlc-w4A" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/to-do-list.jpg" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# 1. simulate your to-do results
+
+# install.packages(&amp;quot;tidyverse&amp;quot;)
+library(tidyverse)
+
+set.seed(1)  # stabilizes random output, so you always get the same result
+my_to_dos &amp;lt;- round(rnorm(n = 21, mean = 7, sd = 3)) 
+
+my_to_dos&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1]  5  8  4 12  8  5  8  9  9  6 12  8  5  0 10  7  7 10  9  9 10&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When you collect your to-do lists for the last 21 days, you find out that you finish 7 out of 10 tasks per day on average … ± 3. Now, since we have our data we can compare your average of 7 to the average of others, which is 6 our of 10, or 60%, according to &lt;a href="https://www.huffpost.com/entry/forty-one-percent-of-tasks-on-to-do-lists-are-never-done_b_9308978?guccounter=1&amp;amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;amp;guce_referrer_sig=AQAAANQ9AhoKTEu0BJFpJJbnXQLY_7SeRTIybJaZEHrK2N0bi1lPpFSByEH5kUdhBXNRo93VwzVF_ZLIkjBOCxhVzkK8I4CFTm0XPXsPQ1Rnl-Q77Q7RXpmcKQkrmr9QlKXKxEDFxoxsrkXwbe_wF2fNSsqotvBAE472NESpYzs7nY2v"&gt;this article&lt;/a&gt;. Is 7 significantly different from 6? &lt;strong&gt;One-sample t-test&lt;/strong&gt; or &lt;strong&gt;One-sample Wilcoxon test&lt;/strong&gt; can tell that, but how do we know which test we take?&lt;/p&gt;
+&lt;h2 id="choose-the-test"&gt;Choose the test&lt;/h2&gt;
+&lt;p&gt;Well, we’ll simply check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;first, with &lt;em&gt;Shapiro-Wilk normality test&lt;/em&gt;, where p-value &amp;gt; 0.05 would mean normally distributed data,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If data is normally distributed, like in our example, &lt;strong&gt;the mean&lt;/strong&gt; is a good representative for our sample, in this case we’ll use &lt;strong&gt;one-sample t-test&lt;/strong&gt;. But, if data is skewed, we choose &lt;a href="https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/"&gt;&lt;strong&gt;one-sample Wilcoxon test&lt;/strong&gt;&lt;/a&gt; which uses &lt;strong&gt;median&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# 2. check for normality
+
+shapiro.test(my_to_dos) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Shapiro-Wilk normality test
+
+data:  my_to_dos
+W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggpubr&amp;quot;)
+library(ggpubr)
+
+ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b6c67c308_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
+&lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected mean:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;our &lt;strong&gt;null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;)&lt;/strong&gt; suggests that the means are similar, while&lt;/li&gt;
+&lt;li&gt;our &lt;strong&gt;alternative hypothesis (H&lt;sub&gt;alt&lt;/sub&gt;)&lt;/strong&gt; suggests that means differ&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The presence of similarity or difference is not good or bad per se. If the mean of others is known to be correct, and your experiment shows no difference from that, be glad, your results are plausible. But if your results are different from the expected mean, you either did something wrong, or you might have discovered something new.&lt;/p&gt;
+&lt;p&gt;{gghistostats} function from {ggstatsplot} package is probably the best way for our test. Within this function we need to specify only 5 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, which we just created and called &lt;strong&gt;my_to_dos&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - is the numeric variable in our data&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;test.value&lt;/strong&gt; is the productivity of others we want to compare to&lt;/li&gt;
+&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. We choose &lt;strong&gt;parametric&lt;/strong&gt; for &lt;strong&gt;One-sample t-test&lt;/strong&gt;, and we’ll get back to other approaches later and finally…&lt;/li&gt;
+&lt;li&gt;we set the &lt;strong&gt;normal.curve&lt;/strong&gt; argument to TRUE, only because it looks cool ;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This simple command results in a statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# 3. compare your mean to the other mean (6 tasks = 60%)
+
+# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+gghistostats(
+    data       = my_to_dos %&amp;gt;% as_tibble,
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = &amp;quot;p&amp;quot;, 
+    normal.curve = T
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b6c67c308_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# save your plot
+ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;t-value&lt;/strong&gt; is the &lt;strong&gt;measure of similarity&lt;/strong&gt; between compared means measured in units of standard error. The further &lt;em&gt;t-value&lt;/em&gt; is from zero, the more different are the means:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }\]&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;DF&lt;/strong&gt; (not shown) stands for &lt;strong&gt;degrees of freedom&lt;/strong&gt;. &lt;em&gt;DF&lt;/em&gt; is always equal to the sample size - 1. For our 21 measurements, &lt;em&gt;DF&lt;/em&gt; = 21 - 1 = 20.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;t-values&lt;/strong&gt; and &lt;strong&gt;DFs&lt;/strong&gt; were previously used to calculate &lt;strong&gt;p-values&lt;/strong&gt;. But, modern statistical software always report &lt;em&gt;p-values&lt;/em&gt;, so, we can safely ignore &lt;em&gt;t&lt;/em&gt;. &lt;em&gt;P-values&lt;/em&gt; can also be seeing as the measure of similarity, the smaller p-value, the less similar the means are. Our &lt;em&gt;p-value&lt;/em&gt; of 0.013 indicates that our means are different. Actually, significantly different, if we follow the threshold of 0.05. Thus, we can conclude that we are significantly more productive than other people. So, we can feel proud about ourselves for a second… and then get back to work ;).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Indeed, if you imagine doing 1.7 tasks more every day for one year, at the end of this year you’ll accomplish over 620 more tasks then the average person. &lt;strong&gt;But, more importantly&lt;/strong&gt;, this will make &lt;strong&gt;YOU&lt;/strong&gt; significantly better then yourself-one-year-ago &lt;strong&gt;in whatever you do.&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Hedges’ g&lt;/em&gt; is the estimated &lt;em&gt;standardized&lt;/em&gt; difference between the means, and is the &lt;strong&gt;Effect Size&lt;/strong&gt;. It goes from zero to one and is interpreted in the same way as &lt;em&gt;Cohen’s d&lt;/em&gt; Effect size. In our example the effect is &lt;em&gt;medium strong&lt;/em&gt;, which supports the conclusion of the p-value that difference exists.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_hedges_d.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;There is one problem with &lt;em&gt;Hedges’ g&lt;/em&gt; though - it is a &lt;strong&gt;standardized difference&lt;/strong&gt; between the means, not the normal difference. And that is where &lt;strong&gt;Bayesian Difference&lt;/strong&gt; with it’s 95% Highest Density Intervals on the bottom of the plot seems more intuitive and is a second measure of the effect size here. It shows that the average person accomplishes 1.56 tasks less then you.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If that’s not enough, we can look at the &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of -1.37 in our example indicates a &lt;strong&gt;substantial evidence for the alternative hypothesis&lt;/strong&gt; - that our productivity is above average, which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;h3 id="the-old-way-to-do-one-sample-t-test-in-r"&gt;The old way to do one-sample t-test in R&lt;/h3&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One Sample t-test
+
+data:  my_to_dos
+t = 2.7116, df = 20, p-value = 0.01343
+alternative hypothesis: true mean is not equal to 6
+95 percent confidence interval:
+ 6.384558 8.948776
+sample estimates:
+mean of x 
+ 7.666667 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can also conduct the t-test in a classical way in R, which gives us some additional metrics, for instance, &lt;strong&gt;95% confidence intervals (CI)&lt;/strong&gt; of the mean. The previous results of 6 [tasks/day] is outside of our &lt;strong&gt;95% CI&lt;/strong&gt; [6.38, 8.95], thus our result is indeed different. It also gives us the &lt;em&gt;Degrees of freedom&lt;/em&gt;, which were used to get p-values.&lt;/p&gt;
+&lt;h3 id="one-sided-one-sample-t-test-do-them-only-if-you-really-know-what-you-are-doing"&gt;One-sided one-sample t-test (do them only if you really know what you are doing)&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;R&lt;/em&gt; performs a two-sided test by default. Performing a one-sided test allows us to say whether our result is &lt;strong&gt;significantly lower&lt;/strong&gt; or &lt;strong&gt;significantly greater&lt;/strong&gt;. We could also change the confidence level, to i.e. &lt;code&gt;conf.level = 0.99&lt;/code&gt; to be 99% sure of our conclusion:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6, alternative = &amp;quot;less&amp;quot;,    conf.level = 0.99) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One Sample t-test
+
+data:  my_to_dos
+t = 2.7116, df = 20, p-value = 0.9933
+alternative hypothesis: true mean is less than 6
+99 percent confidence interval:
+     -Inf 9.220453
+sample estimates:
+mean of x 
+ 7.666667 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6, alternative = &amp;quot;greater&amp;quot;, conf.level = 0.99)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One Sample t-test
+
+data:  my_to_dos
+t = 2.7116, df = 20, p-value = 0.006716
+alternative hypothesis: true mean is greater than 6
+99 percent confidence interval:
+ 6.11288     Inf
+sample estimates:
+mean of x 
+ 7.666667 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first &lt;em&gt;one-sided t-test&lt;/em&gt; shows that your mean performance is &lt;strong&gt;definitely not lower&lt;/strong&gt; (p&amp;gt;0.05 and expected average of 6 is included in 99% CI) then the average. The second &lt;em&gt;one-sided t-test&lt;/em&gt; indicates that your performance is &lt;strong&gt;significantly greater&lt;/strong&gt; then the average (p&amp;lt;0.05 and 6 is not included in 99% CI).&lt;/p&gt;
+&lt;h2 id="one-sample-wilcoxon-test"&gt;One-sample Wilcoxon test&lt;/h2&gt;
+&lt;p&gt;If our data is not normally distributed, the &lt;strong&gt;median&lt;/strong&gt; would describe our data much better than the average. And that’s what &lt;strong&gt;One-sample Wilcoxon test&lt;/strong&gt; does. The good news about {gghistostats} function is that, the only thing you need to change is the &lt;strong&gt;type&lt;/strong&gt; argument, from “parametric” to “nonparametric.” By the way, I encourage you to explore the function for yourself by simply asking R about it.&lt;/p&gt;
+&lt;p&gt;If our data would have been not-normally distributed, your productivity would be even better, which you can see from&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the higher median to-do, namely 8, as compared with the mean of 7.7,&lt;/li&gt;
+&lt;li&gt;lower p-value if we consider a p-value a measure of similarity (0.01 vs. 0.013) and&lt;/li&gt;
+&lt;li&gt;stronger effect size (0.66 vs. 0.57).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?gghistostats
+
+gghistostats(
+    data       = my_to_dos %&amp;gt;% as_tibble(),
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = &amp;quot;np&amp;quot;, 
+    normal.curve = T,
+    xlab = &amp;quot;tasks done&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b6c67c308_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_rank_biserial.png" /&gt;&lt;/p&gt;
+&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+  Patil, I. (2021). Visualizations with statistical details:
+  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
+  6(61), 3167, doi:10.21105/joss.03167
+
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    doi = {10.21105/joss.03167},
+    url = {https://doi.org/10.21105/joss.03167},
+    year = {2021},
+    publisher = {{The Open Journal}},
+    volume = {6},
+    number = {61},
+    pages = {3167},
+    author = {Indrajeet Patil},
+    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
+    journal = {{Journal of Open Source Software}},
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Need to do Chi-Square test? There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. Here is [R demo on how to conduct, visualize and interpret Chi-Square test &amp;amp; pairwise post-hoc tests] (&lt;a href="https://youtu.be/8Tj0-yMPO64" class="uri"&gt;https://youtu.be/8Tj0-yMPO64&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;a href="http://www.sthda.com/english/wiki/one-sample-t-test-in-r" class="uri"&gt;http://www.sthda.com/english/wiki/one-sample-t-test-in-r&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/" class="uri"&gt;http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Funder, D. C., &amp;amp; Ozer, D. J. (2019). Evaluating effect size in psychological research: sense and nonsense. Advances in Methods and Practices in Psychological Science.&lt;/li&gt;
+&lt;li&gt;Gignac, Gilles E, and Eva T Szodorai. 2016. “Effect Size Guidelines for Individual Differences Researchers.” Personality and Individual Differences 102: 74–78.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>ad2dcf8028cf2b8022b134c6631af623</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</guid>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Chi-Square Test | how to conduct, visualize &amp; interpret | + pairwise post-hoc tests</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/8Tj0-yMPO64" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
+&lt;h2 id="how-to-conduct-chi-squared-test-in-r"&gt;How to conduct Chi-Squared test in R&lt;/h2&gt;
+&lt;p&gt;If you have installed and loaded {ggstatsplot} package, you can use {ggbarstats} function to conduct and visualize Chi-Square test of independence between two categorical variables, where variables can have two or more categories. Within this function we need to specify only four arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, e.g. let’s take &lt;code&gt;mtcars&lt;/code&gt;, which you already have in R, so you don’t need to look for it&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as one of your categorical variables, for example &lt;em&gt;Transmission&lt;/em&gt; of the car (with 0 being automatic, and 1 being manual transmission)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - would be your second variable, let’s take the &lt;em&gt;Number of cylinders&lt;/em&gt; (4, 6 or 8) and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;the label&lt;/strong&gt; argument - which displays &lt;strong&gt;both&lt;/strong&gt; numbers and percentages of observations in each category.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This simple command results in a statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;install.packages(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)
+
+ggbarstats(
+  data  = mtcars, 
+  x     = am, 
+  y     = cyl, 
+  label = &amp;quot;both&amp;quot;, 
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1034b3b93a629_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;P-value&lt;/strong&gt; in our test can be seen as the probability of independence between two variables, low p-value (usually p &amp;lt; 0.05), like in our example, indicates that number of cylinders and transmission of cars &lt;em&gt;are dependent on each other&lt;/em&gt;. In other words - &lt;em&gt;there is a relationship between them&lt;/em&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Indeed, the plot shows that the number of cars using automatic transmission (am = 0) increases with increasing number of cylinders. The opposite is true for cars with manual transmission (am = 1), their frequency declines as number of cylinders increases.&lt;/p&gt;
+&lt;p&gt;So, we can conclude, that &lt;em&gt;the relationship between transmission and number of cylinders exists&lt;/em&gt;. However, p-value doesn’t say &lt;em&gt;how strong this relationship is&lt;/em&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;That’s why we have &lt;strong&gt;V Cramer&lt;/strong&gt; value with its 95% confidence intervals as &lt;strong&gt;the effect size&lt;/strong&gt; next to p-value. Our effect size of 0.46 indicates a &lt;strong&gt;relatively strong relationship&lt;/strong&gt;, which supports the conclusion made by the p-value. The confidence intervals do not make much sense though, since &lt;em&gt;V Cramer&lt;/em&gt; goes from 0 to 1 anyway.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-14-how-to-conduct-chi-square-test-in-r/v_cramer.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;However, &lt;code&gt;ggbarstats&lt;/code&gt; also provides a second &lt;strong&gt;Bayesian V Cramer effect size&lt;/strong&gt;, which delivers much more useful 95% Highest Density Intervals. The interpretation of the Bayesian effect size is the same, so the relationship between our variables is &lt;strong&gt;relatively strong&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If that’s not enough, we can look at the &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of - 2.82 in our example indicates a &lt;strong&gt;strong evidence for the alternative hypothesis&lt;/strong&gt; - that the relationship exists, which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-14-how-to-conduct-chi-square-test-in-r/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can also see &lt;strong&gt;Proportion Tests&lt;/strong&gt; for transmissions in each cylinder. They show whether proportions inside every cylinder differ. Our Null Hypothesis (&lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;) here is that there are equal proportions of different transmissions in a particular category of a cylinder. Which is the case for cylinders 4 and 6. While, our Alternative Hypothesis (&lt;span class="math inline"&gt;\(H_alt\)&lt;/span&gt;) is that the proportions differ, which is the case for the cylinder 8.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="pairwise-proportion-tests-or-post-hoc-tests"&gt;Pairwise Proportion Tests … or post-hoc tests&lt;/h2&gt;
+&lt;p&gt;If you find a significant relationship between variables and you have more then two categories in any of your variables, like in our example, you might be interested to compare proportions of cylinders with each other, namely 4 with 6, 4 with 8 and 6 with 8. Such simple pairwise comparisons is often called with an unnecessary fancy name - &lt;strong&gt;post-hoc tests&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The easiest was to make pairwise proportions tests is to use {pairwise_prop_test} function from {rstatix} package. Thus, first, install and load {rstatix} package, then use {table} function for a contingency table of your variables. And finally, simply apply {pairwise_prop_test} function to your contingency table. The results show two kinds of p-values, normal and adjusted for multiple comparisons. Always use the adjusted ones. So, we see that there is a significant association between cylinders 4 and 8, where cylinder 4 has more cars with manual transmission, while cylinder 8 has more cars with automatic transmission.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;install.packages(&amp;quot;rstatix&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(rstatix)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
+contingency_table
+pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
+&lt;template id="2ea9e91f-99ca-43d5-9ff1-425c8a44ff54"&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-72242afa{}.cl-721e1b60{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-721e2c4a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-721e2c54{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-721e611a{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6124{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e612e{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6138{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6139{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6142{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6143{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e614c{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e614d{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6156{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6157{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6158{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-72242afa'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e6156"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6156"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6157"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6157"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6158"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e611a"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e611a"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6124"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6124"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e612e"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e6138"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6138"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6139"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6139"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6142"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e6143"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6143"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e614c"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e614c"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e614d"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="3bd50cbe-e929-4c98-a895-9f7ea76a76f3"&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById("3bd50cbe-e929-4c98-a895-9f7ea76a76f3");
+var template = document.getElementById("2ea9e91f-99ca-43d5-9ff1-425c8a44ff54");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+  Patil, I. (2021). Visualizations with statistical details:
+  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
+  6(61), 3167, doi:10.21105/joss.03167
+
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    doi = {10.21105/joss.03167},
+    url = {https://doi.org/10.21105/joss.03167},
+    year = {2021},
+    publisher = {{The Open Journal}},
+    volume = {6},
+    number = {61},
+    pages = {3167},
+    author = {Indrajeet Patil},
+    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
+    journal = {{Journal of Open Source Software}},
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;learn more about &lt;a href="https://yury-zablotski.netlify.app/post/chi-square-2/"&gt;Chi-Squared Test&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;have a look at the &lt;a href="https://yury-zablotski.netlify.app/post/goodness-of-fit/"&gt;Chi-Squared Test Goodness of Fit&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Jeffreys, H. 1961. Theory of Probability. 3rd ed. Oxford: Oxford University Press.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>9c36df85059d7ab5d0aba54cfa61bab2</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
+      <pubDate>Sun, 19 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>R package reviews {dlookr} diagnose, explore and transform your data</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -256,526 +776,6 @@ Wasserstein, Ronald L, Allen L Schirm, and Nicole A Lazar. 2019. &lt;span&gt;“
       <guid>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</guid>
       <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg" medium="image" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>R demo | Chi-Square Test | how to conduct, visualize &amp; interpret | + pairwise post-hoc tests</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</link>
-      <description>
-
-
-&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
-&lt;div class="vembedr"&gt;
-&lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/8Tj0-yMPO64" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
-&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
-&lt;h2 id="how-to-conduct-chi-squared-test-in-r"&gt;How to conduct Chi-Squared test in R&lt;/h2&gt;
-&lt;p&gt;If you have installed and loaded {ggstatsplot} package, you can use {ggbarstats} function to conduct and visualize Chi-Square test of independence between two categorical variables, where variables can have two or more categories. Within this function we need to specify only four arguments:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, e.g. let’s take &lt;code&gt;mtcars&lt;/code&gt;, which you already have in R, so you don’t need to look for it&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as one of your categorical variables, for example &lt;em&gt;Transmission&lt;/em&gt; of the car (with 0 being automatic, and 1 being manual transmission)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - would be your second variable, let’s take the &lt;em&gt;Number of cylinders&lt;/em&gt; (4, 6 or 8) and&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;the label&lt;/strong&gt; argument - which displays &lt;strong&gt;both&lt;/strong&gt; numbers and percentages of observations in each category.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This simple command results in a statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;install.packages(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)
-
-ggbarstats(
-  data  = mtcars, 
-  x     = am, 
-  y     = cyl, 
-  label = &amp;quot;both&amp;quot;, 
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe44d4a1f8f_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;P-value&lt;/strong&gt; in our test can be seen as the probability of independence between two variables, low p-value (usually p &amp;lt; 0.05), like in our example, indicates that number of cylinders and transmission of cars &lt;em&gt;are dependent on each other&lt;/em&gt;. In other words - &lt;em&gt;there is a relationship between them&lt;/em&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Indeed, the plot shows that the number of cars using automatic transmission (am = 0) increases with increasing number of cylinders. The opposite is true for cars with manual transmission (am = 1), their frequency declines as number of cylinders increases.&lt;/p&gt;
-&lt;p&gt;So, we can conclude, that &lt;em&gt;the relationship between transmission and number of cylinders exists&lt;/em&gt;. However, p-value doesn’t say &lt;em&gt;how strong this relationship is&lt;/em&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;That’s why we have &lt;strong&gt;V Cramer&lt;/strong&gt; value with its 95% confidence intervals as &lt;strong&gt;the effect size&lt;/strong&gt; next to p-value. Our effect size of 0.46 indicates a &lt;strong&gt;relatively strong relationship&lt;/strong&gt;, which supports the conclusion made by the p-value. The confidence intervals do not make much sense though, since &lt;em&gt;V Cramer&lt;/em&gt; goes from 0 to 1 anyway.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-14-how-to-conduct-chi-square-test-in-r/v_cramer.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;However, &lt;code&gt;ggbarstats&lt;/code&gt; also provides a second &lt;strong&gt;Bayesian V Cramer effect size&lt;/strong&gt;, which delivers much more useful 95% Highest Density Intervals. The interpretation of the Bayesian effect size is the same, so the relationship between our variables is &lt;strong&gt;relatively strong&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;If that’s not enough, we can look at the &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of - 2.82 in our example indicates a &lt;strong&gt;strong evidence for the alternative hypothesis&lt;/strong&gt; - that the relationship exists, which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-14-how-to-conduct-chi-square-test-in-r/bf_interpretation.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;We can also see &lt;strong&gt;Proportion Tests&lt;/strong&gt; for transmissions in each cylinder. They show whether proportions inside every cylinder differ. Our Null Hypothesis (&lt;span class="math inline"&gt;\(H_0\)&lt;/span&gt;) here is that there are equal proportions of different transmissions in a particular category of a cylinder. Which is the case for cylinders 4 and 6. While, our Alternative Hypothesis (&lt;span class="math inline"&gt;\(H_alt\)&lt;/span&gt;) is that the proportions differ, which is the case for the cylinder 8.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="pairwise-proportion-tests-or-post-hoc-tests"&gt;Pairwise Proportion Tests … or post-hoc tests&lt;/h2&gt;
-&lt;p&gt;If you find a significant relationship between variables and you have more then two categories in any of your variables, like in our example, you might be interested to compare proportions of cylinders with each other, namely 4 with 6, 4 with 8 and 6 with 8. Such simple pairwise comparisons is often called with an unnecessary fancy name - &lt;strong&gt;post-hoc tests&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;The easiest was to make pairwise proportions tests is to use {pairwise_prop_test} function from {rstatix} package. Thus, first, install and load {rstatix} package, then use {table} function for a contingency table of your variables. And finally, simply apply {pairwise_prop_test} function to your contingency table. The results show two kinds of p-values, normal and adjusted for multiple comparisons. Always use the adjusted ones. So, we see that there is a significant association between cylinders 4 and 8, where cylinder 4 has more cars with manual transmission, while cylinder 8 has more cars with automatic transmission.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;install.packages(&amp;quot;rstatix&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(rstatix)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
-contingency_table
-pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
-&lt;template id="9e667d26-9ccf-4c99-a9dd-dd83584d6dc1"&gt;&lt;style&gt;
-.tabwid table{
-  border-spacing:0px !important;
-  border-collapse:collapse;
-  line-height:1;
-  margin-left:auto;
-  margin-right:auto;
-  border-width: 0;
-  display: table;
-  margin-top: 1.275em;
-  margin-bottom: 1.275em;
-  border-color: transparent;
-}
-.tabwid_left table{
-  margin-left:0;
-}
-.tabwid_right table{
-  margin-right:0;
-}
-.tabwid td {
-    padding: 0;
-}
-.tabwid a {
-  text-decoration: none;
-}
-.tabwid thead {
-    background-color: transparent;
-}
-.tabwid tfoot {
-    background-color: transparent;
-}
-.tabwid table tr {
-background-color: transparent;
-}
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-cf443192{}.cl-cf3d9418{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cf3db4a2{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf3db4b6{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cf3def26{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def30{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def3a{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def3b{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def44{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def45{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def4e{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def4f{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def50{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def58{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def59{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cf3def62{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-cf443192'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def58"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def58"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def59"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def59"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def62"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def26"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def26"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def30"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def30"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def3a"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def3b"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def3b"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def44"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def44"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def45"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cf3def4e"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def4e"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def4f"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def4f"&gt;&lt;p class="cl-cf3db4b6"&gt;&lt;span class="cl-cf3d9418"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cf3def50"&gt;&lt;p class="cl-cf3db4a2"&gt;&lt;span class="cl-cf3d9418"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="0930e3d1-e8f8-4416-8c90-14bc75ef6137"&gt;&lt;/div&gt;
-&lt;script&gt;
-var dest = document.getElementById("0930e3d1-e8f8-4416-8c90-14bc75ef6137");
-var template = document.getElementById("9e667d26-9ccf-4c99-a9dd-dd83584d6dc1");
-var caption = template.content.querySelector("caption");
-if(caption) {
-  caption.style.cssText = "display:block;text-align:center;";
-  var newcapt = document.createElement("p");
-  newcapt.appendChild(caption)
-  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
-}
-var fantome = dest.attachShadow({mode: 'open'});
-var templateContent = template.content;
-fantome.appendChild(templateContent);
-&lt;/script&gt;
-
-&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-  Patil, I. (2021). Visualizations with statistical details:
-  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
-  6(61), 3167, doi:10.21105/joss.03167
-
-A BibTeX entry for LaTeX users is
-
-  @Article{,
-    doi = {10.21105/joss.03167},
-    url = {https://doi.org/10.21105/joss.03167},
-    year = {2021},
-    publisher = {{The Open Journal}},
-    volume = {6},
-    number = {61},
-    pages = {3167},
-    author = {Indrajeet Patil},
-    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
-    journal = {{Journal of Open Source Software}},
-  }&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;learn more about &lt;a href="https://yury-zablotski.netlify.app/post/chi-square-2/"&gt;Chi-Squared Test&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;have a look at the &lt;a href="https://yury-zablotski.netlify.app/post/goodness-of-fit/"&gt;Chi-Squared Test Goodness of Fit&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Jeffreys, H. 1961. Theory of Probability. 3rd ed. Oxford: Oxford University Press.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>9c36df85059d7ab5d0aba54cfa61bab2</distill:md5>
-      <category>videos</category>
-      <category>statistics</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
-      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others.</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</link>
-      <description>
-
-
-&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 5 minutes long.&lt;/p&gt;
-&lt;div class="vembedr"&gt;
-&lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/x5RcZlc-w4A" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
-&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/to-do-list.jpg" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# 1. simulate your to-do results
-
-# install.packages(&amp;quot;tidyverse&amp;quot;)
-library(tidyverse)
-
-set.seed(1)  # stabilizes random output, so you always get the same result
-my_to_dos &amp;lt;- round(rnorm(n = 21, mean = 7, sd = 3)) 
-
-my_to_dos&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; [1]  5  8  4 12  8  5  8  9  9  6 12  8  5  0 10  7  7 10  9  9 10&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;When you collect your to-do lists for the last 21 days, you find out that you finish 7 out of 10 tasks per day on average … ± 3. Now, since we have our data we can compare your average of 7 to the average of others, which is 6 our of 10, or 60%, according to &lt;a href="https://www.huffpost.com/entry/forty-one-percent-of-tasks-on-to-do-lists-are-never-done_b_9308978?guccounter=1&amp;amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;amp;guce_referrer_sig=AQAAANQ9AhoKTEu0BJFpJJbnXQLY_7SeRTIybJaZEHrK2N0bi1lPpFSByEH5kUdhBXNRo93VwzVF_ZLIkjBOCxhVzkK8I4CFTm0XPXsPQ1Rnl-Q77Q7RXpmcKQkrmr9QlKXKxEDFxoxsrkXwbe_wF2fNSsqotvBAE472NESpYzs7nY2v"&gt;this article&lt;/a&gt;. Is 7 significantly different from 6? &lt;strong&gt;One-sample t-test&lt;/strong&gt; or &lt;strong&gt;One-sample Wilcoxon test&lt;/strong&gt; can tell that, but how do we know which test we take?&lt;/p&gt;
-&lt;h2 id="choose-the-test"&gt;Choose the test&lt;/h2&gt;
-&lt;p&gt;Well, we’ll simply check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;first, with &lt;em&gt;Shapiro-Wilk normality test&lt;/em&gt;, where p-value &amp;gt; 0.05 would mean normally distributed data,&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If data is normally distributed, like in our example, &lt;strong&gt;the mean&lt;/strong&gt; is a good representative for our sample, in this case we’ll use &lt;strong&gt;one-sample t-test&lt;/strong&gt;. But, if data is skewed, we choose &lt;a href="https://yury-zablotski.netlify.com/post/wilcoxon-ака-mann-whitney-test/"&gt;&lt;strong&gt;one-sample Wilcoxon test&lt;/strong&gt;&lt;/a&gt; which uses &lt;strong&gt;median&lt;/strong&gt;.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# 2. check for normality
-
-shapiro.test(my_to_dos) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    Shapiro-Wilk normality test
-
-data:  my_to_dos
-W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggpubr&amp;quot;)
-library(ggpubr)
-
-ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe467ede564_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
-&lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected mean:&lt;/p&gt;
-&lt;ol style="list-style-type: decimal"&gt;
-&lt;li&gt;our &lt;strong&gt;null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;)&lt;/strong&gt; suggests that the means are similar, while&lt;/li&gt;
-&lt;li&gt;our &lt;strong&gt;alternative hypothesis (H&lt;sub&gt;alt&lt;/sub&gt;)&lt;/strong&gt; suggests that means differ&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;The presence of similarity or difference is not good or bad per se. If the mean of others is known to be correct, and your experiment shows no difference from that, be glad, your results are plausible. But if your results are different from the expected mean, you either did something wrong, or you might have discovered something new.&lt;/p&gt;
-&lt;p&gt;{gghistostats} function from {ggstatsplot} package is probably the best way for our test. Within this function we need to specify only 5 arguments:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, which we just created and called &lt;strong&gt;my_to_dos&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - is the numeric variable in our data&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;test.value&lt;/strong&gt; is the productivity of others we want to compare to&lt;/li&gt;
-&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. We choose &lt;strong&gt;parametric&lt;/strong&gt; for &lt;strong&gt;One-sample t-test&lt;/strong&gt;, and we’ll get back to other approaches later and finally…&lt;/li&gt;
-&lt;li&gt;we set the &lt;strong&gt;normal.curve&lt;/strong&gt; argument to TRUE, only because it looks cool ;)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This simple command results in a statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# 3. compare your mean to the other mean (6 tasks = 60%)
-
-# install.packages(&amp;quot;ggstatsplot&amp;quot;)
-library(ggstatsplot)
-
-gghistostats(
-    data       = my_to_dos %&amp;gt;% as_tibble,
-    x          = value,
-    test.value = 6, ## default value is 0
-    type       = &amp;quot;p&amp;quot;, 
-    normal.curve = T
-    )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe467ede564_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# save your plot
-ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;t-value&lt;/strong&gt; is the &lt;strong&gt;measure of similarity&lt;/strong&gt; between compared means measured in units of standard error. The further &lt;em&gt;t-value&lt;/em&gt; is from zero, the more different are the means:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;span class="math display"&gt;\[t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }\]&lt;/span&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;DF&lt;/strong&gt; (not shown) stands for &lt;strong&gt;degrees of freedom&lt;/strong&gt;. &lt;em&gt;DF&lt;/em&gt; is always equal to the sample size - 1. For our 21 measurements, &lt;em&gt;DF&lt;/em&gt; = 21 - 1 = 20.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;t-values&lt;/strong&gt; and &lt;strong&gt;DFs&lt;/strong&gt; were previously used to calculate &lt;strong&gt;p-values&lt;/strong&gt;. But, modern statistical software always report &lt;em&gt;p-values&lt;/em&gt;, so, we can safely ignore &lt;em&gt;t&lt;/em&gt;. &lt;em&gt;P-values&lt;/em&gt; can also be seeing as the measure of similarity, the smaller p-value, the less similar the means are. Our &lt;em&gt;p-value&lt;/em&gt; of 0.013 indicates that our means are different. Actually, significantly different, if we follow the threshold of 0.05. Thus, we can conclude that we are significantly more productive than other people. So, we can feel proud about ourselves for a second… and then get back to work ;).&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Indeed, if you imagine doing 1.7 tasks more every day for one year, at the end of this year you’ll accomplish over 620 more tasks then the average person. &lt;strong&gt;But, more importantly&lt;/strong&gt;, this will make &lt;strong&gt;YOU&lt;/strong&gt; significantly better then yourself-one-year-ago &lt;strong&gt;in whatever you do.&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;Hedges’ g&lt;/em&gt; is the estimated &lt;em&gt;standardized&lt;/em&gt; difference between the means, and is the &lt;strong&gt;Effect Size&lt;/strong&gt;. It goes from zero to one and is interpreted in the same way as &lt;em&gt;Cohen’s d&lt;/em&gt; Effect size. In our example the effect is &lt;em&gt;medium strong&lt;/em&gt;, which supports the conclusion of the p-value that difference exists.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_hedges_d.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;There is one problem with &lt;em&gt;Hedges’ g&lt;/em&gt; though - it is a &lt;strong&gt;standardized difference&lt;/strong&gt; between the means, not the normal difference. And that is where &lt;strong&gt;Bayesian Difference&lt;/strong&gt; with it’s 95% Highest Density Intervals on the bottom of the plot seems more intuitive and is a second measure of the effect size here. It shows that the average person accomplishes 1.56 tasks less then you.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;If that’s not enough, we can look at the &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961), which tests both null and alternative hypotheses at the same time. Bayes Factor of -1.37 in our example indicates a &lt;strong&gt;substantial evidence for the alternative hypothesis&lt;/strong&gt; - that our productivity is above average, which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/bf_interpretation.png" /&gt;&lt;/p&gt;
-&lt;h3 id="the-old-way-to-do-one-sample-t-test-in-r"&gt;The old way to do one-sample t-test in R&lt;/h3&gt;
-&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    One Sample t-test
-
-data:  my_to_dos
-t = 2.7116, df = 20, p-value = 0.01343
-alternative hypothesis: true mean is not equal to 6
-95 percent confidence interval:
- 6.384558 8.948776
-sample estimates:
-mean of x 
- 7.666667 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;We can also conduct the t-test in a classical way in R, which gives us some additional metrics, for instance, &lt;strong&gt;95% confidence intervals (CI)&lt;/strong&gt; of the mean. The previous results of 6 [tasks/day] is outside of our &lt;strong&gt;95% CI&lt;/strong&gt; [6.38, 8.95], thus our result is indeed different. It also gives us the &lt;em&gt;Degrees of freedom&lt;/em&gt;, which were used to get p-values.&lt;/p&gt;
-&lt;h3 id="one-sided-one-sample-t-test-do-them-only-if-you-really-know-what-you-are-doing"&gt;One-sided one-sample t-test (do them only if you really know what you are doing)&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;R&lt;/em&gt; performs a two-sided test by default. Performing a one-sided test allows us to say whether our result is &lt;strong&gt;significantly lower&lt;/strong&gt; or &lt;strong&gt;significantly greater&lt;/strong&gt;. We could also change the confidence level, to i.e. &lt;code&gt;conf.level = 0.99&lt;/code&gt; to be 99% sure of our conclusion:&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6, alternative = &amp;quot;less&amp;quot;,    conf.level = 0.99) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    One Sample t-test
-
-data:  my_to_dos
-t = 2.7116, df = 20, p-value = 0.9933
-alternative hypothesis: true mean is less than 6
-99 percent confidence interval:
-     -Inf 9.220453
-sample estimates:
-mean of x 
- 7.666667 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;t.test(my_to_dos, mu = 6, alternative = &amp;quot;greater&amp;quot;, conf.level = 0.99)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    One Sample t-test
-
-data:  my_to_dos
-t = 2.7116, df = 20, p-value = 0.006716
-alternative hypothesis: true mean is greater than 6
-99 percent confidence interval:
- 6.11288     Inf
-sample estimates:
-mean of x 
- 7.666667 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The first &lt;em&gt;one-sided t-test&lt;/em&gt; shows that your mean performance is &lt;strong&gt;definitely not lower&lt;/strong&gt; (p&amp;gt;0.05 and expected average of 6 is included in 99% CI) then the average. The second &lt;em&gt;one-sided t-test&lt;/em&gt; indicates that your performance is &lt;strong&gt;significantly greater&lt;/strong&gt; then the average (p&amp;lt;0.05 and 6 is not included in 99% CI).&lt;/p&gt;
-&lt;h2 id="one-sample-wilcoxon-test"&gt;One-sample Wilcoxon test&lt;/h2&gt;
-&lt;p&gt;If our data is not normally distributed, the &lt;strong&gt;median&lt;/strong&gt; would describe our data much better than the average. And that’s what &lt;strong&gt;One-sample Wilcoxon test&lt;/strong&gt; does. The good news about {gghistostats} function is that, the only thing you need to change is the &lt;strong&gt;type&lt;/strong&gt; argument, from “parametric” to “nonparametric.” By the way, I encourage you to explore the function for yourself by simply asking R about it.&lt;/p&gt;
-&lt;p&gt;If our data would have been not-normally distributed, your productivity would be even better, which you can see from&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;the higher median to-do, namely 8, as compared with the mean of 7.7,&lt;/li&gt;
-&lt;li&gt;lower p-value if we consider a p-value a measure of similarity (0.01 vs. 0.013) and&lt;/li&gt;
-&lt;li&gt;stronger effect size (0.66 vs. 0.57).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;?gghistostats
-
-gghistostats(
-    data       = my_to_dos %&amp;gt;% as_tibble(),
-    x          = value,
-    test.value = 6, ## default value is 0
-    type       = &amp;quot;np&amp;quot;, 
-    normal.curve = T,
-    xlab = &amp;quot;tasks done&amp;quot;
-    )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe467ede564_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_rank_biserial.png" /&gt;&lt;/p&gt;
-&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-  Patil, I. (2021). Visualizations with statistical details:
-  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
-  6(61), 3167, doi:10.21105/joss.03167
-
-A BibTeX entry for LaTeX users is
-
-  @Article{,
-    doi = {10.21105/joss.03167},
-    url = {https://doi.org/10.21105/joss.03167},
-    year = {2021},
-    publisher = {{The Open Journal}},
-    volume = {6},
-    number = {61},
-    pages = {3167},
-    author = {Indrajeet Patil},
-    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
-    journal = {{Journal of Open Source Software}},
-  }&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;Need to do Chi-Square test? There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. Here is [R demo on how to conduct, visualize and interpret Chi-Square test &amp;amp; pairwise post-hoc tests] (&lt;a href="https://youtu.be/8Tj0-yMPO64" class="uri"&gt;https://youtu.be/8Tj0-yMPO64&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
-&lt;ol style="list-style-type: decimal"&gt;
-&lt;li&gt;&lt;a href="http://www.sthda.com/english/wiki/one-sample-t-test-in-r" class="uri"&gt;http://www.sthda.com/english/wiki/one-sample-t-test-in-r&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/" class="uri"&gt;http://www.instantr.com/2012/12/29/performing-a-one-sample-t-test-in-r/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Funder, D. C., &amp;amp; Ozer, D. J. (2019). Evaluating effect size in psychological research: sense and nonsense. Advances in Methods and Practices in Psychological Science.&lt;/li&gt;
-&lt;li&gt;Gignac, Gilles E, and Eva T Szodorai. 2016. “Effect Size Guidelines for Individual Differences Researchers.” Personality and Individual Differences 102: 74–78.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>ad2dcf8028cf2b8022b134c6631af623</distill:md5>
-      <category>videos</category>
-      <category>statistics</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</guid>
-      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</link>
-      <description>
-
-
-&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 4 minutes long.&lt;/p&gt;
-&lt;div class="vembedr"&gt;
-&lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/eXczd0ewVgE" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
-&lt;p&gt;Understanding &lt;a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/"&gt;hypothesis testing&lt;/a&gt; and &lt;a href="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/"&gt;p-values&lt;/a&gt; would be very helpful.&lt;/p&gt;
-&lt;h2 id="the-most-effective-way-to-compute-correlation-in-r"&gt;The most effective way to compute correlation in R&lt;/h2&gt;
-&lt;p&gt;{ggscatterstats} function from {ggstatsplot} package is probably the best way to conduct correlation analysis. Within this function we need to specify only 4 arguments:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;our data&lt;/strong&gt;, e.g. let’s take &lt;code&gt;mtcars&lt;/code&gt;, which you already have in R, so you don’t need to look for it&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as one of your numeric variables, for example &lt;em&gt;horsepower&lt;/em&gt; of cars&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - would be your second numeric variable, let’s take the &lt;em&gt;Acceleration to a quarter mile&lt;/em&gt; and&lt;/li&gt;
-&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. We choose &lt;strong&gt;parametric&lt;/strong&gt; for the classic &lt;strong&gt;Pearson’s correlation&lt;/strong&gt;, and we’ll get back to other approaches later.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;{?ggscatterstats} function has of coarse many more useful arguments, but using &lt;strong&gt;only 4 of them already results in this statistically rich and publication ready plot!&lt;/strong&gt; Now, let’s interpret the results.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
-library(ggstatsplot)
-
-ggscatterstats(
-    data = mtcars, 
-    x    = hp,
-    y    = qsec,
-    type = &amp;quot;parametric&amp;quot;
-    )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;?ggscatterstats
-
-# install.packages(&amp;quot;ggplot2&amp;quot;)
-library(ggplot2)
-
-# save your plot
-ggsave(&amp;quot;corr_p.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;t statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;our very low &lt;strong&gt;P-value&lt;/strong&gt; shows a very strong evidence against the null hypothesis, that there is no correlation between our variables, in favor of the alternative hypothesis, that horsepower of cars and their acceleration &lt;em&gt;are correlated&lt;/em&gt; (Raiola, 2012)&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/p_value_interpretation.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961) of - 8.25 in our example agrees with a &lt;strong&gt;p-value&lt;/strong&gt; by showing a &lt;strong&gt;decisive evidence for the alternative hypothesis&lt;/strong&gt; - that correlation exists&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/bf_interpretation.png" /&gt;&lt;/p&gt;
-&lt;p&gt;However, neither &lt;strong&gt;p-value&lt;/strong&gt; nor &lt;strong&gt;Bayes Factor&lt;/strong&gt; can say &lt;strong&gt;how strong this correlation is&lt;/strong&gt; and &lt;strong&gt;in which direction, positive or negative, it goes&lt;/strong&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Pearson’s correlation coefficient&lt;/strong&gt;, however, can say both.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;First: &lt;strong&gt;the minus in front of our correlation coefficient&lt;/strong&gt; points to a negative correlation, namely, the increase in horsepower of cars decreases their quarter mile time. In other words, the stronger the car, the faster it accelerates.&lt;/p&gt;
-&lt;p&gt;Secondly: &lt;strong&gt;Correlation coefficient r&lt;/strong&gt; itself is the effect size and ranges from -1, for the perfect negative correlation, to 1 for the perfect positive correlation. The further &lt;strong&gt;r&lt;/strong&gt; is from zero and the closer &lt;strong&gt;r&lt;/strong&gt; is to 1 or -1, the stronger the correlation between two variables is:&lt;a href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/correlation_examples.png" /&gt;&lt;/p&gt;
-&lt;p&gt;Our coefficient of -0.71 shows &lt;strong&gt;high negative correlation&lt;/strong&gt;. But since no statistical method is perfect we should use several methods for the same question in order to be more certain. And that’s exactly what {ggscatterstats} does! (interpretation of the correlation coefficient in the picture below after Hinkle 2003).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-29-correlationinr/correlation_interpretation.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;it provides a second measure of the effect size, namely &lt;strong&gt;Bayesian Pearson’s correlation coefficient&lt;/strong&gt; with 95% Highest Density Intervals. Interestingly, Bayesian correlation is not high, like in the frequentist example, but &lt;strong&gt;moderately negative&lt;/strong&gt;. So, if two methods don’t agree, which of them should we trust?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="spearman-nonparametric-correlation-for-not-linearly-and-not-normally-distributed-data"&gt;Spearman nonparametric correlation for not-linearly and not-normally distributed data&lt;/h2&gt;
-&lt;p&gt;Well, I would take the Bayesian one, because it is less susceptible to not-linearly or not-normally distributed data. However, if the data is non-linear or not normally distributed, it is much better to use a non-parametric Spearman rank-based correlation analysis instead of Pearson.&lt;/p&gt;
-&lt;p&gt;Fortunately, the only thing you need to change in {ggscatterstats} function - is the &lt;strong&gt;type&lt;/strong&gt; argument, from “parametric” to “nonparametric.”&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(
-    data = mtcars, 
-    x    = hp,
-    y    = qsec,
-    type = &amp;quot;nonparametric&amp;quot;
-    )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# save your plot
-ggsave(&amp;quot;corr_np.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="robust-method-if-you-have-outliers"&gt;Robust method if you have outliers&lt;/h2&gt;
-&lt;p&gt;Moreover, if we find some outliers in our data, we could apply a “robust” correlation to decrease the influence of outliers.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(data = mtcars, x = hp, y = qsec, type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h2 id="checking-for-normality-and-linearity"&gt;Checking for normality and linearity&lt;/h2&gt;
-&lt;p&gt;Plotting the relationships before making conclusions, will &lt;strong&gt;allow your to make sure they are linear&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Here is some code to check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;first, with &lt;em&gt;Shapiro-Wilk normality test&lt;/em&gt;, where p-value &amp;gt; 0.05 would mean normally distributed data,&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;or visually, with a Quantile-Quantile plot, using {ggqqplot} function from {ggpubr} package, where all points falling into the gray area would mean normally distributed data.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggpubr&amp;quot;)
-library(ggpubr)
-
-shapiro.test(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    Shapiro-Wilk normality test
-
-data:  mtcars$hp
-W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;shapiro.test(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    Shapiro-Wilk normality test
-
-data:  mtcars$qsec
-W = 0.97325, p-value = 0.5935&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileffe431d899f7_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
-&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;citation(&amp;quot;ggstatsplot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-  Patil, I. (2021). Visualizations with statistical details:
-  The &amp;#39;ggstatsplot&amp;#39; approach. Journal of Open Source Software,
-  6(61), 3167, doi:10.21105/joss.03167
-
-A BibTeX entry for LaTeX users is
-
-  @Article{,
-    doi = {10.21105/joss.03167},
-    url = {https://doi.org/10.21105/joss.03167},
-    year = {2021},
-    publisher = {{The Open Journal}},
-    volume = {6},
-    number = {61},
-    pages = {3167},
-    author = {Indrajeet Patil},
-    title = {{Visualizations with statistical details: The {&amp;#39;ggstatsplot&amp;#39;} approach}},
-    journal = {{Journal of Open Source Software}},
-  }&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;Ok, after learning about correlation between two numeric variables, you might wonder how to check the association between two categorical variables? Well, &lt;a href="https://youtu.be/8Tj0-yMPO64"&gt;this video will shown you a quick and effective way&lt;/a&gt;. It shows you how to conduct, visualize and interpret Chi-Square test &amp;amp; pairwise post-hoc tests via {ggbarstats} function from {ggstatsplot} package 📦.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id="further-readings-and-watchings"&gt;Further readings and watchings&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;For more info about correlation and older, but maybe more familiar R code, check my older article on correlation: &lt;a href="https://yury-zablotski.netlify.app/post/correlation/#how-to-compute-correlation" class="uri"&gt;https://yury-zablotski.netlify.app/post/correlation/#how-to-compute-correlation&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Hinkle DE, Wiersma W, Jurs SG. Applied Statistics for the Behavioral Sciences. 5th ed. Boston: Houghton Mifflin; 2003.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Jeffreys, H. 1961. Theory of Probability. 3rd ed. Oxford: Oxford University Press.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Raiola, Gaetano &amp;amp; Di tore, Pio. (2012). Statistical study on bodily communication skills in volleyball to improve teaching methods. Journal of Human Sport and Exercise. 7. 10.4100/jhse.2012.72.12.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;div class="footnotes"&gt;
-&lt;hr /&gt;
-&lt;ol&gt;
-&lt;li id="fn1"&gt;&lt;p&gt;&lt;a href="https://en.wikipedia.org/wiki/Correlation_and_dependence" class="uri"&gt;https://en.wikipedia.org/wiki/Correlation_and_dependence&lt;/a&gt;&lt;a href="#fnref1" class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;</description>
-      <distill:md5>08a8c2e0187452b8d18b5e153478dcb9</distill:md5>
-      <category>videos</category>
-      <category>statistics</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</guid>
-      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>R package reviews {DataExplorer} explore your data!</title>
