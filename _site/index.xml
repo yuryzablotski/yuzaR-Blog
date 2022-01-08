@@ -7,7 +7,214 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 03 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R demo | Correlation Matrix | Danger or opportunity?</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video-not-published-yet"&gt;This post as a video (not published yet)&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s less then 5 minutes long.&lt;/p&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/"&gt;Correlation Blogpost&lt;/a&gt; would help.&lt;/p&gt;
+&lt;h2 id="visualize-distribution"&gt;Visualize distribution!&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;dlookr&amp;quot;)
+library(dlookr)
+plot_correlate(iris)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file5ae70f3f7fb_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;fastStat&amp;quot;)
+library(fastStat)
+cor_sig_star(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;                    Sepal.Width Petal.Length
+1 Sepal.Length -0.118(0.152)     0.872(0)***
+2                   Sepal.Width -0.428(0)***
+3                               Petal.Length&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A {chart.Correlation} function from {PerformanceAnalytics} package does both (1) provides correlation coefficients with significance and (2) plots the data. This plot immediately uncovers &lt;strong&gt;4 reasons why we can’t trust a plain correlation matrix&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;PerformanceAnalytics&amp;quot;)
+library(&amp;quot;PerformanceAnalytics&amp;quot;)
+chart.Correlation(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file5ae70f3f7fb_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h3 id="linearity-assumption"&gt;1. Linearity assumption&lt;/h3&gt;
+&lt;p&gt;First, the data is not-linearly distributed, while correlation only makes sense for linear relationships. If fact, we could draw three straight lines in this plot, while our negative correlation coefficient assumes only one of them.&lt;/p&gt;
+&lt;h3 id="grouping-variables"&gt;2. Grouping variables&lt;/h3&gt;
+&lt;p&gt;Secondly, some data seemed to be clustered into groups. Indeed, the “Iris” dataset, which you already have in R, has a “Species” column with 3 different Species of iris plant. So, putting all three species in one basket feels wrong.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-05-correlationmatrixinr/iris.jpg" /&gt; A {ggpairs} command from {GGally} package accounts for a grouping variable and conducts correlation analysis for all variables and groups at once, while also plotting a correlation line on top of every group.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)
+library(tidyverse) # for &amp;quot;aes()&amp;quot; &amp;amp; later for &amp;quot;%&amp;gt;%&amp;quot; 
+
+# install.packages(&amp;quot;GGally&amp;quot;)
+library(GGally)
+ggpairs(iris, 
+        columns = 1:3, 
+        aes(colour=Species),
+        lower = list(continuous = &amp;quot;smooth&amp;quot;),
+        upper = list(continuous = wrap(&amp;quot;cor&amp;quot;, 
+                         method = &amp;quot;pearson&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file5ae70f3f7fb_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;These plots reveal that two of the negative coefficients before splitting into groups show the opposite of what is actually true, namely, the correlation within every group &lt;strong&gt;IS&lt;/strong&gt; positive.&lt;/p&gt;
+&lt;p&gt;Moreover, NOT-significant-negative-correlation between Sepal.Length and Sepal.Width turned out to be a significant positive correlation for all three species! If I would have accepted the not-significant negative correlation, I would have made a Type II Error, in other words, I would have missed an important discovery. So, no Nobel Price for me.&lt;/p&gt;
+&lt;p&gt;Vice Versa, a highly significant correlation between Petal.Length and Sepal.Length for all three Iris species, is not significant at all for “Setosa.” Here I would have made a Type I Error, meaning, I would have discovered nonsense.&lt;/p&gt;
+&lt;p&gt;But, that’s not all! The third problem of not visualizing the data is that we have no idea about the normality of distribution, so we actually don’t know which Correlation method to use, Pearson, Spearman or something else.&lt;/p&gt;
+&lt;h3 id="normality-assumption"&gt;3. Normality assumption&lt;/h3&gt;
+&lt;p&gt;But if we look at histograms from {chart.Correlation} function, we immediately see that two of variables, Sepal.Length and Petal.Length, are not-normally distributed. Shapiro-Wilk Normality Tests confirm this intuition with low p-values.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;flextable&amp;quot;)
+library(flextable)
+
+iris %&amp;gt;% 
+  normality() %&amp;gt;% 
+  mutate(across(is.numeric, ~round(., 3))) %&amp;gt;%
+  regulartable()&lt;/code&gt;&lt;/pre&gt;
+&lt;template id="ac36f5ad-fc1b-4703-ad0c-b482d7dda1b3"&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-ff086268{}.cl-ff02b110{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ff02be26{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ff02be30{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ff02e996{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff02e9a0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff02e9a1{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff02e9aa{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff02e9ab{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff02e9ac{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-ff086268'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff02e9ac"&gt;&lt;p class="cl-ff02be26"&gt;&lt;span class="cl-ff02b110"&gt;vars&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9ab"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9ab"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9ab"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff02e996"&gt;&lt;p class="cl-ff02be26"&gt;&lt;span class="cl-ff02b110"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.976&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.010&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff02e996"&gt;&lt;p class="cl-ff02be26"&gt;&lt;span class="cl-ff02b110"&gt;Sepal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.985&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.101&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff02e996"&gt;&lt;p class="cl-ff02be26"&gt;&lt;span class="cl-ff02b110"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.876&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a0"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff02e9aa"&gt;&lt;p class="cl-ff02be26"&gt;&lt;span class="cl-ff02b110"&gt;Petal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a1"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.902&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a1"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff02e9a1"&gt;&lt;p class="cl-ff02be30"&gt;&lt;span class="cl-ff02b110"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="9e8673b7-8475-4d55-95fb-690330f4675a"&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById("9e8673b7-8475-4d55-95fb-690330f4675a");
+var template = document.getElementById("ac36f5ad-fc1b-4703-ad0c-b482d7dda1b3");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;p&gt;So, we could have applied a non-parametric Spearman or Kendall correlation methods, but if we check the normality for every Species, which are clustered in groups, we’ll see that ALL OF THEM are perfectly normally distributed, so, we should use a parametric Pearson correlation analysis to ensure the highest statistical power! Otherwise, we’ll again either miss a discovery, or discover complete nonsense.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;iris %&amp;gt;% 
+  group_by(Species) %&amp;gt;% 
+  select(1,3) %&amp;gt;% 
+  normality() %&amp;gt;%  
+  mutate(across(is.numeric, ~round(., 3))) %&amp;gt;%
+  regulartable()&lt;/code&gt;&lt;/pre&gt;
+&lt;template id="1bcc2014-6950-4f48-881f-01c16acd7f70"&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-ff221a50{}.cl-ff1a2160{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ff1a3114{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ff1a311e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ff1a6634{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff1a663e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff1a6648{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff1a6649{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff1a6652{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ff1a665c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-ff221a50'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a665c"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;variable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a665c"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Species&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6652"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6652"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6652"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.460&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.465&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.971&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.258&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.955&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.055&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a663e"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.966&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.158&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6634"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-ff1a6649"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6649"&gt;&lt;p class="cl-ff1a3114"&gt;&lt;span class="cl-ff1a2160"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6648"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.962&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6648"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;0.110&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-ff1a6648"&gt;&lt;p class="cl-ff1a311e"&gt;&lt;span class="cl-ff1a2160"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="a043addc-6452-4e3f-a32d-7a2db8379e2f"&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById("a043addc-6452-4e3f-a32d-7a2db8379e2f");
+var template = document.getElementById("1bcc2014-6950-4f48-881f-01c16acd7f70");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;h3 id="correct-for-multiple-comparisons"&gt;4. Correct for multiple comparisons&lt;/h3&gt;
+&lt;p&gt;The last thing which makes using plain correlation matrix statistically dangerous is that you have multiple comparisons without adjusting p-values for then, which again, increases the probability to find nonsense. A {grouped_ggcorrmat} function from {ggstatsplot} package helps with that. Within this function your can specify only 3 argument to get all the results:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first, the data - “Iris,”&lt;/li&gt;
+&lt;li&gt;then “type” of correlation, we’ll go with a “parametric” Pearsons method since we know that our data is linearly and normally distributed and&lt;/li&gt;
+&lt;li&gt;the grouping variable, which is “Species” in our case&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here you’ll see:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;how strong the correlation is,&lt;/li&gt;
+&lt;li&gt;in which direction it goes and&lt;/li&gt;
+&lt;li&gt;whether correlation is significant or not after p-values were adjusted for multiple comparisons.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+grouped_ggcorrmat(
+  iris,
+  type = &amp;quot;parametric&amp;quot;,
+  grouping.var = Species, 
+  plotgrid.args = list(nrow = 2)) # looks better&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file5ae70f3f7fb_files/figure-html/unnamed-chunk-7-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;As you can see, while correlation matrix is an useful Exploratory Tool, we shouldn’t trust the numbers too quickly. We need to visualize the data, check the assumptions of normality and linearity, check for grouping variables and correct for multiple comparisons. And since some data might be suitable for parametric analysis, while some not, it’s usually better to make a deeper dive into every single correlation between only two numeric variables, which you can learn &lt;a href="https://youtu.be/eXczd0ewVgE"&gt;from this short video&lt;/a&gt;, where I showed how to produce this statistically rich plot using only one command and how to interpret all these results.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you already know that, start to learn about linear regression.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>adba62613ce5470853f6e91aceeefcd4</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr</guid>
+      <pubDate>Fri, 07 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -42,7 +249,7 @@ ggscatterstats(
     y    = qsec,
     type = &amp;quot;parametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae71fb9a8c_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggscatterstats
 
 # install.packages(&amp;quot;ggplot2&amp;quot;)
@@ -81,13 +288,13 @@ ggsave(&amp;quot;corr_p.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code
     y    = qsec,
     type = &amp;quot;nonparametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae71fb9a8c_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;corr_np.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="robust-method-if-you-have-outliers"&gt;Robust method if you have outliers&lt;/h2&gt;
 &lt;p&gt;Moreover, if we find some outliers in our data, we could apply a “robust” correlation to decrease the influence of outliers.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(data = mtcars, x = hp, y = qsec, type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae71fb9a8c_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="checking-for-normality-and-linearity"&gt;Checking for normality and linearity&lt;/h2&gt;
 &lt;p&gt;Plotting the relationships before making conclusions, will &lt;strong&gt;allow your to make sure they are linear&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Here is some code to check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
@@ -105,7 +312,7 @@ shapiro.test(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$hp
 W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae71fb9a8c_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shapiro.test(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;
     Shapiro-Wilk normality test
@@ -113,7 +320,7 @@ W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$qsec
 W = 0.97325, p-value = 0.5935&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b17d6fa25_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae71fb9a8c_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
 &lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
@@ -212,7 +419,7 @@ W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
 library(ggpubr)
 
 ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b6c67c308_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae20999df_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
 &lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected mean:&lt;/p&gt;
 &lt;ol style="list-style-type: decimal"&gt;
@@ -241,7 +448,7 @@ gghistostats(
     type       = &amp;quot;p&amp;quot;, 
     normal.curve = T
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b6c67c308_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae20999df_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
@@ -322,7 +529,7 @@ gghistostats(
     normal.curve = T,
     xlab = &amp;quot;tasks done&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b6c67c308_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae20999df_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_rank_biserial.png" /&gt;&lt;/p&gt;
@@ -405,7 +612,7 @@ ggbarstats(
   y     = cyl, 
   label = &amp;quot;both&amp;quot;, 
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1034b3b93a629_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5ae548825a6_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
@@ -433,7 +640,7 @@ ggbarstats(
 &lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
 contingency_table
 pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
-&lt;template id="2ea9e91f-99ca-43d5-9ff1-425c8a44ff54"&gt;&lt;style&gt;
+&lt;template id="ad8022b8-0e4f-4ee1-9f68-d11e11344182"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -467,12 +674,12 @@ pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-72242afa{}.cl-721e1b60{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-721e2c4a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-721e2c54{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-721e611a{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6124{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e612e{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6138{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6139{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6142{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6143{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e614c{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e614d{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6156{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6157{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-721e6158{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-72242afa'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e6156"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6156"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6157"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6157"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6158"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e611a"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e611a"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6124"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6124"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e612e"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e6138"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6138"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6139"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6139"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6142"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-721e6143"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e6143"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e614c"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e614c"&gt;&lt;p class="cl-721e2c54"&gt;&lt;span class="cl-721e1b60"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-721e614d"&gt;&lt;p class="cl-721e2c4a"&gt;&lt;span class="cl-721e1b60"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="3bd50cbe-e929-4c98-a895-9f7ea76a76f3"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-14cbabe6{}.cl-14c67392{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-14c68184{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-14c6818e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-14c6af6a{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af6b{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af74{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af75{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af7e{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af7f{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af88{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af92{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af93{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6af9c{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6afa6{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-14c6afa7{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-14cbabe6'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-14c6af9c"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af9c"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6afa6"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6afa6"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6afa7"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-14c6af6a"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af6a"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af6b"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af6b"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af74"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-14c6af75"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af75"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af7e"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af7e"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af7f"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-14c6af88"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af88"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af92"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af92"&gt;&lt;p class="cl-14c6818e"&gt;&lt;span class="cl-14c67392"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-14c6af93"&gt;&lt;p class="cl-14c68184"&gt;&lt;span class="cl-14c67392"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="3107a8e3-85b5-4b04-85ee-34cb29584199"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("3bd50cbe-e929-4c98-a895-9f7ea76a76f3");
-var template = document.getElementById("2ea9e91f-99ca-43d5-9ff1-425c8a44ff54");
+var dest = document.getElementById("3107a8e3-85b5-4b04-85ee-34cb29584199");
+var template = document.getElementById("ad8022b8-0e4f-4ee1-9f68-d11e11344182");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -525,7 +732,7 @@ A BibTeX entry for LaTeX users is
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
-      <pubDate>Sun, 19 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
