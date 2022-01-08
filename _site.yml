@@ -30,8 +30,8 @@ navbar:
       href: https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA
     - icon: fa fa-rss
       href: index.xml
-    - text: "R-bloggers"
-      href: https://www.r-bloggers.com/
+    # text: "R-bloggers"
+    #  href: https://www.r-bloggers.com/
     # - icon: fa fa-linkedin
     #   href: https://www.linkedin.com/in/lisa-lendway-68a00b63/
 output: 
