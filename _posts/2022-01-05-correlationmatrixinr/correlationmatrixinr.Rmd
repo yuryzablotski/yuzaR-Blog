@@ -125,7 +125,7 @@ iris %>%
 
 ### 4. Correct for multiple comparisons
 
-The last thing which makes using plain correlation matrix statistically dangerous is that you have multiple comparisons without adjusting p-values for then, which again, increases the probability to find nonsense. A {grouped_ggcorrmat} function from {ggstatsplot} package helps with that. Within this function your can specify only 3 argument to get all the results:
+The last thing which makes using plain correlation matrix statistically dangerous is that you have multiple comparisons without adjusting p-values for them, which again, increases the probability to find nonsense. A {grouped_ggcorrmat} function from {ggstatsplot} package helps with that. Within this function your can specify only 3 argument to get all the results:
 
 - first, the data - "Iris",
 - then "type" of correlation, we'll go with a "parametric" Pearsons method since we know that our data is linearly and normally distributed and 
@@ -152,9 +152,9 @@ grouped_ggcorrmat(
 
 ## What's next?
 
-- As you can see, while correlation matrix is an useful Exploratory Tool, we shouldn't trust the numbers too quickly. We need to visualize the data, check the assumptions of normality and linearity, check for grouping variables and correct for multiple comparisons. And since some data might be suitable for parametric analysis, while some not, it's usually better to make a deeper dive into every single correlation between only two numeric variables, which you can learn [from this short video](https://youtu.be/eXczd0ewVgE), where I showed how to produce this statistically rich plot using only one command and how to interpret all these results.
+- As you can see, while correlation matrix is an useful Exploratory Tool, we shouldn't trust the numbers too quickly. We need to (1) visualize the data, (2) check the assumptions of normality and (3) linearity, (4) check for grouping variables and (5) correct for multiple comparisons. And since some data might be suitable for parametric analysis, while some not, it's usually better to make a deeper dive into every single correlation between only two numeric variables, which you can learn [from this short video](https://youtu.be/eXczd0ewVgE), where I showed how to produce this statistically rich plot using only one command and how to interpret all these results.
 
-- If you already know that, start to learn about linear regression.
+- Start to learn about linear regression, you won't regret it ;)
 
 ---
 
