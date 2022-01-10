@@ -32,12 +32,12 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
-## This post as a video (not published yet)
+## This post as a video
 
 I recommend to watch a video first, because I highlight things I talk about. It's less then 5 minutes long. 
 
 ```{r, eval=T, echo=F}
-# vembedr::embed_youtube("")
+vembedr::embed_youtube("ffhQil7KhSo")
 ```
 
 ## Previous topics
