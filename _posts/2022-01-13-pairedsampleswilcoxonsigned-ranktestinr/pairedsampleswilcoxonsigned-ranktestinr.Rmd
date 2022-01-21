@@ -1,0 +1,217 @@
+---
+title: "R demo | Paired Samples Wilcoxon Signed Rank Test"
+description: |
+  Can a speed-reading exercise make you a faster reader? Well, Wilcoxon Signed Rank Test displayed here is a correct test to answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, why Wilcoxon test is called Signed Rank and how to produce and interpret this statistically rich plot using only one simple command. 
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.jpg
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+# draft: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+library(tidyverse)
+library(BSDA)
+```
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 6 minutes long. 
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+## Previous topics
+
+[Not-Paired (independent) Two Samples Mann-Whitney test](https://yury-zablotski.netlify.app/post/mann-whitney-wilcoxon-test/) and [Paired Two Samples t-Test](https://yury-zablotski.netlify.app/post/two-samples-t-test-compare-groups/#paired-dependent-groups) would help.
+
+
+## Get the data
+
+```{r eval=FALSE}
+# install.packages("tidyverse")  # for everything ;)
+library(tidyverse)
+
+# install.packages("BSDA")       # for Speed data
+library(BSDA)
+
+View(Speed)
+```
+
+
+
+{BSDA} package provides a {Speed} dataset, with four columns on **Speed reading**, namely, reading scores **before** and **after** the speed-reading course, **difference** between them, which is actually much more important then the scores themselves, and finally, the **signranks** column, which is the reason our test is called **signed ranks**. 
+
+A speed reading course should make me a faster reader. But how can I measure the progress? Well, I expect the **median difference** in reading speed **after** the course to be higher then zero, which is my alternative hypothesis (H~Alt~), while my null hypothesis (H~0~) is that the difference will be equal to zero. And since the difference here is more important then paired samples themselves, we only need to check the normality of the difference, not of both samples. And checking normality is important for choosing a correct test, otherwise we could get completely wrong result. We'll see what happens if we choose a wrong test in a moment. Until then...
+
+
+## Check normality of the difference
+
+... a small p-value of the Shapiro-Wilk normality test indicates that our difference is **not normally distributed**. That's why we need a **non-parametric Wilcoxon test**, to compare two paired samples. If the difference would have been **normally distributed**, we would have taken a **parametric paired t-test**. 
+
+```{r}
+shapiro.test(Speed$differ)
+```
+So, let's bring our data in a tidy format by gathering columns, before and after, beneath each other. For **paired** tests, the data **needs to be sorted**, so that the first observation of the **before** group, pairs with the first observation of the **after** group. If our data is sorter, we are ready to compute the test.
+
+```{r}
+# make long format - tidy data
+d <- Speed %>% 
+  gather(key = "speed", value = "score", before, after)
+
+View(d)
+```
+
+
+## Compute Paired Samples Wilcoxon Signed Rank Test 
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+ggwithinstats(
+  data = d,
+  x    = speed, 
+  y    = score, 
+  type = "nonparametric"
+)
+
+ggsave(filename = "wilcoxon.jpg", plot = last_plot(), width = 6, height = 4)
+```
+
+And the best way to compute our test is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
+
+- **our data** - d,
+- **x** - as the grouping variable,
+- **y** - are the reading scores and
+- the **type** of statistical approach. Since our data was not normally distributed, we choose a **nonparametric** test, and {ggwithinstats} automatically knows that we need a **Paired Samples non-paramertic Wilcoxon Signed Rank Test** ... (Good Lord, the name is killing me :)
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+## Interpret the result
+
+- **V-statistics** explains why our test is called **signed rank**. Namely,
+
+  - we first ignore the negative sign and **rank** our absolute differences from smallest to largest, or from largest to smallest, does not matter. That is where the **rank** part of the name comes from 
+
+  - we then put positive and negative signs of the difference back to the ranks, producing positive and negative ranks. That is where the **signed** part of the name comes from and where **signed rank** name comes together.
+
+  - Summing up only positive ranks will give you the **V - statistics** you see on the plot. This Wilcoxon statistics were previously used to get a **p-value**, but nowadays, since p-values are calculated by computers, we can safely ignore it.
+
+
+```{r }
+Speed %>% 
+  filter(signranks > 0) %>% 
+  summarise(sum(signranks)) %>% 
+  as.data.frame()
+```
+
+
+- our **P-value** of 0.023 shows a moderate evidence against the null hypothesis (H~0~), that median difference is equal to zero, in favor of the alternative hypothesis (H~Alt~), that median difference is not equal to zero (Raiola, 2012). Particularly, we'll read 7 score points faster after the course. But is a difference of 7 scores large? P-value can not tell that. A P-value only tells you that there is a difference, but not how strong this difference is. 
+
+![](p_value_interpretation.png)
+
+- fortunately, {ggwithinstats} provides a **Rank biserial correlation coefficient** with 95% confidence intervals as the measure of the **effect size**, which shows how large the difference is. The {interpret_rank_biserial} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation. Our effect size of 0.68 means, that speed reading exercise had a **very large, positive and significant effect on our speed reading**.
+
+```{r}
+# install.packages("effectsize")
+library(effectsize)
+
+interpret_rank_biserial(0.68)
+
+?interpret_rank_biserial
+```
+
+## What would happen if we choose the wrong test
+
+Now, what happens if I ignore the assumption of normality and conduct a **Parametric Paired T-Test**? Well, I would compare means instead of medians and would get completely opposite result, namely, - speed reading course doesn't help me to read faster, which is just wrong. Here I would have made a **Type II Error**, or, in other words, I would have missed an important discovery. So, no Nobel Price for me.
+
+```{r}
+ggwithinstats(
+  data = d,
+  x    = speed, 
+  y    = score, 
+  type = "parametric"
+)
+```
+
+
+## One-sided two-samples Wilcoxon-test
+
+Without visualization, the default `two.sided` alternative of **Wilcoxon test** only says that a difference is present, but does not say whether reading velocity decreases or increases. To find out exactly this, we need to test two new alternative hypotheses (**H~alt~**):
+
+1. The median reading speed after the course **decreases** 
+2. The median reading speed after the course **increases** 
+
+Doing this will add another useful tool to your statistical toolbox, namely **one-tailed (or one-sided) non-parametric two-samples paired Wilcoxon signed rank test** (the name is slowly killing me :) 
+
+```{r}
+library(broom)
+rbind(
+  wilcox.test(data = d, score ~ speed, paired = T, alternative = "less", conf.int = T, exact = F) %>% tidy(), 
+  wilcox.test(data = d, score ~ speed, paired = T, alternative = "greater", conf.int = T, exact = F) %>% tidy()
+)
+```
+
+Low *p-value* (p = 0.01) of the **greater-sided** test confirms that the **reading velocity increases** after speed-reading course. The *p-value* of the **less-sided** test screams that your reading velocity will not decrease with the probability of 99% (p = 0.99). 
+
+## Proof of the concept about the difference between two samples
+
+Interestingly, since we just tested our median difference against zero, we actually conducted the **one-sample Wilcoxon test** on that difference. Let me prove it to you! If we compare the results of (1) **one-sample Wilcoxon test** on the difference with (2) the **two-samples paired Wilcoxon test**, we'll get identical V-statistics and p-values. How cool is that?
+
+```{r}
+bind_rows(
+  wilcox.test(Speed$differ) %>% tidy(),
+  wilcox.test(Speed$after, Speed$before, paired = T) %>% tidy()
+) 
+```
+Thus, our fancy **Paired Samples test** is actually **One-Sample test** on the difference, where difference is checked against zero. We can of course check our one-sample against a different value, let's say 6, which you can learn from [this video](https://youtu.be/x5RcZlc-w4A).
+
+
+
+## Don't use *two-samples Wilcoxon-test* if:
+
+- samples are independent. In this case apply [*Mann-Whitney-Wilcoxon-test*] (https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
+- samples are small (n<30) and normally distributed (or big and near normal). In this case use the more powerful [two-samples t-test](https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/). 
+
+## Conclusion
+
+*Two-samples Wilcoxon-test* can be more powerful then *two-samples t-test* when difference between two samples at low numbers (<30) is not-normally distributed. For big samples and not to unnormal distribution, *t-test* will do fine. Another advantage of the *median-based non-parametric Wilcoxon test* is that it more robust to the outliers.
+
+
+## What's next
+
+- Check out the [*Mann-Whitney-Wilcoxon-test*](https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
+
+- If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to [ANOVA](https://yury-zablotski.netlify.com/post/one-way-anova/), but if they aren't, go to the non-parametric analogue of *ANOVA*
+
+- *Kruskal-Wallis Rank Sum Test* would be another idea.
+
+- http://faculty.washington.edu/heagerty/Books/Biostatistics/TABLES/Wilcoxon/
+
+
+
+
+
+
+
