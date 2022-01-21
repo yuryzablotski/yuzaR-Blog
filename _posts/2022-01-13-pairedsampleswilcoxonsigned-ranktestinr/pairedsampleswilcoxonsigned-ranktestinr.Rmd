@@ -38,7 +38,7 @@ library(BSDA)
 I recommend to watch a video first, because I highlight things I talk about. It's ca. 6 minutes long. 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("YRlIkNKazF8")
 ```
 
 ## Previous topics
