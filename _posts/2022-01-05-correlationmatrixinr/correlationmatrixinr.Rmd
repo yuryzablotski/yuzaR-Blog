@@ -69,7 +69,7 @@ chart.Correlation(iris[, 1:3])
 
 First, the data is not-linearly distributed, while correlation only makes sense for linear relationships. If fact, we could draw three straight lines in this plot, while our negative correlation coefficient assumes only one of them. 
 
-### 2. Grouping variables
+### 2. Grouping variables & Simpson's paradox
 
 Secondly, some data seemed to be clustered into groups. Indeed, the "Iris" dataset, which you already have in R, has a "Species" column with 3 different Species of iris plant. So, putting all three species in one basket feels wrong.
 
@@ -95,6 +95,8 @@ These plots reveal that two of the negative coefficients before splitting into g
 Moreover, NOT-significant-negative-correlation between Sepal.Length and Sepal.Width turned out to be a significant positive correlation for all three species! If I would have accepted the not-significant negative correlation, I would have made a Type II Error, in other words, I would have missed an important discovery. So, no Nobel Price for me.
 
 Vice Versa, a highly significant correlation between Petal.Length and Sepal.Length for all three Iris species, is not significant at all for "Setosa." Here I would have made a Type I Error, meaning, I would have discovered nonsense. 
+
+The phenomenon, where grouped data shows the opposite correlation scenario as compared to ungrouped data is known as **Simpson's Paradox, also called Yule-Simpson effect**.
 
 But, that's not all! The third problem of not visualizing the data is that we have no idea about the normality of distribution, so we actually don't know which Correlation method to use, Pearson, Spearman or something else.
 
