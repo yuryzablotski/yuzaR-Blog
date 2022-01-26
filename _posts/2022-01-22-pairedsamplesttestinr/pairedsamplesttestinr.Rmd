@@ -1,7 +1,7 @@
 ---
-title: "R demo | Paired Samples Wilcoxon Signed Rank Test"
+title: "# R demo | Paired Samples t-Test"
 description: |
-  Can a speed-reading exercise make you a faster reader? Well, Wilcoxon Signed Rank Test displayed here is a correct test to answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, why Wilcoxon test is called Signed Rank and how to produce and interpret this statistically rich plot using only one simple command. 
+  Can one week of exercise significantly improve your number of sit-ups? Well, Paired t-Test displayed here will answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, how to produce this statistically rich plot using only one simple command and how to interpret all these results. 
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -17,17 +17,18 @@ output:
     toc_float: true
     toc_depth: 6
     code_download: true
+# draft: true
 bibliography: /Users/zablotski/Documents/library.bib
 #csl: american-political-science-association.csl
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-#draft: true
+draft: true
 ---
 
 
 ```{r setup, include=FALSE}
-## Get the dataknitr::opts_chunk$set(echo = T)
+knitr::opts_chunk$set(echo = T)
 library(tidyverse)
 library(BSDA)
 ```
@@ -37,7 +38,7 @@ library(BSDA)
 I recommend to watch a video first, because I highlight things I talk about. It's ca. 6 minutes long. 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("YRlIkNKazF8")
+vembedr::embed_youtube("")
 ```
 
 ## Previous topics
@@ -52,10 +53,8 @@ library(tidyverse)
 # install.packages("BSDA")       # for Speed data
 library(BSDA)
 
-View(Speed)
+View(Fitness)
 ```
-
-
 
 {BSDA} package provides a {Speed} dataset, with four columns on **Speed reading**, namely, reading scores **before** and **after** the speed-reading course, **difference** between them, which is actually much more important then the scores themselves, and finally, the **signranks** column, which is the reason our test is called **signed ranks**. 
 
@@ -66,34 +65,103 @@ A speed reading course should make me a faster reader. But how can I measure the
 
 ... a small p-value of the Shapiro-Wilk normality test indicates that our difference is **not normally distributed**. That's why we need a **non-parametric Wilcoxon test**, to compare two paired samples. If the difference would have been **normally distributed**, we would have taken a **parametric paired t-test**. 
 
-```{r}
-shapiro.test(Speed$differ)
-```
+
 So, let's bring our data in a tidy format by gathering columns, before and after, beneath each other. For **paired** tests, the data **needs to be sorted**, so that the first observation of the **before** group, pairs with the first observation of the **after** group. If our data is sorter, we are ready to compute the test.
 
+
+
 ```{r}
-# make long format - tidy data
-d <- Speed %>% 
-  gather(key = "speed", value = "score", before, after)
+# make wide format
+d <- Fitness %>% 
+  pivot_wider(
+    id_cols     = subject, 
+    names_from  = test, 
+    values_from = number) %>% 
+  mutate(difference =  After - Before)
 
 View(d)
+
+shapiro.test(d$difference)
+```
+
+
+## Proof of the concept about the difference between two samples
+
+Interestingly, since we just tested our median difference against zero, we actually conducted the **one-sample Wilcoxon test** on that difference. Let me prove it to you! If we compare the results of (1) **one-sample Wilcoxon test** on the difference with (2) the **two-samples paired Wilcoxon test**, we'll get identical V-statistics and p-values. How cool is that?
+
+```{r}
+# install.packages("broom")
+library(broom)
+
+bind_rows(
+  t.test(d$difference) %>% tidy(),
+  t.test(d$After, d$Before, paired = T) %>% tidy()
+) 
+```
+Thus, our fancy **Paired Samples test** is actually **One-Sample test** on the difference, where difference is checked against zero. We can of course check our one-sample against a different value, let's say 6, which you can learn from [this video](https://youtu.be/x5RcZlc-w4A).
+
+
+### 2. Paired (dependent) groups
+
+Two samples are paired, if values in both groups are somehow connected. Each row contains two corresponding values, i.e. “before” and “after” treatments or repeated measurements of literally anything. Thus, for paired *t-test* two sample sizes suppose to be equal (for unpaired not).
+
+Since the **samples are connected** and we **want to know the difference** between them, **we need to calculate this difference** by simply subtracting one value from the other. This difference supposed to be normally distributed if the sample size is small (n<30) or approximately normally distributed for bigger samples. **And only this difference will be tested against zero, not two samples you compare.** Thus, *paired t-test* is actually *one-sample t-test*, where (1) calculated difference between two samples is our "one-sample" and (2) a single value, which *one-sample t-test* needs, is zero, which is by the way a default parameter `mu=0` in *one-sample t-test* if we don't explicitly define it.
+
+So, there are only two steps to perform *paired t-test* manually:
+
+1. find the difference between “before” and “after”
+2. compare this difference to zero using a [one-sample t-test](https://yury-zablotski.netlify.com/post/one-sample-t-test-compare-your-work-to-others/)
+
+*Paired t-test* in *R* calculates the differences for you before performing *one-sample t-test*. Computationally, you only need to add an argument `paired = TRUE` to a usual *t-test* (see step 4 in the code below), since *R* performs unpaired test by default.
+
+#### Example
+
+Let's compare the results of the manually and automatically calculated *paired t-tests*. Imagine one hundred people changed jobs from the industrial ones to IT. Same people now have different salary, "before" and "after" job-change. The question is: is the salary now (significantly) different from the previous, or not? 
+
+```{r}
+# 1. get equally sized samples
+set.seed(1)
+before <- ISLR::Wage %>% 
+  filter(jobclass == "1. Industrial") %>% 
+  sample_n(20) 
+after  <- ISLR::Wage %>% 
+  filter(jobclass == "2. Information") %>% 
+  sample_n(20)
+
+# 2. calculate the difference
+difference <- after$wage - before$wage
+
+# 3. make one-sample t-test to compare to 0, where mu=0 by default
+t.test(difference, alternative = "two.sided")
+
+# 4. perform automatic paired t-test
+t.test(after$wage, before$wage, paired = TRUE, alternative = "two.sided")
+```
+
+As you can see, the results from (1) performing *one-sample t-test* on the difference between paired samples and (2) performing *paired t-test* directly on two samples are **identical**.
+
+We can also ask the question, whether job-change is worth it by performing a "one-sided" *t-test*?
+
+```{r}
+t.test(after$wage, before$wage, paired = TRUE, alternative = "less")
+t.test(after$wage, before$wage, paired = TRUE, alternative = "greater")
 ```
 
 
 ## Compute Paired Samples Wilcoxon Signed Rank Test 
 
+
 ```{r}
 # install.packages("ggstatsplot")
 library(ggstatsplot)
 
+set.seed(1)   # for Bayesian reproducibility
 ggwithinstats(
-  data = d,
-  x    = speed, 
-  y    = score, 
-  type = "nonparametric"
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = "p"
 )
-
-ggsave(filename = "wilcoxon.jpg", plot = last_plot(), width = 6, height = 4)
 ```
 
 And the best way to compute our test is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
@@ -107,37 +175,26 @@ Such simple command results in this statistically rich and publication ready plo
 
 ## Interpret the result
 
-- **V-statistics** explains why our test is called **signed rank**. Namely,
-
-  - we first ignore the negative sign and **rank** our absolute differences from smallest to largest, or from largest to smallest, does not matter. That is where the **rank** part of the name comes from 
-
-  - we then put positive and negative signs of the difference back to the ranks, producing positive and negative ranks. That is where the **signed** part of the name comes from and where **signed rank** name comes together.
-
-  - Summing up only positive ranks will give you the **V - statistics** you see on the plot. This Wilcoxon statistics were previously used to get a **p-value**, but nowadays, since p-values are calculated by computers, we can safely ignore it.
-
-
-```{r }
-Speed %>% 
-  filter(signranks > 0) %>% 
-  summarise(sum(signranks)) %>% 
-  as.data.frame()
-```
-
+- **t-statistics**
 
 - our **P-value** of 0.023 shows a moderate evidence against the null hypothesis (H~0~), that median difference is equal to zero, in favor of the alternative hypothesis (H~Alt~), that median difference is not equal to zero (Raiola, 2012). Particularly, we'll read 7 score points faster after the course. But is a difference of 7 scores large? P-value can not tell that. A P-value only tells you that there is a difference, but not how strong this difference is. 
 
 ![](p_value_interpretation.png)
 
+
 - fortunately, {ggwithinstats} provides a **Rank biserial correlation coefficient** with 95% confidence intervals as the measure of the **effect size**, which shows how large the difference is. The {interpret_rank_biserial} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation. Our effect size of 0.68 means, that speed reading exercise had a **very large, positive and significant effect on our speed reading**.
+
+
 
 ```{r}
 # install.packages("effectsize")
 library(effectsize)
 
-interpret_rank_biserial(0.68)
+interpret_hedges_g(0.83)
 
-?interpret_rank_biserial
+?interpret_hedges_g
 ```
+
 
 ## What would happen if we choose the wrong test
 
@@ -148,10 +205,35 @@ ggwithinstats(
   data = d,
   x    = speed, 
   y    = score, 
-  type = "parametric"
+  type = "nonparametric"
 )
 ```
 
+
+
+```{r}
+library(ggstatsplot)
+
+set.seed(1)   # for Bayesian reproducibility
+ggbetweenstats(
+    data = Fitness,
+    x    = test, 
+    y    = number, 
+    type = "p"
+)
+```
+
+```{r}
+gghistostats(data = d, x = difference, binwidth = 1)
+```
+
+our null hypothesis is that this mean difference is zero; the alternative hypothesis is that it is not
+
+you need to be able to recognise when a paired samples test is appropriate, and to understand why it’s better than an independent samples  
+t-test.
+
+The numbers are identical to those that come from the one sample test, which of course they have to be given that the paired samples  
+t-test is just a one sample test under the hood.
 
 ## One-sided two-samples Wilcoxon-test
 
@@ -171,19 +253,6 @@ rbind(
 ```
 
 Low *p-value* (p = 0.01) of the **greater-sided** test confirms that the **reading velocity increases** after speed-reading course. The *p-value* of the **less-sided** test screams that your reading velocity will not decrease with the probability of 99% (p = 0.99). 
-
-## Proof of the concept about the difference between two samples
-
-Interestingly, since we just tested our median difference against zero, we actually conducted the **one-sample Wilcoxon test** on that difference. Let me prove it to you! If we compare the results of (1) **one-sample Wilcoxon test** on the difference with (2) the **two-samples paired Wilcoxon test**, we'll get identical V-statistics and p-values. How cool is that?
-
-```{r}
-bind_rows(
-  wilcox.test(Speed$differ) %>% tidy(),
-  wilcox.test(Speed$after, Speed$before, paired = T) %>% tidy()
-) 
-```
-Thus, our fancy **Paired Samples test** is actually **One-Sample test** on the difference, where difference is checked against zero. We can of course check our one-sample against a different value, let's say 6, which you can learn from [this video](https://youtu.be/x5RcZlc-w4A).
-
 
 
 ## Don't use *two-samples Wilcoxon-test* if:
@@ -205,12 +274,6 @@ Thus, our fancy **Paired Samples test** is actually **One-Sample test** on the d
 - *Kruskal-Wallis Rank Sum Test* would be another idea.
 
 - http://faculty.washington.edu/heagerty/Books/Biostatistics/TABLES/Wilcoxon/
-
----
-
-If you think, I missed something, please comment on it, and I’ll improve this tutorial.
-
-**Thank you for learning!**
 
 
 
