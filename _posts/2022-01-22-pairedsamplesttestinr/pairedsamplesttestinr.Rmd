@@ -1,7 +1,7 @@
 ---
-title: "# R demo | Paired Samples t-Test"
+title: "R demo | Paired Samples t-Test | How to conduct, visualise and interpret"
 description: |
-  Can one week of exercise significantly improve your number of sit-ups? Well, Paired t-Test displayed here will answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, how to produce this statistically rich plot using only one simple command and how to interpret all these results. 
+  Can one week of training significantly improve your number of sit-ups? Well, Paired t-Test can answer this question by comparing your performance Before and After this week. So, let's learn how to produce this statistically rich plot using only one simple command, how to interpret all these results and see what happens if we use a wrong test.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -23,7 +23,7 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+#draft: true
 ---
 
 
@@ -33,7 +33,7 @@ library(tidyverse)
 library(BSDA)
 ```
 
-## This post as a video 
+## This post as a video
 
 I recommend to watch a video first, because I highlight things I talk about. It's ca. 6 minutes long. 
 
@@ -43,32 +43,21 @@ vembedr::embed_youtube("")
 
 ## Previous topics
 
-[Not-Paired (independent) Two Samples Mann-Whitney test](https://yury-zablotski.netlify.app/post/mann-whitney-wilcoxon-test/) and [Paired Two Samples t-Test](https://yury-zablotski.netlify.app/post/two-samples-t-test-compare-groups/#paired-dependent-groups) would help.
+[One Sample tests](https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/) would help.
 
+## Get the data
 
 ```{r eval=FALSE}
 # install.packages("tidyverse")  # for everything ;)
 library(tidyverse)
 
-# install.packages("BSDA")       # for Speed data
+# install.packages("BSDA")       # for Fitness data
 library(BSDA)
 
 View(Fitness)
 ```
 
-{BSDA} package provides a {Speed} dataset, with four columns on **Speed reading**, namely, reading scores **before** and **after** the speed-reading course, **difference** between them, which is actually much more important then the scores themselves, and finally, the **signranks** column, which is the reason our test is called **signed ranks**. 
-
-A speed reading course should make me a faster reader. But how can I measure the progress? Well, I expect the **median difference** in reading speed **after** the course to be higher then zero, which is my alternative hypothesis (H~Alt~), while my null hypothesis (H~0~) is that the difference will be equal to zero. And since the difference here is more important then paired samples themselves, we only need to check the normality of the difference, not of both samples. And checking normality is important for choosing a correct test, otherwise we could get completely wrong result. We'll see what happens if we choose a wrong test in a moment. Until then...
-
-
-## Check normality of the difference
-
-... a small p-value of the Shapiro-Wilk normality test indicates that our difference is **not normally distributed**. That's why we need a **non-parametric Wilcoxon test**, to compare two paired samples. If the difference would have been **normally distributed**, we would have taken a **parametric paired t-test**. 
-
-
-So, let's bring our data in a tidy format by gathering columns, before and after, beneath each other. For **paired** tests, the data **needs to be sorted**, so that the first observation of the **before** group, pairs with the first observation of the **after** group. If our data is sorter, we are ready to compute the test.
-
-
+{BSDA} package provides a {Fitness} dataset, with the sit-up performance of 9 people **before** and **after** one week of training.
 
 ```{r}
 # make wide format
@@ -80,76 +69,31 @@ d <- Fitness %>%
   mutate(difference =  After - Before)
 
 View(d)
+```
 
+
+To see whether training makes any difference, we'll **calculate this difference** by subtracting performance **Before** from performance **After** and compare our **mean difference** to zero. If training didn't help, our **mean difference** would be equal to zero, which becomes our Null Hypothesis (H~0~). If training made a difference, our **mean difference** would be lower or, hopefully, higher then zero, which becomes our alternative hypothesis (H~Alt~). And since this difference is more important then paired samples themselves, we only need to check the normality of the difference, not of both samples. Checking normality is important for choosing a correct test, otherwise we could get wrong result. We'll see what happens if we choose a wrong test in a moment. Until then...
+
+## Check normality of the difference
+
+```{r}
 shapiro.test(d$difference)
 ```
 
+... a big p-value of the Shapiro-Wilk normality test indicates that our difference is **normally distributed**. That's why we need a **parametric paired t-test**, to compare two paired samples. If the difference would have been **not-normally distributed**, we would have taken a **non-parametric Wilcoxon test**, which you can learn about from [this article](https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/). 
 
-## Proof of the concept about the difference between two samples
-
-Interestingly, since we just tested our median difference against zero, we actually conducted the **one-sample Wilcoxon test** on that difference. Let me prove it to you! If we compare the results of (1) **one-sample Wilcoxon test** on the difference with (2) the **two-samples paired Wilcoxon test**, we'll get identical V-statistics and p-values. How cool is that?
-
-```{r}
-# install.packages("broom")
-library(broom)
-
-bind_rows(
-  t.test(d$difference) %>% tidy(),
-  t.test(d$After, d$Before, paired = T) %>% tidy()
-) 
-```
-Thus, our fancy **Paired Samples test** is actually **One-Sample test** on the difference, where difference is checked against zero. We can of course check our one-sample against a different value, let's say 6, which you can learn from [this video](https://youtu.be/x5RcZlc-w4A).
-
-
-### 2. Paired (dependent) groups
-
-Two samples are paired, if values in both groups are somehow connected. Each row contains two corresponding values, i.e. “before” and “after” treatments or repeated measurements of literally anything. Thus, for paired *t-test* two sample sizes suppose to be equal (for unpaired not).
-
-Since the **samples are connected** and we **want to know the difference** between them, **we need to calculate this difference** by simply subtracting one value from the other. This difference supposed to be normally distributed if the sample size is small (n<30) or approximately normally distributed for bigger samples. **And only this difference will be tested against zero, not two samples you compare.** Thus, *paired t-test* is actually *one-sample t-test*, where (1) calculated difference between two samples is our "one-sample" and (2) a single value, which *one-sample t-test* needs, is zero, which is by the way a default parameter `mu=0` in *one-sample t-test* if we don't explicitly define it.
-
-So, there are only two steps to perform *paired t-test* manually:
-
-1. find the difference between “before” and “after”
-2. compare this difference to zero using a [one-sample t-test](https://yury-zablotski.netlify.com/post/one-sample-t-test-compare-your-work-to-others/)
-
-*Paired t-test* in *R* calculates the differences for you before performing *one-sample t-test*. Computationally, you only need to add an argument `paired = TRUE` to a usual *t-test* (see step 4 in the code below), since *R* performs unpaired test by default.
-
-#### Example
-
-Let's compare the results of the manually and automatically calculated *paired t-tests*. Imagine one hundred people changed jobs from the industrial ones to IT. Same people now have different salary, "before" and "after" job-change. The question is: is the salary now (significantly) different from the previous, or not? 
-
-```{r}
-# 1. get equally sized samples
-set.seed(1)
-before <- ISLR::Wage %>% 
-  filter(jobclass == "1. Industrial") %>% 
-  sample_n(20) 
-after  <- ISLR::Wage %>% 
-  filter(jobclass == "2. Information") %>% 
-  sample_n(20)
-
-# 2. calculate the difference
-difference <- after$wage - before$wage
-
-# 3. make one-sample t-test to compare to 0, where mu=0 by default
-t.test(difference, alternative = "two.sided")
-
-# 4. perform automatic paired t-test
-t.test(after$wage, before$wage, paired = TRUE, alternative = "two.sided")
-```
-
-As you can see, the results from (1) performing *one-sample t-test* on the difference between paired samples and (2) performing *paired t-test* directly on two samples are **identical**.
-
-We can also ask the question, whether job-change is worth it by performing a "one-sided" *t-test*?
-
-```{r}
-t.test(after$wage, before$wage, paired = TRUE, alternative = "less")
-t.test(after$wage, before$wage, paired = TRUE, alternative = "greater")
-```
-
+For **paired** tests, the data **needs to be sorted**, so that the first observation of the **before** group, pairs with the first observation of the **after** group. If our data is sorter, we are ready to compute the test.
 
 ## Compute Paired Samples Wilcoxon Signed Rank Test 
 
+And the best way to compute our test (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
+
+- first, **our data** - Fitness, then
+- **x** - as the grouping variable,
+- **y** - are the numbers of sit-ups and
+- the **type** of statistical approach. Since our data was normally distributed, we choose a **parametric** test, and {ggwithinstats} automatically takes **Paired t-Test** .
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
 
 ```{r}
 # install.packages("ggstatsplot")
@@ -160,31 +104,37 @@ ggwithinstats(
   data = Fitness,
   x    = test, 
   y    = number, 
-  type = "p"
+  type = "parametric"
 )
+
+ggsave(filename = "paired_t_test.jpg", plot = last_plot(), width = 6, height = 4)
 ```
 
-And the best way to compute our test is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
 
-- **our data** - d,
-- **x** - as the grouping variable,
-- **y** - are the reading scores and
-- the **type** of statistical approach. Since our data was not normally distributed, we choose a **nonparametric** test, and {ggwithinstats} automatically knows that we need a **Paired Samples non-paramertic Wilcoxon Signed Rank Test** ... (Good Lord, the name is killing me :)
-
-Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
 
 ## Interpret the result
 
-- **t-statistics**
+- **Students t-statistics** is the **measure of similarity** between compared samples measured in units of standard error. The further *t-value* is from zero, the more different are the samples. But **t-value** by itself can not say how far from zero is far enough, to conclude that this difference is significant. That's why we need a **p-value**.
 
-- our **P-value** of 0.023 shows a moderate evidence against the null hypothesis (H~0~), that median difference is equal to zero, in favor of the alternative hypothesis (H~Alt~), that median difference is not equal to zero (Raiola, 2012). Particularly, we'll read 7 score points faster after the course. But is a difference of 7 scores large? P-value can not tell that. A P-value only tells you that there is a difference, but not how strong this difference is. 
+
+$$t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }$$ 
+
+- our **P-value** of 0.025 tells us that our difference IS significant. It shows a moderate evidence against the null hypothesis (H~0~) in favor of the alternative hypothesis (H~Alt~). Particularly, our group of 9 students will make 2 sit-ups more on average after one week of training. But is a difference of only 2 sit-ups large? P-value can not tell that. A P-value only tells you that there is an effect from training, but not how strong this effect is. 
 
 ![](p_value_interpretation.png)
 
+- Fortunately, {ggwithinstats} provides **Hedges' g** as the measure of the **Effect Size**, which shows how large the effect of training is. **Hedges' g** is interpreted in the same way as **Cohen's d** Effect size, but outperforms **Cohen’s d** for small samples, like 9 in our example. Our effect size of 0.83 **is large**, and tells us that the increase in performance of only 2 sit-ups is actually - a lot. But it doesn't seem like a lot. So, we have to double check it! 
 
-- fortunately, {ggwithinstats} provides a **Rank biserial correlation coefficient** with 95% confidence intervals as the measure of the **effect size**, which shows how large the difference is. The {interpret_rank_biserial} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation. Our effect size of 0.68 means, that speed reading exercise had a **very large, positive and significant effect on our speed reading**.
+![](effect_size_hedges_d.png)
+
+- For that {ggwithinstats} provides the **Bayesian Difference** between our samples with 95% Highest Density Intervals, which is conceptually similar to the difference of 2 sit-ups we see on the plot, and the **Bayes Factor**, which is conceptually similar to the **p-value**.
+
+- Our **Bayes Factor** (Jeffreys, 1961) of -1.13 indicates a **substantial evidence for the alternative hypothesis** - that training actually did make a difference, and we now make substantially more sit-ups then **Before** ... which IS in line with the frequentists statistics on the top of the plot. 
+
+![](bf_interpretation.png)
 
 
+- The {interpret_hedges_g} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation if you ask R about it: `?interpret_hedges_g`. 
 
 ```{r}
 # install.packages("effectsize")
@@ -196,86 +146,103 @@ interpret_hedges_g(0.83)
 ```
 
 
-## What would happen if we choose the wrong test
 
-Now, what happens if I ignore the assumption of normality and conduct a **Parametric Paired T-Test**? Well, I would compare means instead of medians and would get completely opposite result, namely, - speed reading course doesn't help me to read faster, which is just wrong. Here I would have made a **Type II Error**, or, in other words, I would have missed an important discovery. So, no Nobel Price for me.
+## What happens if we choose a wrong test?
+
 
 ```{r}
 ggwithinstats(
-  data = d,
-  x    = speed, 
-  y    = score, 
+  data = Fitness,
+  x    = test, 
+  y    = number, 
   type = "nonparametric"
 )
+
+ggsave(filename = "paired_t_test.jpg", plot = last_plot(), width = 6, height = 4)
 ```
 
+There are two ways things can go wrong. First, if we are lazy to check the normality, we'll go straight to the **non-parametric Paired Wilcoxon-Test**. Here, a p-value almost failed to reject the Null Hypothesis when we use the threshold of 0.05 to determine significance. And the effect size is lower, which means our study would be underpowered. Let me show you what I mean. 
+
+```{r}
+# install.packages("pwr")
+library(pwr)
+
+pwr.t.test(n = 9, d = 0.83, sig.level = 0.05, type = "paired")
+pwr.t.test(n = 9, d = 0.81, sig.level = 0.05, type = "paired")
+```
+
+The effect size from Wilcoxon test has 2% lower power, which increases the chances to miss an important discovery. And in our example with a p-value close to the significance threshold we almost missed it.
+
+But that's not all!!! We could be even more wrong if we took a **NOT-PAIRED t-Test**, because we would get completely opposite result, namely, that the effect of training is small and not significant. This wrong result could even seem plausible, since the difference of only 2 sit-ups is sooo small. 
 
 
 ```{r}
-library(ggstatsplot)
-
-set.seed(1)   # for Bayesian reproducibility
 ggbetweenstats(
-    data = Fitness,
-    x    = test, 
-    y    = number, 
-    type = "p"
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = "parametric", 
+  var.equal = T
 )
+
+interpret_hedges_g(0.3)
+
+ggsave(filename = "usual_t_test.jpg", plot = last_plot(), width = 6, height = 4)
 ```
 
+
+So, how can such a small difference be significant in a paired test then??? Well, it lies in the nature of the paired test - which does not compare averages of two samples, but compares a **mean difference** between those samples to zero. And if we look at the difference, which shows individual performance of students, we'll see that 7 out of 9 improved their performance, some of them by a lot, so that, the group in general was successful, and our significant p-value actually makes sense.
+
+## Proof of the concept about the difference between two samples
+
 ```{r}
-gghistostats(data = d, x = difference, binwidth = 1)
+gghistostats(data = d, x = difference, test.value = 0, binwidth = 1)
+
+ggsave(filename = "one_sample_t_test.jpg", plot = last_plot(), width = 6, height = 4)
 ```
 
-our null hypothesis is that this mean difference is zero; the alternative hypothesis is that it is not
+Interestingly, if we test our mean difference against zero using **one-sample t-Test** and compare the t-statistics, p-value and the effect size to our **Paired t-Test**, we'll see identical result! 
 
-you need to be able to recognise when a paired samples test is appropriate, and to understand why it’s better than an independent samples  
-t-test.
+Thus, our fancy **Paired Samples test** is actually **One-Sample test** on the difference. And if you wanna know more about **one-sample tests** and how to interpret all these numbers, check out [this article](https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/).
 
-The numbers are identical to those that come from the one sample test, which of course they have to be given that the paired samples  
-t-test is just a one sample test under the hood.
 
-## One-sided two-samples Wilcoxon-test
-
-Without visualization, the default `two.sided` alternative of **Wilcoxon test** only says that a difference is present, but does not say whether reading velocity decreases or increases. To find out exactly this, we need to test two new alternative hypotheses (**H~alt~**):
-
-1. The median reading speed after the course **decreases** 
-2. The median reading speed after the course **increases** 
-
-Doing this will add another useful tool to your statistical toolbox, namely **one-tailed (or one-sided) non-parametric two-samples paired Wilcoxon signed rank test** (the name is slowly killing me :) 
 
 ```{r}
+# old way to do the tests
+# install.packages("broom")
 library(broom)
-rbind(
-  wilcox.test(data = d, score ~ speed, paired = T, alternative = "less", conf.int = T, exact = F) %>% tidy(), 
-  wilcox.test(data = d, score ~ speed, paired = T, alternative = "greater", conf.int = T, exact = F) %>% tidy()
-)
+
+bind_rows(
+  t.test(d$difference) %>% tidy(),
+  t.test(d$After, d$Before, paired = T) %>% tidy()
+) 
 ```
 
-Low *p-value* (p = 0.01) of the **greater-sided** test confirms that the **reading velocity increases** after speed-reading course. The *p-value* of the **less-sided** test screams that your reading velocity will not decrease with the probability of 99% (p = 0.99). 
 
 
-## Don't use *two-samples Wilcoxon-test* if:
+## One-Tailed (or One-Sided) Parametric Two-Samples Paired t-Tests
 
-- samples are independent. In this case apply [*Mann-Whitney-Wilcoxon-test*] (https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
-- samples are small (n<30) and normally distributed (or big and near normal). In this case use the more powerful [two-samples t-test](https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/). 
-
-## Conclusion
-
-*Two-samples Wilcoxon-test* can be more powerful then *two-samples t-test* when difference between two samples at low numbers (<30) is not-normally distributed. For big samples and not to unnormal distribution, *t-test* will do fine. Another advantage of the *median-based non-parametric Wilcoxon test* is that it more robust to the outliers.
+We can also ask the question, whether performance-change is positive or negative by performing **One-Tailed (or One-Sided) Parametric Two-Samples Paired t-Tests**. (I hate that name! :) 
 
 
-## What's next
+```{r}
+t.test(d$After, d$Before, paired = TRUE, alternative = "less")
+t.test(d$After, d$Before, paired = TRUE, alternative = "greater")
+```
 
-- Check out the [*Mann-Whitney-Wilcoxon-test*](https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
-
-- If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to [ANOVA](https://yury-zablotski.netlify.com/post/one-way-anova/), but if they aren't, go to the non-parametric analogue of *ANOVA*
-
-- *Kruskal-Wallis Rank Sum Test* would be another idea.
-
-- http://faculty.washington.edu/heagerty/Books/Biostatistics/TABLES/Wilcoxon/
+Low *p-value* (p = 0.012) of the **greater-sided** test confirms that the **performance increases** after one week of training. The *p-value* of the **less-sided** test screams that your performance will not decrease with the probability of 99% (p = 0.99). In fact only one student (N = 6), which ironically was the best Before training week, decreased his/her performance by 2 sit-ups and was overtaken by two students After the week. That's the price of arrogance :)
 
 
+## What's next, or Don't use Paired t-Test if
+
+- samples are independent. In this case apply[Student's or Welsh t-test](https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/)
+- samples are small (n<30) and not-normally distributed. In this case use [paired two-samples Wilcoxon-test](https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/). 
+
+- If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to [ANOVA](https://yury-zablotski.netlify.com/post/one-way-anova/), but if they aren't, go to *Kruskal Wallis*
 
 
+---
 
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
