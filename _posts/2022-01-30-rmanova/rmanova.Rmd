@@ -1,0 +1,234 @@
+---
+title: "R demo | Rereated Measures ANOVA (One-Way) | How to conduct, visualise and interpret"
+description: |
+  Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+# draft: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F, fig.height=5, fig.width=7}
+vembedr::embed_youtube("")
+library(tidyverse)
+library(datarium)
+```
+
+## Previous topics
+
+[Paired t-Test](https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/) and [Paired Wilcoxon test](https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/) would help.
+
+## Get the data
+
+```{r eval=FALSE}
+# install.packages("tidyverse")  # for everything ;)
+library(tidyverse)
+
+# install.packages("datarium")   # for selfesteem data
+library(datarium)
+
+View(selfesteem)
+```
+
+```{r echo=FALSE}
+library(flextable)
+selfesteem %>% 
+  mutate_if(is.numeric, ~round(., 2)) %>%
+  regulartable() %>% 
+  autofit()
+```
+
+For that let's take {selfesteem} data from {datarium} package, and gather all three time-points into one column. For **repeated measures** tests, the data **needs to be sorted**, so that the first observation of the **first time point**, pairs with the first observation of other **time points**. If our data is sorter, we are ready to compute the test.
+
+```{r}
+# make long format
+d <- selfesteem %>%
+  gather(key = "time", value = "score", t1, t2, t3) 
+
+View(d)
+```
+
+
+## Compute Paired Samples Wilcoxon Signed Rank Test 
+
+And the best way to compute Repeated Measures ANOVA (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
+
+- **our data** is **d**,
+- **x** - is grouping variable - **time**,
+- **y** - are the **scores of selfesteem** and we choose
+- the **parametric type** of statistical approach, which tells {ggwithinstats} to conduct **Repeated Measures ANOVA**.
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+set.seed(1)   # for Bayesian reproducibility
+ggwithinstats(
+  data = d,
+  x    = time, 
+  y    = score, 
+  type = "parametric"
+)
+
+ggsave(filename = "rm_anova.jpg", plot = last_plot(), width = 5.5, height = 5.5)
+```
+
+## Interpret the result
+
+- **F-statistics** and **degrees of freedom (DFs)** were previously used to get p-values. But, since modern statistical software always report **p-values**, we can safely ignore them.
+
+- the **p-value** helps to test the hypothesis, where **Null Hypothesis** says that sample-means are similar, or, to be more exact, that the differences between pairwise samples are equal to Zero, while the **Alternative Hypothesis** says that sample-measn differ, or, in other words, that differences betwee pairwise samples are not-qual to Zero
+
+
+```{r}
+diffs <- selfesteem %>%
+  mutate(
+    diff_t3_t1 = t3 - t1,
+    diff_t3_t2 = t3 - t2,
+    diff_t2_t1 = t2 - t1 )
+
+View(diffs)
+```
+
+
+```{r echo=FALSE}
+diffs %>% 
+  mutate_if(is.numeric, ~round(., 2)) %>%
+  regulartable() %>% 
+  autofit()
+```
+
+- our **very low P-value** (p = 0.00000216) shows a **very strong evidence against the null hypothesis (H~0~)**,  **in favor of the alternative hypothesis (H~Alt~)**, that sample-means are different. That tells us that exercise significantly increases selfesteem over time. But how strong is the effect of sport on selfesteem? P-value can not tell that. A P-value only tells you that there is an effect from training, but not how strong this effect is. 
+
+![](p_value_interpretation.png)
+
+- Fortunately, {ggwithinstats} provides **partian omega squared** with 95% Confidence Intervals as the measure of the **Effect Size** for Repeated Measures ANOVA, which shows that training effect of 0.81 is large.
+
+![](interpret_omega_squared.png){width=50%}
+
+- Moreover, {ggwithinstats} also provides a **Bayesian Effect Size**, namely the **coefficient of determination** - $R_2$ with 95% Highest Density Intervals. $R_2$ shows the explanatory power of our model and since $R_2$ goes from 0 to 100%, the explanatory power of 82% in our model is huge, or, if we interpret $R_2$ like Cohen, the explanatory power is substantial.
+
+![](interpret_r_squared.png){width=50%}
+
+- If that's not enough, we can have a look at the **Bayes Factor**, which is conceptually similar to the **p-value**. Our **Bayes Factor** of -20 indicates a **Decisive evidence for the alternative hypothesis** - that training does increase our selfesteem … which IS in line with the frequentists statistics on the top of the plot.
+
+![](bf_interpretation.png)
+
+- now, both, **Bayes Factor** and **p-value** tell us that difference among time-points exists, however, they don't show between which time-points exactly. That's why we need pairwise t-tests between time-points, also called post-hoc tests. And {ggwithinstats} **automatically knows that we need paired t-tests, automatically conducts those tests and displays p-values and even corrects p-values for multiple comparisons without any additional code**. How cool is that!
+
+Here is a quick proof that {ggwithinstats} indeed uses paired t-test.
+
+```{r}
+pairwise.t.test(d$score, d$time,
+                paired=T, 
+                p.adjust.method = "holm")
+```
+
+## Customise the result
+
+However, if we want to, we can easily customize our plot by using either additional arguments within the function, or arguments from {ggplot2} package outside of it. For example, 
+
+- if you found outliers in your data, you can display them on the plot and 
+- use a **robust ANOVA** to minimaize the effect of outliers
+- if you are more familiar with **Bonferroni correction for multiple comparisons**, or 
+- want to display **not only significant**, but **all comparisons**,
+- hide either Frequentists or Bayesian statistics, or both...
+
+you can easily do that and much more. Just ask R about {?ggwithinstats} function and try some things out, I am sure you'll enjoy it. 
+
+```{r}
+ggwithinstats(
+  data = d,
+  x    = time, 
+  y    = score, 
+  outlier.tagging = T,
+  type = "robust", 
+  p.adjust.method = "bonferroni", 
+  pairwise.display = "all",
+  # pairwise.comparisons = FALSE,   
+  results.subtitle = F,
+  bf.message = F
+) + 
+  ylab("selfesteem score")+
+  theme_classic()+
+  theme(legend.position = "top")
+
+?ggwithinstats
+```
+
+
+
+
+
+## Check Sphericity & Normality assumptions
+
+The last thing is important - please check both the Sphericity & Normality assumptions, otherwise you'll choose a wrong test and either miss a discovery having wrong big p-value (also called - Type II Error) or find some nonsense having wrong small p-value (also called - Type I Error). 
+
+Sphericity is good. Sphericity happens when the variances of the differences between all combinations of related groups are similar. However, since most of the real world data have different variances, {ggwithinstats} already accounts for Sphericity by default. You can still check Sphericity assumption by yourself and I'll show you how in a moment, for now let's talk about normality...
+
+ANOVA also needs the data to be normally distributed, but often compares a lot of groups, so that checking normality of separate groups for usual ANOVA or differences between those groups for Repeated Measures ANOVA, might be cumbersome. 
+
+The {aov_ez} function from {avex} package provides solution for both. First, because it conducts **Mauchly Test for Sphericity** and **automatically corrects p-values** if Sphericity was violated. Secondly, because we can **check the normality of the residuals** of our ANOVA model, where all groups are alredy included, instead of dealing with thousands of groups. We then decide whether we stay with the **Parametric Repeated Measures ANOVA** if residuals are normally distributed, or go to the **Nonparametric Friedman test** if not.
+
+```{r}
+# old hard way
+# install.packages(afex)
+
+library(afex)
+hard <- aov_ez(
+  data   = d,
+  id     = "id", 
+  dv     = "score",  
+  within = "time")
+
+summary(hard)
+
+residuals(hard) %>% shapiro.test()
+```
+
+
+Sphericity is conceptually similar to homogeneity of variances in a between-subjects ANOVA. The violation of Sphericity makes repeated measures ANOVA to become too liberal (increases the Type I Error, or, as I like to say - increases the probability to find nonsense). Luckely, there are corrections for sphericity already build into {ggwithingstats}.
+
+## What's next, or when not to use Repeated Measures ANOVA
+
+- if samples are independent and normally distributed apply Student's (variances are similar) or Welsh ANOVA (homogeneity of variances is violated)
+- if samples are small (n<30) and not-normally distributed, use [Friedman test](https://yury-zablotski.netlify.app/post/fr_test/)
+- Repeated Measures ANOVA is actually capricious and cranky. It does not like missing values or not exactly the same number of repeated measures for all individuals (imballanced desing), it often overfits, checking assumptions gets to cumbersome if we want to add more then one predictors. Thus, the solution for almost all of these problems and the most logical next step in your learning journey are - [Mixed Effects Models](https://yury-zablotski.netlify.app/post/mixed-effects-models-1/).
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
