@@ -41,8 +41,6 @@ hard <- afex::aov_ez(
   dv     = "score",  
   within = "channel")
 
-summary(hard)
-
 residuals(hard) %>% shapiro.test()
 
 # install.packages("ggstatsplot")
@@ -52,8 +50,32 @@ ggwithinstats(
   data = d,
   x    = channel, 
   y    = score, 
-  type = "np"
+  type = "nonparametric"
 )
+
+
+ggwithinstats(
+  data = d,
+  x    = channel, 
+  y    = score, 
+  type = "nonparametric", 
+  p.adjust.method = "bonferroni")
+
+
+ggwithinstats(
+  data = d,
+  x    = channel, 
+  y    = score, 
+  type = "nonparametric", 
+  p.adjust.method = "bonferroni", 
+  pairwise.display = "all", 
+  k = 4
+)+ 
+  ylab("sales score")+
+  theme_classic()+
+  theme(legend.position = "top")
+
+?ggwithinstats
 
 
 # install.packages("PMCMRplus")
@@ -93,6 +115,8 @@ summary(two_way_rma)
 
 residuals(two_way_rma) %>% shapiro.test()
 
+# ------------------------------------------
+
 library(lme4)
 library(lmerTest)
 
@@ -103,4 +127,5 @@ m <- lmer(score ~ time + (1|id), d,
             check.conv.singular = .makeCC(action = "ignore",  tol = 1e-6)))
 plot_model(m, type = "pred")
 tab_model(m)
+
 

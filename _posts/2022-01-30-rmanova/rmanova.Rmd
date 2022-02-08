@@ -1,5 +1,5 @@
 ---
-title: "R demo | Rereated Measures ANOVA (One-Way) | How to conduct, visualise and interpret"
+title: "R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret"
 description: |
   Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.
 author:
@@ -23,7 +23,7 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+#draft: true
 ---
 
 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = T)
 
 ## This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 7 minutes long. 
 
 ```{r, eval=T, echo=F, fig.height=5, fig.width=7}
 vembedr::embed_youtube("")
@@ -65,7 +65,7 @@ selfesteem %>%
   autofit()
 ```
 
-For that let's take {selfesteem} data from {datarium} package, and gather all three time-points into one column. For **repeated measures** tests, the data **needs to be sorted**, so that the first observation of the **first time point**, pairs with the first observation of other **time points**. If our data is sorter, we are ready to compute the test.
+For that let's take {selfesteem} data from {datarium} package, and gather all three time-points into one column, so that our timepoints become a variable for the x-axis of the plot, and our selfesteem scores become a variable for the y-axis of the plot. For **repeated measures**, the data **needs to be sorted** so that, the first observation of the **first time point**, pairs with the first observation of other **time points**. If our data is sorter, we are ready to compute the test.
 
 ```{r}
 # make long format
@@ -76,18 +76,18 @@ View(d)
 ```
 
 
-## Compute Paired Samples Wilcoxon Signed Rank Test 
+## Compute One-Way Repeated Measures ANOVA 
 
 And the best way to compute Repeated Measures ANOVA (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
 
-- **our data** is **d**,
-- **x** - is grouping variable - **time**,
-- **y** - are the **scores of selfesteem** and we choose
-- the **parametric type** of statistical approach, which tells {ggwithinstats} to conduct **Repeated Measures ANOVA**.
+- first, **our data**, which is **d**, then
+- **x** - as grouping variable - **time**,
+- **y** - will be the **scores of selfesteem** and we choose
+- the **parametric type** of statistical approach, which tells {ggwithinstats} to conduct **Repeated Measures ANOVA**
 
 Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
 
-```{r}
+```{r fig.height=7}
 # install.packages("ggstatsplot")
 library(ggstatsplot)
 
@@ -106,7 +106,7 @@ ggsave(filename = "rm_anova.jpg", plot = last_plot(), width = 5.5, height = 5.5)
 
 - **F-statistics** and **degrees of freedom (DFs)** were previously used to get p-values. But, since modern statistical software always report **p-values**, we can safely ignore them.
 
-- the **p-value** helps to test the hypothesis, where **Null Hypothesis** says that sample-means are similar, or, to be more exact, that the differences between pairwise samples are equal to Zero, while the **Alternative Hypothesis** says that sample-measn differ, or, in other words, that differences betwee pairwise samples are not-qual to Zero
+- the **p-value** helps to test the hypothesis, where **Null Hypothesis** says that sample-means are similar, or, to be more exact, that the differences between pairwise samples are equal to Zero, while the **Alternative Hypothesis** says that sample-means differ, or, in other words, that differences between pairwise samples are not-equal to Zero.
 
 
 ```{r}
@@ -127,7 +127,7 @@ diffs %>%
   autofit()
 ```
 
-- our **very low P-value** (p = 0.00000216) shows a **very strong evidence against the null hypothesis (H~0~)**,  **in favor of the alternative hypothesis (H~Alt~)**, that sample-means are different. That tells us that exercise significantly increases selfesteem over time. But how strong is the effect of sport on selfesteem? P-value can not tell that. A P-value only tells you that there is an effect from training, but not how strong this effect is. 
+- our **very low P-value** (p = 0.00000216) shows a **very strong evidence against the null hypothesis (H~0~)**,  **in favor of the alternative hypothesis (H~Alt~)**, that sample-means are different. That tells us that exercise significantly increases selfesteem over time. Which is good to know! But how strong is the effect of sports on selfesteem? P-value can not tell that. A P-value only tells you that there is an effect from training, but not how strong this effect is. 
 
 ![](p_value_interpretation.png)
 
@@ -135,7 +135,7 @@ diffs %>%
 
 ![](interpret_omega_squared.png){width=50%}
 
-- Moreover, {ggwithinstats} also provides a **Bayesian Effect Size**, namely the **coefficient of determination** - $R_2$ with 95% Highest Density Intervals. $R_2$ shows the explanatory power of our model and since $R_2$ goes from 0 to 100%, the explanatory power of 82% in our model is huge, or, if we interpret $R_2$ like Cohen, the explanatory power is substantial.
+- Moreover, {ggwithinstats} also provides a **Bayesian Effect Size**, namely the **coefficient of determination** - $R_2$ with 95% Highest Density Intervals. $R_2$ shows the explanatory power of our model and since $R_2$ goes from 0 to 100%, the explanatory power of 82% in our model is huge, or, if we interpret $R_2$ as the effect size, our effects is substantial.
 
 ![](interpret_r_squared.png){width=50%}
 
@@ -143,7 +143,11 @@ diffs %>%
 
 ![](bf_interpretation.png)
 
-- now, both, **Bayes Factor** and **p-value** tell us that difference among time-points exists, however, they don't show between which time-points exactly. That's why we need pairwise t-tests between time-points, also called post-hoc tests. And {ggwithinstats} **automatically knows that we need paired t-tests, automatically conducts those tests and displays p-values and even corrects p-values for multiple comparisons without any additional code**. How cool is that!
+- now, both, **Bayes Factor** and **p-value** tell us that difference among time-points exists, however, they don't show between which time-points exactly. That's why we need to compare every timepoint to every other timepoint pairwisely. 
+
+- by the way, our two global tests are often called with a strange name - **omnibus test**, while the pairwise tests between time-points, are sometimes described in a dead latin language as - **post-hoc** - which means - **after the event** - in plain English. I really think those unnecessary names make statistics more complicated then it is. 
+
+- Anyway, {ggwithinstats} **automatically knows that we need Paired t-Tests for Repeated Measures ANOVA, automatically conducts those tests and displays p-values and even corrects p-values for multiple comparisons without any additional code**. How cool is that!
 
 Here is a quick proof that {ggwithinstats} indeed uses paired t-test.
 
@@ -158,10 +162,11 @@ pairwise.t.test(d$score, d$time,
 However, if we want to, we can easily customize our plot by using either additional arguments within the function, or arguments from {ggplot2} package outside of it. For example, 
 
 - if you found outliers in your data, you can display them on the plot and 
-- use a **robust ANOVA** to minimaize the effect of outliers
-- if you are more familiar with **Bonferroni correction for multiple comparisons**, or 
-- want to display **not only significant**, but **all comparisons**,
-- hide either Frequentists or Bayesian statistics, or both...
+- use a **robust ANOVA** to minimize the effect of outliers,
+- here again, the function automatically uses correct pairwise tests for every omnibus test and corrects p-values for multiple comparisons with a Holm method,
+- which you can easily change to a more famous **Bonferroni correction for multiple comparisons** ... but I wouldn't recommend it, because Bonferroni correction is too conservative and we could miss some interesting result
+- then, if you want to display **not only significant**, but **all comparisons**,
+- if you want to hide either Frequentists or Bayesian statistics, or both...
 
 you can easily do that and much more. Just ask R about {?ggwithinstats} function and try some things out, I am sure you'll enjoy it. 
 
@@ -191,13 +196,13 @@ ggwithinstats(
 
 ## Check Sphericity & Normality assumptions
 
-The last thing is important - please check both the Sphericity & Normality assumptions, otherwise you'll choose a wrong test and either miss a discovery having wrong big p-value (also called - Type II Error) or find some nonsense having wrong small p-value (also called - Type I Error). 
+Now, the last thing is important - please check both the Sphericity & Normality assumptions, otherwise you'll choose a wrong test and either miss a discovery having a wrong big p-value (also called - Type II Error) or you'll find some nonsense having a wrong small p-value (also called - Type I Error). 
 
-Sphericity is good. Sphericity happens when the variances of the differences between all combinations of related groups are similar. However, since most of the real world data have different variances, {ggwithinstats} already accounts for Sphericity by default. You can still check Sphericity assumption by yourself and I'll show you how in a moment, for now let's talk about normality...
+Repeated Measures ANOVA needs Sphericity, where Sphericity simply means that data-spread inside of the groups is similar. To say it a more correct but more boring way, - Sphericity is a condition where variances of the differences between all combinations of related groups don't differ. You know that **Variance** IS IMPORTANT, because the name of our test - ANOVA - is actually the abbreviation of the **AN**alises **O**f **VA**riances. However, since most of the real world data have different variances, {ggwithinstats} already accounts for Sphericity by default. You can still check Sphericity assumption by yourself and I'll show you how in a moment, but for now let's talk about normality...
 
-ANOVA also needs the data to be normally distributed, but often compares a lot of groups, so that checking normality of separate groups for usual ANOVA or differences between those groups for Repeated Measures ANOVA, might be cumbersome. 
+ANOVA also needs the data to be normally distributed, or bell shaped, but often compares **a lot of groups**, so that checking normality of separate groups for usual ANOVA or differences between those groups for Repeated Measures ANOVA, might become cumbersome. 
 
-The {aov_ez} function from {avex} package provides solution for both. First, because it conducts **Mauchly Test for Sphericity** and **automatically corrects p-values** if Sphericity was violated. Secondly, because we can **check the normality of the residuals** of our ANOVA model, where all groups are alredy included, instead of dealing with thousands of groups. We then decide whether we stay with the **Parametric Repeated Measures ANOVA** if residuals are normally distributed, or go to the **Nonparametric Friedman test** if not.
+The {aov_ez} function from {avex} package allows to easily check both assumptions. First, it conducts **Mauchly Test for Sphericity** and **automatically corrects p-values** of omnibus test. So that, if Sphericity was violated, you'll take the corrected p-value. Secondly, instead of checking the normality of thousands of groups, we can **check the normality of the residuals** of our ANOVA model, where all groups are already included. We then decide whether we stay with the **Parametric Repeated Measures ANOVA** if residuals are normally distributed, like in our example, or go to the **Nonparametric Friedman test** if residuals are not-normally distributed, which is a completely different story.
 
 ```{r}
 # old hard way
@@ -222,7 +227,7 @@ Sphericity is conceptually similar to homogeneity of variances in a between-subj
 
 - if samples are independent and normally distributed apply Student's (variances are similar) or Welsh ANOVA (homogeneity of variances is violated)
 - if samples are small (n<30) and not-normally distributed, use [Friedman test](https://yury-zablotski.netlify.app/post/fr_test/)
-- Repeated Measures ANOVA is actually capricious and cranky. It does not like missing values or not exactly the same number of repeated measures for all individuals (imballanced desing), it often overfits, checking assumptions gets to cumbersome if we want to add more then one predictors. Thus, the solution for almost all of these problems and the most logical next step in your learning journey are - [Mixed Effects Models](https://yury-zablotski.netlify.app/post/mixed-effects-models-1/).
+- Repeated Measures ANOVA is actually capricious and cranky. It does not like missing values or not exactly the same number of repeated measures for all individuals (imbalanced design), it often overfits, checking assumptions gets to cumbersome if we want to add more then one predictors. Thus, the solution for almost all of these problems and the most logical next step in your learning journey are - [Mixed Effects Models](https://yury-zablotski.netlify.app/post/mixed-effects-models-1/).
 
 ---
 
