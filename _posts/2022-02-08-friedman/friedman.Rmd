@@ -1,7 +1,7 @@
 ---
 title: "R demo | Friedman Test (One-Way) | How to Conduct, Visualise and Interpret"
 description: |
-  A short description of the post.
+  The Friedman Test is a non-parametric brother of Repeated Measures ANOVA, which does much better job when data is not-normally distributed (which happens pretty often ;). Friedman test is also superior to Repeated Measures ANOVA when our data is ordinal (e.g., scales from 1 to 10). Friedman Test can also be a non-parametric father of the Paired Wilcoxon test, because it can compare more then two groups.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
