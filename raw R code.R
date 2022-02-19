@@ -26,12 +26,6 @@ d <- marketing %>%
   group_by(channel) %>% 
   slice(1:10) # looks better   
 
-# d_diffs <- diffs %>%
-#   rowid_to_column() %>% 
-#   gather(key = "channel", value = "score", f_n:s_y) %>% 
-#   group_by(channel) %>% 
-#   slice(1:10) # looks better 
-
 View(d)
 
 # hard way
@@ -53,24 +47,18 @@ ggwithinstats(
   type = "nonparametric"
 )
 
-
-ggwithinstats(
-  data = d,
-  x    = channel, 
-  y    = score, 
-  type = "nonparametric", 
-  p.adjust.method = "bonferroni")
-
-
+# customise the result
 ggwithinstats(
   data = d,
   x    = channel, 
   y    = score, 
   type = "nonparametric", 
   p.adjust.method = "bonferroni", 
-  pairwise.display = "all", 
-  k = 4
-)+ 
+  pairwise.display = "all",
+  # pairwise.comparisons = FALSE,   
+  results.subtitle = F,
+  bf.message = F
+) + 
   ylab("sales score")+
   theme_classic()+
   theme(legend.position = "top")

@@ -1,0 +1,233 @@
+---
+title: "R demo | Friedman Test (One-Way) | How to Conduct, Visualise and Interpret"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+# draft: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+![](featured.jpg)
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F, fig.height=5, fig.width=7}
+vembedr::embed_youtube("")
+library(tidyverse)
+library(datarium)
+```
+
+
+
+## Previous topics
+
+[Repeated Measures ANOVA](https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/) and [Paired Wilcoxon Signed-Rank test](https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/).
+
+## Why do we need Friedman test
+
+The **Friedman Test** is a non-parametric brother of **Repeated Measures ANOVA**, which does much better job when data is not-normally distributed (which happens pretty often ;). Friedman test is also superior to **Repeated Measures ANOVA** when our data is ordinal (e.g., scales from 1 to 10). **Friedman Test** can also be a non-parametric father of the Paired Wilcoxon test, because it can compare more then two groups. Having a lot of groups creates tons of work though, because all the groups need to be compared to each other pairwisely if Friedman test is significant. 
+
+However, one simple command conducts and visualizes **Friedman Test** you see on the screen, automatically conducts and displays pairwise tests and even corrects the p-values for multiple comparisons. So, let's get the data and learn how to easily get all these results.
+
+## How Friedman Test works
+
+A good description about how Friedman test works and the picture below come from this [blog-article](https://www.spss-tutorials.com/spss-friedman-test-simple-example/)
+
+![](friedman-test-how-it-works.png)
+
+## Get the data
+
+```{r}
+# install.packages("tidyverse")  # for everything ;)
+library(tidyverse)
+
+# install.packages("datarium")   # for marketing data
+library(datarium)
+
+View(marketing)
+
+d <- marketing %>%
+  select(youtube, facebook, newspaper) %>% 
+  rowid_to_column() %>% 
+  gather(key = "channel", value = "money", youtube:newspaper) %>% 
+  group_by(channel) %>% 
+  slice(20:35) # looks better 
+
+View(d)
+```
+
+
+For that:
+
+- we'll load {datarium} package and
+- take {marketing} data from it, which shows money spend on three advertising channels: youtube, facebook and newspaper
+- we then gather all three channels into one column, so that our channels become a variable for the x-axis of the plot, and our spending in thousands of dollars becomes a variable for the y-axis of the plot,  
+- finally, we'll reduce the dataset a bit to make the plot look better
+
+For **repeated measures**, the data **needs to be sorted** so that, the first observation of the **first channel**, pairs with the first observation of other **channels**. If our data is sorter, we are ready to compute the test.
+
+
+## Compute Friedman Test
+
+And the best way to compute Friedman Test (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
+
+- first, **our data**, which we just prepared, then
+- **x** - as the grouping variable - **channel**,
+- **y** - is the numeric variable **money** and 
+- the **nonparametric type** of statistical approach, which tells {ggwithinstats} to conduct **Friedman Test**
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+```{r fig.height=6}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+ggwithinstats(
+  data = d,
+  x    = channel, 
+  y    = money, 
+  type = "nonparametric"
+)
+
+ggsave(filename = "friedman.jpg", plot = last_plot(), width = 5.5, height = 5.5)
+```
+
+
+
+## Interpret the result
+
+- **Friedman's Chi-Squared-Statistics** was previously used to get p-values. But, since modern statistical software always report **p-values**, we can safely ignore it.
+
+- the **p-value** helps to test the **Null Hypothesis**, which says that channels get similar amount of money, while the **Alternative Hypothesis** says that channels get different amount of money.
+
+![](p_value_interpretation.png)
+
+- our **very low P-value** (p = 0.000971) shows a ❌ **very strong evidence against the null hypothesis (H~0~)**, ✅ **in favor of the alternative hypothesis (H~Alt~)**, that difference exists. However, a P-value only tells you that there is a difference, but not how large this difference is. 
+
+- Fortunately, {ggwithinstats} provides **Kendall's coefficient of concordance** with 95% Confidence Intervals as the measure of the **Effect Size** for **Friedman test**. The {interpret_kendalls_w} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation. Our effect size of 0.64 is substantial. 
+
+```{r}
+# install.packages("effectsize")
+library(effectsize)
+
+interpret_kendalls_w(0.64)
+```
+
+
+- So, the final interpretation of our Friedman test is: the amount of money spend on channels differs significantly and this difference is substantial.
+
+- Nice, right? However, our **Global Friedman Test** doesn't say which channels exactly do differ. And that's where pairwise comparisons come into play. But wait, which tests should we take?
+
+- Well, fortunately, {ggwithinstats}:
+
+  - **knows that we need Durbin-Conover pairwise tests after significant Friedman test**, 
+  - moreover, it **automatically conducts those tests and displays p-values**
+  - and finally, it **even corrects p-values for multiple comparisons without any additional code**. I think it's just amazing!
+
+Here is a quick proof that {ggwithinstats} indeed uses paired Durbin-Conover tests.
+
+```{r}
+# install.packages("PMCMRplus")
+library(PMCMRplus)
+durbinAllPairsTest(
+  y      = d$money, 
+  groups = d$channel, 
+  blocks = d$rowid,
+  p.adjust.method = "holm") 
+```
+- by the way, our global Friedman test is often called with a strange name - **omnibus test**, while the pairwise tests between channels, are sometimes described in a dead *latin* language as - **post-hoc** - which simply means - **after the event**. I really think those unnecessary names make statistics more complicated then it is.
+
+## Customise the result
+
+However, if we want to, we can easily customize our plot by using either additional arguments within the function, or arguments from {ggplot2} package outside of it. For example, 
+
+- we can easily change the p-values adjustment method from the default **Holm-correction**,  to a more famous **Bonferroni correction for multiple comparisons** ... but I wouldn't recommend it, because Bonferroni correction is too conservative and we could miss a discovery. And that's exactly what happens in our example, namely significant difference between money spend on facebook and newspaper, discovered by the Holm method, disappears when we use Bonferroni. So, no discovery, no Nobel Price for me.
+
+- then, if you want to display **not only significant**, but **all comparisons**, you can use `pairwise.display = "all"` argument and see a p-value of 0.09 between facebook and newspaper, which was over-corrected by Bonferroni.
+
+- if you want to hide the **pairwise comparisons** or **statistical results**, or both...
+
+you can easily do that and much more. Just ask R about {?ggwithinstats} function and try some things out, you'll enjoy it. 
+
+- But the coolest thing about {ggwithinstats} is that if you want to compare only two groups, you just need to change the variable channel, which has three groups in our data, to a variable which has only two groups, and {ggwithinstats} will automatically conduct Paired Wilcoxon test which you can learn all about from this video.
+
+```{r fig.height=6}
+# customise the result
+ggwithinstats(
+  data = d,
+  x    = channel, 
+  y    = money, 
+  type = "nonparametric",
+  p.adjust.method = "bonferroni", 
+  # pairwise.display = "all",
+  # pairwise.comparisons = FALSE,   
+  # results.subtitle = F
+) + 
+  ylab("money spend [thousands of US dollars]")+
+  theme_classic()+
+  theme(legend.position = "top")
+
+?ggwithinstats
+```
+
+
+
+
+## How to report the results
+
+Report both, the mean ranks and the medians for each group. Besides, report the test statistic $\chi^2$ value ("Chi-square"), degrees of freedom ("df") and the *p-value* which show whether the difference between the mean ranks is significant. **How to write**: There was a statistically significant difference in the amount of money spend on channels was applied to (the individual while doing something), ${\chi^2}_{Friedman}$(df=2) = 20.38, p = 0.000971. *Post-hoc* analysis with Durbin-Conover tests was conducted with a Bonferroni correction for multiple comparisons. Median (IQR) money spend were 20.16 (12.9 to 29.6), 27.8 (22.7 to 47.0) and 291 (116 to 291) for facebook, newspaper and youtube respectively. There were no significant differences between facebook, newspaper (p = 0.06). However, there was a statistically significant increase in money spending in youtube vs. newpaper (p < 0.001) and in youtube vs. facebook (p < 0.001).
+
+
+## How to check the normality assumption to make sure you need Friedman test
+
+```{r}
+# hard way
+hard <- afex::aov_ez(
+  data   = d,
+  id     = "rowid", 
+  dv     = "money",  
+  within = "channel")
+
+residuals(hard) %>% shapiro.test()
+```
+
+
+
+## What's next
+
+Friedman Test is actually capricious and cranky. It does not like missing values or not exactly the same number of repeated measures for all individuals (imbalanced design), it often overfits, checking assumptions gets to cumbersome if we want to add more then one predictors. Thus, the solution for almost all of these problems and the most logical next step in your learning journey are - [Mixed Effects Models](https://yury-zablotski.netlify.app/post/mixed-effects-models-1/).
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+

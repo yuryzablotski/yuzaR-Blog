@@ -1,0 +1,125 @@
+---
+title: Friedman test
+author: Yury Zablotski
+date: '2019-10-30'
+slug: fr_test
+categories:
+  - R
+tags:
+  - statistics
+  - tests
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+featuredImage: "featured.jpg"
+subtitle: ''
+summary: ''
+authors: ["admin"]
+lastmod: '2019-10-30T08:56:39+01:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: yes
+projects: []
+---
+
+
+```{r setup, echo = F, include=FALSE, warning=F}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse) # for data wrangling and visualization 
+```
+
+![](quote-statistics-do-not-speak-for-themselves-milton-friedman-143-72-65.jpg)
+
+## Previous topics or when do we need it
+
+The Friedman test is a non-parametric brother of [*Repeated Measures ANOVA*](https://yury-zablotski.netlify.com/post/rma/) (RMA), thus understanding RMA is necessary for better processing of this post. The Friedman test is also a non-parametric cousen to the [Wilcoxon paired](https://yury-zablotski.netlify.com/post/two-samples-wilcoxon-test/) two sample test and to the [Kruskal-Wallis non-paired](https://yury-zablotski.netlify.com/post/kruskal-wallis-test/) tests, which could also improve understanding of this article.
+
+## Why do we need it? What are the benefits?
+
+It is used when the assumptions of the RMA are violated (which happens often) or when the response variable is ordinal (e.g., low, middle, high or scales).
+
+## How Friedman test works
+
+Similarly to the Rank Sum Wilcoxon test, the Friedman test compares the mean ranks between the groups. And similarly to RMA, it only shows whether there is a difference among all the groups, but not among which groups. Thus, **only if there is a significant difference**, you need to do a "post-hoc" test on top of it. A post-hoc test conducts pairwise Wilcoxon-tests comparisons for each combination of the groups. And since we have multiple comparisons, we need some, usually Bonferroni, adjustments for *p-values*, which is simply dividing our preferred significance level (usually 0.05) by the number of tests we are conducting. For instance, for 5 pairwise comparisons, 0.05/5 = 0.01. But, likely for us, modern statistical software, like *R*, have an option for Bonferroni (and other) correction.
+
+**How to report:** Report both, the mean ranks and the medians for each group. Besides, report the test statistic $\chi^2$ value ("Chi-square"), degrees of freedom ("df") and the *p-value* which show whether the difference between the mean ranks is significant. **How to write**: There was a statistically significant difference in (our response variance) depending on (whatever/our group/treatment) was applied to (the individual while doing something), $\chi^2$(df=3) = 10.3, p = 0.0492. Post hoc analysis with Wilcoxon signed-rank tests was conducted with a Bonferroni correction applied, resulting in a significance level set at p < 0.01. Median (IQR) perceived effort levels for the (levels of our dependent factor variable) were 1.5 (1 to 2), 2.5 (1.25 to 4) and 5 (3 to 7), respectively. There were no significant differences between (this group and that group) (Z = -0.075, p = 0.34) or between (that group and that group) (Z = 4.1, p = 0.093), despite an overall reduction in perceived effort in the (that vs. that group). However, there was a statistically significant (increase/decrease) in (our response variable) in (that group vs. that group) (Z = -3.35, p = 0.003).
+
+
+## Compute Friedman test in R
+
+The picture below summarizes the procedure very well and originates from [here](https://www.spss-tutorials.com/spss-friedman-test-simple-example/)
+
+![](friedman-test-how-it-works.png)
+
+Every software checks the how far the mean ranks are from each other (kind of variance, but not exactly) and provides the *p-value* for the $\chi^2$ statistic.
+
+Now, let's get some data and compute Friedman test:
+
+```{r warning=FALSE}
+bilingual <- read.delim("http://coltekin.net/cagri/R/data/bilingual.txt") %>% 
+  mutate(subj = factor(subj))
+d <- bilingual %>% filter(language == "school")
+```
+
+
+### The seductive way to conduct a Friedman test
+
+**Caution! Trap!**: One of the **seemingly** best methods to conduct the Friedman tests in *R* is with the `agricolae` package, because it not only performs the test and gives you nice output, but also performs a post-hoc test, if the result is significant. Seemingly because it uses a Fisher’s least significant difference (LSD) for pairwise comparisons, but **does not correct the for multiple comparisons**. However, we have to account for multiple comparisons! So, you either account for it yourself by recalculating p-value as described above, or you use of the ather methods described below.
+
+```{r warning=FALSE}
+agricolae::friedman(d$subj, d$age, d$mlu, group = F, console = T)
+```
+
+
+### The classic way
+
+Is provided by the `stats` package and is widely accepted. This way only conducts the test, but not the post-hoc analysis. However, we can simply make a banch of Wilcoxon tests for every combination of groups with the Bonferroni *p-value* adjustment after it:
+
+```{r warning=FALSE}
+friedman.test(mlu ~ age | subj, data = d)
+pairwise.wilcox.test(d$mlu, d$age, paired = T,  p.adjust.method = "bonferroni")
+```
+
+### The best way - Nemenyi
+
+If I think about the p-value adjustment, it feels like tuning, because the Wilcoxon test was not originally suited for multiple pairwise comparisons. In contrast, the test according to Nemenyi (1963) was developed to account for a family-wise error and is already conservative. This is the reason, why there is no p-adjustment included in the `posthoc.friedman.nemenyi.test` function of the `PMCMR` package.
+
+```{r warning=FALSE}
+# conduct the test first from the "coin" package
+coin::friedman_test(mlu ~ age | subj, data = d)
+PMCMR::posthoc.friedman.nemenyi.test(mlu ~ age | subj, data =  d)
+```
+
+### The mysterious way
+
+No package but a useful function written by Tal Galili [here](https://www.r-statistics.com/2010/02/post-hoc-analysis-for-friedmans-test-r-code/) provides identical post-hoc results to the Nemenyi above (so, it sounds solid to me), but I would love to present it to you because it also provides some useful plots: [^1]
+
+[^1]: https://www.r-statistics.com/2010/02/post-hoc-analysis-for-friedmans-test-r-code/
+
+```{r warning=FALSE}
+# loading the friedman.test.with.post.hoc function from the internet
+source("https://www.r-statistics.com/wp-content/uploads/2010/02/Friedman-Test-with-Post-Hoc.r.txt") 
+ft <- friedman.test.with.post.hoc(mlu ~ age | subj, data =  d)
+```
+
+
+## When NOT to use a Friedman test
+
+- try to avoid using this test because it does not work as good as the similar Wilcoxon Rank test for two groups, but may produce wrong and underpowered results as described by [this article](https://www.r-bloggers.com/beware-the-friedman-test/). It has been suggested, however, that Friedman test may be powerful enough for more then four groups. Try to cover your statistical needs by the mixed-effect models.
+
+- if you have only 2 samples, use a [Wilcoxon paired rank sum test test](https://yury-zablotski.netlify.com/post/two-samples-wilcoxon-test/).
+
+## What’s next
+
+- [Mixed-effects models](https://yury-zablotski.netlify.com/post/mixed-models/) (in progress)
+
+
+**Thank you for reading!**
+
+## Further readings and references
+
+- read about the danger of applying the Friedman test before applying it to serious research: https://www.r-bloggers.com/beware-the-friedman-test/
+
