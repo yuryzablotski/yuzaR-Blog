@@ -1,90 +1,94 @@
-# R demo | Friedman Test
+# ------------ Cochran's Q Test ------------ #
 
-# install.packages("datarium")   # for marketing data
-library(datarium)
+# Performs the Cochran's Q test for unreplicated randomized 
+# block design experiments with a binary response variable and 
+# paired data. This test is analogue to the friedman.test() with 
+# 0,1 coded response. It's an extension of the McNemar Chi-squared 
 
-# install.packages("tidyverse")  # for everything ;)
+
+# get the data
+set.seed(9)
+data_wide <- data.frame(
+  before    = sample(c("Positive",
+                       "Negative",
+                       "Positive"), 30, replace = TRUE),
+  after     = sample(c("Negative",
+                       "Positive",
+                       "Negative"), 30, replace = TRUE),
+  longtirm  = sample(c("Negative",
+                       "Negative",
+                       "Positive"), 30, replace = TRUE))
+
+View(data_wide)
+
+# install.packages("tidyverse")
 library(tidyverse)
 
-View(marketing)
+data_long <- data_wide %>% 
+  mutate(id = 1:nrow(.)) %>% 
+  gather(key = "time", value = "outcome", before:longtirm) %>% 
+  mutate_all(factor)
 
-# x <- c("facebook", 'newspaper', 'sales', "youtube")
-# utils::combn(x = x, m = 2) %>% t()
-# 
-# diffs <- marketing %>% 
-#   mutate(
-#     f_n = facebook - newspaper,
-#     f_s = facebook - sales,
-#     f_y = facebook - youtube,
-#     n_s = newspaper - sales,
-#     n_y = newspaper - youtube,
-#     s_y = sales - youtube)
+View(data_long)
 
-d <- marketing %>%
-  rowid_to_column() %>% 
-  gather(key = "channel", value = "score", youtube:sales) %>% 
-  group_by(channel) %>% 
-  slice(1:10) # looks better   
+# test for comparing more than two paired proportions.
+# install.packages(rstatix)
+library(rstatix)
+mcnemar_test(data_wide$before, data_wide$after, correct = F)
 
-View(d)
+xtabs(~outcome + time, data_long)
 
-# hard way
-hard <- afex::aov_ez(
-  data   = d,
-  id     = "rowid", 
-  dv     = "score",  
-  within = "channel")
+# pairwise_mcnemar_test: performs pairwise McNemar's chi-squared test 
+# between multiple groups. Could be used for post-hoc tests following a 
+# significant Cochran's Q test.
+cochran_qtest(data_long, outcome ~ time|id)
+pairwise_mcnemar_test(data    = data_long, 
+                      formula = outcome ~ time|id, 
+                      correct = F, 
+                      p.adjust.method = "holm")
 
-residuals(hard) %>% shapiro.test()
-
-# install.packages("ggstatsplot")
 library(ggstatsplot)
-
-ggwithinstats(
-  data = d,
-  x    = channel, 
-  y    = score, 
-  type = "nonparametric"
+ggbarstats(
+  data = data_wide,
+  x    = after, 
+  y    = before,
+  paired = T, 
+  label = "both"
 )
 
-# customise the result
-ggwithinstats(
-  data = d,
-  x    = channel, 
-  y    = score, 
-  type = "nonparametric", 
-  p.adjust.method = "bonferroni", 
-  pairwise.display = "all",
-  # pairwise.comparisons = FALSE,   
-  results.subtitle = F,
-  bf.message = F
-) + 
-  ylab("sales score")+
-  theme_classic()+
-  theme(legend.position = "top")
-
-?ggwithinstats
+ggbarstats(
+  data = data_wide,
+  x    = after, 
+  y    = longtirm,
+  paired = T, 
+  label = "both"
+)
 
 
-# install.packages("PMCMRplus")
-library(PMCMRplus)
-durbinAllPairsTest(
-  y      = d$score, 
-  groups = d$channel, 
-  blocks = d$rowid,
-  p.adjust.method = "holm") 
+mat <- table(data_wide$before, data_wide$after)
+# bla <- epi.tests(mat)
+# print(bla)
+# summary(bla)
+caret::confusionMatrix(as.table(mat))
 
 
-# install.packages("effectsize")
-library(effectsize)
-
-# Kendall’s coefficient of concordance
-interpret_kendalls_w(0.44) 
-
-?interpret_kendalls_w
 
 
-# ---------------------
+
+# install.packages("exact2x2")
+library(exact2x2)
+powerPaired2x2(.5,.3,npairs=20)
+
+
+
+
+
+
+# ------------------------------------------
+
+
+
+
 
 ## two-way RM-ANOVA
 
@@ -115,5 +119,112 @@ m <- lmer(score ~ time + (1|id), d,
             check.conv.singular = .makeCC(action = "ignore",  tol = 1e-6)))
 plot_model(m, type = "pred")
 tab_model(m)
+
+
+library(modelStudio)
+library(DALEX)
+library(tidyverse)
+library(tidymodels)
+
+
+
+
+# ----- fisher and pairwise fisher tests - pipe fisher tests ---- #
+
+library(rstatix)
+fisher_test()
+pairwise_fisher_test()
+
+# library(tidyverse)
+# diamonds %>% 
+#   group_by(color) %>%
+#   summarize(pvalue=fisher.test(matrix(c(cut, clarity), nrow =2))$p)
+
+# ------- multinom test and multinomial model  ----------- #
+
+library(rstatix)
+multinom_test()
+
+# nonparametric regression fucking finally!!!
+## found it here
+
+# 1. Kendall–Theil Sen Siegel nonparametric linear regression
+
+library(mblm) # Median-Based Linear Models
+ts = mblm(mpg ~ hp, data = mtcars)
+plot_model(ts, type = "pred", show.data = T)
+tab_model(ts)
+
+# 2. Rank-based estimation regression uses estimators and inference that are robust to outliers.
+
+library(Rfit)
+rb = rfit(mpg ~ hp, data = mtcars)
+#plot_model(rb, type = "pred", show.data = T)
+summary(rb)
+
+# 3. Quantile regression models the conditional median or other quantile. 
+#  25th , 50th, 75th or 95th percentiles, could be investigated simultaneously.
+# Quantile regression makes no assumptions about the distribution of the
+# underlying data, and is robust to outliers in the dependent variable. 
+# It does assume the dependent variable is continuous. However, there are
+# functions for other types of dependent variables in the qtools package.
+# The model assumes that the terms are linearly related. Quantile 
+# regression is sometimes considered “semiparametric”.
+
+library(quantreg)
+
+qr = rq(mpg ~ hp, data = mtcars, tau = 0.5 )
+plot_model(qr, type = "pred", show.data = T)
+tab_model(qr)
+library(rcompanion)
+nagelkerke(qr)
+
+# 3. Local regression
+
+
+localr = loess(mpg ~ hp, data = mtcars,
+                span = 0.75,        ### higher numbers for smoother fits
+                degree=2,           ### use polynomials of order 2
+                family="gaussian")  ### the default, use least squares to fit
+
+summary(localr)
+
+# 5. GAMS
+
+library(mgcv)
+
+gam_m = gam(mpg ~ hp, data = mtcars, family=gaussian())
+
+compare_performance(ts, rb, qr, localr, gam_m, rank = T)
+compare_performance(ts, gam_m, rank = T)
+
+
+
+
+# --------- Meta-analysis in R -------------- #
+
+# setup
+set.seed(123)
+library(metaplus)
+#> Error in library(metaplus): there is no package called 'metaplus'
+
+# renaming to what the function expects
+df <- dplyr::rename(mag, estimate = yi, std.error = sei, term = study)
+#> Error in dplyr::rename(mag, estimate = yi, std.error = sei, term = study): object 'mag' not found
+
+# plot
+ggcoefstats(
+  x = df,
+  meta.analytic.effect = TRUE,
+  bf.message = TRUE,
+  meta.type = "parametric",
+  title = "parametric random-effects meta-analysis"
+)
+
+
+
+
+
+
 
 

@@ -1,0 +1,198 @@
+---
+title: "R demo | McNemar Test | How to Conduct, Visualise and Interpret"
+description: |
+  If you need to compare two PAIRED categorical samples, McNemar test is a correct choise for you. Though, people often use Chi-Square test instead. Thus, in this video we'll first conduct, visualize and interpret McNemac test you see on the screen using only one simple command and then see what happens if we use Chi-Square test for paired data.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+# draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F, fig.height=5, fig.width=7}
+vembedr::embed_youtube("")
+# library(tidyverse)
+```
+
+
+
+## Get the data
+
+```{r}
+# install.packages("ggstatsplot")
+#library(tidyverse)
+
+set.seed(9) # for reproducibility 
+data <- data.frame(
+before = sample(c("+", "-", "+", "+"), 20, replace = TRUE),
+after  = sample(c("-", "+", "-", "-"), 20, replace = TRUE))
+
+View(data)
+```
+
+## Compute McNemar Test
+
+This one simple command is the {ggbarstats} function from {ggstatsplot} package, which needs only 5 arguments:
+
+- first, **our data**, which shows 20 people who were tested for having alien parasite in their blood **before** and **after** taking a treatment drug. So,  
+- **x** argument will be our results **before** the treatment and
+- **y** will be the results **after** the treatment. Then
+- we have to tell {ggbarstats} that our samples are **TRUE-ly paired** and 
+- lastly, I always use the **label** argument to displays **both - numbers and percentages** of observations in order to see what changed
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+ggbarstats(
+  data = data,
+  x    = before, 
+  y    = after,
+  paired = TRUE, 
+  label = "both"
+)
+```
+
+
+If you want to save the picture, use the code below.
+
+```{r}
+# install.packages("ggstatsplot")
+library(tidyverse)
+
+ggsave(filename = "mcnemar2.jpg", plot = last_plot(), width = 5, height = 3)
+```
+
+
+## Interpret the result
+
+- let's first look at the **numbers**: the 4 which were and remained negative and the 7 which were and remained positive, do not provide any useful information, because nothing has changed there. But since 8 people, which had an alien parasite before and became negative after taking a drug, while only 1 new person got infected, we can conclude that our treatment ... kind of ... worked. "Kind-off" because only statistical test can tell for sure. That's why {ggbarstats} displays test results on the top of the plot. For instance...
+
+- **McNemars's Chi-Squared-Statistics** was previously used to get p-values. But, since modern statistical software always deliver **p-values** nobody cares about it anymore.
+
+- the **p-value** helps to test the **Null Hypothesis**, which assumes that the drug has no impact on disease, while the **Alternative Hypothesis** assumes that the drug has an effect on disease.
+
+![](p_value_interpretation.png)
+
+- and our **P-value** of p = 0.02 shows a ❌ **a moderate  evidence against the null hypothesis (H~0~)**, ✅ **in favor of the alternative hypothesis (H~Alt~)**, that our drug worked. However, a P-value only tells you that our drug has an effect, but not how strong this effect is. 
+
+- Fortunately, {ggbarstats} provides **Cohen’s g** with 95% Confidence Intervals as the measure of the **Effect Size** for McNemar test, which shows how big the effect of the drug is. The {interpret_cohens_g} function from the {effectsize} package reveals that our effect size of 0.39 is actually large. 
+
+```{r}
+# install.packages("effectsize")
+library(effectsize)
+
+interpret_cohens_g(0.39)
+
+?interpret_cohens_g
+```
+
+
+**So, the final interpretation of our McNemar test is: the ability of our drug to kill the alien parasite is significant and large.** Which is amazing, since we can stop aliens. However, if we took a wrong test the things could go really wrong. Let me show you what I mean.
+
+
+## What happens if we choose a wrong test
+
+First, {ggbarstats} delivers even more than you can see on this plot. Namely, it automatically **removes the continuity correction** which was shown to be very conservative by several scientific papers. We can clearly see it by using {mcnemar.test} function with {correct = FALSE} argument and getting identical results. In contrast, if we don't use this argument, {mcnemar.test} will **apply the continuity correction** and produce unnecessary large p-value, which almost failed to reject the Null Hypothesis, so that we almost missed a discovery of a drug, which saves humanity from alien parasites.
+
+```{r}
+mcnemar.test(data$before, data$after, correct = F)
+mcnemar.test(data$before, data$after)
+```
+
+
+Secondly, the things can go even more wrong, if we take Chi-Square test by accidentally forgetting the {paired = TRUE} argument, or, **God forbid**, would take Chi-Squared test for paired data on purpose. Because, Chi-Square test has a completely different Null Hypothesis and may produce opposite results. And that's exactly what happens in our example, a huge p-value and a small effect size tell us that our drug is useless, which is dramatically wrong (Type II Error). So, using Chi-Squared test for paired data is like using a wrong drug against the alien parasite! And now, I hope you can not unknow it :) 
+
+
+```{r}
+ggbarstats(
+  data = data,
+  x    = before, 
+  y    = after,
+  label = "both"
+)
+
+ggsave(filename = "chisquared.jpg", plot = last_plot(), width = 5, height = 5)
+```
+
+But IF your samples are **not-paired**, and you actually want to conduct either **frequentists or bayesian Chi-Squared** test and want to know how to interpret all these results, check out [this video](https://youtu.be/8Tj0-yMPO64).
+
+
+## A bit of theory about McNemar
+
+McNemar’s is a non-parametric (distribution-free) test, which checks whether there is some change in proportions on a binomial outcome at two time points on the same population. It is applied only to 2×2 contingency table. In medicine, if a researcher wants to determine whether or not a particular drug has an effect on a disease, then a count of the individuals is recorded (as + and – sign, or 0 and 1) in a table before and after being given the drug. Then, McNemar’s test is applied to make statistical decisions as to whether or not a drug has an effect on the disease.
+
+In a 2×2 table there would be two cells with concordant results (the frequency of individuals which responded positively or negatively to both stimuli or on both time points) and two cells with discordant results (the frequency of individuals who responded differently). The key issue is whether the totals in the two discordant cells are sufficiently different to suggest that the stimuli trigger different reactions. 
+
+The McNemar test then asks if the difference between the values of the two discordant cells is significantly high based on the null hypothesis that both types of discord are equally likely.
+
+There are four versions of the McNemar test (classical, continuity corrected, exact, and mid-P). The traditional advice is to use the classical test in large samples and the exact test in small samples. The argument for using the exact test is that the classical test may violate the nominal significance level for small sample sizes because the required asymptotic do not hold. One disadvantage with the exact and continuity corrected tests is conservatism: they produce unnecessary large p-values and have poor power. 
+
+```{r}
+MESS::power_mcnemar_test(n=30, paid=.05, psi=2, method = "exact")
+MESS::power_mcnemar_test(n=30, paid=.05, psi=2, method = "normal")
+```
+
+## The best McNemar test is "mid-P" ;)
+
+The mid-P version is not directly available in any R-package but can be obtained relatively simply using the recipe below, where *b* and *c* are the values in the two discordant cells of the contingency table, and where *b < c*:
+
+$$2* pbinom(b, (b+c), lower.tail = T) - dbinom(b, (b+c), 0.5)$$
+
+
+```{r}
+# cross_table
+2* pbinom(1, 8, 0.5) - dbinom(1, 8, 0.5)
+```
+
+2 * pbinom(3, 18, 0.5) - dbinom(3, 18, 0.5)
+
+
+The asymptotic McNemar test (without CC) performs surprisingly well, even for quite small sample sizes.
+It often violates the nominal significance level, but not by much.
+
+## What's the next best thing to learn?
+
+- Cochran's Q Test + Pairwise McNemar Tests
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+## Reference
+
+- Pembury Smith, M.Q.R., Ruxton, G.D. Effective use of the McNemar test. Behav Ecol Sociobiol 74, 133 (2020). https://doi.org/10.1007/s00265-020-02916-y
+
+- Fagerland, Morten & Lydersen, Stian & Laake, Petter. (2013). The McNemar test for binary matched-pairs data: Mid-p and asymptotic are better than exact conditional. BMC medical research methodology. 13. 91. 10.1186/1471-2288-13-91. 
