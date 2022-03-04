@@ -1,7 +1,7 @@
 ---
 title: "R demo | McNemar Test | How to Conduct, Visualise and Interpret"
 description: |
-  If you need to compare two PAIRED categorical samples, McNemar test is a correct choise for you. Though, people often use Chi-Square test instead. Thus, in this video we'll first conduct, visualize and interpret McNemac test you see on the screen using only one simple command and then see what happens if we use Chi-Square test for paired data.
+  If you need to compare two PAIRED categorical samples, McNemar test is a correct choise for you. Though, people often use Chi-Square test instead. Thus, in this blog-post we'll first conduct, visualize and interpret McNemac test you see on the picture to your right using only one simple command and then see what happens if we use Chi-Square test for paired data.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 
 ## This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 5 minutes long. 
 
 ```{r, eval=T, echo=F, fig.height=5, fig.width=7}
 vembedr::embed_youtube("")
@@ -45,9 +45,6 @@ vembedr::embed_youtube("")
 ## Get the data
 
 ```{r}
-# install.packages("ggstatsplot")
-#library(tidyverse)
-
 set.seed(9) # for reproducibility 
 data <- data.frame(
 before = sample(c("+", "-", "+", "+"), 20, replace = TRUE),
@@ -148,13 +145,19 @@ But IF your samples are **not-paired**, and you actually want to conduct either 
 
 ## A bit of theory about McNemar
 
-McNemar’s is a non-parametric (distribution-free) test, which checks whether there is some change in proportions on a binomial outcome at two time points on the same population. It is applied only to 2×2 contingency table. In medicine, if a researcher wants to determine whether or not a particular drug has an effect on a disease, then a count of the individuals is recorded (as + and – sign, or 0 and 1) in a table before and after being given the drug. Then, McNemar’s test is applied to make statistical decisions as to whether or not a drug has an effect on the disease.
+McNemar’s is a non-parametric (distribution-free) test, which checks whether there is some change in proportions on a binomial outcome at **two time points on the same population**. It is applied **only to 2×2 contingency table**. In medicine, if a researcher wants to determine whether or not a particular drug has an effect on a disease, then a count of the individuals is recorded (as + and – sign, or 0 and 1) in a table before and after being given the drug. Then, **McNemar’s test is applied to make statistical decisions as to whether or not a drug has an effect on the disease**.
 
-In a 2×2 table there would be two cells with concordant results (the frequency of individuals which responded positively or negatively to both stimuli or on both time points) and two cells with discordant results (the frequency of individuals who responded differently). The key issue is whether the totals in the two discordant cells are sufficiently different to suggest that the stimuli trigger different reactions. 
+In a 2×2 table there would be **two cells with concordant results** (the frequency of individuals which responded positively or negatively to both stimuli or on both time points) and **two cells with discordant results** (the frequency of individuals who responded differently). 
 
-The McNemar test then asks if the difference between the values of the two discordant cells is significantly high based on the null hypothesis that both types of discord are equally likely.
+The key question McNemar's test asks if **whether the difference between the values of the two discordant cells is significantly high** based on the **Null Hypothesis that both types of discord are equally likely**. And interestingly enough, the paired McNemar test is exactly the same as **One-Sample** Chi-Squared Test goodness-of-fit test on two (discordant) numbers. Let me prove it to you:
 
-There are four versions of the McNemar test (classical, continuity corrected, exact, and mid-P). The traditional advice is to use the classical test in large samples and the exact test in small samples. The argument for using the exact test is that the classical test may violate the nominal significance level for small sample sizes because the required asymptotic do not hold. One disadvantage with the exact and continuity corrected tests is conservatism: they produce unnecessary large p-values and have poor power. 
+```{r}
+chisq.test(c(1,8))
+```
+
+See, the Test-Statistics and the p-value are completely identical! That's fascinating, because it's similar to the paired t- or wilcoxon tests, which are also one-sample tests in their nature. The fact is very important, but it would probably confuse the viewers, since the pace of the video is quick and would mix-up two ideas: 1) the McNemar test = **One-Sample** Chi-Square test and 2) the **Two-Samples** Chi-Squared test is wrong. That's why it did not became a part of the video.
+
+Finally, there are four versions of the McNemar test (classical, continuity corrected, exact, and mid-P). The traditional advice is to use the classical test in large samples and the exact test in small samples. The argument for using the exact test is that the classical test may violate the nominal significance level for small sample sizes because the required asymptotic do not hold. One disadvantage with the exact and continuity corrected tests is conservatism: they produce unnecessary large p-values and have poor power. 
 
 ```{r}
 MESS::power_mcnemar_test(n=30, paid=.05, psi=2, method = "exact")
@@ -175,9 +178,16 @@ $$2* pbinom(b, (b+c), lower.tail = T) - dbinom(b, (b+c), 0.5)$$
 
 2 * pbinom(3, 18, 0.5) - dbinom(3, 18, 0.5)
 
+We can get a very similar p-value when we simulate it in a One-Sample Chi-Square test, which would be more realistic (see below) as compared to a not-simulated one, but most of the scientists who want to compare two paired categorical samples would not bother about it (no time). So, if scientist use the classical McNemar test for paired data instead of Two-Samples Chi-Square, I would already be fulfilled. Because the classical (asymptotic) McNemar test (without CC!) performs surprisingly well, even for quite small sample sizes. It often violates the nominal significance level, but not by much. Thus, my final recommendation here is:
 
-The asymptotic McNemar test (without CC) performs surprisingly well, even for quite small sample sizes.
-It often violates the nominal significance level, but not by much.
+- use ggbarstat with argument {paired = TRUE} or {mcnemar.test(data$before, data$after, correct = F)} with no bad feeling, but if you are a perfectionist and have time, 
+- calculate mid-P or simulate p-value in a one-sample Chi-Square test on two disconcordant numbers from cross table
+
+```{r}
+set.seed(2); chisq.test(c(1,8), simulate.p.value = T)
+```
+
+
 
 ## What's the next best thing to learn?
 
