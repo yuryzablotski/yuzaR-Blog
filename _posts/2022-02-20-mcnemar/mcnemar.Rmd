@@ -33,11 +33,10 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 
 ## This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. 5 minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 5 minutes long. The "A bit of theory about McNemar" chapter below is also very useful and did not become part of the video for trying-not-to-confuse reasons.
 
 ```{r, eval=T, echo=F, fig.height=5, fig.width=7}
-vembedr::embed_youtube("")
-# library(tidyverse)
+vembedr::embed_youtube("MxvrbohjxPM")
 ```
 
 
@@ -191,7 +190,7 @@ set.seed(2); chisq.test(c(1,8), simulate.p.value = T)
 
 ## What's the next best thing to learn?
 
-- Cochran's Q Test + Pairwise McNemar Tests
+- Cochran's Q Test + Pairwise McNemar Tests (post-hoc)
 
 ---
 

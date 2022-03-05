@@ -47,37 +47,11 @@ pairwise_mcnemar_test(data    = data_long,
                       correct = F, 
                       p.adjust.method = "holm")
 
-library(ggstatsplot)
-ggbarstats(
-  data = data_wide,
-  x    = after, 
-  y    = before,
-  paired = T, 
-  label = "both"
-)
-
-ggbarstats(
-  data = data_wide,
-  x    = after, 
-  y    = longtirm,
-  paired = T, 
-  label = "both"
-)
-
-
-mat <- table(data_wide$before, data_wide$after)
-# bla <- epi.tests(mat)
-# print(bla)
-# summary(bla)
-caret::confusionMatrix(as.table(mat))
 
 
 
 
 
-# install.packages("exact2x2")
-library(exact2x2)
-powerPaired2x2(.5,.3,npairs=20)
 
 
 

@@ -1,0 +1,128 @@
+---
+title: "R demo | Cochran Test + Pairwise McNemar Tests (post-hoc)"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F, fig.height=5, fig.width=7}
+vembedr::embed_youtube("")
+# library(tidyverse)
+```
+
+
+## Get the data
+
+```{r}
+set.seed(9) # for reproducibility 
+data_wide <- data.frame(
+  before    = sample(c("Positive",
+                       "Negative",
+                       "Positive"), 30, replace = TRUE),
+  after     = sample(c("Negative",
+                       "Positive",
+                       "Negative"), 30, replace = TRUE),
+  longtirm  = sample(c("Negative",
+                       "Negative",
+                       "Positive"), 30, replace = TRUE))
+```
+
+
+## Compute Cochran & Pairwise McNemar Tests
+
+```{r}
+# install.packages("tidyverse")
+library(tidyverse)
+
+data_long <- data_wide %>% 
+  mutate(id = 1:nrow(.)) %>% 
+  gather(key = "time", value = "outcome", before:longtirm) %>% 
+  mutate_all(factor)
+
+View(data_long)
+
+# test for comparing more than two paired proportions.
+# install.packages(rstatix)
+library(rstatix)
+mcnemar_test(data_wide$before, data_wide$after, correct = F)
+
+xtabs(~outcome + time, data_long)
+
+# pairwise_mcnemar_test: performs pairwise McNemar's chi-squared test 
+# between multiple groups. Could be used for post-hoc tests following a 
+# significant Cochran's Q test.
+cochran_qtest(data_long, outcome ~ time|id)
+pairwise_mcnemar_test(data    = data_long, 
+                      formula = outcome ~ time|id, 
+                      correct = F, 
+                      p.adjust.method = "holm")
+```
+
+
+
+## Interpret the result
+
+
+**So, the final interpretation of our Cochran Test + Post-Hoc McNemar tests is: .** Which is amazing, since we can stop aliens. However, if we took a wrong test the things could go really wrong. Let me show you what I mean.
+
+
+## What happens if we choose a wrong test
+
+
+
+
+
+## What's the next best thing to learn?
+
+- Paired t-test or paired wilcoxon test
+- Mixed-Effect models
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+## Reference
+
+
+
+
+
+
+
+
+
+
