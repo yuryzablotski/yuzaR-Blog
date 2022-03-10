@@ -1,53 +1,43 @@
-# ------------ Cochran's Q Test ------------ #
-
-# Performs the Cochran's Q test for unreplicated randomized 
-# block design experiments with a binary response variable and 
-# paired data. This test is analogue to the friedman.test() with 
-# 0,1 coded response. It's an extension of the McNemar Chi-squared 
-
-
-# get the data
-set.seed(9)
+set.seed(9)  # for reproducibility 
 data_wide <- data.frame(
-  before    = sample(c("Positive",
-                       "Negative",
-                       "Positive"), 30, replace = TRUE),
-  after     = sample(c("Negative",
-                       "Positive",
-                       "Negative"), 30, replace = TRUE),
-  longtirm  = sample(c("Negative",
-                       "Negative",
-                       "Positive"), 30, replace = TRUE))
-
-View(data_wide)
+  before = sample(c("+","-","+"), 30, replace = TRUE),
+  month  = sample(c("-","+","-"), 30, replace = TRUE),
+  year   = sample(c("-","-","+"), 30, replace = TRUE)) %>% 
+  mutate(id = 1:nrow(.))
 
 # install.packages("tidyverse")
 library(tidyverse)
 
 data_long <- data_wide %>% 
-  mutate(id = 1:nrow(.)) %>% 
-  gather(key = "time", value = "outcome", before:longtirm) %>% 
+  gather(key = "vaccine_time", value = "outcome", before:year) %>% 
   mutate_all(factor)
 
-View(data_long)
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+ggbarstats(
+  data = data_long, 
+  x    = outcome, 
+  y    = vaccine_time, 
+  paired = T, 
+  label = "both"
+)
 
-# test for comparing more than two paired proportions.
 # install.packages(rstatix)
 library(rstatix)
-mcnemar_test(data_wide$before, data_wide$after, correct = F)
 
-xtabs(~outcome + time, data_long)
+cochran_qtest(data_long, outcome ~ vaccine_time|id)
 
-# pairwise_mcnemar_test: performs pairwise McNemar's chi-squared test 
-# between multiple groups. Could be used for post-hoc tests following a 
-# significant Cochran's Q test.
-cochran_qtest(data_long, outcome ~ time|id)
 pairwise_mcnemar_test(data    = data_long, 
-                      formula = outcome ~ time|id, 
+                      formula = outcome ~ vaccine_time|id)
+
+pairwise_mcnemar_test(data    = data_long, 
+                      formula = outcome ~ vaccine_time|id, 
+                      correct = F)
+
+pairwise_mcnemar_test(data    = data_long, 
+                      formula = outcome ~ vaccine_time|id, 
                       correct = F, 
                       p.adjust.method = "holm")
-
-
 
 
 
@@ -197,7 +187,13 @@ ggcoefstats(
 
 
 
+#################################################
 
+# R package review - radiant
+
+library(radiant)
+
+radiant()
 
 
 

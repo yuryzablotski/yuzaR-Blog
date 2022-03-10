@@ -1,7 +1,7 @@
 ---
-title: "R demo | Cochran Test + Pairwise McNemar Tests (post-hoc)"
+title: "R demo | Cochran’s Q Test + Pairwise McNemar Tests (post-hoc)"
 description: |
-  A short description of the post.
+  Cochran test is an extension of the McNemar test for comparing MORE than two PAIRED categorical samples in which the same individuals appear in each sample. If Cochran test is significant, we'd need to compare samples among each other pairwisely with McNemar tests. So, let's do that.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -22,7 +22,7 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+# draft: true
 ---
 
 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 
 ## This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 5 minutes long. 
 
 ```{r, eval=T, echo=F, fig.height=5, fig.width=7}
 vembedr::embed_youtube("")
@@ -43,69 +43,113 @@ vembedr::embed_youtube("")
 
 ## Get the data
 
-```{r}
-set.seed(9) # for reproducibility 
-data_wide <- data.frame(
-  before    = sample(c("Positive",
-                       "Negative",
-                       "Positive"), 30, replace = TRUE),
-  after     = sample(c("Negative",
-                       "Positive",
-                       "Negative"), 30, replace = TRUE),
-  longtirm  = sample(c("Negative",
-                       "Negative",
-                       "Positive"), 30, replace = TRUE))
-```
-
-
-## Compute Cochran & Pairwise McNemar Tests
 
 ```{r}
 # install.packages("tidyverse")
 library(tidyverse)
 
+# get the data
+set.seed(9) # for reproducibility 
+data_wide <- data.frame(
+  before = sample(c("+","-","+"), 30, replace = TRUE),
+  month  = sample(c("-","+","-"), 30, replace = TRUE),
+  year   = sample(c("-","-","+"), 30, replace = TRUE)) %>% 
+  mutate(id = 1:nrow(.))
+
 data_long <- data_wide %>% 
-  mutate(id = 1:nrow(.)) %>% 
-  gather(key = "time", value = "outcome", before:longtirm) %>% 
+  gather(key = "vaccine_time", value = "outcome", before:year) %>% 
   mutate_all(factor)
+```
 
-View(data_long)
 
-# test for comparing more than two paired proportions.
+Imagine that scientists tried to understand the impact of a anti-zombie-vaccine over time. So, they randomly capture 30 "volunteers" and test their zombieness on three different timepoints: first - before giving the anti-zombie-vaccine, secondly - one month after vaccination and lastly - one year after vaccination, just to see how long the effect of the vaccine holds.
+
+Any of the two paired time-points could be compared with a [McNemar test](https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar/), but if you have 100s of time-points it's a lot of work. So, the lazy scientists found a shortcut - namely Cochran's Q Test, which checks whether there is any difference among time-points at all. For that, they gathered all time-points below each other to create only three variables. The vaccine time-points themselves, the test results and finally the id of each individual volunteer, which helps not to mess things up.
+
+Cochran's Q Test **IS** useful, because if there is no difference between 100s of time-points, it will give you a high p.value and you wouldn't need to compare 100s of time-points among each other pairwisely. That saves time! Hovewer, if Cochran test is significant, like in our example, we'd need to compare samples among each other pairwisely with McNemar tests. 
+
+But what does Cochran test actually do? Visualizing the data helps to understand it better.
+
+## Visualize proportions
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+ggbarstats(
+  data = data_long, 
+  x    = outcome, 
+  y    = vaccine_time, 
+  paired = T, 
+  label = "both"
+)
+```
+
+Cochran’s Q Test looks for differences in proportions of three or more paired samples, in which the same individuals appear in each sample. So, the **Null Hypothesis** for Cochran’s Q Test is that the proportion of “successes” is the same for all groups. While the **Alternate Hypothesis** is that the proportions differ for at least one group. Visualized data already shows that there is a difference in proportions, **we just don't know whether this difference is significant**. That's why we need to conduct a test!
+
+<!-- It is an extension of the McNemar test; the two tests are equal if Cochran’s Q is calculated for two groups.  -->
+
+## Compute Cochran's Q Test
+
+```{r}
 # install.packages(rstatix)
 library(rstatix)
-mcnemar_test(data_wide$before, data_wide$after, correct = F)
 
-xtabs(~outcome + time, data_long)
+cochran_qtest(data_long, outcome ~ vaccine_time|id)
+```
 
-# pairwise_mcnemar_test: performs pairwise McNemar's chi-squared test 
-# between multiple groups. Could be used for post-hoc tests following a 
-# significant Cochran's Q test.
-cochran_qtest(data_long, outcome ~ time|id)
+For that we'll use {cochran_qtest} function from {rstatix} package, which needs only 2 arguments:
+
+- our data in a lazy long format and
+- the formula, which takes 
+  - the **outcome** on the left side, which needs to be binomial and mutually exclusive, for example + & -, yes & no
+  - **time-points** will get on the right side of the formula and
+  - the **id** of each volunteer after a **vertical dash** to make sure results don't get messed up between individuals
+
+## Pairwise McNemar Tests
+
+```{r}
 pairwise_mcnemar_test(data    = data_long, 
-                      formula = outcome ~ time|id, 
+                      formula = outcome ~ vaccine_time|id)
+```
+
+Since the results are significant, we'd need to conduct Pairwise McNemar Tests, and luckely for us, {rstatix} package provides {pairwise_mcnemar_test} function which does just that and needs the same two arguments, data and formula. However, this simplicity is dangerous for two reasons. 
+
+```{r}
+pairwise_mcnemar_test(data    = data_long, 
+                      formula = outcome ~ vaccine_time|id, 
+                      correct = F)
+```
+
+First, the function uses continuity correction by default, which was shown to be very conservative by several scientific papers. Thus, if we stop the function from using continuity correction with {correct = FALSE} argument and compare the results - with and without correction, we'll see that continuity corrected p-values are higher, which might help to miss an important discovery, also known as the **Type II Error**.
+
+```{r}
+pairwise_mcnemar_test(data    = data_long, 
+                      formula = outcome ~ vaccine_time|id, 
                       correct = F, 
                       p.adjust.method = "holm")
 ```
 
 
-
-## Interpret the result
-
-
-**So, the final interpretation of our Cochran Test + Post-Hoc McNemar tests is: .** Which is amazing, since we can stop aliens. However, if we took a wrong test the things could go really wrong. Let me show you what I mean.
+The second danger is that this function uses a **Bonferroni correction for multiple comparisons** by default, which was also shown to be too conservative. A correction for multiple comparisons is important though, because otherwise we can discover nonsense, also known as the **Type I Error**. Fortunately, {pairwise_mcnemar_test} function allows to change the method easily, and if we use Holm method we'd see that the difference between month and year becomes significant.
 
 
-## What happens if we choose a wrong test
+## Final interpretation
 
+So, let's make final conclusions: 
 
+- a very small p-value of the general Cochran's Q Test allows us to reject the Null Hypothesis about similar proportions in favor of the Alternative Hypothesis - that proportions between time-points differ. 
 
+- the consecutive Pairwise McNemar Tests show that vaccination significantly reduces the proportion of zombies as compared to not-vaccinated people and that we need to refresh the vaccine, because the proportion of zombies one year after vaccination significantly increases again. 
+
+- but, if we used a Bonferroni or continuity correction, we would think, that one vaccine is enough and would increase our risk to become a zombie.
+
+So, as you can see, using right statistics is healthy ;) But you might have wondered - what to do - if the outcome is not only + and - but has more levels? Well, then you can use [Friedman test](https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/).
 
 
 ## What's the next best thing to learn?
 
-- Paired t-test or paired wilcoxon test
-- Mixed-Effect models
+- [Friedman test](https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/)
+- Mixed-Effects logistic regression (not for the beginners in stats)
 
 ---
 
@@ -114,8 +158,6 @@ If you think, I missed something, please comment on it, and I’ll improve this 
 **Thank you for learning!**
 
 
-
-## Reference
 
 
 
