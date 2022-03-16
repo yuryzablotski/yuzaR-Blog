@@ -236,7 +236,7 @@ For unequal variances and/or unequal sample sizes Welch's t-Test is more reliabl
 
 ### 3. Taking paired test (hopefully only) by mistake
 
-But that's not all!!! We could be even more wrong if we took a **PAIRED t-Test**, because we would test a completely different Null Hypothesis. Namely, that exactly the same 10 factory workers changed their job to IT and compare their salaries before and after this change. This is not the case in our example, but can be your next experiment. Then Paired t-Test would be absolutely correct, and if you want to learn more about it, check out this video.
+But that's not all!!! We could be even more wrong if we took a **PAIRED t-Test**, because we would test a completely different Null Hypothesis. Namely, that exactly the same 10 factory workers changed their job to IT and compare their salaries before and after this change. This is not the case in our example, but can be your next experiment. Then, Paired t-Test would be absolutely correct, and if you want to understand it really well, check out this video.
 
 
 ```{r}
