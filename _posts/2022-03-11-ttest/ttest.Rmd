@@ -1,0 +1,276 @@
+---
+title: "R demo | Two-Samples t-Test | Student's, Welch | How to conduct, visualise, interpret | What happens if we use a wrong test "
+description: |
+  Where can we get more money, working in a factory or in the IT-industry? Two-samples t-test will answer this question. So, let's learn (1) how to make sure we use a CORRECT test, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+## This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+## Previous topics
+
+[One Sample tests](https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/) would help.
+
+## Get the data
+
+```{r}
+# install.packages("tidyverse")  # for everything ;)
+library(tidyverse)
+
+set.seed(1) # for reproducibility
+d <- tibble(
+  IT      = rnorm(n = 10, mean = 130, sd = 60),
+  factory = rnorm(n = 10, mean = 100, sd = 10)
+) %>% 
+  gather(key = "job", value = "wage")
+```
+
+
+We'll compare 10 random IT-workers with 10 random factory workers. First of all, we'll see, that on average, IT-crowd earns more then folks in the factory. But is average actually a good choice? That question is important, because comparing averages only makes sense if the data is normally distributed. While if data is not-normally distributed, an average would not represent our data well!
+
+![](not_normal.png)
+
+
+
+
+
+## Check normality
+
+So, it's obvious that we NEED to check for normality. For that we'll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every sample. High p-values in both samples indicate that our data IS normally distributed, so now we are sure that using a **parametric t-test** is a right choice.
+
+```{r}
+# install.packages("dlookr")
+library(dlookr)
+d %>% 
+  group_by(job) %>% 
+  normality(wage)
+```
+
+
+
+## Check Homogeneity of Variances
+
+However, the normality alone is not enough to make a right decision, because there are two different t-tests: Student's t-test and Welch's t-test. In order to choose the right test, we need to understanding variance of our data. And here is why: (1) even very different means with huge variance (samples a and b) may not be significantly different while (2) even very similar means with small variance (samples c and d) can be significantly different.
+
+![](huge_variance.jpg){width=45%}  ![](small_variance.jpg){width=45%}
+
+
+So, the variances between two samples can be either different (sometimes called - heterogen) or similar (sometimes called - homogen). And we need to know which one is true, because a classic Student's t-Test can be applied only when variances are similar! While two samples with different variances should be analyzed with Welch's t-Test.
+
+Levene's Test for Homogeneity of Variance helps to decide which t-test to use. The {leveneTest} function from {car} package shows a small p-value, which tells us that our variances differ and that we need to use Welch's t-Test.
+
+Now, having checked both assumptions, we are ready to compute Welch's t-test. 
+
+```{r}
+#install.packages("car")
+library(car)
+leveneTest(wage ~ job, d)
+```
+
+
+## Compute A Correct Two-Samples t-Test 
+
+And the best way to compute our test (in my opinion) is the {ggbetweenstats} function from {ggstatsplot} package, which needs only 5 arguments:
+
+- first, **our data** - d, which we just created, with
+- **x** - as the grouping variable - job, and
+- **y** - being wages 
+- then, since our data is normally distributed, we'll choose a **parametric type** of statistical approach,
+- and since our jobs have different variances, we set **var.equal**  argument to FALSE
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+set.seed(1)   # for Bayesian reproducibility of 95% CIs
+ggbetweenstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = "parametric", 
+  var.equal = FALSE
+)
+
+ggsave(filename = "t_test.jpg", plot = last_plot(), width = 5.1, height = 3)
+```
+
+
+
+
+
+## Interpret the result
+
+- **Welch's t-statistics** is the **measure of similarity** between compared samples measured in units of standard error. The further *t-value* is from zero, the more different are the samples. But **t-value** by itself can not say how far from zero is far enough, to conclude that this difference is significant. That's why t-value and the degrees of freedom were previously used to get a **p-value**. But nowadays every software delivers p-values by default.
+
+
+- our **P-value** of 0.04 shows a moderate evidence against the null hypothesis (H~0~), that mean salaries are similar, in favor of the alternative hypothesis (H~Alt~), that average salaries differ. Particularly, IT-crowd gets 25.000 dollars on average more than factory-workers. But is a difference of 25.000 dollars large? A P-value can not tell that. A P-value only checks whether there is a difference, but not how large this difference is. 
+
+![](p_value_interpretation.png)
+
+![](interpretation.png)
+
+- Fortunately, {ggwithinstats} provides **Hedges' g** as the measure of the **Effect Size**, which shows how large the difference in salaries is. **Hedges' g** is interpreted in the same way as **Cohen's d** Effect size, but outperforms **Cohen’s d** for small samples, like in our example. Our effect size of -0.96 **is large**, and tells us that the difference of 25.000 dollars is literally - **large**. Well, the effect size is cool, but not particularly intuitive, right? 
+
+![](effect_size_hedges_d.png)
+
+- Luckely, {ggwithinstats} provides the **Bayesian Difference** between our samples with 95% Highest Density Intervals as the second and more intuitive measure of the effect size. A difference of 27.000 bucs per year seems large to me, because I could get a new car for that money ;) (show picture/video of a funny car). The difference is intuitive, but neither difference, not effect size, do not test hypotheses.
+
+
+- And that what **Bayes Factor** is for. Our **Bayes Factor** (Jeffreys, 1961), which is conceptually similar to the **p-value**, is king of ... small. A **Bayes Factor** of -0.84 indicates that the difference is **Not worth more than a bare mention** ... which IS similar to a moderate evidence against the Null Hypothesis found by frequentists statistics on the top of the plot. 
+
+
+![](bf_interpretation.png)
+
+### Final conclusion
+
+But how can it be, that both the **effect size** and the **difference** are large, while this difference is hardly significant??? Well, this happens often, and here is why. First, some factory workers still earn more then some of the IT guys. For example an older worker on BMW factory, ears definitely more than a younger IT-guy in some start-up. Secondly, we only have 10 people in each sample, which is simply not enough to conclude that our huge difference appeared not by accident. Let me prove it to you. If we double the number of people per group, the frequentists effect size and the Bayesian difference remained almost the same, while both, p-value and Bayes factor became very significant and showed a strong evidence against the null hypothesis in favor of the alternative.
+
+```{r}
+set.seed(1) # for reproducibility
+d2 <- tibble(
+  IT      = rnorm(n = 20, mean = 130, sd = 60),
+  factory = rnorm(n = 20, mean = 100, sd = 10)
+) %>% 
+  gather(key = "job", value = "wage")
+
+set.seed(1)   # for Bayesian reproducibility of 95% CIs
+ggbetweenstats(
+  data = d2,
+  x    = job, 
+  y    = wage, 
+  type = "parametric", 
+  var.equal = FALSE
+)
+```
+
+
+
+Thus, a p-value and the effect size never contradict each other, simply because they show different things. And if our p-value is around 0.05, like 0.04 in our example, Ronald Fisher - the father of modern statistics - himself recommended to treat such result as suggestive or inconclusive and collect more data. And that's all we can do. What we can not do, however, is to use a wrong test. And there are three ways things can get messed up.
+
+
+## What happens if we choose a wrong test?
+
+
+
+
+### 1. Taking non-parametric test out of pure laziness
+
+<!-- Here I can show 4 parts of the screen with code first, then with picture + p.values then Error 1 & 2 types instead of 3 of those pictures and living one left upper corner as the winner. I can also use a moving backgroupd as the frage and pictures separator - that's fucking genious ;) -->
+
+
+```{r}
+ggbetweenstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = "nonparametric"
+)
+```
+
+```{r echo=FALSE}
+ggsave(filename = "mwu_test.jpg", plot = last_plot(), width = 5.1, height = 3)
+```
+
+First, if we are lazy to check the normality of data, we'll go straight to the **non-parametric Mann–Whitney U Test**. Here, a higher then the real p-value failed to reject the Null Hypothesis, failing to find a difference, where difference actually exists. Such mistake is called **type II Error**, or simply - **missing a discovery**. 
+
+
+![](type_2_errors.png)
+
+### 2. Wrong homogeneity of variances
+
+
+
+```{r}
+ggbetweenstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = "parametric", 
+  var.equal = TRUE
+)
+```
+
+```{r echo=FALSE}
+ggsave(filename = "homogen_t_test.jpg", plot = last_plot(), width = 5.1, height = 3)
+```
+
+
+Secondly, if we are lazy to check the similarity of variances, we'll go straight to the classic Student's t-test which assumes equal variance, and produces smaller then real p-value indicating more evidence for the difference then necessary. This mistake is called **type I Error**, or simply - **discovering nonsense**. 
+
+For unequal variances and/or unequal sample sizes Welch's t-Test is more reliable and more robust then Student's t-Test, while has the same power.
+
+![](type_1_errors.png)
+
+### 3. Taking paired test (hopefully only) by mistake
+
+But that's not all!!! We could be even more wrong if we took a **PAIRED t-Test**, because we would test a completely different Null Hypothesis. Namely, that exactly the same 10 factory workers changed their job to IT and compare their salaries before and after this change. This is not the case in our example, but can be your next experiment. Then Paired t-Test would be absolutely correct, and if you want to learn more about it, check out this video.
+
+
+```{r}
+ggwithinstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = "parametric"
+)
+```
+
+```{r echo=FALSE}
+ggsave(filename = "paired_t_test.jpg", plot = last_plot(), width = 5.1, height = 3)
+```
+
+
+
+## What's next, or Don't use t-Test if
+
+- samples are paired. In this case apply[**Paired t-test**](https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/)
+
+- samples are small (n<30) and not-normally distributed. In this case use **two-samples Mann–Whitney U Test**. 
+
+- If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to [ANOVA](https://yury-zablotski.netlify.com/post/one-way-anova/), but if they aren't, go to *Kruskal Wallis*
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+

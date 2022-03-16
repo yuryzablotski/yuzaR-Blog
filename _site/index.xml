@@ -7,7 +7,170 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 10 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R demo | Two-Samples t-Test | Student's, Welch | How to conduct, visualise, interpret | What happens if we use a wrong test </title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. … minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/"&gt;One Sample tests&lt;/a&gt; would help.&lt;/p&gt;
+&lt;h2 id="get-the-data"&gt;Get the data&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)  # for everything ;)
+library(tidyverse)
+
+set.seed(1) # for reproducibility
+d &amp;lt;- tibble(
+  IT      = rnorm(n = 10, mean = 130, sd = 60),
+  factory = rnorm(n = 10, mean = 100, sd = 10)
+) %&amp;gt;% 
+  gather(key = &amp;quot;job&amp;quot;, value = &amp;quot;wage&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ll compare 10 random IT-workers with 10 random factory workers. First of all, we’ll see, that on average, IT-crowd earns more then folks in the factory. But is average actually a good choice? That question is important, because comparing averages only makes sense if the data is normally distributed. While if data is not-normally distributed, an average would not represent our data well!&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/not_normal.png" /&gt;&lt;/p&gt;
+&lt;h2 id="check-normality"&gt;Check normality&lt;/h2&gt;
+&lt;p&gt;So, it’s obvious that we NEED to check for normality. For that we’ll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every sample. High p-values in both samples indicate that our data IS normally distributed, so now we are sure that using a &lt;strong&gt;parametric t-test&lt;/strong&gt; is a right choice.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;dlookr&amp;quot;)
+library(dlookr)
+d %&amp;gt;% 
+  group_by(job) %&amp;gt;% 
+  normality(wage)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 2 × 5
+  variable job     statistic p_value sample
+  &amp;lt;chr&amp;gt;    &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
+1 wage     factory     0.895   0.193     10
+2 wage     IT          0.938   0.534     10&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="check-homogeneity-of-variances"&gt;Check Homogeneity of Variances&lt;/h2&gt;
+&lt;p&gt;However, the normality alone is not enough to make a right decision, because there are two different t-tests: Student’s t-test and Welch’s t-test. In order to choose the right test, we need to understanding variance of our data. And here is why: (1) even very different means with huge variance (samples a and b) may not be significantly different while (2) even very similar means with small variance (samples c and d) can be significantly different.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/huge_variance.jpg" style="width:45.0%" /&gt; &lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/small_variance.jpg" style="width:45.0%" /&gt;&lt;/p&gt;
+&lt;p&gt;So, the variances between two samples can be either different (sometimes called - heterogen) or similar (sometimes called - homogen). And we need to know which one is true, because a classic Student’s t-Test can be applied only when variances are similar! While two samples with different variances should be analyzed with Welch’s t-Test.&lt;/p&gt;
+&lt;p&gt;Levene’s Test for Homogeneity of Variance helps to decide which t-test to use. The {leveneTest} function from {car} package shows a small p-value, which tells us that our variances differ and that we need to use Welch’s t-Test.&lt;/p&gt;
+&lt;p&gt;Now, having checked both assumptions, we are ready to compute Welch’s t-test.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;#install.packages(&amp;quot;car&amp;quot;)
+library(car)
+leveneTest(wage ~ job, d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Levene&amp;#39;s Test for Homogeneity of Variance (center = median)
+      Df F value  Pr(&amp;gt;F)   
+group  1  10.579 0.00442 **
+      18                   
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="compute-a-correct-two-samples-t-test"&gt;Compute A Correct Two-Samples t-Test&lt;/h2&gt;
+&lt;p&gt;And the best way to compute our test (in my opinion) is the {ggbetweenstats} function from {ggstatsplot} package, which needs only 5 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first, &lt;strong&gt;our data&lt;/strong&gt; - d, which we just created, with&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as the grouping variable - job, and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - being wages&lt;/li&gt;
+&lt;li&gt;then, since our data is normally distributed, we’ll choose a &lt;strong&gt;parametric type&lt;/strong&gt; of statistical approach,&lt;/li&gt;
+&lt;li&gt;and since our jobs have different variances, we set &lt;strong&gt;var.equal&lt;/strong&gt; argument to FALSE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Such simple command results in this statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+set.seed(1)   # for Bayesian reproducibility of 95% CIs
+ggbetweenstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = &amp;quot;parametric&amp;quot;, 
+  var.equal = FALSE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528239cf8d5_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;t_test.jpg&amp;quot;, plot = last_plot(), width = 5.1, height = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Welch’s t-statistics&lt;/strong&gt; is the &lt;strong&gt;measure of similarity&lt;/strong&gt; between compared samples measured in units of standard error. The further &lt;em&gt;t-value&lt;/em&gt; is from zero, the more different are the samples. But &lt;strong&gt;t-value&lt;/strong&gt; by itself can not say how far from zero is far enough, to conclude that this difference is significant. That’s why t-value and the degrees of freedom were previously used to get a &lt;strong&gt;p-value&lt;/strong&gt;. But nowadays every software delivers p-values by default.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;our &lt;strong&gt;P-value&lt;/strong&gt; of 0.04 shows a moderate evidence against the null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;), that mean salaries are similar, in favor of the alternative hypothesis (H&lt;sub&gt;Alt&lt;/sub&gt;), that average salaries differ. Particularly, IT-crowd gets 25.000 dollars on average more than factory-workers. But is a difference of 25.000 dollars large? A P-value can not tell that. A P-value only checks whether there is a difference, but not how large this difference is.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/p_value_interpretation.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fortunately, {ggwithinstats} provides &lt;strong&gt;Hedges’ g&lt;/strong&gt; as the measure of the &lt;strong&gt;Effect Size&lt;/strong&gt;, which shows how large the difference in salaries is. &lt;strong&gt;Hedges’ g&lt;/strong&gt; is interpreted in the same way as &lt;strong&gt;Cohen’s d&lt;/strong&gt; Effect size, but outperforms &lt;strong&gt;Cohen’s d&lt;/strong&gt; for small samples, like in our example. Our effect size of -0.96 &lt;strong&gt;is large&lt;/strong&gt;, and tells us that the difference of 25.000 dollars is literally - &lt;strong&gt;large&lt;/strong&gt;. Well, the effect size is cool, but not particularly intuitive, right?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/effect_size_hedges_d.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Luckely, {ggwithinstats} provides the &lt;strong&gt;Bayesian Difference&lt;/strong&gt; between our samples with 95% Highest Density Intervals as the second and more intuitive measure of the effect size. A difference of 27.000 bucs per year seems large to me, because I could get a new car for that money ;) (show picture/video of a funny car). The difference is intuitive, but neither difference, not effect size, do not test hypotheses.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;And that what &lt;strong&gt;Bayes Factor&lt;/strong&gt; is for. Our &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961), which is conceptually similar to the &lt;strong&gt;p-value&lt;/strong&gt;, is king of … small. A &lt;strong&gt;Bayes Factor&lt;/strong&gt; of -0.84 indicates that the difference is &lt;strong&gt;Not worth more than a bare mention&lt;/strong&gt; … which IS similar to a moderate evidence against the Null Hypothesis found by frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;h3 id="final-conclusion"&gt;Final conclusion&lt;/h3&gt;
+&lt;p&gt;But how can it be, that both the &lt;strong&gt;effect size&lt;/strong&gt; and the &lt;strong&gt;difference&lt;/strong&gt; are large, while this difference is hardly significant??? Well, this happens often, and here is why. First, some factory workers still earn more then some of the IT guys. For example an older worker on BMW factory, ears definitely more than a younger IT-guy in some start-up. Secondly, we only have 10 people in each sample, which is simply not enough to conclude that our huge difference appeared not by accident. Let me prove it to you. If we double the number of people per group, the frequentists effect size and the Bayesian difference remained almost the same, while both, p-value and Bayes factor became very significant and showed a strong evidence against the null hypothesis in favor of the alternative.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;set.seed(1) # for reproducibility
+d2 &amp;lt;- tibble(
+  IT      = rnorm(n = 20, mean = 130, sd = 60),
+  factory = rnorm(n = 20, mean = 100, sd = 10)
+) %&amp;gt;% 
+  gather(key = &amp;quot;job&amp;quot;, value = &amp;quot;wage&amp;quot;)
+
+set.seed(1)   # for Bayesian reproducibility of 95% CIs
+ggbetweenstats(
+  data = d2,
+  x    = job, 
+  y    = wage, 
+  type = &amp;quot;parametric&amp;quot;, 
+  var.equal = FALSE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528239cf8d5_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Thus, a p-value and the effect size never contradict each other, simply because they show different things. And if our p-value is around 0.05, like 0.04 in our example, Ronald Fisher - the father of modern statistics - himself recommended to treat such result as suggestive or inconclusive and collect more data. And that’s all we can do. What we can not do, however, is to use a wrong test. And there are three ways things can get messed up.&lt;/p&gt;
+&lt;h2 id="what-happens-if-we-choose-a-wrong-test"&gt;What happens if we choose a wrong test?&lt;/h2&gt;
+&lt;h3 id="taking-non-parametric-test-out-of-pure-laziness"&gt;1. Taking non-parametric test out of pure laziness&lt;/h3&gt;
+&lt;!-- Here I can show 4 parts of the screen with code first, then with picture + p.values then Error 1 &amp; 2 types instead of 3 of those pictures and living one left upper corner as the winner. I can also use a moving backgroupd as the frage and pictures separator - that's fucking genious ;) --&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = &amp;quot;nonparametric&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528239cf8d5_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;First, if we are lazy to check the normality of data, we’ll go straight to the &lt;strong&gt;non-parametric Mann–Whitney U Test&lt;/strong&gt;. Here, a higher then the real p-value failed to reject the Null Hypothesis, failing to find a difference, where difference actually exists. Such mistake is called &lt;strong&gt;type II Error&lt;/strong&gt;, or simply - &lt;strong&gt;missing a discovery&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/type_2_errors.png" /&gt;&lt;/p&gt;
+&lt;h3 id="wrong-homogeneity-of-variances"&gt;2. Wrong homogeneity of variances&lt;/h3&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = &amp;quot;parametric&amp;quot;, 
+  var.equal = TRUE
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528239cf8d5_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Secondly, if we are lazy to check the similarity of variances, we’ll go straight to the classic Student’s t-test which assumes equal variance, and produces smaller then real p-value indicating more evidence for the difference then necessary. This mistake is called &lt;strong&gt;type I Error&lt;/strong&gt;, or simply - &lt;strong&gt;discovering nonsense&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;For unequal variances and/or unequal sample sizes Welch’s t-Test is more reliable and more robust then Student’s t-Test, while has the same power.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-03-11-ttest/type_1_errors.png" /&gt;&lt;/p&gt;
+&lt;h3 id="taking-paired-test-hopefully-only-by-mistake"&gt;3. Taking paired test (hopefully only) by mistake&lt;/h3&gt;
+&lt;p&gt;But that’s not all!!! We could be even more wrong if we took a &lt;strong&gt;PAIRED t-Test&lt;/strong&gt;, because we would test a completely different Null Hypothesis. Namely, that exactly the same 10 factory workers changed their job to IT and compare their salaries before and after this change. This is not the case in our example, but can be your next experiment. Then Paired t-Test would be absolutely correct, and if you want to learn more about it, check out this video.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggwithinstats(
+  data = d,
+  x    = job, 
+  y    = wage, 
+  type = &amp;quot;parametric&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528239cf8d5_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="whats-next-or-dont-use-t-test-if"&gt;What’s next, or Don’t use t-Test if&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;samples are paired. In this case apply&lt;a href="https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/"&gt;&lt;strong&gt;Paired t-test&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;samples are small (n&amp;lt;30) and not-normally distributed. In this case use &lt;strong&gt;two-samples Mann–Whitney U Test&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to &lt;a href="https://yury-zablotski.netlify.com/post/one-way-anova/"&gt;ANOVA&lt;/a&gt;, but if they aren’t, go to &lt;em&gt;Kruskal Wallis&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>c1709b781d239b65d5e51d43d72730f2</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest</guid>
+      <pubDate>Tue, 15 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>R demo | Cochran’s Q Test + Pairwise McNemar Tests (post-hoc)</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -51,7 +214,7 @@ ggbarstats(
   paired = T, 
   label = &amp;quot;both&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81402ea2c480_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528220da36a7_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Cochran’s Q Test looks for differences in proportions of three or more paired samples, in which the same individuals appear in each sample. So, the &lt;strong&gt;Null Hypothesis&lt;/strong&gt; for Cochran’s Q Test is that the proportion of “successes” is the same for all groups. While the &lt;strong&gt;Alternate Hypothesis&lt;/strong&gt; is that the proportions differ for at least one group. Visualized data already shows that there is a difference in proportions, &lt;strong&gt;we just don’t know whether this difference is significant&lt;/strong&gt;. That’s why we need to conduct a test!&lt;/p&gt;
 &lt;!-- It is an extension of the McNemar test; the two tests are equal if Cochran’s Q is calculated for two groups.  --&gt;
 &lt;h2 id="compute-cochrans-q-test"&gt;Compute Cochran’s Q Test&lt;/h2&gt;
@@ -125,8 +288,215 @@ cochran_qtest(data_long, outcome ~ vaccine_time|id)&lt;/code&gt;&lt;/pre&gt;
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-03-04-cochran</guid>
-      <pubDate>Thu, 10 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-04-cochran/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples t-Test | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 6 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/QRS2z4ZmGTQ" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/"&gt;One Sample tests&lt;/a&gt; would help.&lt;/p&gt;
+&lt;h2 id="get-the-data"&gt;Get the data&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)  # for everything ;)
+library(tidyverse)
+
+# install.packages(&amp;quot;BSDA&amp;quot;)       # for Fitness data
+library(BSDA)
+
+View(Fitness)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;{BSDA} package provides a {Fitness} dataset, with the sit-up performance of 9 people &lt;strong&gt;before&lt;/strong&gt; and &lt;strong&gt;after&lt;/strong&gt; one week of training.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# make wide format
+d &amp;lt;- Fitness %&amp;gt;% 
+  pivot_wider(
+    id_cols     = subject, 
+    names_from  = test, 
+    values_from = number) %&amp;gt;% 
+  mutate(difference =  After - Before)
+
+View(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To see whether training makes any difference, we’ll &lt;strong&gt;calculate this difference&lt;/strong&gt; by subtracting performance &lt;strong&gt;Before&lt;/strong&gt; from performance &lt;strong&gt;After&lt;/strong&gt; and compare our &lt;strong&gt;mean difference&lt;/strong&gt; to zero. If training didn’t help, our &lt;strong&gt;mean difference&lt;/strong&gt; would be equal to zero, which becomes our Null Hypothesis (H&lt;sub&gt;0&lt;/sub&gt;). If training made a difference, our &lt;strong&gt;mean difference&lt;/strong&gt; would be lower or, hopefully, higher then zero, which becomes our alternative hypothesis (H&lt;sub&gt;Alt&lt;/sub&gt;). And since this difference is more important then paired samples themselves, we only need to check the normality of the difference, not of both samples. Checking normality is important for choosing a correct test, otherwise we could get wrong result. We’ll see what happens if we choose a wrong test in a moment. Until then…&lt;/p&gt;
+&lt;h2 id="check-normality-of-the-difference"&gt;Check normality of the difference&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;shapiro.test(d$difference)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Shapiro-Wilk normality test
+
+data:  d$difference
+W = 0.95124, p-value = 0.7037&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;… a big p-value of the Shapiro-Wilk normality test indicates that our difference is &lt;strong&gt;normally distributed&lt;/strong&gt;. That’s why we need a &lt;strong&gt;parametric paired t-test&lt;/strong&gt;, to compare two paired samples. If the difference would have been &lt;strong&gt;not-normally distributed&lt;/strong&gt;, we would have taken a &lt;strong&gt;non-parametric Wilcoxon test&lt;/strong&gt;, which you can learn about from &lt;a href="https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/"&gt;this article&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For &lt;strong&gt;paired&lt;/strong&gt; tests, the data &lt;strong&gt;needs to be sorted&lt;/strong&gt;, so that the first observation of the &lt;strong&gt;before&lt;/strong&gt; group, pairs with the first observation of the &lt;strong&gt;after&lt;/strong&gt; group. If our data is sorter, we are ready to compute the test.&lt;/p&gt;
+&lt;h2 id="compute-paired-samples-t-test"&gt;Compute Paired Samples t-Test&lt;/h2&gt;
+&lt;p&gt;And the best way to compute our test (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first, &lt;strong&gt;our data&lt;/strong&gt; - Fitness, then&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as the grouping variable,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - are the numbers of sit-ups and&lt;/li&gt;
+&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. Since our data was normally distributed, we choose a &lt;strong&gt;parametric&lt;/strong&gt; test, and {ggwithinstats} automatically takes &lt;strong&gt;Paired t-Test&lt;/strong&gt; .&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Such simple command results in this statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+set.seed(1)   # for Bayesian reproducibility
+ggwithinstats(
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = &amp;quot;parametric&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528247f6f0bf_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;paired_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Students t-statistics&lt;/strong&gt; is the &lt;strong&gt;measure of similarity&lt;/strong&gt; between compared samples measured in units of standard error. The further &lt;em&gt;t-value&lt;/em&gt; is from zero, the more different are the samples. But &lt;strong&gt;t-value&lt;/strong&gt; by itself can not say how far from zero is far enough, to conclude that this difference is significant. That’s why we need a &lt;strong&gt;p-value&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }\]&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;our &lt;strong&gt;P-value&lt;/strong&gt; of 0.025 tells us that our difference IS significant. It shows a moderate evidence against the null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;) in favor of the alternative hypothesis (H&lt;sub&gt;Alt&lt;/sub&gt;). Particularly, our group of 9 students will make 2 sit-ups more on average after one week of training. But is a difference of only 2 sit-ups large? P-value can not tell that. A P-value only tells you that there is an effect from training, but not how strong this effect is.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-22-pairedsamplesttestinr/p_value_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fortunately, {ggwithinstats} provides &lt;strong&gt;Hedges’ g&lt;/strong&gt; as the measure of the &lt;strong&gt;Effect Size&lt;/strong&gt;, which shows how large the effect of training is. &lt;strong&gt;Hedges’ g&lt;/strong&gt; is interpreted in the same way as &lt;strong&gt;Cohen’s d&lt;/strong&gt; Effect size, but outperforms &lt;strong&gt;Cohen’s d&lt;/strong&gt; for small samples, like 9 in our example. Our effect size of 0.83 &lt;strong&gt;is large&lt;/strong&gt;, and tells us that the increase in performance of only 2 sit-ups is actually - a lot. But it doesn’t seem like a lot. So, we have to double check it!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-22-pairedsamplesttestinr/effect_size_hedges_d.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;For that {ggwithinstats} provides the &lt;strong&gt;Bayesian Difference&lt;/strong&gt; between our samples with 95% Highest Density Intervals, which is conceptually similar to the difference of 2 sit-ups we see on the plot, and the &lt;strong&gt;Bayes Factor&lt;/strong&gt;, which is conceptually similar to the &lt;strong&gt;p-value&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Our &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961) of -1.13 indicates a &lt;strong&gt;substantial evidence for the alternative hypothesis&lt;/strong&gt; - that training actually did make a difference, and we now make substantially more sit-ups then &lt;strong&gt;Before&lt;/strong&gt; … which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-22-pairedsamplesttestinr/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The {interpret_hedges_g} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation if you ask R about it: &lt;code&gt;?interpret_hedges_g&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;effectsize&amp;quot;)
+library(effectsize)
+
+interpret_hedges_g(0.83)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;large&amp;quot;
+(Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?interpret_hedges_g&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="what-happens-if-we-choose-a-wrong-test"&gt;What happens if we choose a wrong test?&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggwithinstats(
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = &amp;quot;nonparametric&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528247f6f0bf_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;paired_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are two ways things can go wrong. First, if we are lazy to check the normality, we’ll go straight to the &lt;strong&gt;non-parametric Paired Wilcoxon-Test&lt;/strong&gt;. Here, a p-value almost failed to reject the Null Hypothesis when we use the threshold of 0.05 to determine significance. And the effect size is lower, which means our study would be underpowered. Let me show you what I mean.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;pwr&amp;quot;)
+library(pwr)
+
+pwr.t.test(n = 9, d = 0.83, sig.level = 0.05, type = &amp;quot;paired&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+     Paired t test power calculation 
+
+              n = 9
+              d = 0.83
+      sig.level = 0.05
+          power = 0.5897082
+    alternative = two.sided
+
+NOTE: n is number of *pairs*&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;pwr.t.test(n = 9, d = 0.81, sig.level = 0.05, type = &amp;quot;paired&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+     Paired t test power calculation 
+
+              n = 9
+              d = 0.81
+      sig.level = 0.05
+          power = 0.5693516
+    alternative = two.sided
+
+NOTE: n is number of *pairs*&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The effect size from Wilcoxon test has 2% lower power, which increases the chances to miss an important discovery. And in our example with a p-value close to the significance threshold we almost missed it.&lt;/p&gt;
+&lt;p&gt;But that’s not all!!! We could be even more wrong if we took a &lt;strong&gt;NOT-PAIRED t-Test&lt;/strong&gt;, because we would get completely opposite result, namely, that the effect of training is small and not significant. This wrong result could even seem plausible, since the difference of only 2 sit-ups is sooo small.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = &amp;quot;parametric&amp;quot;, 
+  var.equal = T
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528247f6f0bf_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;interpret_hedges_g(0.3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;small&amp;quot;
+(Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;usual_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, how can such a small difference be significant in a paired test then??? Well, it lies in the nature of the paired test - which does not compare averages of two samples, but compares a &lt;strong&gt;mean difference&lt;/strong&gt; between those samples to zero. And if we look at the difference, which shows individual performance of students, we’ll see that 7 out of 9 improved their performance, some of them by a lot, so that, the group in general was successful, and our significant p-value actually makes sense.&lt;/p&gt;
+&lt;h2 id="proof-of-the-concept-about-the-difference-between-two-samples"&gt;Proof of the concept about the difference between two samples&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;gghistostats(data = d, x = difference, test.value = 0, binwidth = 1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file528247f6f0bf_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;one_sample_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Interestingly, if we test our mean difference against zero using &lt;strong&gt;one-sample t-Test&lt;/strong&gt; and compare the t-statistics, p-value and the effect size to our &lt;strong&gt;Paired t-Test&lt;/strong&gt;, we’ll see identical result!&lt;/p&gt;
+&lt;p&gt;Thus, our fancy &lt;strong&gt;Paired Samples test&lt;/strong&gt; is actually &lt;strong&gt;One-Sample test&lt;/strong&gt; on the difference. And if you wanna know more about &lt;strong&gt;one-sample tests&lt;/strong&gt; and how to interpret all these numbers, check out &lt;a href="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/"&gt;this article&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# old way to do the tests
+# install.packages(&amp;quot;broom&amp;quot;)
+library(broom)
+
+bind_rows(
+  t.test(d$difference) %&amp;gt;% tidy(),
+  t.test(d$After, d$Before, paired = T) %&amp;gt;% tidy()
+) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 2 × 8
+  estimate statistic p.value parameter conf.low conf.high method      
+     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;       
+1        2      2.75  0.0249         8    0.325      3.68 One Sample …
+2        2      2.75  0.0249         8    0.325      3.68 Paired t-te…
+# … with 1 more variable: alternative &amp;lt;chr&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="one-tailed-or-one-sided-parametric-two-samples-paired-t-tests"&gt;One-Tailed (or One-Sided) Parametric Two-Samples Paired t-Tests&lt;/h2&gt;
+&lt;p&gt;We can also ask the question, whether performance-change is positive or negative by performing &lt;strong&gt;One-Tailed (or One-Sided) Parametric Two-Samples Paired t-Tests&lt;/strong&gt;. (I hate that name! :)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(d$After, d$Before, paired = TRUE, alternative = &amp;quot;less&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Paired t-test
+
+data:  d$After and d$Before
+t = 2.753, df = 8, p-value = 0.9875
+alternative hypothesis: true difference in means is less than 0
+95 percent confidence interval:
+    -Inf 3.35093
+sample estimates:
+mean of the differences 
+                      2 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(d$After, d$Before, paired = TRUE, alternative = &amp;quot;greater&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Paired t-test
+
+data:  d$After and d$Before
+t = 2.753, df = 8, p-value = 0.01247
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 0.6490697       Inf
+sample estimates:
+mean of the differences 
+                      2 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Low &lt;em&gt;p-value&lt;/em&gt; (p = 0.012) of the &lt;strong&gt;greater-sided&lt;/strong&gt; test confirms that the &lt;strong&gt;performance increases&lt;/strong&gt; after one week of training. The &lt;em&gt;p-value&lt;/em&gt; of the &lt;strong&gt;less-sided&lt;/strong&gt; test screams that your performance will not decrease with the probability of 99% (p = 0.99). In fact only one student (N = 6), which ironically was the best Before training week, decreased his/her performance by 2 sit-ups and was overtaken by two students After the week. That’s the price of arrogance :)&lt;/p&gt;
+&lt;h2 id="whats-next-or-dont-use-paired-t-test-if"&gt;What’s next, or Don’t use Paired t-Test if&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;samples are independent. In this case apply&lt;a href="https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/"&gt;Student’s or Welsh t-test&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;samples are small (n&amp;lt;30) and not-normally distributed. In this case use &lt;a href="https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/"&gt;paired two-samples Wilcoxon-test&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to &lt;a href="https://yury-zablotski.netlify.com/post/one-way-anova/"&gt;ANOVA&lt;/a&gt;, but if they aren’t, go to &lt;em&gt;Kruskal Wallis&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>8248488a59521b38f56da6d1677ad6cc</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</guid>
+      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>R demo | McNemar Test | How to Conduct, Visualise and Interpret</title>
@@ -170,7 +540,7 @@ ggbarstats(
   paired = TRUE, 
   label = &amp;quot;both&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81404a3336cb_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52821233d6ca_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;If you want to save the picture, use the code below.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
 library(tidyverse)
@@ -216,7 +586,7 @@ McNemar&amp;#39;s chi-squared = 4, df = 1, p-value = 0.0455&lt;/code&gt;&lt;/pre
   y    = after,
   label = &amp;quot;both&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81404a3336cb_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52821233d6ca_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;chisquared.jpg&amp;quot;, plot = last_plot(), width = 5, height = 5)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;But IF your samples are &lt;strong&gt;not-paired&lt;/strong&gt;, and you actually want to conduct either &lt;strong&gt;frequentists or bayesian Chi-Squared&lt;/strong&gt; test and want to know how to interpret all these results, check out &lt;a href="https://youtu.be/8Tj0-yMPO64"&gt;this video&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id="a-bit-of-theory-about-mcnemar"&gt;A bit of theory about McNemar&lt;/h2&gt;
@@ -361,7 +731,7 @@ ggwithinstats(
   y    = money, 
   type = &amp;quot;nonparametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81405eb66906_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52824df66cb9_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;friedman.jpg&amp;quot;, plot = last_plot(), width = 5.5, height = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -428,7 +798,7 @@ ggwithinstats(
   ylab(&amp;quot;money spend [thousands of US dollars]&amp;quot;)+
   theme_classic()+
   theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81405eb66906_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52824df66cb9_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggwithinstats&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="how-to-report-the-results"&gt;How to report the results&lt;/h2&gt;
 &lt;p&gt;Report both, the mean ranks and the medians for each group. Besides, report the test statistic &lt;span class="math inline"&gt;\(\chi^2\)&lt;/span&gt; value (“Chi-square”), degrees of freedom (“df”) and the &lt;strong&gt;p-value&lt;/strong&gt; which show whether the difference between the mean ranks is significant. &lt;strong&gt;How to write&lt;/strong&gt;: There was a statistically significant difference in the amount of money spend on channels &lt;span class="math inline"&gt;\({\chi^2}_{Friedman}\)&lt;/span&gt;(df=2) = 20.38, p &amp;lt; 0.001. The effect size &lt;span class="math inline"&gt;\(W_{Kendall}\)&lt;/span&gt; = 0.64 with 95% CI [0.39-1] turned out to be substantial. &lt;strong&gt;Post-hoc&lt;/strong&gt; analysis with Durbin-Conover tests was conducted with a Bonferroni correction for multiple comparisons. Median (IQR) money spend were 20.16 (12.9 to 29.6), 27.8 (22.7 to 47.0) and 291 (116 to 291) for facebook, newspaper and youtube respectively. There was a suggestive differences between facebook and newspaper (p = 0.09). However, there was a statistically significant increase in money spending in youtube vs. newpaper (p &amp;lt; 0.001) and in youtube vs. facebook (p &amp;lt; 0.001).&lt;/p&gt;
@@ -483,7 +853,7 @@ library(tidyverse)
 library(datarium)
 
 View(selfesteem)&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="354e5494-6f99-40c7-bcfb-71676c10f89d"&gt;&lt;style&gt;
+&lt;template id="a2f821a8-a7fb-4da3-9438-9e941411319f"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -517,12 +887,12 @@ View(selfesteem)&lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-8b5ae174{}.cl-8b53ade6{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8b53d15e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b5412d6{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b5412e0{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b5412ea{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b5412f4{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b5412f5{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b5412f6{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b5412fe{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b541308{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b541309{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b54130a{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b541312{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b54131c{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-8b5ae174'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b541312"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b54131c"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b54131c"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b54131c"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412e0"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412f6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412e0"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412e0"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412f6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b541308"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412fe"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412fe"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412fe"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b54130a"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b541309"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b541309"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b541309"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412f6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412f5"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412e0"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412d6"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b5412f4"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412ea"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412ea"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b5412ea"&gt;&lt;p class="cl-8b53d15e"&gt;&lt;span class="cl-8b53ade6"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="89f14c62-ce0d-4a90-8451-7b7db581ae12"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-7cb88198{}.cl-7cac33fc{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-7cac5698{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7cacaec2{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaeea{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaeeb{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaef4{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf08{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf26{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf27{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf30{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf3a{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf44{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf58{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cacaf6c{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-7cb88198'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaf58"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf6c"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf6c"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf6c"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaeea"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaf26"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaeea"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaeea"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaf26"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaf30"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf27"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf27"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf27"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaf44"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf3a"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf3a"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf3a"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaf26"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaf08"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaeea"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaec2"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-7cacaef4"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaeeb"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaeeb"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-7cacaeeb"&gt;&lt;p class="cl-7cac5698"&gt;&lt;span class="cl-7cac33fc"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="aeb774ab-0742-4e99-b495-e7827190d12f"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("89f14c62-ce0d-4a90-8451-7b7db581ae12");
-var template = document.getElementById("354e5494-6f99-40c7-bcfb-71676c10f89d");
+var dest = document.getElementById("aeb774ab-0742-4e99-b495-e7827190d12f");
+var template = document.getElementById("a2f821a8-a7fb-4da3-9438-9e941411319f");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -560,7 +930,7 @@ ggwithinstats(
   y    = score, 
   type = &amp;quot;parametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401105c883_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52825066398c_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;rm_anova.jpg&amp;quot;, plot = last_plot(), width = 5.5, height = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -574,7 +944,7 @@ ggwithinstats(
     diff_t2_t1 = t2 - t1 )
 
 View(diffs)&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="c4daa1c5-ec8c-4c72-af9c-4fc3390f4048"&gt;&lt;style&gt;
+&lt;template id="95f52d86-6a51-49c8-b5cb-7a8dfd97865f"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -608,12 +978,12 @@ View(diffs)&lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-92b792fa{}.cl-92b228d8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-92b23670{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-92b26f32{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f3c{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f3d{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f46{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f47{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f50{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f51{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f52{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f5a{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f5b{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f5c{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f64{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f65{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f6e{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-92b26f6f{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-92b792fa'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f65"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f6e"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f6e"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f6e"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f6f"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;diff_t3_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f6f"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;diff_t3_t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f6f"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;diff_t2_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f3c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f52"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;-0.60&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f3c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;5.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.20&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f3c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f52"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.59&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;2.55&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f3c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f3d"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.61&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f32"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f64"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5b"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5b"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5b"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.26&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5c"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f52"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.19&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f52"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f5a"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.96&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.07&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f51"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;0.89&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-92b26f50"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f47"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f47"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f47"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f46"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;5.54&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f46"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;4.09&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-92b26f46"&gt;&lt;p class="cl-92b23670"&gt;&lt;span class="cl-92b228d8"&gt;1.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="489b984e-a5df-4f0e-98f3-9c84f8d4018c"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-85248a16{}.cl-851bb6ca{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-851bc930{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-851c11c4{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11d8{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11d9{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11e2{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11e3{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11ec{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11ed{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11f6{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c11f7{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c1200{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c1201{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c120a{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c120b{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c120c{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-851c1214{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-85248a16'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c120b"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c120c"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c120c"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c120c"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1214"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;diff_t3_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1214"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;diff_t3_t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1214"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;diff_t2_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11d8"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11f6"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;-0.60&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11d8"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;5.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.20&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11d8"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11f6"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.59&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;2.55&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11d8"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11d9"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.61&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11c4"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c120a"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1200"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1200"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1200"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1201"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1201"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.26&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c1201"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11f6"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.19&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11f6"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11f7"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.96&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.07&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11ed"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;0.89&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-851c11ec"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11e3"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11e3"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11e3"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11e2"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;5.54&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11e2"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;4.09&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-851c11e2"&gt;&lt;p class="cl-851bc930"&gt;&lt;span class="cl-851bb6ca"&gt;1.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="a7eccd00-2275-40b9-9d6c-6d72a650a6b0"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("489b984e-a5df-4f0e-98f3-9c84f8d4018c");
-var template = document.getElementById("c4daa1c5-ec8c-4c72-af9c-4fc3390f4048");
+var dest = document.getElementById("a7eccd00-2275-40b9-9d6c-6d72a650a6b0");
+var template = document.getElementById("95f52d86-6a51-49c8-b5cb-7a8dfd97865f");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -687,7 +1057,7 @@ P value adjustment method: holm &lt;/code&gt;&lt;/pre&gt;
   ylab(&amp;quot;selfesteem score&amp;quot;)+
   theme_classic()+
   theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401105c883_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52825066398c_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggwithinstats&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="check-sphericity-normality-assumptions"&gt;Check Sphericity &amp;amp; Normality assumptions&lt;/h2&gt;
 &lt;p&gt;Now, the last thing is important - please check both the Sphericity &amp;amp; Normality assumptions, otherwise you’ll choose a wrong test and either miss a discovery having a wrong big p-value (also called - Type II Error) or you’ll find some nonsense having a wrong small p-value (also called - Type I Error).&lt;/p&gt;
@@ -756,213 +1126,6 @@ W = 0.95183, p-value = 0.1892&lt;/code&gt;&lt;/pre&gt;
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
-      <title>R demo | Paired Samples t-Test | How to conduct, visualise and interpret</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</link>
-      <description>
-
-
-&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things I talk about. It’s ca. 6 minutes long.&lt;/p&gt;
-&lt;div class="vembedr"&gt;
-&lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/QRS2z4ZmGTQ" width="533" height="300" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
-&lt;p&gt;&lt;a href="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/"&gt;One Sample tests&lt;/a&gt; would help.&lt;/p&gt;
-&lt;h2 id="get-the-data"&gt;Get the data&lt;/h2&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)  # for everything ;)
-library(tidyverse)
-
-# install.packages(&amp;quot;BSDA&amp;quot;)       # for Fitness data
-library(BSDA)
-
-View(Fitness)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;{BSDA} package provides a {Fitness} dataset, with the sit-up performance of 9 people &lt;strong&gt;before&lt;/strong&gt; and &lt;strong&gt;after&lt;/strong&gt; one week of training.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# make wide format
-d &amp;lt;- Fitness %&amp;gt;% 
-  pivot_wider(
-    id_cols     = subject, 
-    names_from  = test, 
-    values_from = number) %&amp;gt;% 
-  mutate(difference =  After - Before)
-
-View(d)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To see whether training makes any difference, we’ll &lt;strong&gt;calculate this difference&lt;/strong&gt; by subtracting performance &lt;strong&gt;Before&lt;/strong&gt; from performance &lt;strong&gt;After&lt;/strong&gt; and compare our &lt;strong&gt;mean difference&lt;/strong&gt; to zero. If training didn’t help, our &lt;strong&gt;mean difference&lt;/strong&gt; would be equal to zero, which becomes our Null Hypothesis (H&lt;sub&gt;0&lt;/sub&gt;). If training made a difference, our &lt;strong&gt;mean difference&lt;/strong&gt; would be lower or, hopefully, higher then zero, which becomes our alternative hypothesis (H&lt;sub&gt;Alt&lt;/sub&gt;). And since this difference is more important then paired samples themselves, we only need to check the normality of the difference, not of both samples. Checking normality is important for choosing a correct test, otherwise we could get wrong result. We’ll see what happens if we choose a wrong test in a moment. Until then…&lt;/p&gt;
-&lt;h2 id="check-normality-of-the-difference"&gt;Check normality of the difference&lt;/h2&gt;
-&lt;pre class="r"&gt;&lt;code&gt;shapiro.test(d$difference)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    Shapiro-Wilk normality test
-
-data:  d$difference
-W = 0.95124, p-value = 0.7037&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;… a big p-value of the Shapiro-Wilk normality test indicates that our difference is &lt;strong&gt;normally distributed&lt;/strong&gt;. That’s why we need a &lt;strong&gt;parametric paired t-test&lt;/strong&gt;, to compare two paired samples. If the difference would have been &lt;strong&gt;not-normally distributed&lt;/strong&gt;, we would have taken a &lt;strong&gt;non-parametric Wilcoxon test&lt;/strong&gt;, which you can learn about from &lt;a href="https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/"&gt;this article&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;For &lt;strong&gt;paired&lt;/strong&gt; tests, the data &lt;strong&gt;needs to be sorted&lt;/strong&gt;, so that the first observation of the &lt;strong&gt;before&lt;/strong&gt; group, pairs with the first observation of the &lt;strong&gt;after&lt;/strong&gt; group. If our data is sorter, we are ready to compute the test.&lt;/p&gt;
-&lt;h2 id="compute-paired-samples-wilcoxon-signed-rank-test"&gt;Compute Paired Samples Wilcoxon Signed Rank Test&lt;/h2&gt;
-&lt;p&gt;And the best way to compute our test (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;first, &lt;strong&gt;our data&lt;/strong&gt; - Fitness, then&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;x&lt;/strong&gt; - as the grouping variable,&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;y&lt;/strong&gt; - are the numbers of sit-ups and&lt;/li&gt;
-&lt;li&gt;the &lt;strong&gt;type&lt;/strong&gt; of statistical approach. Since our data was normally distributed, we choose a &lt;strong&gt;parametric&lt;/strong&gt; test, and {ggwithinstats} automatically takes &lt;strong&gt;Paired t-Test&lt;/strong&gt; .&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Such simple command results in this statistically rich and publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
-library(ggstatsplot)
-
-set.seed(1)   # for Bayesian reproducibility
-ggwithinstats(
-  data = Fitness,
-  x    = test, 
-  y    = number, 
-  type = &amp;quot;parametric&amp;quot;
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140de06eaf_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;paired_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Students t-statistics&lt;/strong&gt; is the &lt;strong&gt;measure of similarity&lt;/strong&gt; between compared samples measured in units of standard error. The further &lt;em&gt;t-value&lt;/em&gt; is from zero, the more different are the samples. But &lt;strong&gt;t-value&lt;/strong&gt; by itself can not say how far from zero is far enough, to conclude that this difference is significant. That’s why we need a &lt;strong&gt;p-value&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;span class="math display"&gt;\[t = \frac{our.mean - expected.mean}{standart.error} = \frac{our.mean - expected.mean}{ \frac{standart.deviation} {\sqrt sample.size} }\]&lt;/span&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;our &lt;strong&gt;P-value&lt;/strong&gt; of 0.025 tells us that our difference IS significant. It shows a moderate evidence against the null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;) in favor of the alternative hypothesis (H&lt;sub&gt;Alt&lt;/sub&gt;). Particularly, our group of 9 students will make 2 sit-ups more on average after one week of training. But is a difference of only 2 sit-ups large? P-value can not tell that. A P-value only tells you that there is an effect from training, but not how strong this effect is.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-22-pairedsamplesttestinr/p_value_interpretation.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Fortunately, {ggwithinstats} provides &lt;strong&gt;Hedges’ g&lt;/strong&gt; as the measure of the &lt;strong&gt;Effect Size&lt;/strong&gt;, which shows how large the effect of training is. &lt;strong&gt;Hedges’ g&lt;/strong&gt; is interpreted in the same way as &lt;strong&gt;Cohen’s d&lt;/strong&gt; Effect size, but outperforms &lt;strong&gt;Cohen’s d&lt;/strong&gt; for small samples, like 9 in our example. Our effect size of 0.83 &lt;strong&gt;is large&lt;/strong&gt;, and tells us that the increase in performance of only 2 sit-ups is actually - a lot. But it doesn’t seem like a lot. So, we have to double check it!&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-22-pairedsamplesttestinr/effect_size_hedges_d.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;For that {ggwithinstats} provides the &lt;strong&gt;Bayesian Difference&lt;/strong&gt; between our samples with 95% Highest Density Intervals, which is conceptually similar to the difference of 2 sit-ups we see on the plot, and the &lt;strong&gt;Bayes Factor&lt;/strong&gt;, which is conceptually similar to the &lt;strong&gt;p-value&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Our &lt;strong&gt;Bayes Factor&lt;/strong&gt; (Jeffreys, 1961) of -1.13 indicates a &lt;strong&gt;substantial evidence for the alternative hypothesis&lt;/strong&gt; - that training actually did make a difference, and we now make substantially more sit-ups then &lt;strong&gt;Before&lt;/strong&gt; … which IS in line with the frequentists statistics on the top of the plot.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-01-22-pairedsamplesttestinr/bf_interpretation.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The {interpret_hedges_g} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation if you ask R about it: &lt;code&gt;?interpret_hedges_g&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;effectsize&amp;quot;)
-library(effectsize)
-
-interpret_hedges_g(0.83)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] &amp;quot;large&amp;quot;
-(Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;?interpret_hedges_g&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="what-happens-if-we-choose-a-wrong-test"&gt;What happens if we choose a wrong test?&lt;/h2&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggwithinstats(
-  data = Fitness,
-  x    = test, 
-  y    = number, 
-  type = &amp;quot;nonparametric&amp;quot;
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140de06eaf_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;paired_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;There are two ways things can go wrong. First, if we are lazy to check the normality, we’ll go straight to the &lt;strong&gt;non-parametric Paired Wilcoxon-Test&lt;/strong&gt;. Here, a p-value almost failed to reject the Null Hypothesis when we use the threshold of 0.05 to determine significance. And the effect size is lower, which means our study would be underpowered. Let me show you what I mean.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;pwr&amp;quot;)
-library(pwr)
-
-pwr.t.test(n = 9, d = 0.83, sig.level = 0.05, type = &amp;quot;paired&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-     Paired t test power calculation 
-
-              n = 9
-              d = 0.83
-      sig.level = 0.05
-          power = 0.5897082
-    alternative = two.sided
-
-NOTE: n is number of *pairs*&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;pwr.t.test(n = 9, d = 0.81, sig.level = 0.05, type = &amp;quot;paired&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-     Paired t test power calculation 
-
-              n = 9
-              d = 0.81
-      sig.level = 0.05
-          power = 0.5693516
-    alternative = two.sided
-
-NOTE: n is number of *pairs*&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The effect size from Wilcoxon test has 2% lower power, which increases the chances to miss an important discovery. And in our example with a p-value close to the significance threshold we almost missed it.&lt;/p&gt;
-&lt;p&gt;But that’s not all!!! We could be even more wrong if we took a &lt;strong&gt;NOT-PAIRED t-Test&lt;/strong&gt;, because we would get completely opposite result, namely, that the effect of training is small and not significant. This wrong result could even seem plausible, since the difference of only 2 sit-ups is sooo small.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
-  data = Fitness,
-  x    = test, 
-  y    = number, 
-  type = &amp;quot;parametric&amp;quot;, 
-  var.equal = T
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140de06eaf_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;interpret_hedges_g(0.3)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] &amp;quot;small&amp;quot;
-(Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;usual_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So, how can such a small difference be significant in a paired test then??? Well, it lies in the nature of the paired test - which does not compare averages of two samples, but compares a &lt;strong&gt;mean difference&lt;/strong&gt; between those samples to zero. And if we look at the difference, which shows individual performance of students, we’ll see that 7 out of 9 improved their performance, some of them by a lot, so that, the group in general was successful, and our significant p-value actually makes sense.&lt;/p&gt;
-&lt;h2 id="proof-of-the-concept-about-the-difference-between-two-samples"&gt;Proof of the concept about the difference between two samples&lt;/h2&gt;
-&lt;pre class="r"&gt;&lt;code&gt;gghistostats(data = d, x = difference, test.value = 0, binwidth = 1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140de06eaf_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;one_sample_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Interestingly, if we test our mean difference against zero using &lt;strong&gt;one-sample t-Test&lt;/strong&gt; and compare the t-statistics, p-value and the effect size to our &lt;strong&gt;Paired t-Test&lt;/strong&gt;, we’ll see identical result!&lt;/p&gt;
-&lt;p&gt;Thus, our fancy &lt;strong&gt;Paired Samples test&lt;/strong&gt; is actually &lt;strong&gt;One-Sample test&lt;/strong&gt; on the difference. And if you wanna know more about &lt;strong&gt;one-sample tests&lt;/strong&gt; and how to interpret all these numbers, check out &lt;a href="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/"&gt;this article&lt;/a&gt;.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# old way to do the tests
-# install.packages(&amp;quot;broom&amp;quot;)
-library(broom)
-
-bind_rows(
-  t.test(d$difference) %&amp;gt;% tidy(),
-  t.test(d$After, d$Before, paired = T) %&amp;gt;% tidy()
-) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;# A tibble: 2 × 8
-  estimate statistic p.value parameter conf.low conf.high method      
-     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;       
-1        2      2.75  0.0249         8    0.325      3.68 One Sample …
-2        2      2.75  0.0249         8    0.325      3.68 Paired t-te…
-# … with 1 more variable: alternative &amp;lt;chr&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="one-tailed-or-one-sided-parametric-two-samples-paired-t-tests"&gt;One-Tailed (or One-Sided) Parametric Two-Samples Paired t-Tests&lt;/h2&gt;
-&lt;p&gt;We can also ask the question, whether performance-change is positive or negative by performing &lt;strong&gt;One-Tailed (or One-Sided) Parametric Two-Samples Paired t-Tests&lt;/strong&gt;. (I hate that name! :)&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;t.test(d$After, d$Before, paired = TRUE, alternative = &amp;quot;less&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    Paired t-test
-
-data:  d$After and d$Before
-t = 2.753, df = 8, p-value = 0.9875
-alternative hypothesis: true difference in means is less than 0
-95 percent confidence interval:
-    -Inf 3.35093
-sample estimates:
-mean of the differences 
-                      2 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;t.test(d$After, d$Before, paired = TRUE, alternative = &amp;quot;greater&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-    Paired t-test
-
-data:  d$After and d$Before
-t = 2.753, df = 8, p-value = 0.01247
-alternative hypothesis: true difference in means is greater than 0
-95 percent confidence interval:
- 0.6490697       Inf
-sample estimates:
-mean of the differences 
-                      2 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Low &lt;em&gt;p-value&lt;/em&gt; (p = 0.012) of the &lt;strong&gt;greater-sided&lt;/strong&gt; test confirms that the &lt;strong&gt;performance increases&lt;/strong&gt; after one week of training. The &lt;em&gt;p-value&lt;/em&gt; of the &lt;strong&gt;less-sided&lt;/strong&gt; test screams that your performance will not decrease with the probability of 99% (p = 0.99). In fact only one student (N = 6), which ironically was the best Before training week, decreased his/her performance by 2 sit-ups and was overtaken by two students After the week. That’s the price of arrogance :)&lt;/p&gt;
-&lt;h2 id="whats-next-or-dont-use-paired-t-test-if"&gt;What’s next, or Don’t use Paired t-Test if&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;samples are independent. In this case apply&lt;a href="https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/"&gt;Student’s or Welsh t-test&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;samples are small (n&amp;lt;30) and not-normally distributed. In this case use &lt;a href="https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/"&gt;paired two-samples Wilcoxon-test&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to &lt;a href="https://yury-zablotski.netlify.com/post/one-way-anova/"&gt;ANOVA&lt;/a&gt;, but if they aren’t, go to &lt;em&gt;Kruskal Wallis&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;p&gt;If you think, I missed something, please comment on it, and I’ll improve this tutorial.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>8248488a59521b38f56da6d1677ad6cc</distill:md5>
-      <category>videos</category>
-      <category>statistics</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</guid>
-      <pubDate>Wed, 02 Feb 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
-    </item>
-    <item>
       <title>R demo | Paired Samples Wilcoxon Signed Rank Test</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</link>
@@ -1011,7 +1174,7 @@ ggwithinstats(
   y    = score, 
   type = &amp;quot;nonparametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140d72db58_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528258fb90ff_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;wilcoxon.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the best way to compute our test is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:&lt;/p&gt;
 &lt;ul&gt;
@@ -1058,7 +1221,7 @@ interpret_rank_biserial(0.68)&lt;/code&gt;&lt;/pre&gt;
   y    = score, 
   type = &amp;quot;parametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140d72db58_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528258fb90ff_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="one-sided-two-samples-wilcoxon-test"&gt;One-sided two-samples Wilcoxon-test&lt;/h2&gt;
 &lt;p&gt;Without visualization, the default &lt;code&gt;two.sided&lt;/code&gt; alternative of &lt;strong&gt;Wilcoxon test&lt;/strong&gt; only says that a difference is present, but does not say whether reading velocity decreases or increases. To find out exactly this, we need to test two new alternative hypotheses (&lt;strong&gt;H&lt;sub&gt;alt&lt;/sub&gt;&lt;/strong&gt;):&lt;/p&gt;
 &lt;ol style="list-style-type: decimal"&gt;
@@ -1134,7 +1297,7 @@ rbind(
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;dlookr&amp;quot;)
 library(dlookr)
 plot_correlate(iris)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file814050eef8bd_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52824fb34bd9_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;fastStat&amp;quot;)
 library(fastStat)
 cor_sig_star(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
@@ -1146,7 +1309,7 @@ cor_sig_star(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;PerformanceAnalytics&amp;quot;)
 library(&amp;quot;PerformanceAnalytics&amp;quot;)
 chart.Correlation(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file814050eef8bd_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52824fb34bd9_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h3 id="linearity-assumption"&gt;1. Linearity assumption&lt;/h3&gt;
 &lt;p&gt;First, the data is not-linearly distributed, while correlation only makes sense for linear relationships. If fact, we could draw three straight lines in this plot, while our negative correlation coefficient assumes only one of them.&lt;/p&gt;
 &lt;h3 id="grouping-variables-simpsons-paradox"&gt;2. Grouping variables &amp;amp; Simpson’s paradox&lt;/h3&gt;
@@ -1163,7 +1326,7 @@ ggpairs(iris,
         lower = list(continuous = &amp;quot;smooth&amp;quot;),
         upper = list(continuous = wrap(&amp;quot;cor&amp;quot;, 
                          method = &amp;quot;pearson&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file814050eef8bd_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52824fb34bd9_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;These plots reveal that two of the negative coefficients before splitting into groups show the opposite of what is actually true, namely, the correlation within every group &lt;strong&gt;IS&lt;/strong&gt; positive.&lt;/p&gt;
 &lt;p&gt;Moreover, NOT-significant-negative-correlation between Sepal.Length and Sepal.Width turned out to be a significant positive correlation for all three species! If I would have accepted the not-significant negative correlation, I would have made a Type II Error, in other words, I would have missed an important discovery. So, no Nobel Price for me.&lt;/p&gt;
 &lt;p&gt;Vice Versa, a highly significant correlation between Petal.Length and Sepal.Length for all three Iris species, is not significant at all for “Setosa.” Here I would have made a Type I Error, meaning, I would have discovered nonsense.&lt;/p&gt;
@@ -1178,7 +1341,7 @@ iris %&amp;gt;%
   normality() %&amp;gt;% 
   mutate(across(is.numeric, ~round(., 3))) %&amp;gt;%
   regulartable()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="515ce574-1fa0-47b9-b658-ec97827db9dd"&gt;&lt;style&gt;
+&lt;template id="624bba7f-ba92-4e32-84cd-8286604c7ed6"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1212,12 +1375,12 @@ iris %&amp;gt;%
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-a349b27e{}.cl-a344bbca{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-a344c8fe{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a344c8ff{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a344f5fe{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a344f608{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a344f609{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a344f612{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a344f613{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a344f614{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-a349b27e'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a344f614"&gt;&lt;p class="cl-a344c8fe"&gt;&lt;span class="cl-a344bbca"&gt;vars&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f613"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f613"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f613"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a344f5fe"&gt;&lt;p class="cl-a344c8fe"&gt;&lt;span class="cl-a344bbca"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.976&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.010&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a344f5fe"&gt;&lt;p class="cl-a344c8fe"&gt;&lt;span class="cl-a344bbca"&gt;Sepal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.985&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.101&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a344f5fe"&gt;&lt;p class="cl-a344c8fe"&gt;&lt;span class="cl-a344bbca"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.876&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f608"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a344f612"&gt;&lt;p class="cl-a344c8fe"&gt;&lt;span class="cl-a344bbca"&gt;Petal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f609"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.902&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f609"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a344f609"&gt;&lt;p class="cl-a344c8ff"&gt;&lt;span class="cl-a344bbca"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="8e491272-a0bb-4b8b-9983-ca337a4caaf5"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-8fb18e3e{}.cl-8fa96858{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8fa979c4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8fa979d8{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8fa9b1b4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fa9b1c8{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fa9b1c9{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fa9b1d2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fa9b1dc{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fa9b1dd{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-8fb18e3e'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fa9b1dd"&gt;&lt;p class="cl-8fa979c4"&gt;&lt;span class="cl-8fa96858"&gt;vars&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1dc"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1dc"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1dc"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fa9b1b4"&gt;&lt;p class="cl-8fa979c4"&gt;&lt;span class="cl-8fa96858"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.976&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.010&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fa9b1b4"&gt;&lt;p class="cl-8fa979c4"&gt;&lt;span class="cl-8fa96858"&gt;Sepal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.985&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.101&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fa9b1b4"&gt;&lt;p class="cl-8fa979c4"&gt;&lt;span class="cl-8fa96858"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.876&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c8"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fa9b1d2"&gt;&lt;p class="cl-8fa979c4"&gt;&lt;span class="cl-8fa96858"&gt;Petal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c9"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.902&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c9"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fa9b1c9"&gt;&lt;p class="cl-8fa979d8"&gt;&lt;span class="cl-8fa96858"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="412f4058-dd75-446f-96be-0b18becab108"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("8e491272-a0bb-4b8b-9983-ca337a4caaf5");
-var template = document.getElementById("515ce574-1fa0-47b9-b658-ec97827db9dd");
+var dest = document.getElementById("412f4058-dd75-446f-96be-0b18becab108");
+var template = document.getElementById("624bba7f-ba92-4e32-84cd-8286604c7ed6");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1237,7 +1400,7 @@ fantome.appendChild(templateContent);
   normality() %&amp;gt;%  
   mutate(across(is.numeric, ~round(., 3))) %&amp;gt;%
   regulartable()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="e6f1b08a-6cf2-4248-b6d2-0254d6a2704e"&gt;&lt;style&gt;
+&lt;template id="be75692e-86b1-437c-aea1-bb85cbdb95dd"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1271,12 +1434,12 @@ fantome.appendChild(templateContent);
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-a360c658{}.cl-a359722c{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-a359819a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a359819b{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a359b610{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a359b61a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a359b624{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a359b625{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a359b626{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-a359b62e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-a360c658'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b62e"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;variable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b62e"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Species&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b626"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b626"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b626"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.460&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.465&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.971&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.258&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.955&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.055&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b61a"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.966&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.158&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b610"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-a359b625"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b625"&gt;&lt;p class="cl-a359819a"&gt;&lt;span class="cl-a359722c"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b624"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.962&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b624"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;0.110&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-a359b624"&gt;&lt;p class="cl-a359819b"&gt;&lt;span class="cl-a359722c"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="d56a49b7-328a-451b-894c-158a5f1dc58f"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-8fcc28fc{}.cl-8fc5a37e{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8fc5b512{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8fc5b51c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8fc5f2f2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fc5f2fc{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fc5f2fd{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fc5f306{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fc5f307{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8fc5f310{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-8fcc28fc'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f310"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;variable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f310"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Species&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f307"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f307"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f307"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.460&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.465&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.971&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.258&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.955&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.055&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fc"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.966&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.158&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2f2"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8fc5f306"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f306"&gt;&lt;p class="cl-8fc5b512"&gt;&lt;span class="cl-8fc5a37e"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fd"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.962&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fd"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;0.110&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8fc5f2fd"&gt;&lt;p class="cl-8fc5b51c"&gt;&lt;span class="cl-8fc5a37e"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="ec40084b-56b8-41e1-ab65-9baf5bf99b42"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("d56a49b7-328a-451b-894c-158a5f1dc58f");
-var template = document.getElementById("e6f1b08a-6cf2-4248-b6d2-0254d6a2704e");
+var dest = document.getElementById("ec40084b-56b8-41e1-ab65-9baf5bf99b42");
+var template = document.getElementById("be75692e-86b1-437c-aea1-bb85cbdb95dd");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1310,7 +1473,7 @@ grouped_ggcorrmat(
   type = &amp;quot;parametric&amp;quot;,
   grouping.var = Species, 
   plotgrid.args = list(nrow = 2)) # looks better&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file814050eef8bd_files/figure-html/unnamed-chunk-7-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52824fb34bd9_files/figure-html/unnamed-chunk-7-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;As you can see, while correlation matrix is an useful Exploratory Tool, we shouldn’t trust the numbers too quickly. We need to (1) visualize the data, (2) check the assumptions of normality and (3) linearity, (4) check for grouping variables and (5) correct for multiple comparisons. And since some data might be suitable for parametric analysis, while some not, it’s usually better to make a deeper dive into every single correlation between only two numeric variables, which you can learn &lt;a href="https://youtu.be/eXczd0ewVgE"&gt;from this short video&lt;/a&gt;, where I showed how to produce this statistically rich plot using only one command and how to interpret all these results.&lt;/p&gt;&lt;/li&gt;
@@ -1361,7 +1524,7 @@ ggscatterstats(
     y    = qsec,
     type = &amp;quot;parametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401ddbacff_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528273b495b5_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggscatterstats
 
 # install.packages(&amp;quot;ggplot2&amp;quot;)
@@ -1400,13 +1563,13 @@ ggsave(&amp;quot;corr_p.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code
     y    = qsec,
     type = &amp;quot;nonparametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401ddbacff_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528273b495b5_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;corr_np.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="robust-method-if-you-have-outliers"&gt;Robust method if you have outliers&lt;/h2&gt;
 &lt;p&gt;Moreover, if we find some outliers in our data, we could apply a “robust” correlation to decrease the influence of outliers.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(data = mtcars, x = hp, y = qsec, type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401ddbacff_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528273b495b5_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="checking-for-normality-and-linearity"&gt;Checking for normality and linearity&lt;/h2&gt;
 &lt;p&gt;Plotting the relationships before making conclusions, will &lt;strong&gt;allow your to make sure they are linear&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Here is some code to check whether our data is bell shaped, or &lt;strong&gt;normally distributed&lt;/strong&gt;. This can be done in two ways.&lt;/p&gt;
@@ -1424,7 +1587,7 @@ shapiro.test(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$hp
 W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401ddbacff_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528273b495b5_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shapiro.test(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;
     Shapiro-Wilk normality test
@@ -1432,7 +1595,7 @@ W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$qsec
 W = 0.97325, p-value = 0.5935&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81401ddbacff_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528273b495b5_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt; &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally distributed, so we are fine with the classic Pearson’s correlation. However, if it is not the case, take a non-parametric Spearman correlation and if you find lots (&amp;gt;3) of outliers, use the Robust correlation method.&lt;/p&gt;
 &lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;first of all, never forget to cite this amazing package!&lt;/li&gt;
@@ -1531,7 +1694,7 @@ W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
 library(ggpubr)
 
 ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81404dbf2aa6_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52822e2f46ef_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
 &lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected mean:&lt;/p&gt;
 &lt;ol style="list-style-type: decimal"&gt;
@@ -1560,7 +1723,7 @@ gghistostats(
     type       = &amp;quot;p&amp;quot;, 
     normal.curve = T
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81404dbf2aa6_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52822e2f46ef_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
@@ -1641,7 +1804,7 @@ gghistostats(
     normal.curve = T,
     xlab = &amp;quot;tasks done&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file81404dbf2aa6_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52822e2f46ef_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient, as the effect size for the non-parametric One-sample Wilcoxon test. It shows a very large effect size&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/effect_size_rank_biserial.png" /&gt;&lt;/p&gt;
@@ -1724,7 +1887,7 @@ ggbarstats(
   y     = cyl, 
   label = &amp;quot;both&amp;quot;, 
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8140658e585c_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file528220fd9c98_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to manually calculate p-value, but nowadays, since p-values are always calculated by computers, we can safely ignore it&lt;/p&gt;&lt;/li&gt;
@@ -1752,7 +1915,7 @@ ggbarstats(
 &lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
 contingency_table
 pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
-&lt;template id="0740d870-88ce-404f-a2d2-5ccd39f23d18"&gt;&lt;style&gt;
+&lt;template id="91ec343b-18ac-4eec-9263-9045fba87a0e"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1786,12 +1949,12 @@ pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-b5ef5af0{}.cl-b5e84c38{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b5e85e58{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b5e85e62{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b5e8a124{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a12e{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a138{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a139{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a142{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a143{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a14c{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a14d{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a14e{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a156{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a157{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b5e8a158{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-b5ef5af0'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-b5e8a156"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a156"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a157"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a157"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a158"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-b5e8a124"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a124"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a12e"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a12e"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a138"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-b5e8a139"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a139"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a142"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a142"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a143"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-b5e8a14c"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a14c"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a14d"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a14d"&gt;&lt;p class="cl-b5e85e62"&gt;&lt;span class="cl-b5e84c38"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-b5e8a14e"&gt;&lt;p class="cl-b5e85e58"&gt;&lt;span class="cl-b5e84c38"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="41ed0deb-7ea1-4e1c-b2be-dadc67e2b2bf"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-ac0523e8{}.cl-abfdb45a{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-abfdc666{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-abfdc67a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-abfe013a{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0144{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe014e{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0158{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0162{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0163{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe016c{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe016d{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe016e{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0176{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0180{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-abfe0181{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-ac0523e8'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-abfe0176"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0176"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0180"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0180"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0181"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-abfe013a"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe013a"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0144"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0144"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe014e"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-abfe0158"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0158"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0162"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0162"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe0163"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-abfe016c"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe016c"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe016d"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe016d"&gt;&lt;p class="cl-abfdc67a"&gt;&lt;span class="cl-abfdb45a"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-abfe016e"&gt;&lt;p class="cl-abfdc666"&gt;&lt;span class="cl-abfdb45a"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="f28fe3bb-f81f-4063-8372-c8d9ebe52f3e"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("41ed0deb-7ea1-4e1c-b2be-dadc67e2b2bf");
-var template = document.getElementById("0740d870-88ce-404f-a2d2-5ccd39f23d18");
+var dest = document.getElementById("f28fe3bb-f81f-4063-8372-c8d9ebe52f3e");
+var template = document.getElementById("91ec343b-18ac-4eec-9263-9045fba87a0e");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";

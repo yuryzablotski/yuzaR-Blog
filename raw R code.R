@@ -1,47 +1,38 @@
-set.seed(9)  # for reproducibility 
-data_wide <- data.frame(
-  before = sample(c("+","-","+"), 30, replace = TRUE),
-  month  = sample(c("-","+","-"), 30, replace = TRUE),
-  year   = sample(c("-","-","+"), 30, replace = TRUE)) %>% 
-  mutate(id = 1:nrow(.))
+# -----------------------------------------
+# Mann–Whitney U Test
 
-# install.packages("tidyverse")
-library(tidyverse)
+set.seed(5)
+d <- ISLR::Wage %>% 
+  group_by(jobclass) %>% 
+  sample_n(15)
 
-data_long <- data_wide %>% 
-  gather(key = "vaccine_time", value = "outcome", before:year) %>% 
-  mutate_all(factor)
+d %>% 
+  group_by(jobclass) %>% 
+  normality(wage)
 
-# install.packages("ggstatsplot")
-library(ggstatsplot)
-ggbarstats(
-  data = data_long, 
-  x    = outcome, 
-  y    = vaccine_time, 
-  paired = T, 
-  label = "both"
+
+set.seed(1)   # for Bayesian reproducibility
+ggbetweenstats(
+  data = d,
+  x    = jobclass, 
+  y    = wage, 
+  type = "nonparametric", 
+  var.equal = TRUE
 )
 
-# install.packages(rstatix)
-library(rstatix)
+ggbetweenstats(
+  data = d,
+  x    = jobclass, 
+  y    = wage, 
+  type = "parametric"
+)
 
-cochran_qtest(data_long, outcome ~ vaccine_time|id)
-
-pairwise_mcnemar_test(data    = data_long, 
-                      formula = outcome ~ vaccine_time|id)
-
-pairwise_mcnemar_test(data    = data_long, 
-                      formula = outcome ~ vaccine_time|id, 
-                      correct = F)
-
-pairwise_mcnemar_test(data    = data_long, 
-                      formula = outcome ~ vaccine_time|id, 
-                      correct = F, 
-                      p.adjust.method = "holm")
-
-
-
-
+ggwithinstats(
+  data = d,
+  x    = jobclass, 
+  y    = wage, 
+  type = "nonparametric"
+)
 
 
 
@@ -49,10 +40,6 @@ pairwise_mcnemar_test(data    = data_long,
 
 
 # ------------------------------------------
-
-
-
-
 
 ## two-way RM-ANOVA
 

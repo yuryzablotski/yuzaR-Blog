@@ -84,7 +84,7 @@ shapiro.test(d$difference)
 
 For **paired** tests, the data **needs to be sorted**, so that the first observation of the **before** group, pairs with the first observation of the **after** group. If our data is sorter, we are ready to compute the test.
 
-## Compute Paired Samples Wilcoxon Signed Rank Test 
+## Compute Paired Samples t-Test 
 
 And the best way to compute our test (in my opinion) is the {ggwithinstats} function from {ggstatsplot} package, which needs only 4 arguments:
 
