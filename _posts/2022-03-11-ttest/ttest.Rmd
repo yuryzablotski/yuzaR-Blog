@@ -1,5 +1,5 @@
 ---
-title: "R demo | Two-Samples t-Test | Student's, Welch | How to conduct, visualise, interpret | What happens if we use a wrong test "
+title: "R demo | Two-Samples t-Test | Student's & Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱"
 description: |
   Where can we get more money, working in a factory or in the IT-industry? Two-samples t-test will answer this question. So, let's learn (1) how to make sure we use a CORRECT test, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.
 author:
