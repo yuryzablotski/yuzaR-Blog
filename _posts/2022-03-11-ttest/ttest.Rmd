@@ -1,7 +1,7 @@
 ---
 title: "R demo | Two-Samples t-Test | Student's & Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱"
 description: |
-  Where can we get more money, working in a factory or in the IT-industry? Two-samples t-test will answer this question. So, let's learn (1) how to make sure we use a CORRECT test, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.
+  Two-samples t-test can answer useful questions, for example - where can we get more money, working in a factory or in the IT-industry? So, let's learn (1) how to make sure t-test is a CORRECT test for our data, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -32,10 +32,10 @@ knitr::opts_chunk$set(echo = T)
 
 ## This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 8 minutes long. 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("6qDRu_1kNXg")
 ```
 
 ## Previous topics
@@ -121,8 +121,7 @@ ggbetweenstats(
   x    = job, 
   y    = wage, 
   type = "parametric", 
-  var.equal = FALSE
-)
+  var.equal = FALSE)
 
 ggsave(filename = "t_test.jpg", plot = last_plot(), width = 5.1, height = 3)
 ```
@@ -136,17 +135,17 @@ ggsave(filename = "t_test.jpg", plot = last_plot(), width = 5.1, height = 3)
 - **Welch's t-statistics** is the **measure of similarity** between compared samples measured in units of standard error. The further *t-value* is from zero, the more different are the samples. But **t-value** by itself can not say how far from zero is far enough, to conclude that this difference is significant. That's why t-value and the degrees of freedom were previously used to get a **p-value**. But nowadays every software delivers p-values by default.
 
 
-- our **P-value** of 0.04 shows a moderate evidence against the null hypothesis (H~0~), that mean salaries are similar, in favor of the alternative hypothesis (H~Alt~), that average salaries differ. Particularly, IT-crowd gets 25.000 dollars on average more than factory-workers. But is a difference of 25.000 dollars large? A P-value can not tell that. A P-value only checks whether there is a difference, but not how large this difference is. 
+- our **P-value** of 0.04 shows a moderate evidence against the null hypothesis (H~0~), that mean salaries are similar, in favor of the alternative hypothesis (H~Alt~), that average salaries differ. Particularly, IT-crowd gets 35.000 dollars on average more than factory-workers. But is a difference of 35.000 dollars large? A P-value can not tell that. A P-value only checks whether there is a difference, but not how large this difference is. 
 
 ![](p_value_interpretation.png)
 
 ![](interpretation.png)
 
-- Fortunately, {ggwithinstats} provides **Hedges' g** as the measure of the **Effect Size**, which shows how large the difference in salaries is. **Hedges' g** is interpreted in the same way as **Cohen's d** Effect size, but outperforms **Cohen’s d** for small samples, like in our example. Our effect size of -0.96 **is large**, and tells us that the difference of 25.000 dollars is literally - **large**. Well, the effect size is cool, but not particularly intuitive, right? 
+- Fortunately, {ggbetweenstats} provides **Hedges' g** as the measure of the **Effect Size**, which shows how large the difference in salaries is. **Hedges' g** is interpreted in the same way as **Cohen's d** Effect size, but outperforms **Cohen’s d** for small samples, like in our example. Our effect size of -0.96 **is large**, and tells us that the difference of 35.000 dollars is literally - **large**. Well, the effect size is cool, but not particularly intuitive, right? 
 
 ![](effect_size_hedges_d.png)
 
-- Luckely, {ggwithinstats} provides the **Bayesian Difference** between our samples with 95% Highest Density Intervals as the second and more intuitive measure of the effect size. A difference of 27.000 bucs per year seems large to me, because I could get a new car for that money ;) (show picture/video of a funny car). The difference is intuitive, but neither difference, not effect size, do not test hypotheses.
+- Luckely, {ggbetweenstats} provides the **Bayesian Difference** between our samples with 95% Highest Density Intervals as the second and more intuitive measure of the effect size. A difference of 27.000 bucs per year seems large to me, because I could get a new car for that money ;) (show picture/video of a funny car). The difference is intuitive, but neither difference, not effect size, do not test hypotheses.
 
 
 - And that what **Bayes Factor** is for. Our **Bayes Factor** (Jeffreys, 1961), which is conceptually similar to the **p-value**, is king of ... small. A **Bayes Factor** of -0.84 indicates that the difference is **Not worth more than a bare mention** ... which IS similar to a moderate evidence against the Null Hypothesis found by frequentists statistics on the top of the plot. 
@@ -172,8 +171,7 @@ ggbetweenstats(
   x    = job, 
   y    = wage, 
   type = "parametric", 
-  var.equal = FALSE
-)
+  var.equal = FALSE)
 ```
 
 
@@ -196,8 +194,7 @@ ggbetweenstats(
   data = d,
   x    = job, 
   y    = wage, 
-  type = "nonparametric"
-)
+  type = "nonparametric")
 ```
 
 ```{r echo=FALSE}
@@ -219,8 +216,7 @@ ggbetweenstats(
   x    = job, 
   y    = wage, 
   type = "parametric", 
-  var.equal = TRUE
-)
+  var.equal = TRUE)
 ```
 
 ```{r echo=FALSE}
@@ -244,8 +240,7 @@ ggwithinstats(
   data = d,
   x    = job, 
   y    = wage, 
-  type = "parametric"
-)
+  type = "parametric")
 ```
 
 ```{r echo=FALSE}

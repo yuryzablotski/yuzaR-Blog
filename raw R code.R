@@ -1,42 +1,77 @@
-# -----------------------------------------
 # Mann–Whitney U Test
 
 set.seed(5)
 d <- ISLR::Wage %>% 
   group_by(jobclass) %>% 
-  sample_n(15)
+  sample_n(15) %>% 
+  ungroup()
+
+# set.seed(15)
+# d <- ISLR::Wage %>% 
+#   group_by(jobclass) %>% 
+#   slice(10:35)
 
 d %>% 
   group_by(jobclass) %>% 
   normality(wage)
 
-
-set.seed(1)   # for Bayesian reproducibility
 ggbetweenstats(
   data = d,
   x    = jobclass, 
   y    = wage, 
-  type = "nonparametric", 
-  var.equal = TRUE
-)
+  type = "nonparametric")
 
 ggbetweenstats(
   data = d,
   x    = jobclass, 
   y    = wage, 
-  type = "parametric"
-)
+  type = "parametric",
+  var.equal = T)
+
+
+
+d %>% 
+  mutate(rank = rank(wage)) %>%          # mutate means - create new column
+  group_by(jobclass) %>%
+  summarise(n           = n(), 
+            rank_sum    = sum(rank)) %>%
+  mutate(W = rank_sum - (n * (n + 1)) / 2) 
+
+
+
+
 
 ggwithinstats(
   data = d,
   x    = jobclass, 
   y    = wage, 
+  type = "nonparametric")
+
+
+
+
+
+
+
+
+
+
+# simpsons paradox :) I can make a video about it + iris
+
+ggbetweenstats(
+  data = Simpson,
+  x    = gender, 
+  y    = gpa, 
   type = "nonparametric"
 )
 
-
-
-
+grouped_ggbetweenstats(
+  data = Simpson,
+  x    = gender, 
+  y    = gpa, 
+  type = "nonparametric",
+  grouping.var = "sport"
+)
 
 
 # ------------------------------------------

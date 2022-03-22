@@ -1,0 +1,179 @@
+---
+title: "R demo | Mann-Whitney U Test | How to conduct, visualise & interpret 🥳 What happens if we use a wrong test 😱"
+description: |
+  Comparing two groups with not-normally disctributed data is the right job for Mann-Whitney U test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test with one simple command, (2) how to interpret all these results and (3) we'll see what happens if we use a wrong test.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## This post as a video 
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+## Previous topics
+
+[Two-Samples t-Test](https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/) would help.
+
+## Get the data
+
+```{r}
+# install.packages("tidyverse")  # for everything ;)
+library(tidyverse)
+
+#install.packages("ISLR")
+library(ISLR)
+
+set.seed(5)
+d <- Wage %>% 
+  group_by(jobclass) %>% 
+  sample_n(15)
+```
+
+
+
+{ISLR} package provides a {Wage} dataset, with salaries of IT and industrial workers. We'll take 15 random people from every group and compare their salaries in order to figure our who ears more.
+
+## Check normality
+
+Before using a nonparametric Mann-Whitney U Tet, **we have to make sure that our data is really not-normally distributed**. Because if we take a nonparametric test out of convenience or laziness, we might end up with a weaker test and might miss an important discovery. For that we'll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every sample. Low p-value in one of the group is enough to conclude that our data is not-normally distributed, so now we are sure that using a **nonparametric test** is a right choice, and we are ready to compute the test.
+
+![](not_normal.png)
+
+```{r}
+# install.packages("dlookr")
+library(dlookr)
+d %>% 
+  group_by(jobclass) %>% 
+  normality(wage)
+```
+
+
+## Compute Mann-Whitney U Test 
+
+And the best way to compute our test (in my opinion) is the {ggbetweenstats} function from {ggstatsplot} package, which needs only 4 arguments:
+
+- first, **our data** - d, with
+- **x** - as the grouping variable - jobclass, and
+- **y** - being salaries 
+- finally, since our data is not-normally distributed, we'll choose a **nonparametric type** of statistical approach
+
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+```{r}
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+ggbetweenstats(
+  data = d,
+  x    = jobclass, 
+  y    = wage, 
+  type = "nonparametric")
+
+ggsave(filename = "mwu.jpg", plot = last_plot(), width = 6, height = 4)
+```
+
+
+
+## Interpret the result
+
+- **W-statistics** explains why our test is called **signed rank**. Namely
+
+
+
+- our **P-value** of 0.023 shows a moderate evidence against the null hypothesis (H~0~), that median difference is equal to zero, in favor of the alternative hypothesis (H~Alt~), that median difference is not equal to zero (Raiola, 2012). Particularly, we'll read 7 score points faster after the course. But is a difference of 7 scores large? P-value can not tell that. A P-value only tells you that there is a difference, but not how strong this difference is. 
+
+![](p_value_interpretation.png)
+
+- fortunately, {ggwithinstats} provides a **Rank biserial correlation coefficient** with 95% confidence intervals as the measure of the **effect size**, which shows how large the difference is. The {interpret_rank_biserial} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation. Our effect size of 0.68 means, that speed reading exercise had a **very large, positive and significant effect on our speed reading**.
+
+```{r}
+# install.packages("effectsize")
+library(effectsize)
+
+interpret_rank_biserial(0.68)
+
+?interpret_rank_biserial
+```
+
+## What would happen if we choose the wrong test
+
+Now, what happens if I ignore the assumption of normality and conduct a **Parametric T-Test**? Well, I would compare means instead of medians and would get completely opposite result, namely, - speed reading course doesn't help me to read faster, which is just wrong. Here I would have made a **Type II Error**, or, in other words, I would have missed an important discovery. So, no Nobel Price for me.
+
+```{r}
+ggbetweenstats(
+  data = d,
+  x    = jobclass, 
+  y    = wage, 
+  type = "parametric",
+  var.equal = TRUE)
+```
+
+
+
+```{r}
+ggwithinstats(
+  data = d,
+  x    = jobclass, 
+  y    = wage, 
+  type = "nonparametric")
+```
+
+
+
+## Don't use *two-samples Wilcoxon-test* if:
+
+- samples are independent. In this case apply [*Mann-Whitney-Wilcoxon-test*] (https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
+- samples are small (n<30) and normally distributed (or big and near normal). In this case use the more powerful [two-samples t-test](https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/). 
+
+## Conclusion
+
+*Two-samples Wilcoxon-test* can be more powerful then *two-samples t-test* when difference between two samples at low numbers (<30) is not-normally distributed. For big samples and not to unnormal distribution, *t-test* will do fine. Another advantage of the *median-based non-parametric Wilcoxon test* is that it more robust to the outliers.
+
+
+## What's next
+
+- Check out the [*Mann-Whitney-Wilcoxon-test*](https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
+
+- If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to [ANOVA](https://yury-zablotski.netlify.com/post/one-way-anova/), but if they aren't, go to the non-parametric analogue of *ANOVA*
+
+- *Kruskal-Wallis Rank Sum Test* would be another idea.
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+
