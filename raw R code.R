@@ -218,5 +218,25 @@ library(radiant)
 radiant()
 
 
+library(irr)
+data(video)
+
+video <- video %>%
+  pivot_longer(cols = 1:4) %>%
+  mutate(groups = case_when(
+    name %in% c("rater1", "rater2") ~ "control",
+    name %in% c("rater4") ~ "treatment"
+  ))
 
 
+ggbetweenstats(
+  data = video,
+  x    = groups,
+  y    = value,
+  type = "nonparametric")
+# 
+# ggbetweenstats(
+#   data = video %>% filter(name %in% c("rater2", "rater4")),
+#   x    = name, 
+#   y    = value, 
+#   type = "nonparametric")

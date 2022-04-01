@@ -1,7 +1,7 @@
 ---
-title: "R demo | Mann-Whitney U Test | How to conduct, visualise & interpret 🥳 What happens if we use a wrong test 😱"
+title: "R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise & interpret 🥳 What happens if we use a wrong test 😱"
 description: |
-  Comparing two groups with not-normally disctributed data is the right job for Mann-Whitney U test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test with one simple command, (2) how to interpret all these results and (3) we'll see what happens if we use a wrong test.
+  Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn't use this name
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -22,17 +22,17 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+#draft: true
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = T, message = F, warning = F)
 ```
 
 ## This post as a video 
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 5 minutes long. 
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("")
@@ -51,7 +51,7 @@ library(tidyverse)
 #install.packages("ISLR")
 library(ISLR)
 
-set.seed(5)
+set.seed(5)  # for reproducibility
 d <- Wage %>% 
   group_by(jobclass) %>% 
   sample_n(15)
@@ -59,11 +59,13 @@ d <- Wage %>%
 
 
 
-{ISLR} package provides a {Wage} dataset, with salaries of IT and industrial workers. We'll take 15 random people from every group and compare their salaries in order to figure our who ears more.
+{ISLR} package provides a {Wage} dataset, with salaries of IT and industrial workers. We'll take 15 random people from every group and compare their salaries in order to figure out who ears more.
 
 ## Check normality
 
-Before using a nonparametric Mann-Whitney U Tet, **we have to make sure that our data is really not-normally distributed**. Because if we take a nonparametric test out of convenience or laziness, we might end up with a weaker test and might miss an important discovery. For that we'll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every sample. Low p-value in one of the group is enough to conclude that our data is not-normally distributed, so now we are sure that using a **nonparametric test** is a right choice, and we are ready to compute the test.
+But before using a nonparametric Mann-Whitney U Test, **we have to make sure that our data is really not-normally distributed**. Because using Mann-Whitney U test for normally distributed data, out of laziness to check the normality, might produce a completely wrong result. 
+
+For that we'll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every group. Low p-value in one of the group is enough to conclude that our data is not-normally distributed, so now we are sure that using a **Mann-Whitney U test** is a right choice.
 
 ![](not_normal.png)
 
@@ -83,7 +85,7 @@ And the best way to compute our test (in my opinion) is the {ggbetweenstats} fun
 - first, **our data** - d, with
 - **x** - as the grouping variable - jobclass, and
 - **y** - being salaries 
-- finally, since our data is not-normally distributed, we'll choose a **nonparametric type** of statistical approach
+- finally, since our data is not-normally distributed, we'll choose a **nonparametric type** of statistical approach, and {ggbetweenstats} automatically uses Mann-Whitney U Test for comparing two groups.
 
 Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
 
@@ -104,39 +106,60 @@ ggsave(filename = "mwu.jpg", plot = last_plot(), width = 6, height = 4)
 
 ## Interpret the result
 
-- **W-statistics** explains why our test is called **signed rank**. Namely
+- **W-statistics** explains why our test is sometimes called **Wilcoxon Rank Sum test**. Namely, 
+  - the test first **ranks our data independently of the group**
+  - then **sums the ranks for each group**, which IS the reason the test is called - **Rank Sum**
+  - and finally, **sums of the ranks** are then used to calculate the **W-statistics**, where **W**-itself obviously originates from Wilcoxon, a scientist, who developed the test at roughly the same time as Mann and Whitney,
+  - the **U-statistics** in **Mann-Whitney U** name is calculated slightly differently compared with W-statistics, but produces identical p-value
 
 
+```{r}
+d %>% 
+  select(jobclass, wage) %>% 
+  ungroup() %>% 
+  mutate(wage_ranks = rank(wage)) %>% 
+  group_by(jobclass) %>% 
+  summarise(sum_ranks = sum(wage_ranks),
+            n         = n()) %>% 
+  mutate(W = sum_ranks - (n*(n+1))/2)
+```
 
-- our **P-value** of 0.023 shows a moderate evidence against the null hypothesis (H~0~), that median difference is equal to zero, in favor of the alternative hypothesis (H~Alt~), that median difference is not equal to zero (Raiola, 2012). Particularly, we'll read 7 score points faster after the course. But is a difference of 7 scores large? P-value can not tell that. A P-value only tells you that there is a difference, but not how strong this difference is. 
+- and that's what both **W- and U-statistics** were previously used for - to look up a p-value in some table. But nowadays all statistical software compute p-values by default, so nobody cares about W- or U-statistics anymore. However, the **rank sums** which we just calculated are **incredibly useful** for understanding the test! And here is why:
+
+![](critical_value.png)
+
+- our **P-value** of 0.03 shows a moderate evidence against the Null Hypothesis (H~0~), that **groups are similar**, in favor of the alternative hypothesis (H~Alt~), that **groups differ**. This difference is often reported as a difference in medians, but here is the catch! **No medians were involved when we calculated sums of ranks!** The p-value shows whether there is a difference in sums of ranks, not medians! **The medians are simply more intuitive** then ranks for displaying the not-normally distributed nature of our data. And that is why, it can easily happen that medians are identical (especially with ordinal data), while samples are still significantly different. I panicked the first time I saw it ;) So, I hope you will not.
+
+![](colbert-report-stephen-colbert.gif){width=50%}
+
+All right, our P-value tells us that there is a difference between salaries of industrial and IT guys. However, **a P-value does not say how big this difference is**. Moreover, the difference in medians is also useless, because medians were not compared and could be identical. 
+
 
 ![](p_value_interpretation.png)
 
-- fortunately, {ggwithinstats} provides a **Rank biserial correlation coefficient** with 95% confidence intervals as the measure of the **effect size**, which shows how large the difference is. The {interpret_rank_biserial} function from {effectsize} package helps to interpret this effect size and even provides the reference for interpretation. Our effect size of 0.68 means, that speed reading exercise had a **very large, positive and significant effect on our speed reading**.
+- fortunately, {ggbetweenstats} provides a **Rank biserial correlation coefficient** with 95% confidence intervals as the measure of the **effect size**, which shows how large the difference is. The {interpret_rank_biserial} function from {effectsize} package helps to interpret this effect size and even provides a reference. Our effect size of -0.47 indicates a **very large** difference in salaries between our groups.
 
 ```{r}
 # install.packages("effectsize")
 library(effectsize)
 
-interpret_rank_biserial(0.68)
+interpret_rank_biserial(-0.47)
 
 ?interpret_rank_biserial
 ```
 
-## What would happen if we choose the wrong test
+![](interpter_rank_biserial.png){width=50%}
 
-Now, what happens if I ignore the assumption of normality and conduct a **Parametric T-Test**? Well, I would compare means instead of medians and would get completely opposite result, namely, - speed reading course doesn't help me to read faster, which is just wrong. Here I would have made a **Type II Error**, or, in other words, I would have missed an important discovery. So, no Nobel Price for me.
+## Conclusion
+
+So, as you can see, both the test itself and it's name are quite confusing. And I prefer to stay with **Mann-Whitney U name**, because **Wilcoxon Rank Sum Test** can be easily mistaken with the **Wilcoxon Signed-Rank Test**, which can only be applied for paired samples. People often say - they used **Wilcoxon** test, but when I ask "which of both they mean", they mostly don't know. **But it's very important to know!!!**, because otherwise, as the p-value shows, we can get a completely opposite result.
 
 ```{r}
-ggbetweenstats(
-  data = d,
-  x    = jobclass, 
-  y    = wage, 
-  type = "parametric",
-  var.equal = TRUE)
+wilcox.test(data = d, wage ~ jobclass)
+wilcox.test(data = d, wage ~ jobclass, paired = T)
 ```
 
-
+However, if your data is paired and you want to understand Paired Wilcoxon Test really well, check out the code below and [this video](https://youtu.be/YRlIkNKazF8).
 
 ```{r}
 ggwithinstats(
@@ -148,23 +171,14 @@ ggwithinstats(
 
 
 
-## Don't use *two-samples Wilcoxon-test* if:
-
-- samples are independent. In this case apply [*Mann-Whitney-Wilcoxon-test*] (https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
-- samples are small (n<30) and normally distributed (or big and near normal). In this case use the more powerful [two-samples t-test](https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/). 
-
-## Conclusion
-
-*Two-samples Wilcoxon-test* can be more powerful then *two-samples t-test* when difference between two samples at low numbers (<30) is not-normally distributed. For big samples and not to unnormal distribution, *t-test* will do fine. Another advantage of the *median-based non-parametric Wilcoxon test* is that it more robust to the outliers.
 
 
-## What's next
 
-- Check out the [*Mann-Whitney-Wilcoxon-test*](https://yury-zablotski.netlify.com/post/mann-whitney-wilcoxon-test/)
+## Don't use two-samples Wilcoxon-test if:
 
-- If you need to compare more then two samples, first check whether they are normally distributed, and if they are, go to [ANOVA](https://yury-zablotski.netlify.com/post/one-way-anova/), but if they aren't, go to the non-parametric analogue of *ANOVA*
+- samples are small (n<30) and normally distributed (or big and near normal). In this case use the more powerful [two-samples t-test](https://yury-zablotski.netlify.com/post/two-sample-t-test-compare-your-work-to-others/)
 
-- *Kruskal-Wallis Rank Sum Test* would be another idea.
+- data is not-normally distributed and you have more then two groups to compare to, then use Kruskal-Wallis test
 
 ---
 
@@ -177,3 +191,8 @@ If you think, I missed something, please comment on it, and I’ll improve this 
 
 
 
+## References and useful links
+
+- https://www.stat.auckland.ac.nz/~wild/ChanceEnc/Ch10.wilcoxon.pdf
+
+- https://datatab.net/tutorial/mann-whitney-u-test

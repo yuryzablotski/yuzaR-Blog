@@ -186,8 +186,6 @@ Thus, a p-value and the effect size never contradict each other, simply because 
 
 ### 1. Taking non-parametric test out of pure laziness
 
-<!-- Here I can show 4 parts of the screen with code first, then with picture + p.values then Error 1 & 2 types instead of 3 of those pictures and living one left upper corner as the winner. I can also use a moving backgroupd as the frage and pictures separator - that's fucking genious ;) -->
-
 
 ```{r}
 ggbetweenstats(
