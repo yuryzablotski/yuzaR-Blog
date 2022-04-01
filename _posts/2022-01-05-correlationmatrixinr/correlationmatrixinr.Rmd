@@ -52,7 +52,10 @@ vembedr::embed_youtube("ffhQil7KhSo")
 # install.packages("dlookr")
 library(dlookr)
 plot_correlate(iris)
+```
 
+
+```{r eval=FALSE}
 # install.packages("fastStat")
 library(fastStat)
 cor_sig_star(iris[, 1:3])
