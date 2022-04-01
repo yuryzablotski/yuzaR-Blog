@@ -104,9 +104,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we&#39;ll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn&#39;t use this name"/>
 <meta property="og:url" content="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/"/>
-<meta property="og:image" content="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/mwutest_files/figure-html5/unnamed-chunk-4-1.png"/>
-<meta property="og:image:width" content="1248"/>
-<meta property="og:image:height" content="768"/>
+<meta property="og:image" content="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/thumbnail.png"/>
+<meta property="og:image:width" content="1920"/>
+<meta property="og:image:height" content="1080"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="yuzaR-Blog"/>
 
@@ -115,9 +115,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:title" content="yuzaR-Blog: R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise &amp; interpret 🥳 What happens if we use a wrong test 😱"/>
 <meta property="twitter:description" content="Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we&#39;ll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn&#39;t use this name"/>
 <meta property="twitter:url" content="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/"/>
-<meta property="twitter:image" content="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/mwutest_files/figure-html5/unnamed-chunk-4-1.png"/>
-<meta property="twitter:image:width" content="1248"/>
-<meta property="twitter:image:height" content="768"/>
+<meta property="twitter:image" content="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/thumbnail.png"/>
+<meta property="twitter:image:width" content="1920"/>
+<meta property="twitter:image:height" content="1080"/>
 <meta property="twitter:site" content="@yuzaR___"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
@@ -137,7 +137,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["colbert-report-stephen-colbert.gif","critical_value.png","equal_dedians.png","identical_medians.pdf","interpter_rank_biserial.png","Mann-Whitney-Table-CriticalValues.pdf","mwu.jpg","mwutest_files/anchor-4.2.2/anchor.min.js","mwutest_files/bowser-1.9.3/bowser.min.js","mwutest_files/distill-2.2.21/template.v2.js","mwutest_files/figure-html5/unnamed-chunk-4-1.png","mwutest_files/figure-html5/unnamed-chunk-6-1.png","mwutest_files/figure-html5/unnamed-chunk-7-1.png","mwutest_files/figure-html5/unnamed-chunk-8-1.png","mwutest_files/figure-html5/unnamed-chunk-9-1.png","mwutest_files/header-attrs-2.11/header-attrs.js","mwutest_files/header-attrs-2.13/header-attrs.js","mwutest_files/jquery-3.6.0/jquery-3.6.0.js","mwutest_files/jquery-3.6.0/jquery-3.6.0.min.js","mwutest_files/jquery-3.6.0/jquery-3.6.0.min.map","mwutest_files/popper-2.6.0/popper.min.js","mwutest_files/tippy-6.2.7/tippy-bundle.umd.min.js","mwutest_files/tippy-6.2.7/tippy-light-border.css","mwutest_files/tippy-6.2.7/tippy.css","mwutest_files/tippy-6.2.7/tippy.umd.min.js","mwutest_files/vembedr-0.1.4/css/vembedr.css","mwutest_files/vembedr-0.1.5/css/vembedr.css","mwutest_files/webcomponents-2.0.0/webcomponents.js","not_normal.png","ordinal.png","p_value_interpretation.png"]}
+  {"type":"character","attributes":{},"value":["colbert-report-stephen-colbert.gif","critical_value.png","equal_dedians.png","identical_medians.pdf","interpter_rank_biserial.png","Mann-Whitney-Table-CriticalValues.pdf","mwu.jpg","mwutest_files/anchor-4.2.2/anchor.min.js","mwutest_files/bowser-1.9.3/bowser.min.js","mwutest_files/distill-2.2.21/template.v2.js","mwutest_files/figure-html5/unnamed-chunk-4-1.png","mwutest_files/figure-html5/unnamed-chunk-6-1.png","mwutest_files/figure-html5/unnamed-chunk-7-1.png","mwutest_files/figure-html5/unnamed-chunk-8-1.png","mwutest_files/figure-html5/unnamed-chunk-9-1.png","mwutest_files/header-attrs-2.11/header-attrs.js","mwutest_files/header-attrs-2.13/header-attrs.js","mwutest_files/jquery-3.6.0/jquery-3.6.0.js","mwutest_files/jquery-3.6.0/jquery-3.6.0.min.js","mwutest_files/jquery-3.6.0/jquery-3.6.0.min.map","mwutest_files/popper-2.6.0/popper.min.js","mwutest_files/tippy-6.2.7/tippy-bundle.umd.min.js","mwutest_files/tippy-6.2.7/tippy-light-border.css","mwutest_files/tippy-6.2.7/tippy.css","mwutest_files/tippy-6.2.7/tippy.umd.min.js","mwutest_files/vembedr-0.1.4/css/vembedr.css","mwutest_files/vembedr-0.1.5/css/vembedr.css","mwutest_files/webcomponents-2.0.0/webcomponents.js","not_normal.png","ordinal.png","p_value_interpretation.png","thumbnail.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
