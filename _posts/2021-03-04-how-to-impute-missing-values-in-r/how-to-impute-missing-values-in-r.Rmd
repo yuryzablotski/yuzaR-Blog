@@ -11,7 +11,7 @@ categories:
   - data wrangling
   - visualization
   - machine learning
-preview: thumbnail_impute_na.jpg
+preview: thumbnail_missing_values.png
 output:
   distill::distill_article:
     self_contained: false
@@ -24,6 +24,8 @@ output:
 
 ```{r setup, include=FALSE, warning=F, message=F}
 knitr::opts_chunk$set(echo = T)
+library(grid)
+library(plotly)
 ```
 
 
@@ -71,8 +73,8 @@ The only thing here is that we don't exactly know which two observation are the 
 
 ```{r}
 library(visdat)      # for visualizing NAs
-library(plotly)      # for interactive visualization
-vis_miss(airquality) %>% ggplotly()
+#library(plotly)      # for interactive visualization
+vis_miss(airquality) #%>% ggplotly()
 ```
 Now, since we know we have missing values in two variables, we can impute them in *every particular variable separately* using {dlookr} package, or, impute missing values in the *whole dataset at the same time* with the {missRanger} package. Let's do both and check the quality of our imputation by visualizing imputed values.
 

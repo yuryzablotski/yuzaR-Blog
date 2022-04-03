@@ -31,7 +31,7 @@ Blogpost&lt;/a&gt; would help.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;dlookr&amp;quot;)
 library(dlookr)
 plot_correlate(iris)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108703da96b_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cd61b94_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;fastStat&amp;quot;)
 library(fastStat)
 cor_sig_star(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
@@ -42,7 +42,7 @@ we can’t trust a plain correlation matrix&lt;/strong&gt;.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;PerformanceAnalytics&amp;quot;)
 library(&amp;quot;PerformanceAnalytics&amp;quot;)
 chart.Correlation(iris[, 1:3])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108703da96b_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cd61b94_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h3 id="linearity-assumption"&gt;1. Linearity assumption&lt;/h3&gt;
 &lt;p&gt;First, the data is not-linearly distributed, while correlation only
 makes sense for linear relationships. If fact, we could draw three
@@ -69,7 +69,7 @@ ggpairs(iris,
         lower = list(continuous = &amp;quot;smooth&amp;quot;),
         upper = list(continuous = wrap(&amp;quot;cor&amp;quot;, 
                          method = &amp;quot;pearson&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108703da96b_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cd61b94_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;These plots reveal that two of the negative coefficients before
 splitting into groups show the opposite of what is actually true,
 namely, the correlation within every group &lt;strong&gt;IS&lt;/strong&gt;
@@ -102,7 +102,7 @@ iris %&amp;gt;%
   normality() %&amp;gt;% 
   mutate(across(is.numeric, ~round(., 3))) %&amp;gt;%
   regulartable()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="9ddc246b-a506-41c0-9f5b-1b200fb06381"&gt;&lt;style&gt;
+&lt;template id="881030be-1d53-4a6d-b4ea-958916351b82"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -136,12 +136,12 @@ iris %&amp;gt;%
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-38d0421a{}.cl-38c74156{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-38c769a6{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-38c769b0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-38c7bb7c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38c7bc1c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38c7bc3a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38c7bc4e{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38c7bc58{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38c7bc62{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-38d0421a'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38c7bc62"&gt;&lt;p class="cl-38c769a6"&gt;&lt;span class="cl-38c74156"&gt;vars&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc58"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc58"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc58"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38c7bb7c"&gt;&lt;p class="cl-38c769a6"&gt;&lt;span class="cl-38c74156"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.976&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.010&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38c7bb7c"&gt;&lt;p class="cl-38c769a6"&gt;&lt;span class="cl-38c74156"&gt;Sepal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.985&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.101&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38c7bb7c"&gt;&lt;p class="cl-38c769a6"&gt;&lt;span class="cl-38c74156"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.876&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc1c"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38c7bc4e"&gt;&lt;p class="cl-38c769a6"&gt;&lt;span class="cl-38c74156"&gt;Petal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc3a"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.902&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc3a"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38c7bc3a"&gt;&lt;p class="cl-38c769b0"&gt;&lt;span class="cl-38c74156"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="c9ee80cc-3dc8-439c-9a65-57ee6633eb19"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-25053d3e{}.cl-24fd84ae{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-24fd9e26{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-24fd9e30{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-24fdda62{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-24fdda6c{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-24fdda76{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-24fdda77{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-24fdda80{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-24fdda81{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-25053d3e'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-24fdda81"&gt;&lt;p class="cl-24fd9e26"&gt;&lt;span class="cl-24fd84ae"&gt;vars&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda80"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda80"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda80"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-24fdda62"&gt;&lt;p class="cl-24fd9e26"&gt;&lt;span class="cl-24fd84ae"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.976&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.010&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-24fdda62"&gt;&lt;p class="cl-24fd9e26"&gt;&lt;span class="cl-24fd84ae"&gt;Sepal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.985&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.101&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-24fdda62"&gt;&lt;p class="cl-24fd9e26"&gt;&lt;span class="cl-24fd84ae"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.876&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda6c"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-24fdda77"&gt;&lt;p class="cl-24fd9e26"&gt;&lt;span class="cl-24fd84ae"&gt;Petal.Width&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda76"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.902&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda76"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;0.000&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-24fdda76"&gt;&lt;p class="cl-24fd9e30"&gt;&lt;span class="cl-24fd84ae"&gt;150&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="d0e11284-edc2-4ebe-a56c-75583aeaef45"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("c9ee80cc-3dc8-439c-9a65-57ee6633eb19");
-var template = document.getElementById("9ddc246b-a506-41c0-9f5b-1b200fb06381");
+var dest = document.getElementById("d0e11284-edc2-4ebe-a56c-75583aeaef45");
+var template = document.getElementById("881030be-1d53-4a6d-b4ea-958916351b82");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -166,7 +166,7 @@ either miss a discovery, or discover complete nonsense.&lt;/p&gt;
   normality() %&amp;gt;%  
   mutate(across(is.numeric, ~round(., 3))) %&amp;gt;%
   regulartable()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="745b8489-de09-4204-aa52-681b0cb855ac"&gt;&lt;style&gt;
+&lt;template id="cf31bd6e-996d-45ba-87db-33883a7ab19a"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -200,12 +200,12 @@ either miss a discovery, or discover complete nonsense.&lt;/p&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-3908270c{}.cl-38fbf7e8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-38fc1188{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-38fc119c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-38fc620a{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38fc6214{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38fc6215{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38fc6228{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38fc6232{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-38fc6233{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-3908270c'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6233"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;variable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6233"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Species&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6232"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6232"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6232"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.460&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.465&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.971&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.258&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.955&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.055&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6214"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.966&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.158&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc620a"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-38fc6228"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6228"&gt;&lt;p class="cl-38fc1188"&gt;&lt;span class="cl-38fbf7e8"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6215"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.962&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6215"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;0.110&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-38fc6215"&gt;&lt;p class="cl-38fc119c"&gt;&lt;span class="cl-38fbf7e8"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="21d53ceb-cd93-4523-82b2-ca32f53b5849"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-25275f36{}.cl-251f89be{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-251fa96c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-251fa980{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-251ff5a2{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-251ff5b6{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-251ff5c0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-251ff5ca{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-251ff5cb{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-251ff5d4{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-25275f36'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5d4"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;variable&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5d4"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Species&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5cb"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5cb"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;p_value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5cb"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;sample&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.460&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.978&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.465&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Sepal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.971&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.258&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;setosa&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.955&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.055&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5b6"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;versicolor&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.966&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.158&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5a2"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-251ff5ca"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;Petal.Length&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5ca"&gt;&lt;p class="cl-251fa96c"&gt;&lt;span class="cl-251f89be"&gt;virginica&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5c0"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.962&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5c0"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;0.110&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-251ff5c0"&gt;&lt;p class="cl-251fa980"&gt;&lt;span class="cl-251f89be"&gt;50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="0c8e821b-d326-4835-ac6c-0ea94fb17819"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("21d53ceb-cd93-4523-82b2-ca32f53b5849");
-var template = document.getElementById("745b8489-de09-4204-aa52-681b0cb855ac");
+var dest = document.getElementById("0c8e821b-d326-4835-ac6c-0ea94fb17819");
+var template = document.getElementById("cf31bd6e-996d-45ba-87db-33883a7ab19a");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -248,7 +248,7 @@ grouped_ggcorrmat(
   type = &amp;quot;parametric&amp;quot;,
   grouping.var = Species, 
   plotgrid.args = list(nrow = 2)) # looks better&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108703da96b_files/figure-html/unnamed-chunk-8-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cd61b94_files/figure-html/unnamed-chunk-8-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;h2 id="whats-next"&gt;What’s next?&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;As you can see, while correlation matrix is an useful Exploratory
@@ -329,8 +329,8 @@ d %&amp;gt;%
 &lt;pre&gt;&lt;code&gt;# A tibble: 2 × 5
   variable jobclass       statistic p_value sample
   &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt;              &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
-1 wage     1. Industrial      0.916 0.165       15
-2 wage     2. Information     0.808 0.00462     15&lt;/code&gt;&lt;/pre&gt;
+1 wage     1. Industrial      0.887 0.0606      15
+2 wage     2. Information     0.775 0.00178     15&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="compute-mann-whitney-u-test"&gt;Compute Mann-Whitney U Test&lt;/h2&gt;
 &lt;p&gt;And the best way to compute our test (in my opinion) is the
 {ggbetweenstats} function from {ggstatsplot} package, which needs only 4
@@ -354,7 +354,7 @@ ggbetweenstats(
   x    = jobclass, 
   y    = wage, 
   type = &amp;quot;nonparametric&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21086ec5d9e1_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c850d65d6_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;mwu.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -386,8 +386,8 @@ produces identical p-value&lt;/li&gt;
 &lt;pre&gt;&lt;code&gt;# A tibble: 2 × 4
   jobclass       sum_ranks     n     W
   &amp;lt;fct&amp;gt;              &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt;
-1 1. Industrial       180.    15  59.5
-2 2. Information      286.    15 166. &lt;/code&gt;&lt;/pre&gt;
+1 1. Industrial        199    15    79
+2 2. Information       266    15   146&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;and that’s what both &lt;strong&gt;W- and U-statistics&lt;/strong&gt; were
 previously used for - to look up a p-value in some table. But nowadays
@@ -452,14 +452,14 @@ completely opposite result.&lt;/p&gt;
     Wilcoxon rank sum test with continuity correction
 
 data:  wage by jobclass
-W = 59.5, p-value = 0.02931
+W = 79, p-value = 0.1704
 alternative hypothesis: true location shift is not equal to 0&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;wilcox.test(data = d, wage ~ jobclass, paired = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;
     Wilcoxon signed rank exact test
 
 data:  wage by jobclass
-V = 30, p-value = 0.0946
+V = 40, p-value = 0.2769
 alternative hypothesis: true location shift is not equal to 0&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;However, if your data is paired and you want to understand Paired
 Wilcoxon Test really well, check out the code below and &lt;a
@@ -469,7 +469,7 @@ href="https://youtu.be/YRlIkNKazF8"&gt;this video&lt;/a&gt;.&lt;/p&gt;
   x    = jobclass, 
   y    = wage, 
   type = &amp;quot;nonparametric&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21086ec5d9e1_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c850d65d6_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="dont-use-two-samples-wilcoxon-test-if"&gt;Don’t use two-samples
 Wilcoxon-test if:&lt;/h2&gt;
 &lt;ul&gt;
@@ -497,7 +497,7 @@ class="uri"&gt;https://datatab.net/tutorial/mann-whitney-u-test&lt;/a&gt;&lt;/p&
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest</guid>
-      <pubDate>Thu, 31 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -611,7 +611,7 @@ ggbetweenstats(
   y    = wage, 
   type = &amp;quot;parametric&amp;quot;, 
   var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087ece37aa_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c83a66b016_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;t_test.jpg&amp;quot;, plot = last_plot(), width = 5.1, height = 3)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -689,7 +689,7 @@ ggbetweenstats(
   y    = wage, 
   type = &amp;quot;parametric&amp;quot;, 
   var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087ece37aa_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c83a66b016_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Thus, a p-value and the effect size never contradict each other,
 simply because they show different things. And if our p-value is around
 0.05, like 0.04 in our example, Ronald Fisher - the father of modern
@@ -706,7 +706,7 @@ non-parametric test out of pure laziness&lt;/h3&gt;
   x    = job, 
   y    = wage, 
   type = &amp;quot;nonparametric&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087ece37aa_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c83a66b016_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;First, if we are lazy to check the normality of data, we’ll go
 straight to the &lt;strong&gt;non-parametric Mann–Whitney U Test&lt;/strong&gt;.
 Here, a higher then the real p-value failed to reject the Null
@@ -722,7 +722,7 @@ variances&lt;/h3&gt;
   y    = wage, 
   type = &amp;quot;parametric&amp;quot;, 
   var.equal = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087ece37aa_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c83a66b016_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Secondly, if we are lazy to check the similarity of variances, we’ll
 go straight to the classic Student’s t-test which assumes equal
 variance, and produces smaller then real p-value indicating more
@@ -747,7 +747,7 @@ you want to understand it really well, check out this video.&lt;/p&gt;
   x    = job, 
   y    = wage, 
   type = &amp;quot;parametric&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087ece37aa_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c83a66b016_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="whats-next-or-dont-use-t-test-if"&gt;What’s next, or Don’t use
 t-Test if&lt;/h2&gt;
 &lt;ul&gt;
@@ -836,7 +836,7 @@ ggbarstats(
   paired = T, 
   label = &amp;quot;both&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108224f96ad_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c852036399_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Cochran’s Q Test looks for differences in proportions of three or
 more paired samples, in which the same individuals appear in each
 sample. So, the &lt;strong&gt;Null Hypothesis&lt;/strong&gt; for Cochran’s Q Test is
@@ -853,9 +853,9 @@ library(rstatix)
 
 cochran_qtest(data_long, outcome ~ vaccine_time|id)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;# A tibble: 1 × 6
-  .y.         n statistic    df       p method          
-* &amp;lt;chr&amp;gt;   &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;           
-1 outcome    30      9.33     2 0.00940 Cochran&amp;#39;s Q test&lt;/code&gt;&lt;/pre&gt;
+  .y.         n statistic    df        p method          
+* &amp;lt;chr&amp;gt;   &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;           
+1 outcome    30      15.0     2 0.000566 Cochran&amp;#39;s Q test&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;For that we’ll use {cochran_qtest} function from {rstatix} package,
 which needs only 2 arguments:&lt;/p&gt;
 &lt;ul&gt;
@@ -876,11 +876,11 @@ individuals&lt;/li&gt;
 &lt;pre class="r"&gt;&lt;code&gt;pairwise_mcnemar_test(data    = data_long, 
                       formula = outcome ~ vaccine_time|id)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;# A tibble: 3 × 6
-  group1 group2       p  p.adj p.adj.signif method      
-* &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;       
-1 before month  0.00952 0.0286 *            McNemar test
-2 before year   0.48    1      ns           McNemar test
-3 month  year   0.0433  0.13   ns           McNemar test&lt;/code&gt;&lt;/pre&gt;
+  group1 group2       p   p.adj p.adj.signif method      
+* &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;       
+1 before month  0.00596 0.0179  *            McNemar test
+2 before year   0.00195 0.00585 **           McNemar test
+3 month  year   1       1       ns           McNemar test&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Since the results are significant, we’d need to conduct Pairwise
 McNemar Tests, and luckely for us, {rstatix} package provides
 {pairwise_mcnemar_test} function which does just that and needs the same
@@ -890,11 +890,11 @@ for two reasons.&lt;/p&gt;
                       formula = outcome ~ vaccine_time|id, 
                       correct = F)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;# A tibble: 3 × 6
-  group1 group2       p  p.adj p.adj.signif method      
-* &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;       
-1 before month  0.00468 0.014  *            McNemar test
-2 before year   0.346   1      ns           McNemar test
-3 month  year   0.0209  0.0627 ns           McNemar test&lt;/code&gt;&lt;/pre&gt;
+  group1 group2        p   p.adj p.adj.signif method      
+* &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;       
+1 before month  0.0027   0.0081  **           McNemar test
+2 before year   0.000789 0.00237 **           McNemar test
+3 month  year   0.763    1       ns           McNemar test&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;First, the function uses continuity correction by default, which was
 shown to be very conservative by several scientific papers. Thus, if we
 stop the function from using continuity correction with {correct =
@@ -907,11 +907,11 @@ Error&lt;/strong&gt;.&lt;/p&gt;
                       correct = F, 
                       p.adjust.method = &amp;quot;holm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;# A tibble: 3 × 6
-  group1 group2       p  p.adj p.adj.signif method      
-* &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;       
-1 before month  0.00468 0.014  *            McNemar test
-2 before year   0.346   0.346  ns           McNemar test
-3 month  year   0.0209  0.0418 *            McNemar test&lt;/code&gt;&lt;/pre&gt;
+  group1 group2        p   p.adj p.adj.signif method      
+* &amp;lt;chr&amp;gt;  &amp;lt;chr&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;        &amp;lt;chr&amp;gt;       
+1 before month  0.0027   0.0054  **           McNemar test
+2 before year   0.000789 0.00237 **           McNemar test
+3 month  year   0.763    0.763   ns           McNemar test&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The second danger is that this function uses a &lt;strong&gt;Bonferroni
 correction for multiple comparisons&lt;/strong&gt; by default, which was also
 shown to be too conservative. A correction for multiple comparisons is
@@ -1061,7 +1061,7 @@ ggwithinstats(
   y    = number, 
   type = &amp;quot;parametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21083dbeb4fb_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cbfc153_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;paired_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -1133,7 +1133,7 @@ choose a wrong test?&lt;/h2&gt;
   y    = number, 
   type = &amp;quot;nonparametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21083dbeb4fb_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cbfc153_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;paired_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;There are two ways things can go wrong. First, if we are lazy to
 check the normality, we’ll go straight to the &lt;strong&gt;non-parametric
@@ -1182,7 +1182,7 @@ difference of only 2 sit-ups is sooo small.&lt;/p&gt;
   type = &amp;quot;parametric&amp;quot;, 
   var.equal = T
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21083dbeb4fb_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cbfc153_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;interpret_hedges_g(0.3)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;[1] &amp;quot;small&amp;quot;
 (Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
@@ -1199,7 +1199,7 @@ actually makes sense.&lt;/p&gt;
 id="proof-of-the-concept-about-the-difference-between-two-samples"&gt;Proof
 of the concept about the difference between two samples&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;gghistostats(data = d, x = difference, test.value = 0, binwidth = 1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21083dbeb4fb_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c82cbfc153_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;one_sample_t_test.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Interestingly, if we test our mean difference against zero using
 &lt;strong&gt;one-sample t-Test&lt;/strong&gt; and compare the t-statistics, p-value
@@ -1345,7 +1345,7 @@ ggbarstats(
   paired = TRUE, 
   label = &amp;quot;both&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108591f682a_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c81f00638_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;If you want to save the picture, use the code below.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
 library(tidyverse)
@@ -1413,13 +1413,13 @@ alien parasites.&lt;/p&gt;
     McNemar&amp;#39;s Chi-squared test
 
 data:  data$before and data$after
-McNemar&amp;#39;s chi-squared = 5.4444, df = 1, p-value = 0.01963&lt;/code&gt;&lt;/pre&gt;
+McNemar&amp;#39;s chi-squared = 5.3333, df = 1, p-value = 0.02092&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;mcnemar.test(data$before, data$after)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;
     McNemar&amp;#39;s Chi-squared test with continuity correction
 
 data:  data$before and data$after
-McNemar&amp;#39;s chi-squared = 4, df = 1, p-value = 0.0455&lt;/code&gt;&lt;/pre&gt;
+McNemar&amp;#39;s chi-squared = 4.0833, df = 1, p-value = 0.04331&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Secondly, the things can go even more wrong, if we take Chi-Square
 test by accidentally forgetting the {paired = TRUE} argument, or,
 &lt;strong&gt;God forbid&lt;/strong&gt;, would take Chi-Squared test for paired data
@@ -1435,7 +1435,7 @@ against the alien parasite! And now, I hope you can not unknow it :)&lt;/p&gt;
   y    = after,
   label = &amp;quot;both&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2108591f682a_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c81f00638_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;chisquared.jpg&amp;quot;, plot = last_plot(), width = 5, height = 5)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;But IF your samples are &lt;strong&gt;not-paired&lt;/strong&gt;, and you actually
 want to conduct either &lt;strong&gt;frequentists or bayesian
@@ -1680,7 +1680,7 @@ ggwithinstats(
   y    = money, 
   type = &amp;quot;nonparametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21086e9037ec_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c831a87340_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;friedman.jpg&amp;quot;, plot = last_plot(), width = 5.5, height = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -1798,7 +1798,7 @@ ggwithinstats(
   ylab(&amp;quot;money spend [thousands of US dollars]&amp;quot;)+
   theme_classic()+
   theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21086e9037ec_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c831a87340_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggwithinstats&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="how-to-report-the-results"&gt;How to report the results&lt;/h2&gt;
 &lt;p&gt;Report both, the mean ranks and the medians for each group. Besides,
@@ -1886,7 +1886,7 @@ library(tidyverse)
 library(datarium)
 
 View(selfesteem)&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="8dc4ccb1-37e0-4b1e-91bb-c2ef4385fe72"&gt;&lt;style&gt;
+&lt;template id="b2924dff-3538-4b04-8267-75212d8fbd82"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1920,12 +1920,12 @@ View(selfesteem)&lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-4e51c262{}.cl-4e4b9e78{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4e4bada0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4e4be414{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be41e{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be428{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be429{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be432{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be433{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be43c{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be43d{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be43e{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be446{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be450{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4e4be451{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-4e51c262'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be450"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be451"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be451"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be451"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be41e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be433"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be41e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be41e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be433"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be43d"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be43c"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be43c"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be43c"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be446"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be43e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be43e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be43e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be433"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be432"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be41e"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be414"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4e4be429"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be428"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be428"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4e4be428"&gt;&lt;p class="cl-4e4bada0"&gt;&lt;span class="cl-4e4b9e78"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="4b9b3d42-809a-43f2-a4bd-39a8a19a31ec"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-3d6e719c{}.cl-3d6192c4{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-3d61c9ba{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-3d625c4a{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c5e{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c68{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c72{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c7c{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c7d{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c90{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c91{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625c9a{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625ca4{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625ca5{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-3d625cae{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-3d6e719c'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625ca5"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625cae"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625cae"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625cae"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c5e"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c7d"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c5e"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c5e"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c7d"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c91"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c90"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c90"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c90"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625ca4"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c9a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c9a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c9a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c7d"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c7c"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c5e"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c4a"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-3d625c72"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c68"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c68"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-3d625c68"&gt;&lt;p class="cl-3d61c9ba"&gt;&lt;span class="cl-3d6192c4"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="c4711ef4-d3c4-4255-84cd-c676d5299529"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("4b9b3d42-809a-43f2-a4bd-39a8a19a31ec");
-var template = document.getElementById("8dc4ccb1-37e0-4b1e-91bb-c2ef4385fe72");
+var dest = document.getElementById("c4711ef4-d3c4-4255-84cd-c676d5299529");
+var template = document.getElementById("b2924dff-3538-4b04-8267-75212d8fbd82");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1979,7 +1979,7 @@ ggwithinstats(
   y    = score, 
   type = &amp;quot;parametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087f69002d_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c87bd2207_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;rm_anova.jpg&amp;quot;, plot = last_plot(), width = 5.5, height = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
 &lt;ul&gt;
@@ -2001,7 +2001,7 @@ pairwise samples are not-equal to Zero.&lt;/p&gt;&lt;/li&gt;
     diff_t2_t1 = t2 - t1 )
 
 View(diffs)&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="9879b6e3-b353-4d7b-b927-9051ec38f36a"&gt;&lt;style&gt;
+&lt;template id="f201198c-1264-4100-a5a0-b104e957e4fb"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -2035,12 +2035,12 @@ View(diffs)&lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-5037c068{}.cl-502a06c6{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-502a25ac{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-502ad16e{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad18c{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad196{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1a0{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1b4{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1b5{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1be{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1c8{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1d2{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1dc{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1dd{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1e6{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1e7{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1f0{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-502ad1f1{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-5037c068'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1e7"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1f0"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1f0"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1f0"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1f1"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;diff_t3_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1f1"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;diff_t3_t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1f1"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;diff_t2_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad18c"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1c8"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;-0.60&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad18c"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;5.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.20&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad18c"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1c8"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.59&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;2.55&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad18c"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad196"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.61&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad16e"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1e6"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1dc"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1dc"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1dc"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1dd"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1dd"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.26&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1dd"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1c8"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.19&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1c8"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1d2"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.96&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.07&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1be"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;0.89&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-502ad1b5"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1b4"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1b4"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1b4"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1a0"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;5.54&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1a0"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;4.09&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-502ad1a0"&gt;&lt;p class="cl-502a25ac"&gt;&lt;span class="cl-502a06c6"&gt;1.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="8b923076-6882-4cd2-8d8f-e1cb5b8a631b"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-40a184ee{}.cl-4094b624{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-40950944{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4095e954{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e986{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9a4{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9b8{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9cc{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9d6{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9ea{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9f4{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095e9fe{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095ea08{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095ea1c{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095ea30{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095ea3a{width:32.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095ea4e{width:41.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4095ea58{width:65.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-40a184ee'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095ea3a"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;id&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea4e"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea4e"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea4e"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;t3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea58"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;diff_t3_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea58"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;diff_t3_t2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea58"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;diff_t2_t1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e986"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;5.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;7.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e9f4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;2.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;-0.60&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e986"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.44&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;9.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;5.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.20&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e986"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.71&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;8.35&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e9f4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;5&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;2.87&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.59&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;2.55&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e986"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;5.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9a4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6.65&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.61&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e954"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095ea30"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;7&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea08"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea08"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;5.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea08"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;6.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea1c"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea1c"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.26&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095ea1c"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;2.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e9f4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;7.82&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.64&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.19&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e9f4"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9fe"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;8.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.96&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.07&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9ea"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;0.89&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4095e9d6"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9cc"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;3.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9cc"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9cc"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;8.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9b8"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;5.54&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9b8"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;4.09&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4095e9b8"&gt;&lt;p class="cl-40950944"&gt;&lt;span class="cl-4094b624"&gt;1.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="906844b1-9a9b-4196-b9da-f63f71c57011"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("8b923076-6882-4cd2-8d8f-e1cb5b8a631b");
-var template = document.getElementById("9879b6e3-b353-4d7b-b927-9051ec38f36a");
+var dest = document.getElementById("906844b1-9a9b-4196-b9da-f63f71c57011");
+var template = document.getElementById("f201198c-1264-4100-a5a0-b104e957e4fb");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -2164,7 +2164,7 @@ enjoy it.&lt;/p&gt;
   ylab(&amp;quot;selfesteem score&amp;quot;)+
   theme_classic()+
   theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21087f69002d_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c87bd2207_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggwithinstats&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="check-sphericity-normality-assumptions"&gt;Check Sphericity &amp;amp;
 Normality assumptions&lt;/h2&gt;
@@ -2362,7 +2362,7 @@ ggwithinstats(
   y    = score, 
   type = &amp;quot;nonparametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210848fb1540_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c8112995ad_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;wilcoxon.jpg&amp;quot;, plot = last_plot(), width = 6, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the best way to compute our test is the {ggwithinstats} function
 from {ggstatsplot} package, which needs only 4 arguments:&lt;/p&gt;
@@ -2446,7 +2446,7 @@ Price for me.&lt;/p&gt;
   y    = score, 
   type = &amp;quot;parametric&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210848fb1540_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c8112995ad_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="one-sided-two-samples-wilcoxon-test"&gt;One-sided two-samples
 Wilcoxon-test&lt;/h2&gt;
 &lt;p&gt;Without visualization, the default &lt;code&gt;two.sided&lt;/code&gt; alternative
@@ -2599,7 +2599,7 @@ ggscatterstats(
     y    = qsec,
     type = &amp;quot;parametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210829454c80_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86e5cb7f6_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggscatterstats
 
 # install.packages(&amp;quot;ggplot2&amp;quot;)
@@ -2678,7 +2678,7 @@ function - is the &lt;strong&gt;type&lt;/strong&gt; argument, from “parametric
     y    = qsec,
     type = &amp;quot;nonparametric&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210829454c80_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86e5cb7f6_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;corr_np.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="robust-method-if-you-have-outliers"&gt;Robust method if you have
@@ -2686,7 +2686,7 @@ outliers&lt;/h2&gt;
 &lt;p&gt;Moreover, if we find some outliers in our data, we could apply a
 “robust” correlation to decrease the influence of outliers.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggscatterstats(data = mtcars, x = hp, y = qsec, type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210829454c80_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86e5cb7f6_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="checking-for-normality-and-linearity"&gt;Checking for normality and
 linearity&lt;/h2&gt;
 &lt;p&gt;Plotting the relationships before making conclusions, will
@@ -2710,7 +2710,7 @@ shapiro.test(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$hp
 W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$hp) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210829454c80_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86e5cb7f6_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shapiro.test(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;
     Shapiro-Wilk normality test
@@ -2718,7 +2718,7 @@ W = 0.93342, p-value = 0.04881&lt;/code&gt;&lt;/pre&gt;
 data:  mtcars$qsec
 W = 0.97325, p-value = 0.5935&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggqqplot(mtcars$qsec) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210829454c80_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file43c86e5cb7f6_files/figure-html/unnamed-chunk-5-2.png" width="672" /&gt;
 &lt;strong&gt;Conclusion:&lt;/strong&gt; Our data is linear and normally
 distributed, so we are fine with the classic Pearson’s correlation.
 However, if it is not the case, take a non-parametric Spearman
@@ -2861,7 +2861,7 @@ W = 0.93695, p-value = 0.1896&lt;/code&gt;&lt;/pre&gt;
 library(ggpubr)
 
 ggqqplot(my_to_dos)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21085e123bae_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86bb6ee3b_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="one-sample-t-test"&gt;One-sample t-test&lt;/h2&gt;
 &lt;p&gt;Since &lt;em&gt;one-sample t-test&lt;/em&gt; checks the
 &lt;strong&gt;similarity&lt;/strong&gt; between our sample’s mean and the expected
@@ -2906,7 +2906,7 @@ gghistostats(
     type       = &amp;quot;p&amp;quot;, 
     normal.curve = T
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21085e123bae_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86bb6ee3b_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# save your plot
 ggsave(&amp;quot;ostt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
@@ -3051,7 +3051,7 @@ gghistostats(
     normal.curve = T,
     xlab = &amp;quot;tasks done&amp;quot;
     )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file21085e123bae_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c86bb6ee3b_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;oswt.jpg&amp;quot;, plot = last_plot(), width = 5.5)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Here is the interpretation of the R-biserial correlation coefficient,
 as the effect size for the non-parametric One-sample Wilcoxon test. It
@@ -3166,7 +3166,7 @@ ggbarstats(
   y     = cyl, 
   label = &amp;quot;both&amp;quot;, 
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file210818554c68_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file43c84980a2ad_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-Square statistics&lt;/strong&gt; was previously used to
@@ -3241,7 +3241,7 @@ automatic transmission.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;contingency_table &amp;lt;- table(mtcars$cyl, mtcars$am)
 contingency_table
 pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
-&lt;template id="ae3835a4-d5be-40e1-97b4-2ff26a4dd1ef"&gt;&lt;style&gt;
+&lt;template id="1e9f3e67-ca25-44e5-8664-e3a3cee813a0"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -3275,12 +3275,12 @@ pairwise_prop_test(contingency_table) &lt;/code&gt;&lt;/pre&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-5b1f8844{}.cl-5b1954b0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-5b196388{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-5b196392{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-5b19933a{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199344{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199345{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b19934e{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b19934f{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199358{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199359{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199362{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199363{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b199364{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b19936c{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5b19936d{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-5b1f8844'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-5b199364"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199364"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19936c"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19936c"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19936d"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-5b19933a"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19933a"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199344"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199344"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199345"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-5b19934e"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19934e"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19934f"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b19934f"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199358"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-5b199359"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199359"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199362"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199362"&gt;&lt;p class="cl-5b196392"&gt;&lt;span class="cl-5b1954b0"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-5b199363"&gt;&lt;p class="cl-5b196388"&gt;&lt;span class="cl-5b1954b0"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="a9313a88-ac70-4ad6-ac02-69366c5be160"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-4ace2c6a{}.cl-4ac89804{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4ac8a88a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4ac8a894{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4ac8dbde{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dbe8{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dbf2{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dbf3{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dbfc{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dbfd{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dbfe{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dc06{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dc07{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dc10{width:54.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dc11{width:54.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4ac8dc1a{width:73.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-4ace2c6a'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4ac8dc10"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;group1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc10"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;group2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc11"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;p&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc11"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;p.adj&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc1a"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;p.adj.signif&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4ac8dbde"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbde"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbe8"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;0.4400&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbe8"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbf2"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4ac8dbf3"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbf3"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbfc"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;0.0108&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbfc"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;0.0324&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbfd"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4ac8dbfe"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;6&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dbfe"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;8&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc06"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;0.3650&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc06"&gt;&lt;p class="cl-4ac8a894"&gt;&lt;span class="cl-4ac89804"&gt;0.7300&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4ac8dc07"&gt;&lt;p class="cl-4ac8a88a"&gt;&lt;span class="cl-4ac89804"&gt;ns&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="01d856cb-5aef-4d08-97e2-a8b0a25a2c26"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("a9313a88-ac70-4ad6-ac02-69366c5be160");
-var template = document.getElementById("ae3835a4-d5be-40e1-97b4-2ff26a4dd1ef");
+var dest = document.getElementById("01d856cb-5aef-4d08-97e2-a8b0a25a2c26");
+var template = document.getElementById("1e9f3e67-ca25-44e5-8664-e3a3cee813a0");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -3369,19 +3369,6 @@ University Press.&lt;/li&gt;
       <guid>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</guid>
       <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/DEDA_thumbnail.jpg" medium="image" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>How to impute missing values with Machine Learning in R</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</link>
-      <description>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</description>
-      <category>videos</category>
-      <category>data wrangling</category>
-      <category>visualization</category>
-      <category>machine learning</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</guid>
-      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_impute_na.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>Null Hypothesis, Alternative Hypothesis and Hypothesis Testing</title>
@@ -3948,6 +3935,279 @@ href="https://doi.org/10.1080/00031305.2019.1583913"&gt;https://doi.org/10.1080/
       <guid>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</guid>
       <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>How to impute missing values with Machine Learning in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;If you are more of a visual learner, your can watch this post.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/Akb401i32Oc" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You can load all the packages at once to avoid interruptions.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(dlookr)      # for exploratory data analysis and imputation
+library(visdat)      # for visualizing NAs
+library(plotly)      # for interactive visualization
+library(missRanger)  # to generate and impute NAs
+library(tidyverse)   # for almost everything ;) it&amp;#39;s a must!&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="visualize-missing-values"&gt;Visualize missing values&lt;/h2&gt;
+&lt;h3 id="dlookr"&gt;dlookr&lt;/h3&gt;
+&lt;p&gt;First of all we have to make sure we have missing values in our
+dataset. Using &lt;em&gt;plot_na_pareto()&lt;/em&gt; function from {dlookr} package
+we can produce a &lt;strong&gt;Pareto chart&lt;/strong&gt;, which shows
+&lt;strong&gt;counts and proportions of missing values&lt;/strong&gt; in every
+variable. It even tells you what the amount of missing values
+&lt;strong&gt;means&lt;/strong&gt;, namely, missing around 24% of observations is
+still &lt;strong&gt;OK&lt;/strong&gt;, while missing more then 40% of values would
+be &lt;strong&gt;bad&lt;/strong&gt;. If you have a lot of variables and wanna
+display only the ones with missing values, use &lt;strong&gt;only_na =
+TRUE&lt;/strong&gt; argument. The only problem with &lt;strong&gt;Pareto
+chart&lt;/strong&gt; is that we don’t know whether missing values in different
+columns belong to the same observation.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(dlookr)      # for exploratory data analysis and imputation
+plot_na_pareto(airquality, only_na = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;plot_na_intersect()&lt;/strong&gt; function form {dlookr} package
+visualizes the &lt;strong&gt;combinations of missing values across
+columns&lt;/strong&gt;. The &lt;strong&gt;x-axis&lt;/strong&gt; shows the variables with
+missing values, while the counts of missing values are shown on the top
+of the plot as bars. The &lt;strong&gt;y-axis&lt;/strong&gt; represents the
+&lt;strong&gt;combination of variables and their frequencies&lt;/strong&gt;. For
+instance, we see, that two of the observations are missing in both
+variables, Ozone and Solar.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_na_intersect(airquality)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;The only thing here is that we don’t exactly know which two
+observation are the same. To get this problem solved we can use
+&lt;em&gt;vis_miss()&lt;/em&gt; function from {visdat} package and wrap it up into
+&lt;em&gt;ggplotly()&lt;/em&gt; command to get an &lt;em&gt;interactive plot&lt;/em&gt;, which
+will show us the information of any point on which we hover the cursor.
+We can even zoom in a little bit if want to ;)&lt;/p&gt;
+&lt;h3 id="visdat"&gt;visdat&lt;/h3&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(visdat)      # for visualizing NAs
+#library(plotly)      # for interactive visualization
+vis_miss(airquality) #%&amp;gt;% ggplotly()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;
+Now, since we know we have missing values in two variables, we can
+impute them in &lt;em&gt;every particular variable separately&lt;/em&gt; using
+{dlookr} package, or, impute missing values in the &lt;em&gt;whole dataset at
+the same time&lt;/em&gt; with the {missRanger} package. Let’s do both and
+check the quality of our imputation by visualizing imputed values.&lt;/p&gt;
+&lt;h2 id="univariate-missing-value-imputation-by-dlookr"&gt;Univariate
+missing value imputation by {dlookr}&lt;/h2&gt;
+&lt;h3 id="univariate-imputation-of-numeric-variables"&gt;Univariate
+imputation of numeric variables&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Dlookr&lt;/em&gt; package provides numerous methods for imputation.
+However, here I would only present two of them, which are particularly
+useful, because they can be applied for both numeric and categorical
+variables. The first method is &lt;strong&gt;rpart&lt;/strong&gt;, or &lt;em&gt;Recursive
+Partitioning and Regression Trees&lt;/em&gt;, and the second is
+&lt;strong&gt;mice&lt;/strong&gt;, or &lt;em&gt;Multivariate Imputation by Chained
+Equations&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s use both of them, and the imputation by the mean, just for sake
+of comparison, to see which method does the best job. And to make this
+even harder let’s produce more missing values in our dataset and make
+sure that at least one variable is categorical.&lt;/p&gt;
+&lt;p&gt;Now every variable in our dataset misses at least 10% of
+observations. Using the &lt;em&gt;imputate_na()&lt;/em&gt; function, we only need to
+specify 4 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the dataset&lt;/li&gt;
+&lt;li&gt;the variable with missing values, that would &lt;em&gt;Ozone&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;the variable which will predict the missing values, for example
+&lt;em&gt;Temperature&lt;/em&gt; and&lt;/li&gt;
+&lt;li&gt;the imputation method&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# produce more NAs with missRanger package
+library(missRanger)
+set.seed(111)
+airquality_NA &amp;lt;- generateNA(airquality) %&amp;gt;% 
+  mutate(Month = factor(Month))
+
+# check out NAs
+plot_na_pareto(airquality_NA)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_na_intersect(airquality_NA)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-6-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;blip &amp;lt;- imputate_na(airquality_NA, Ozone, Temp, method = &amp;quot;mean&amp;quot;)
+plot(blip)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-6-3.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;bla &amp;lt;- imputate_na(airquality_NA, Ozone, Temp, method = &amp;quot;rpart&amp;quot;)
+summary(bla)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;* Impute missing values based on Recursive Partitioning and Regression Trees
+ - method : rpart
+
+* Information of Imputation (before vs after)
+           Original Imputation
+n        106.000000 153.000000
+na        47.000000   0.000000
+mean      41.603774  41.099401
+sd        32.698530  30.265476
+se_mean    3.175962   2.446819
+IQR       44.500000  38.000000
+skewness   1.225687   1.266216
+kurtosis   1.285645   1.555227
+p00        1.000000   1.000000
+p01        4.100000   5.040000
+p05        7.250000   9.000000
+p10       10.500000  13.000000
+p20       14.000000  16.333333
+p25       18.000000  18.000000
+p30       20.000000  21.000000
+p40       23.000000  25.000000
+p50       30.000000  28.000000
+p60       39.000000  41.400000
+p70       49.000000  56.000000
+p75       62.500000  56.000000
+p80       73.000000  60.200000
+p90       87.000000  84.800000
+p95      105.250000 106.625000
+p99      121.800000 119.920000
+p100     168.000000 168.000000&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot(bla)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-6-4.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;blup &amp;lt;- imputate_na(airquality_NA, Ozone, Temp, method = &amp;quot;mice&amp;quot;, seed = 111)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot(blup)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Comparing several methods would gives us a choice to &lt;em&gt;use the
+method which does not change the distribution too much or too
+weirdly&lt;/em&gt;. For example, imputation by a simple &lt;em&gt;average&lt;/em&gt; shown
+here is a strange one; it produces a bump in the middle of the plot
+which simply does not make any sense. In contrast, both machine learning
+methods did a great job, although I’d prefer to use &lt;em&gt;mice&lt;/em&gt;
+instead of &lt;em&gt;rpart&lt;/em&gt; for this particular dataset.&lt;/p&gt;
+&lt;h3 id="univariate-imputation-of-categorical-variables"&gt;Univariate
+imputation of categorical variables&lt;/h3&gt;
+&lt;p&gt;Predicting a categorical variable, &lt;em&gt;Month&lt;/em&gt;, is similarly
+easy.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;blah &amp;lt;- imputate_na(airquality_NA, Month, Temp, method = &amp;quot;mice&amp;quot;, seed = 111)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot(blah)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2
+id="multivariate-missing-value-imputation-by-missranger"&gt;Multivariate
+missing value imputation by {missRanger}&lt;/h2&gt;
+&lt;h3 id="multivariate-imputation-of-numeric-variables"&gt;Multivariate
+imputation of numeric variables&lt;/h3&gt;
+&lt;p&gt;So, the &lt;em&gt;dlookr&lt;/em&gt; package is &lt;strong&gt;sweet&lt;/strong&gt; for a quick
+and controllable imputation! And I do talk about it more in the separate
+&lt;em&gt;dlookr&lt;/em&gt; &lt;a
+href="https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/"&gt;article&lt;/a&gt;.
+But we can go one step further using the &lt;em&gt;missRanger&lt;/em&gt; package,
+which is &lt;strong&gt;a real heavyweight&lt;/strong&gt; in data imputation!&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;missRanger&lt;/strong&gt; approach, is a &lt;strong&gt;non-parametric
+multivariate imputation by the chained random forest&lt;/strong&gt; &lt;span
+class="citation"&gt;[@Mayer2019]&lt;/span&gt;. Compared to &lt;em&gt;dlookr&lt;/em&gt;
+approach, which used only one variable with missing values,
+&lt;em&gt;missRanger&lt;/em&gt; predicts multiple variables at the same time by
+using all other variables in a dataset as predictors. This method
+combines the &lt;strong&gt;random forest imputation&lt;/strong&gt;, which is cool on
+it’s own, with the &lt;strong&gt;mice&lt;/strong&gt; method (&lt;strong&gt;Multivariate
+Imputation by Chained Equations&lt;/strong&gt;) using the predictive mean
+matching which we just saw in action. So, {missRanger} &lt;em&gt;iterates
+imputation for every missing value multiple times until the average
+(out-of-bag) prediction error stops to improve&lt;/em&gt;. …you know…machine
+learning stuff… This allows for a realistic imputation which avoids “new
+strange” values like 0.3 in a 0-1 coded variable and thus contains the
+original data structure. On top of this, {missRanger} is much quicker
+then {dlookr}, because it’s written in C++!, and thus, can be used for a
+bid data.&lt;/p&gt;
+&lt;p&gt;So, let’s impute &lt;em&gt;all the missing values in our dataset at
+once&lt;/em&gt;. For this we just need to specify our dataset and provide the
+formula. The formula is interesting: a point on the left side of the
+tilde will &lt;em&gt;find all the variables&lt;/em&gt; with missing and fill them
+up, and the point on the right side of the tilde will &lt;em&gt;use all the
+predictors&lt;/em&gt; in a dataset for imputation, even those with missing
+values ;). How amazing is that!?&lt;/p&gt;
+&lt;p&gt;So, if we then plot the imputed dataset in red, and the original in
+black, we’ll not only see that &lt;em&gt;missRanger&lt;/em&gt; did not produce any
+weird values outside of the original distribution, but also that most of
+the new red points are placed in the area where the most of the old
+black points are. So, in a few lines of code and a few seconds we filled
+up all variables, numeric and categorical, without skewing our data.
+That’s just madness!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;airquality_imputet &amp;lt;- missRanger(
+  airquality_NA, 
+  formula = . ~ . ,
+  num.trees = 1000, 
+  verbose = 1, seed = 111)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Missing value imputation by random forests
+
+  Variables to impute:      Ozone, Solar.R, Wind, Temp, Month, Day
+  Variables used to impute: Ozone, Solar.R, Wind, Temp, Month, Day
+iter 1: ......
+iter 2: ......
+iter 3: ......&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# numeric imputation
+ggplot()+
+  geom_point(data = airquality_imputet, aes(Ozone, Solar.R), 
+             color = &amp;quot;red&amp;quot;)+
+  geom_point(data = airquality_NA, aes(Ozone, Solar.R))+
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot()+
+  geom_point(data = airquality_imputet, aes(Wind, Temp), 
+             color = &amp;quot;red&amp;quot;)+
+  geom_point(data = airquality_NA, aes(Wind, Temp))+
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-13-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;h3 id="multivariate-imputation-of-categorical-variables"&gt;Multivariate
+imputation of categorical variables&lt;/h3&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# caterogical imputation
+ggplot()+
+  geom_bar(data = airquality_NA, aes(Month), width = 0.3)+
+  geom_bar(data = airquality_imputet, aes(Month), fill = &amp;quot;red&amp;quot;,
+           position = position_nudge(x = 0.25), width = 0.3)+
+  
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file43c82db5951a_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;
+That’s it for today. If you found this useful and want to see more, feel
+free to subscribe to my YouTube channel.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thanks for learning ;) &lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it below, and
+I’ll improve this tutorial.&lt;/p&gt;
+&lt;h1 id="useful-ressources"&gt;Useful ressources&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Choonghyun Ryu (2021). dlookr: Tools for Data Diagnosis,
+Exploration, Transformation. R package version 0.4.0. &lt;a
+href="https://CRAN.R-project.org/package=dlookr"
+class="uri"&gt;https://CRAN.R-project.org/package=dlookr&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Michael Mayer (2019). missRanger: Fast Imputation of Missing
+Values. R package version 2.1.0. &lt;a
+href="https://CRAN.R-project.org/package=missRanger"
+class="uri"&gt;https://CRAN.R-project.org/package=missRanger&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Wright, M. N. &amp;amp; Ziegler, A. (2016). ranger: A Fast
+Implementation of Random Forests for High Dimensional Data in C++ and R.
+Journal of Statistical Software, in press. &lt;a
+href="http://arxiv.org/abs/1508.04409"
+class="uri"&gt;http://arxiv.org/abs/1508.04409&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Stekhoven, D.J. and Buehlmann, P. (2012). ‘MissForest -
+nonparametric missing value imputation for mixed-type data’,
+Bioinformatics, 28(1) 2012, 112-118. &lt;a
+href="https://doi.org/10.1093/bioinformatics/btr597"
+class="uri"&gt;https://doi.org/10.1093/bioinformatics/btr597&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice:
+Multivariate Imputation by Chained Equations in R. Journal of
+Statistical Software, 45(3), 1-67. &lt;a
+href="http://www.jstatsoft.org/v45/i03/"
+class="uri"&gt;http://www.jstatsoft.org/v45/i03/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>4cf8c888c42249ff1b71ddb41b76cc27</distill:md5>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <category>machine learning</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</guid>
+      <pubDate>Fri, 08 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_missing_values.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>R package reviews {DataExplorer} explore your data!</title>
