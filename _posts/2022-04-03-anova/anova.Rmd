@@ -1,5 +1,7 @@
 ---
-title: "R demo | ANOVA | One-Way | "
+title: "R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust"
+description: |
+  How does education influence our salary? ANOVA which is just the abbreviation for **An**alysis **O**f **Va**riances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -16,21 +18,19 @@ output:
     toc_depth: 6
     code_download: true
 bibliography: /Users/zablotski/Documents/library.bib
-#csl: american-political-science-association.csl
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, warning = T, message = T)
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
 
 ## This post as a video 
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 8 minutes long. 
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("")
@@ -49,20 +49,18 @@ library(tidyverse)
 #install.packages("ISLR")
 library(ISLR)
 
-set.seed(1)  # for reproducibility
+set.seed(4)  # for reproducibility
 d <- Wage %>% 
   group_by(education) %>% 
-  sample_n(10)
+  sample_n(30)
 ```
 
 
-{ISLR} package provides a {Wage} dataset, with salaries of IT and industrial workers. We'll take 15 random people from every group and compare their salaries in order to figure out who ears more.
+{ISLR} package provides a {Wage} dataset, with salaries for 5 different educational groups, starting with people who did not finish a high school and ending with people having university or doctoral degree. We'll sample 30 random people from every group and compare their AVERAGE salaries. But wait, **is average** actually a good choice? That question is very important, because comparing averages only makes sense if the data is normally distributed. While if data is not-normally distributed, an average would not represent our data well and ANOVA would be a wrong test - producing wrong result. Kruskal-Wallis test would be better for not normally distributed data, but that's a topic for another blog-post.
 
 ## Check normality
 
-But before using a nonparametric Mann-Whitney U Test, **we have to make sure that our data is really not-normally distributed**. Because using Mann-Whitney U test for normally distributed data, out of laziness to check the normality, might produce a completely wrong result. 
-
-For that we'll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every group. Low p-value in one of the group is enough to conclude that our data is not-normally distributed, so now we are sure that using a **Mann-Whitney U test** is a right choice.
+For now, it's obvious that we NEED to check for normality. For that we'll use the {normality} function from {dlookr} package, which conducts Shapiro-Wilk normality tests with every educational group. High p-values in all groups indicate that our data IS normally distributed, so now we are sure that using **ANOVA** is a right choice.
 
 ![](not_normal.png)
 
@@ -71,32 +69,226 @@ For that we'll use the {normality} function from {dlookr} package, which conduct
 library(dlookr)
 d %>% 
   group_by(education) %>% 
-  normality(wage)
+  normality(wage) 
 ```
 
+## Check Homogeneity of Variances (Homoscedasticity)
 
-## Compute Mann-Whitney U Test 
+However, the normality alone is not enough to make a right decision, because there are two different ANOVAs: **Fisher's ANOVA** for similar variances across groups and **Welch's ANOVA** for different variances across groups. In fact, the variance is sooo important that it's even part of the name, were **Analysis Of Variances** compares the **variances between the groups** to the **variances within the groups**. 
 
-And the best way to compute our test (in my opinion) is the {ggbetweenstats} function from {ggstatsplot} package, which needs only 4 arguments:
+It's also important, because (1) even very different means with huge variance (samples a and b) may not be significantly different (p = 0.1) while (2) even very similar means with small variance (samples c and d) can be significantly different (p = 0.04). And a classic -  Fisher's ANOVA can only be applied when variances are similar! While groups with different variances (samples b and c) should be analyzed with Welch's ANOVA. 
 
-- first, **our data** - d, with
-- **x** - as the grouping variable - jobclass, and
-- **y** - being salaries 
-- finally, since our data is not-normally distributed, we'll choose a **nonparametric type** of statistical approach, and {ggbetweenstats} automatically uses Mann-Whitney U Test for comparing two groups.
+![](huge_variance.jpg){width=45%}  ![](small_variance.jpg){width=45%}
 
-Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+Levene's Test for Homogeneity of Variance helps to decide which ANOVA to use. A small p-value of Levene's Test tells us that our variances differ and that we need to use Welch's ANOVA. 
 
 ```{r}
+#install.packages("car")
+library(car)
+leveneTest(wage ~ education, d)
+```
+
+Now, having checked both, Normality and Homogeneity of Variance assumptions, we are ready to compute Welch's ANOVA.
+
+
+## Compute ANOVA
+
+And the best way to compute ANOVA is the {ggbetweenstats} function from {ggstatsplot} package, which needs only 5 arguments:
+
+- first, **our data** - d, with
+- **x-axes** - having grouping variable - education, and
+- **y-axes** - having salaries 
+- then, since our data is normally distributed, we'll choose a **parametric type** of statistical approach,
+- and since our education groups have different variances, we set **var.equal** argument to **FALSE**
+
+```{r fig.height=7}
 # install.packages("ggstatsplot")
 library(ggstatsplot)
 
+set.seed(4)   # for Bayesian reproducibility of 95% CIs
 ggbetweenstats(
   data = d,
   x    = education, 
   y    = wage, 
-  type = "parametric")
+  type = "parametric", 
+  var.equal = FALSE)
 
-ggsave(filename = "anova.jpg", plot = last_plot(), width = 6, height = 4)
+# you can save the picture in the format and size of your choice
+ggsave(filename = "anova.jpg", plot = last_plot(), width = 8, height = 7)
+```
+Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
+
+## Interpret the result
+
+
+- **Welch's F-statistics** is the reason ANOVA is called Analysis of Variances, because F is a ratio of the **variance between groups** to the **variance withing groups**. If that ratio is close to one, samples are similar, and the further *F-value* is from one, the more different are the samples. But **F-value** by itself can not say how far from one is far enough, to conclude that this difference is significant. That's why **F-value** and the degrees of freedom were previously used to get a **p-value**. But nowadays every software delivers both F and p-values by default. That is why nowadays nobody calculates F values anymore, but if you wanna know how to calculate it, check out the chapter on that below.
+
+- our very small **P-value** shows a very strong evidence against the null hypothesis (H~0~), that mean salaries are similar, in favor of the alternative hypothesis (H~Alt~), that mean salaries differ. However, a significant P-value only tells you that a difference between groups definitely exists and did not happen just by chance, but a p-value can not tell how large this difference is. 
+
+![](p_value_interpretation.png)
+
+- Fortunately, {ggbetweenstats} provides **partial omega squared** with 95% Confidence Intervals as the measure of the **Effect Size** for ANOVA. The {interpret_omega_squared} function from {effectsize} package helps to interpret this effect size and even provides a reference. Our effect size of 0.34 indicates that the **effect of education on salaries is large**. For example a person who invested a lot of years and effort into studying earns twice as much on average, as the person who did not even finish a high school. So, the effect size makes total sense to me. 
+
+```{r}
+# install.packages("effectsize")
+library(effectsize)
+
+interpret_omega_squared(0.34)
+?interpret_omega_squared
+```
+
+
+![](interpret_omega_squared.png){width=50%}
+
+
+- But that's not all, {ggbetweenstats} also provides a **Bayesian Effect Size**, namely the **coefficient of determination** - $R^2$ with 95% Highest Density Intervals. $R^2$ shows the **explanatory power** of our ANOVA model and $R^2$ of 27% is substantial, which means - we can totally trust these results.
+
+```{r}
+interpret_r2(0.27)
+?interpret_r2
+```
+
+
+![](interpret_r_squared.png){width=50%}
+
+- Moreover, the **Bayes Factor**, which is conceptually similar to the **p-value** indicates an **extreme evidence for the alternative hypothesis** - that education does affect wages … which IS in line with a p-value on the top of the plot. 
+
+```{r}
+interpret_bf(exp(-17.13))
+?interpret_bf
+```
+
+![](bf_interpretation.png)
+
+
+- now, both, **Bayes Factor** and **p-value** tell us that a difference between groups exists, however, they don't show between which groups exactly. That's why we need to compare every education categoriy to every other education category pairwisely. 
+
+- and luckily for us {ggbetweenstats} **automatically knows that we need Games-Howell pairwise Tests for a significant Welch's ANOVA, conducts those tests, displays p-values and even corrects these p-values for multiple comparisons without any additional code**. How cool is that! 
+
+![](what-dog.gif){width=50%}
+
+- by the way, our two global tests are often called with a strange name - **omnibus test**, while the pairwise tests between time-points, are sometimes described in a dead latin language as - **post-hoc** - which in English means - **after the event**. So many unnecessary names just confuse people and I hate that. A test we are learning about right now is called **ONE-WAY ANOVA** simply because these is only one categorical variable - education. But there is no one-way regression, or one-way t-test ...
+
+## Customise the result
+
+However, if we want to, we can easily customize the results by using either additional code within the function, or code from {ggplot2} package outside of it. For example, 
+
+- if you found outliers in your data, you can display them on the plot and 
+- use a **robust ANOVA** to minimize the effect of outliers,
+- here again, the function automatically uses correct **Yuen's trimmed means pairwise tests** for this **robust ANOVA** and corrects p-values for multiple comparisons with a Holm method,
+- which you can easily change to a more famous **Bonferroni correction** ... but I wouldn't recommend it, because Bonferroni correction is too conservative and miss an important discovery. And that's exactly what happens with our robust ANOVA, the bonferroni correction finds only 6 instead of 8 significant pairwise comparisons.
+- then, if you want to display **not only significant**, but **all comparisons**,
+- if you want to hide either Frequentists or Bayesian statistics, or both...
+- or change the appearance of your plot
+
+... you can easily do that and much more. Just ask R about ggbetweenstats by writing a question mark in front of the function and try some things out, I am sure you'll enjoy it. 
+
+```{r fig.height=7}
+ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  outlier.tagging = T,
+  type = "robust")
+  
+ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  outlier.tagging = T,
+  type = "robust", 
+  p.adjust.method = "bonferroni", 
+  pairwise.display = "all",
+  results.subtitle = F,
+  bf.message = F
+) + 
+  ylab("pay check")+
+  theme_classic()+
+  theme(legend.position = "top")
+
+?ggbetweenstats
+```
+
+
+But what you could enjoy even more is the **Repeated Measures ANOVA**, which you would use if you followed a destiny of the same 30 people throughout their life and see whether their wage increase every time they step up their education.
+
+```{r fig.height=7}
+set.seed(1)   # for Bayesian reproducibility of 95% CIs
+ggwithinstats(
+    data = d,
+    x    = education, 
+    y    = wage, 
+    type = "parametric", 
+    var.equal = FALSE)
+```
+
+## A little bit of theory about ANOVA
+
+The variance between groups can be easily calculated by the variance of the group means multiplied by the number of observations per group. The within group variance is also called **residual variance** (or "error"), because it is what is left when the group effect is removed. That can be confusing, because there is nothing erronious about within group variance (real biological variance among individuals).
+
+For unequal group sized or unequal variances (Welch'a ANOVA) the calculation get more complex, but there is no need to get there, if you understood the "classic" case below, because all of those calculations are done by computer.
+
+The among-group degrees of freedom is the number of groups minus one. The within-groups degrees of freedom is the total number of observations, minus the number of groups.
+
+
+```{r}
+# overall sums of squares
+d %>% 
+  ungroup() %>% 
+  mutate(squares = (wage - mean(d$wage))^2) %>% 
+  summarise(overall_ss   = sum(squares))
+
+means <- d %>% 
+  group_by(education) %>% 
+  summarise(n = n(), 
+            means = mean(wage))
+
+d <- left_join(d, means)
+
+# wgss - within groups sum of squares
+wgvar <- d %>% 
+  mutate(squares = (wage - means)^2) %>% 
+  #group_by(education) %>% # already grouped before
+  summarise(wgss   = sum(squares)) %>%    # wgss - within groups sum of squares
+  summarise(ss_total = sum(wgss)) %>% 
+  mutate(df = dim(d)[1] - length(unique(d$education))) %>% 
+  mutate(var = ss_total / df ) %>% 
+  mutate(variance_type = "withing groups variance") # wgvar - within group or residual variance
+
+## between groups sums of squares
+bgvar <- means %>% 
+  mutate(sample_mean = mean(d$wage)) %>% 
+  mutate(ss = n*(sample_mean - means)^2) %>% 
+  summarise(ss_total = sum(ss)) %>% 
+  mutate(df = length(unique(d$education))-1) %>% 
+  mutate(var = ss_total / df ) %>% 
+  mutate(variance_type = "between groups variance")
+  
+
+# actually it goes easies
+var(means$means)*30
+
+rbind(bgvar, wgvar) %>% 
+  mutate(F_value = var[1]/var[2])
+```
+
+## Old way to conduct anova in R
+
+```{r}
+aov(wage ~ education, d) %>% summary()
+
+oneway.test(wage ~ education, d, var.equal = FALSE) 
+```
+
+## ANOVA = t-test = Linear Regression! Check this out...
+ 
+
+For only two groups, ANOVA is exactly the same as the Student's t-test and, moreover, exactly the same as linear regression ;). Just square the t-value from the t-test and you'll get the F value from ANOVA and regression.
+
+```{r}
+t.test(wage ~ jobclass, d) # square t-value to get F value
+aov(wage ~ jobclass, d) %>% summary()
+lm(wage ~ jobclass, d) %>% summary()
 ```
 
 
@@ -104,7 +296,16 @@ ggsave(filename = "anova.jpg", plot = last_plot(), width = 6, height = 4)
 
 
 
+## What's next, or when not to use Repeated Measures ANOVA
+
+- Repeated-Measures ANOVA
+
+- Kruskal-Wallis if data is not-normally distributed
 
 
+---
 
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
 
