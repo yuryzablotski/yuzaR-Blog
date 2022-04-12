@@ -18,9 +18,11 @@ output:
     toc_depth: 6
     code_download: true
 bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
+draft: true
 ---
 
 
@@ -33,7 +35,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 I recommend to watch a video first, because I highlight things I talk about. It's ca. 8 minutes long. 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+#vembedr::embed_youtube("")
 ```
 
 ## Previous topics
@@ -134,7 +136,7 @@ Such simple command results in this statistically rich and publication ready plo
 library(effectsize)
 
 interpret_omega_squared(0.34)
-?interpret_omega_squared
+# ?interpret_omega_squared
 ```
 
 
@@ -143,9 +145,9 @@ interpret_omega_squared(0.34)
 
 - But that's not all, {ggbetweenstats} also provides a **Bayesian Effect Size**, namely the **coefficient of determination** - $R^2$ with 95% Highest Density Intervals. $R^2$ shows the **explanatory power** of our ANOVA model and $R^2$ of 27% is substantial, which means - we can totally trust these results.
 
-```{r}
+```{r eval=FALSE}
 interpret_r2(0.27)
-?interpret_r2
+# ?interpret_r2
 ```
 
 
@@ -155,7 +157,7 @@ interpret_r2(0.27)
 
 ```{r}
 interpret_bf(exp(-17.13))
-?interpret_bf
+# ?interpret_bf
 ```
 
 ![](bf_interpretation.png)
