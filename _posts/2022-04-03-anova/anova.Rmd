@@ -22,7 +22,7 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+#draft: true
 ---
 
 
@@ -163,7 +163,7 @@ interpret_bf(exp(-17.13))
 ![](bf_interpretation.png)
 
 
-- now, both, **Bayes Factor** and **p-value** tell us that a difference between groups exists, however, they don't show between which groups exactly. That's why we need to compare every education categoriy to every other education category pairwisely. 
+- now, both, **Bayes Factor** and **p-value** tell us that a difference between groups exists, however, they don't show between which groups exactly. That's why we need to compare every education category to every other education category pairwisely. 
 
 - and luckily for us {ggbetweenstats} **automatically knows that we need Games-Howell pairwise Tests for a significant Welch's ANOVA, conducts those tests, displays p-values and even corrects these p-values for multiple comparisons without any additional code**. How cool is that! 
 
@@ -183,7 +183,7 @@ However, if we want to, we can easily customize the results by using either addi
 - if you want to hide either Frequentists or Bayesian statistics, or both...
 - or change the appearance of your plot
 
-... you can easily do that and much more. Just ask R about ggbetweenstats by writing a question mark in front of the function and try some things out, I am sure you'll enjoy it. 
+... you can easily do that and much more. Just ask R about {ggbetweenstats} by writing a question mark in front of the function and try some things out, I am sure you'll enjoy it. 
 
 ```{r fig.height=7}
 ggbetweenstats(
@@ -226,9 +226,9 @@ ggwithinstats(
 
 ## A little bit of theory about ANOVA
 
-The variance between groups can be easily calculated by the variance of the group means multiplied by the number of observations per group. The within group variance is also called **residual variance** (or "error"), because it is what is left when the group effect is removed. That can be confusing, because there is nothing erronious about within group variance (real biological variance among individuals).
+The variance between groups can be easily calculated by the variance of the group means multiplied by the number of observations per group. The within group variance is also called **residual variance** (or "error"), because it is what is left when the group effect is removed. That can be confusing, because there is nothing erroneous about within group variance (real biological variance among individuals).
 
-For unequal group sized or unequal variances (Welch'a ANOVA) the calculation get more complex, but there is no need to get there, if you understood the "classic" case below, because all of those calculations are done by computer.
+For unequal group sized or unequal variances (Welch's ANOVA) the calculation get more complex, but there is no need to get there, if you understood the "classic" case below, because all of those calculations are done by computer.
 
 The among-group degrees of freedom is the number of groups minus one. The within-groups degrees of freedom is the total number of observations, minus the number of groups.
 
