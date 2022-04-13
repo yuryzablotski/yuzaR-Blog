@@ -9,6 +9,7 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 categories:
   - videos
   - statistics
+  - anova
 preview: thumbnail.png
 output:
   distill::distill_article:
