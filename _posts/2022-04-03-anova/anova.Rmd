@@ -170,7 +170,7 @@ interpret_bf(exp(-17.13))
 
 ![](what-dog.gif){width=50%}
 
-- by the way, our two global tests are often called with a strange name - **omnibus test**, while the pairwise tests between time-points, are sometimes described in a dead latin language as - **post-hoc** - which in English means - **after the event**. So many unnecessary names just confuse people and I hate that. A test we are learning about right now is called **ONE-WAY ANOVA** simply because these is only one categorical variable - education. But there is no one-way regression, or one-way t-test ...
+- by the way, our two global tests are often called with a strange name - **omnibus test**, while the pairwise tests between time-points, are sometimes described in a dead Latin language as - **post-hoc** - which in English means - **after the event**. So many unnecessary names just confuse people and I hate that. A test we are learning about right now is called **ONE-WAY ANOVA** simply because these is only one categorical variable - education. But there is no one-way regression, or one-way t-test ...
 
 ## Customise the result
 

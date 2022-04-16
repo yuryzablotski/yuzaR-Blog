@@ -1,0 +1,290 @@
+---
+title: "R demo | Kruskal-Wallis test | How to conduct, visualize, interpret & more ;) (in progress)"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - anova
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+## This post as a video 
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long. 
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+## Previous topics
+
+To get the most out of this post, familiarize yourself with one parametric method - [One-Way ANOVA](https://yuzar-blog.netlify.app/posts/2022-04-03-anova/) and one non-parametric method - [Mann-Whitney U test](https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/).
+
+## Why do we need it? What are the benefits?
+
+*Kruskal–Wallis test* **extends** the *Mann-Whitney-Wilcoxon test* to **more then two independent groups** and is therefore a non-parametric equivalent to *ANOVA* **for the case where *ANOVAs* assumptions are violated**, e.g. the residuals are distributed non-normally or variances are not equal. *Kruskal-Wallis test* will answer the question whether **at least one group is different from other groups** (*H~alt~*). It is also **less sensitive to outliers** compared to *ANOVA*, and can be used for **ordinal** data, where *ANOVA* can't.
+
+## When do we need Kruskal–Wallis test?
+
+We need it if small samples (<30) are **not-normally (skewed / not-bell shaped) distributed and if outliers are present**. Thus, let's first visualize our samples and look whether we need any test at all, or, if they visually differ, whether they are normally distributed or have some outliers.
+
+We know that higher education may lead to higher salary. But are the differences among salaries significantly different? To answer this question let's take 100 individuals from 5 different education backgrounds, compare them and **figure out whether education matters**?
+
+![](/post/2019-09-17-kruskal-wallis-test_files/EdMatters.png)
+The picture above is borrowed from [here](https://www.ncforum.org/education-matters/).
+
+Load all needed packages at once to avoid interruptions.
+
+```{r}
+# library(tidyverse)      # for data wrangling and visualization
+# library(broom)          # for tidy test output
+# library(knitr)          # for nice looking table
+# library(ggpubr)         # for QQplot
+# library(ISLR)           # for "Wage" dataset
+# library(conover.test)   # for conover test  
+```
+
+
+```{r}
+# install.packages("tidyverse")  # for everything ;)
+library(tidyverse)
+
+# install.packages("ISLR")
+library(ISLR)
+
+# stabilize the output of "sample_n()"
+set.seed(1)
+
+# rename some groups for better plotting experience
+d <- ISLR::Wage %>% 
+  mutate(education = 
+          ifelse(education == "1. < HS Grad",       "1 <HS",
+          ifelse(education == "2. HS Grad",         "2 HS",
+          ifelse(education == "3. Some College",    "3 <College",
+          ifelse(education == "4. College Grad",    "4 College", 
+          ifelse(education == "5. Advanced Degree", "5 Advanced", education)))))) %>% 
+  mutate(education = as.factor(education)) %>% 
+  group_by(as.factor(education)) %>% 
+  sample_n(100, replace = TRUE) %>%  # sample 100 random individuals for every group
+  ungroup()
+
+# visualize distributions of samples
+# install.packages("ggpubr")
+library(ggpubr)         # for QQ & density plots
+ggdensity(d, x = "wage", add = "mean", color = "education", fill = "education")
+```
+
+The salaries of people with different educational background seem to differ. But since we don't know how significant this difference is, we need a statistical test. The only question is which one, *ANOVA* or *Kruskal-Wallis test*?
+
+The boxplot on the top shows some **outliers** in every group, which might compromise *ANOVA*. The density plot on the bottom shows that samples are not really normally distributed, but **skewed** to the right a lot, at least three out of five groups. Yes, with big samples *ANOVA* is kind of robust against non-normality, but since *ANOVA* compares means of the populations, I wouldn’t trust it because **means of our samples are far away from the peaks of the corresponding distributions (dotted vertical lines)**. For instance, the mean salary of the "Advanced" educational background is pulled to the right of the peak due to the high salaries of small number of (probably) managers and CEOs. This is a second reason not to use *ANOVA* for this dataset. But to be even more sure of that, let's conduct two more checks: visual normality check using `QQplot` and *Shapiro-Wilk normality-test*.
+
+```{r}
+# install.packages("dlookr")
+library(dlookr)
+d %>% 
+  group_by(education) %>% 
+  normality(wage) 
+```
+
+QQplot confirms the presence of **outliers** and both QQplot and low *p-values* (a bad thing here) of the normality test indicate the **non-normality of distribution** of 4 out of 5 groups.
+
+Thus, **here we really need a non-parametric alternative to *ANOVA*, which is a *Kruskal–Wallis-test*.**
+
+One more important thing to know before using a *Kruskal–Wallis test* is the **shape of the distribution**. Similar shapes among groups require the *Kruskal-Wallis test* to compare the medians of groups. However, if distribution shapes differ, the *Kruskal-Wallis test* compares **mean ranks** [^1] (usually, the software takes care of it). As we can see from the visualisation above, the shapes of distributions are a bit different, so in the next chapters we'll calculate and report the **mean ranks** instead of medians.
+
+[^1]: https://statistics.laerd.com/spss-tutorials/kruskal-wallis-h-test-using-spss-statistics.php
+
+
+## How Kruskal–Wallis test works and why it's called "rank-sum" and "H"
+
+It compares medians or mean-ranks among groups. It takes just 4 steps to manually calculate the test: [^2]
+
+[^2]: https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test
+
+1. **rank values of all groups** from low to high no matter which group each value belongs to
+2. **sum the ranks of every group** ($R_j$). This is where the **rank-sum** part of the name comes from. Also, **average the ranks of every group** ($\bar{r_j}$). The **mean rank** is not needed for test statistics, but will be reported later.
+
+$$R_j = \sum_{i=1}^{n_j}r_i$$
+
+$$\bar{r_j} = \frac {\sum_{i=1}^{n_j}r_i}{n_j} $$
+
+
+3. calculate test-statistic: **H-value** for *n* < 5 (per group) or **Chi-square** for *n* > 5. This is where the **H** part of the test name comes from.
+
+$$ H = (N-1)\frac{\sum_{i=1}^g n_i(\bar{r}_{i\cdot} - \bar{r})^2}{\sum_{i=1}^g\sum_{j=1}^{n_i}(r_{ij} - \bar{r})^2} $$
+
+$$ Chi-square = \frac {(N-1)(S_t^2-C)}{S_r^2-C} $$
+
+where:
+
+- *r* - rank
+- *N* - total number of observations
+- *n* - number of observations per group
+
+$$ S_t^2 = \sum_{i=1}^{g} \frac{R_i^2}{n_i} $$
+
+$$ S_r^2 = \sum_{i=1}^{N} {r_{ij}^2} $$
+
+$$ C = \frac {N(N+1)^2}{4}  $$
+
+
+
+4. compare your test statistics to its critical value in the table of critical values (*Chi-squared* [here](https://people.smp.uq.edu.au/YoniNazarathy/stat_models_B_course_spring_07/distributions/chisqtab.pdf) or *H-value* [here](file:///Users/yzablotski/Downloads/kruskalwallish.pdf)) to get a *p-value*, which will answer our initial question about **whether the difference is significant, namely whether education matters**. If calculated test statistics is greater than or equal to the critical value, we reject **H~0~** and accept **H~alt~**, if lower, we accept **H~0~** and reject **H~alt~**. 
+
+**Just my opinion:** Calculating test statistic and looking up critical values in tests is not very pragmatic, since every statistical software always delivers both statistic and *p-value*. With multiple groups, e.g. *Kruskal-Wallis test*, it gets really messy. Thus, it is always good to understand how things work, but don't feel bad if you never conduct the test manually.
+
+Since we have 100 observations in every sample, and chances are that you will rather have lots of data, below we manually calculate the *Chi-square* instead of *H-value*. 
+
+The code below shows the step-by-step calculation procedure in a self-explanatory plain English. You can execute this code step-by-step to see the result of every step by simply executing everything above needed line. 
+
+```{r}
+# get mean-ranks
+first_table <- d %>% 
+  mutate(rank = rank(wage)) %>%   # mutate means - create new column
+  group_by(education) %>%
+  summarise(rank_sum  = sum(rank),
+            rank_mean = mean(rank),
+            mean_wage = mean(wage),
+            median_wage = median(wage),
+            n         = n() ) 
+library(knitr)
+# calculate the test statistics manually
+first_table %>%
+  summarise(N     = length(d$wage),
+            S_t_2 = sum(rank_sum^2/n),
+            S_r_2 = sum(rank(d$wage)^2),
+            C     = (N*(N+1)^2 / 4),
+            Chisq = ((N-1)*(S_t_2 - C))  / (S_r_2 - C)) %>% 
+  kable()
+```
+
+
+
+## How to compute Kruskal–Wallis test
+
+The two-group case of the Kruskal–Wallis test is identical to the Mann–Whitney test.
+
+```{r}
+library(broom)
+bind_rows(
+  wilcox.test(wage ~ jobclass, data = d) %>% tidy(), 
+  kruskal.test(wage ~ jobclass, data = d) %>% tidy()
+) %>% kable()
+```
+
+*Wilcoxon-test* uses a different test statistic (*W-value* instead of the *H-value* of the Kruskal–Wallis test), but the *p-values* of both tests are identical.
+
+Before executing Kruskal-Wallis rank sum test, please have a look at the very first visualization one more time and answer this simple question: do you think that salaries of people with different education differ? 
+
+**H~0~** - null hypothesis: all samples are the same
+
+**H~alt~** - alternative hypothesis: at least one sample differs from at least one other
+
+```{r fig.height=7}
+# old way
+kruskal.test(wage ~ education, data = d)
+
+# new way ;)
+# install.packages("ggstatsplot")
+library(ggstatsplot)
+
+ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  type = "nonparametric")
+
+# you can save the picture in the format and size of your choice
+ggsave(filename = "kw.jpg", plot = last_plot(), width = 8, height = 7)
+```
+
+
+### Interpretation
+
+- **general conclusion**: there is a statistically significant difference in salaries between the different education backgrounds, *Chi-square* = 148.61, *p-value* < 2.2e-16. Mean rank of salaries, which needed to be reported, and mean and median of salaries (just out of curiosity) are visualised in the picture below:
+
+```{r}
+ggplot(first_table)+
+  geom_line(aes(as.numeric(education), mean_wage), color = "red")+
+  geom_line(aes(as.numeric(education), median_wage), color = "blue")+
+  geom_line(aes(as.numeric(education), rank_mean))+
+  ylab("statistics")+xlab("Education levels from low (1 <HS) to high (5 Advanced)")+
+  theme_classic2()
+```
+
+As you can see, the mean (in red) and the median (in blue) of group salaries are showing similar trend, but neither of them catches the high-salaries-bump of "Advanced" education group. The mean-rank (in black) does. 
+
+- **test statistics** of *Kruskal-Wallis test* *Chi-square* = 148.61 is identical to the one we calculated manually above. Thus, we are confident, the test is fine and our calculation is correct. *W-value* is large (far from zero), thus we expect a significant difference between samples, which is confirmed by a...
+
+- **p-value** of *Kruskal-Wallis test* (*p-value* << 0.05) which **rejects the H~0~** that education does not matter for salary, and **accepts the H~alt~** saying education matters for salary a lot (significantly).
+
+## Pairwise comparisons - PostHoc analysis
+
+This significant result in a *Kruskal–Wallis test* indicates that there are group differences, but it does not show which groups differ.
+
+To answer this question, we need to apply pairwise comparisons between all the groups. Three similarly good options for this are presented below. Choose one that suites you.
+
+```{r}
+pairwise.wilcox.test(Wage$wage, Wage$education)
+
+source("http://www.statmethods.net/RiA/wmc.txt")
+wmc(wage ~ education, data = Wage)
+
+# install.packages("conover.test")
+library(conover.test)
+conover.test(Wage$wage, Wage$education)
+```
+
+### Interpretation
+
+The pairwise *p-values* tell us following story: there is no difference between finishing high school and doing some college years without finishing it. "Some college years" do not provide any graduation, so that your years spend studying won’t be appreciated by any employee. Even if you drop out of college at the very last day. 
+
+But what about all the college dropouts - **Group 1**, like Steve Jobs (Apple), Bill Gates (Microsoft) or Mark Zuckerberg (facebook) which became millionaires because they finally had time for approaching their dreams? Hmmm, but what about millions of "no-names" who dropped out of college - **Group 2** and did not make it at all !, but regret their decision? Where are they now? No one knows, because no one cares, right? And what about another group of highly successful people, who did finish their advanced education and may be because of the education became so successful in their field - **Group 3**? Now, imagine we would be able to count all of them in every group. Just think for a moment about these 3 numbers. How far apart would the numbers in all three groups be? Would it be significant? I think so. But it's just an opinion, a hypothesis, and I would love to see the data and test it if I could! But until then, I just believe the data I have seen, like the `Wage` dataset, and what it tells me is - **EDUCATION MATTERS!**
+
+## Don’t use Kruskal–Wallis test if:
+
+- assumptions of *ANOVA* are satisfied and the samples are big (n>30), because *ANOVA* is considered to be more powerful. Lower power of *Kruskal-Wallis test* is due a slight loss of information, which happens when real data is replaced by ranks.
+
+- groups are dependent (paired); in this case apply either *paired ANOVA* or the *Friedman test*.
+
+## Conclusion
+
+Since the **real world data is never perfect, the non-parametric tests are very important tools** in a toolbox of any data scientist. Thus, *Kruskal-Wallis rank-sum unpaired H test* (such a beautiful name! :) is more powerful then *ANOVA* for highly skewed distributions and presence of outliers, while it looses some information, due to replacement of real data by ranks.
+
+## What’s next
+
+- *paired ANOVA*
+- *Friedman test*
+- [simple linear regression](https://yury-zablotski.netlify.com/post/simple-linear-regression/)
+
+**Thank you for reading!**
+
+## Further readings and references
+
+
+
+
+

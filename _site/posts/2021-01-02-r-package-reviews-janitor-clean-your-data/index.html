@@ -85,6 +85,7 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
+
   <!--radix_placeholder_meta_tags-->
 <title>yuzaR-Blog: R package reviews {janitor} clean your data!</title>
 
@@ -481,7 +482,7 @@ d-title {
 
 </style>
 
-<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
 <link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
 <script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -2376,11 +2377,11 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.8.6/header-attrs.js"></script>
+  <script src="../../site_libs/header-attrs-2.13/header-attrs.js"></script>
   <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-  <link href="../../site_libs/vembedr-0.1.4/css/vembedr.css" rel="stylesheet" />
-  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <link href="../../site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2436,7 +2437,6 @@ gtag('config', 'G-Q28WX9Y4VS');
 <a href="../../index.xml">
 <i class="fa fa-rss" aria-hidden="true"></i>
 </a>
-<a href="https://www.r-bloggers.com/">R-bloggers</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2453,11 +2453,17 @@ gtag('config', 'G-Q28WX9Y4VS');
   <a href="../../index.html#category:videos" class="dt-tag">videos</a>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. “Like families, tidy datasets are all alike but every messy dataset is messy in its own way” - Hadley Wickham. Thats when “janitor” helps to clean the mess.</p></p>
+<p><p>Data Scientists spend up to 80% of their time cleaning and
+preparing data for analysis. ” Happy families are all alike; every
+unhappy family is unhappy in its own way” — Leo Tolstoy. “Like families,
+tidy datasets are all alike but every messy dataset is messy in its own
+way” - Hadley Wickham. Thats when “janitor” helps to clean the
+mess.</p></p>
 </div>
 
 <div class="d-byline">
-  Yury Zablotski <a href="https://yury-zablotski.netlify.app/" class="uri">https://yury-zablotski.netlify.app/</a> 
+  Yury Zablotski <a href="https://yury-zablotski.netlify.app/"
+class="uri">https://yury-zablotski.netlify.app/</a> 
   
 <br/>01-02-2021
 </div>
@@ -2467,18 +2473,23 @@ gtag('config', 'G-Q28WX9Y4VS');
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#get-dirty-data-and-look-at-it">Get dirty data and look at it</a></li>
-<li><a href="#r-demo-for-how-to-clean-your-data">R demo for how to clean your data</a></li>
+<li><a href="#get-dirty-data-and-look-at-it">Get dirty data and look at
+it</a></li>
+<li><a href="#r-demo-for-how-to-clean-your-data">R demo for how to clean
+your data</a></li>
 <li><a href="#main-functions">Main functions</a>
 <ul>
 <li><a href="#clean_names">clean_names()</a></li>
-<li><a href="#remove_empty-remove_constant">remove_empty() &amp; remove_constant()</a></li>
+<li><a href="#remove_empty-remove_constant">remove_empty() &amp;
+remove_constant()</a></li>
 <li><a href="#get_dupes">get_dupes()</a></li>
 <li><a href="#round_to_fraction">round_to_fraction()</a></li>
 <li><a href="#convert_to_date">convert_to_date()</a></li>
 <li><a href="#row_to_names">row_to_names()</a></li>
 </ul></li>
-<li><a href="#generate-adorable-frequency-table-1--2--or-3-way.">Generate “adorable” frequency table (1-, 2-, or 3-way).</a>
+<li><a
+href="#generate-adorable-frequency-table-1--2--or-3-way.">Generate
+“adorable” frequency table (1-, 2-, or 3-way).</a>
 <ul>
 <li><a href="#useful-references">Useful references:</a></li>
 </ul></li>
@@ -2494,14 +2505,24 @@ gtag('config', 'G-Q28WX9Y4VS');
 </code></pre>
 </div>
 </div>
-<h1 id="get-dirty-data-and-look-at-it">Get dirty data and look at it</h1>
-<p>If you are reading this post, you are probably already familiar with the concept of <strong>tidy data</strong>. If not, <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html#:~:text=Tidy%20data%20is%20a%20standard,Each%20observation%20forms%20a%20row.">have a look at it</a>. And you have most likely already worked with the <strong>messy (dirty) data</strong>. I did, and that is why I found the <em>janitor</em> package sooo useful!</p>
-<p>The messy data displayed below can be found <a href="https://github.com/sfirke/janitor/blob/master/dirty_data.xlsx">here</a>. Some of the indicators of messyness are: strange (difficult) names, empty columns and rows, constant columns, which do not provide much of a value, duplicates, strange dates which do not look like dates etc..</p>
+<h1 id="get-dirty-data-and-look-at-it">Get dirty data and look at
+it</h1>
+<p>If you are reading this post, you are probably already familiar with
+the concept of <strong>tidy data</strong>. If not, <a
+href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html#:~:text=Tidy%20data%20is%20a%20standard,Each%20observation%20forms%20a%20row.">have
+a look at it</a>. And you have most likely already worked with the
+<strong>messy (dirty) data</strong>. I did, and that is why I found the
+<em>janitor</em> package sooo useful!</p>
+<p>The messy data displayed below can be found <a
+href="https://github.com/sfirke/janitor/blob/master/dirty_data.xlsx">here</a>.
+Some of the indicators of messyness are: strange (difficult) names,
+empty columns and rows, constant columns, which do not provide much of a
+value, duplicates, strange dates which do not look like dates etc..</p>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>dirty_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"dirty_data.xlsx"</span><span class='op'>)</span>
-<span class='va'>dirty_data</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>dirty_data</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_classic_2</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -3002,26 +3023,32 @@ NA
 </tbody>
 </table>
 </div>
-<h1 id="r-demo-for-how-to-clean-your-data">R demo for how to clean your data</h1>
-<p>A short (ca. 12 min) video below shows how to clean this data and the code you’ll see in the video is provided below.</p>
+<h1 id="r-demo-for-how-to-clean-your-data">R demo for how to clean your
+data</h1>
+<p>A short (ca. 12 min) video below shows how to clean this data and the
+code you’ll see in the video is provided below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="vembedr">
 <div>
-<iframe src="https://www.youtube.com/embed/poUveR6aDS8" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+<iframe src="https://www.youtube.com/embed/poUveR6aDS8" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
 </div>
 <h1 id="main-functions">Main functions</h1>
 <h2 id="clean_names">clean_names()</h2>
 <p><img src="janitor_thumbnails.jpeg" /></p>
-<p>This function removes all the non-letters and signs from the names and connects several words with underscores. You can ignore the <em>kbl()</em> and <em>kable_classic_2()</em> rows in the code below, they just make the HTML table look clean, but do not really clean anything in our dataset.</p>
+<p>This function removes all the non-letters and signs from the names
+and connects several words with underscores. You can ignore the
+<em>kbl()</em> and <em>kable_classic_2()</em> rows in the code below,
+they just make the HTML table look clean, but do not really clean
+anything in our dataset.</p>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>dirty_data</span> <span class='op'>%&gt;%</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>dirty_data</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/clean_names.html'>clean_names</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='va'>d</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_classic_2</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -3522,20 +3549,24 @@ NA
 </tbody>
 </table>
 </div>
-<h2 id="remove_empty-remove_constant">remove_empty() &amp; remove_constant()</h2>
-<p><em>remove_empty()</em> removes both empty rows and empty columns. We have two empty columns and one empty row. They are just useless. Lets add two constant columns to the dataset and see how we can remove all this junk with <em>janitor</em>.</p>
+<h2 id="remove_empty-remove_constant">remove_empty() &amp;
+remove_constant()</h2>
+<p><em>remove_empty()</em> removes both empty rows and empty columns. We
+have two empty columns and one empty row. They are just useless. Lets
+add two constant columns to the dataset and see how we can remove all
+this junk with <em>janitor</em>.</p>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># add two constant columns</span>
-<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>d</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'>mutate</span><span class='op'>(</span>constant_column   <span class='op'>=</span> <span class='fl'>42</span>,
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>constant_column   <span class='op'>=</span> <span class='fl'>42</span>,
          constant_column_2 <span class='op'>=</span> <span class='st'>"text"</span><span class='op'>)</span>
 
 <span class='co'># remove the junk</span>
-<span class='va'>d</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/remove_constant.html'>remove_constant</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>  
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/remove_empty.html'>remove_empty</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/remove_constant.html'>remove_constant</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>  
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/remove_empty.html'>remove_empty</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_classic_2</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -3924,12 +3955,13 @@ English
 </table>
 </div>
 <h2 id="get_dupes">get_dupes()</h2>
-<p>You can hunt duplicates rows in several columns. The function also returns the counts for every duplicate.</p>
+<p>You can hunt duplicates rows in several columns. The function also
+returns the counts for every duplicate.</p>
 <div class="layout-chunk" data-layout="l-screen-inset shaded">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/get_dupes.html'>get_dupes</a></span><span class='op'>(</span><span class='va'>first_name</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/get_dupes.html'>get_dupes</a></span><span class='op'>(</span><span class='va'>first_name</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_classic.html'>kable_classic_2</a></span><span class='op'>(</span>full_width <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -4161,7 +4193,15 @@ text
 </table>
 </div>
 <h2 id="round_to_fraction">round_to_fraction()</h2>
-<p>This can be very useful if you have lots of data. I do work with agricultural animals and they have all kinds of scores. One of them - Body Condition Score (BCS) is always recorded in quarters, e.g. 2.25, 2.5, 2.75 etc. So, if some colleagues try to be very smart and very exact, they stupidly record values like 0.8 or 3.149 instead of wanted 0.75 and 3, you need to correct this. <em>round_to_fraction()</em> simplifies this task enormously! Have a look at the last number below, before and after applying <em>round_to_fraction()</em> to a variable.</p>
+<p>This can be very useful if you have lots of data. I do work with
+agricultural animals and they have all kinds of scores. One of them -
+Body Condition Score (BCS) is always recorded in quarters, e.g. 2.25,
+2.5, 2.75 etc. So, if some colleagues try to be very smart and very
+exact, they stupidly record values like 0.8 or 3.149 instead of wanted
+0.75 and 3, you need to correct this. <em>round_to_fraction()</em>
+simplifies this task enormously! Have a look at the last number below,
+before and after applying <em>round_to_fraction()</em> to a
+variable.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># before</span>
@@ -4177,7 +4217,13 @@ text
 <pre><code> [1] 0.75 0.25 1.00 1.00 1.00 0.50 0.50   NA 0.50 0.50   NA   NA 0.75</code></pre>
 </div>
 <h2 id="convert_to_date">convert_to_date()</h2>
-<p>A modern Excel always tries to automate things, and I hate it! 😂 For instance you write a number into a cell and it sometimes immediately converts it into date. Then you try to have a date in a cell, and it returns a number. Moreover, Excel also has some strange date encoding systems, which can be confused with a normal numeric columns. Luckily, our dirty dataset has a “date” word in the name of a column “hire_date”, otherwise we wouldn’t know that it is a date:</p>
+<p>A modern Excel always tries to automate things, and I hate it! 😂 For
+instance you write a number into a cell and it sometimes immediately
+converts it into date. Then you try to have a date in a cell, and it
+returns a number. Moreover, Excel also has some strange date encoding
+systems, which can be confused with a normal numeric columns. Luckily,
+our dirty dataset has a “date” word in the name of a column “hire_date”,
+otherwise we wouldn’t know that it is a date:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span><span class='op'>$</span><span class='va'>hire_date</span>
@@ -4194,7 +4240,15 @@ text
 [11] &quot;2015-08-05&quot; &quot;1995-01-01&quot; &quot;2009-09-15&quot;</code></pre>
 </div>
 <h2 id="row_to_names">row_to_names()</h2>
-<p>People often have several header columns, in order to beautifully explain everything, make things accurate and don’t miss any important information. I’ve been there too. But as soon as I started to work with software, I realized that this “beauty” hurts. I get a lot of Excel datasets like that, which is not a problem, I just delete not needed rows and continue working. But then I get the same table with a few corrected values, even if I tell colleagues to have only one header. That is why I was pleased to discover <em>row_to_names()</em> function. Have a look at the dataset “x” below and how easy can we handle it.</p>
+<p>People often have several header columns, in order to beautifully
+explain everything, make things accurate and don’t miss any important
+information. I’ve been there too. But as soon as I started to work with
+software, I realized that this “beauty” hurts. I get a lot of Excel
+datasets like that, which is not a problem, I just delete not needed
+rows and continue working. But then I get the same table with a few
+corrected values, even if I tell colleagues to have only one header.
+That is why I was pleased to discover <em>row_to_names()</em> function.
+Have a look at the dataset “x” below and how easy can we handle it.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>
@@ -4211,7 +4265,7 @@ text
 4                        2                                 5
 5                        3                                 6</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>x</span> <span class='op'>%&gt;%</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>x</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/row_to_names.html'>row_to_names</a></span><span class='op'>(</span>row_number <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -4220,8 +4274,15 @@ text
 4          2              5
 5          3              6</code></pre>
 </div>
-<h1 id="generate-adorable-frequency-table-1--2--or-3-way.">Generate “adorable” frequency table (1-, 2-, or 3-way).</h1>
-<p>The <em>table()</em> function is actually cool, but as I discovered <em>tabyl()</em> in the <em>janitor</em> packages, I couldn’t go back. First of all, I always need to explicitly write <em>, useNA = “ifany”</em> if I wanna see whether there NAs. Secondly the proportions have to be called with an extra function <em>prop.table()</em> on top of the <em>table()</em> function. Now, look at what <em>tabyl()</em> does:</p>
+<h1 id="generate-adorable-frequency-table-1--2--or-3-way.">Generate
+“adorable” frequency table (1-, 2-, or 3-way).</h1>
+<p>The <em>table()</em> function is actually cool, but as I discovered
+<em>tabyl()</em> in the <em>janitor</em> packages, I couldn’t go back.
+First of all, I always need to explicitly write <em>, useNA =
+“ifany”</em> if I wanna see whether there NAs. Secondly the proportions
+have to be called with an extra function <em>prop.table()</em> on top of
+the <em>table()</em> function. Now, look at what <em>tabyl()</em>
+does:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># old way</span>
@@ -4250,7 +4311,7 @@ Administration          Coach        Teacher
               &lt;NA&gt; 1 0.07692308            NA</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># new way with two variables</span>
-<span class='va'>d</span> <span class='op'>%&gt;%</span> 
+<span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>employee_status</span>, <span class='va'>full_time</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -4260,12 +4321,14 @@ Administration          Coach        Teacher
          Teacher  3   6   0
             &lt;NA&gt;  0   0   1</code></pre>
 </div>
-<p>Moreover, along the counts <em>janitor’s tabyl</em> can also display totals, formatted percentages and even all of them together by using a family of “adorable” functions.</p>
+<p>Moreover, along the counts <em>janitor’s tabyl</em> can also display
+totals, formatted percentages and even all of them together by using a
+family of “adorable” functions.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#  </span>
-<span class='va'>d</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>employee_status</span>, <span class='va'>full_time</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>employee_status</span>, <span class='va'>full_time</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_totals.html'>adorn_totals</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"col"</span>, <span class='st'>"row"</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -4276,13 +4339,13 @@ Administration          Coach        Teacher
             &lt;NA&gt;  0   0   1     1
            Total  5   7   1    13</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>employee_status</span>, <span class='va'>full_time</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_totals.html'>adorn_totals</a></span><span class='op'>(</span><span class='st'>"row"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_percentages.html'>adorn_percentages</a></span><span class='op'>(</span><span class='st'>"row"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html'>adorn_pct_formatting</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_ns.html'>adorn_ns</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"front"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>               
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_title.html'>adorn_title</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>employee_status</span>, <span class='va'>full_time</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_totals.html'>adorn_totals</a></span><span class='op'>(</span><span class='st'>"row"</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_percentages.html'>adorn_percentages</a></span><span class='op'>(</span><span class='st'>"row"</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html'>adorn_pct_formatting</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_ns.html'>adorn_ns</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"front"</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>               
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_title.html'>adorn_title</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_title.html'>adorn_title</a></span><span class='op'>(</span><span class='st'>"combined"</span><span class='op'>)</span>
 </code></pre>
 </div>
@@ -4296,11 +4359,11 @@ Administration          Coach        Teacher
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>am</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_totals.html'>adorn_totals</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"col"</span>, <span class='st'>"row"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_percentages.html'>adorn_percentages</a></span><span class='op'>(</span><span class='st'>"all"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html'>adorn_pct_formatting</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>am</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_totals.html'>adorn_totals</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"col"</span>, <span class='st'>"row"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_percentages.html'>adorn_percentages</a></span><span class='op'>(</span><span class='st'>"all"</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_pct_formatting.html'>adorn_pct_formatting</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://rdrr.io/pkg/janitor/man/adorn_ns.html'>adorn_ns</a></span><span class='op'>(</span><span class='op'>)</span> 
 </code></pre>
 </div>
@@ -4309,18 +4372,25 @@ Administration          Coach        Teacher
      1 25.0%  (8)  9.4% (3)  6.2%  (2)  40.6% (13)
  Total 34.4% (11) 21.9% (7) 43.8% (14) 100.0% (32)</code></pre>
 </div>
-<p>You could also compare columns of two dataframes to see the difference. To see more function, type <em>?janitor</em> in the console of RStudio, scroll down and press <em>index</em>.</p>
+<p>You could also compare columns of two dataframes to see the
+difference. To see more function, type <em>?janitor</em> in the console
+of RStudio, scroll down and press <em>index</em>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d1</span> <span class='op'>&lt;-</span> <span class='va'>d</span> <span class='op'>%&gt;%</span> 
-  <span class='fu'>mutate</span><span class='op'>(</span>new_column <span class='op'>=</span> <span class='fl'>42</span>, 
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d1</span> <span class='op'>&lt;-</span> <span class='va'>d</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>new_column <span class='op'>=</span> <span class='fl'>42</span>, 
          second_new <span class='op'>=</span> <span class='st'>"into it"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/pkg/janitor/man/compare_df_cols.html'>compare_df_cols</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>d1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/janitor/man/compare_df_cols.html'>compare_df_cols</a></span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>d1</span><span class='op'>)</span> <span class='op'><a href='https://rdrr.io/pkg/janitor/man/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>Every single function from janitor package makes your life easier and more productive for a moment, some of them a lot easier, e.g. <em>clean_names()</em> and <em>remove_empty()</em>. But the real power of it accumulates over time, because you free your mind and time for creative work, instead of solving problems. Thus, thousand thanks to package-developer Sam Firke!</p>
+<p>Every single function from janitor package makes your life easier and
+more productive for a moment, some of them a lot easier,
+e.g. <em>clean_names()</em> and <em>remove_empty()</em>. But the real
+power of it accumulates over time, because you free your mind and time
+for creative work, instead of solving problems. Thus, thousand thanks to
+package-developer Sam Firke!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='st'>"janitor"</span><span class='op'>)</span>
@@ -4344,12 +4414,16 @@ A BibTeX entry for LaTeX users is
   }</code></pre>
 </div>
 <p>What is you favorite R package?</p>
-<p>If you think, I missed something, please comment on it, and I’ll improve this tutorial.</p>
+<p>If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.</p>
 <h2 id="useful-references">Useful references:</h2>
 <ul>
-<li>One of the best places to learn R is R-Bloggers platform: <a href="http://www.R-bloggers.com" class="uri">http://www.R-bloggers.com</a></li>
+<li>One of the best places to learn R is R-Bloggers platform: <a
+href="http://www.R-bloggers.com"
+class="uri">http://www.R-bloggers.com</a></li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">

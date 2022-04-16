@@ -165,7 +165,8 @@ tab_model(qr)
 library(rcompanion)
 nagelkerke(qr)
 
-# 3. Local regression
+
+# 4. Local regression
 
 
 localr = loess(mpg ~ hp, data = mtcars,
@@ -183,6 +184,10 @@ gam_m = gam(mpg ~ hp, data = mtcars, family=gaussian())
 
 compare_performance(ts, rb, qr, localr, gam_m, rank = T)
 compare_performance(ts, gam_m, rank = T)
+
+# 6. robust regression
+rmodel <- robustbase::lmrob(mpg ~ hp, data = mtcars)
+
 
 
 

@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+  <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more ;) (in progress)</title>
+
+  <meta property="description" itemprop="description" content="A short description of the post."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2022-04-16"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-04-16"/>
+  <meta name="article:author" content="Yury Zablotski"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more ;) (in progress)"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A short description of the post."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more ;) (in progress)"/>
+  <meta property="twitter:description" content="A short description of the post."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","preview","output","bibliography","biblio-style","link-citations","linkcolor","draft"]}},"value":[{"type":"character","attributes":{},"value":["R demo | Kruskal-Wallis test | How to conduct, visualize, interpret & more ;) (in progress)"]},{"type":"character","attributes":{},"value":["A short description of the post.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["April 16, 2022"]},{"type":"character","attributes":{},"value":["videos","statistics","anova"]},{"type":"character","attributes":{},"value":["thumbnail.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"logical","attributes":{},"value":[true]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["EdMatters.png","kw_files/anchor-4.2.2/anchor.min.js","kw_files/bowser-1.9.3/bowser.min.js","kw_files/distill-2.2.21/template.v2.js","kw_files/figure-html5/unnamed-chunk-3-1.png","kw_files/figure-html5/unnamed-chunk-7-1.png","kw_files/figure-html5/unnamed-chunk-8-1.png","kw_files/header-attrs-2.13/header-attrs.js","kw_files/jquery-3.6.0/jquery-3.6.0.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.map","kw_files/popper-2.6.0/popper.min.js","kw_files/tippy-6.2.7/tippy-bundle.umd.min.js","kw_files/tippy-6.2.7/tippy-light-border.css","kw_files/tippy-6.2.7/tippy.css","kw_files/tippy-6.2.7/tippy.umd.min.js","kw_files/vembedr-0.1.5/css/vembedr.css","kw_files/webcomponents-2.0.0/webcomponents.js","kw.jpg"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-top: 2.5rem;
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  /* Tweak code blocks */
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
+  }
+
+  d-article div.sourceCode {
+    background-color: white;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  d-article pre {
+    font-size: 12px;
+    color: black;
+    background: none;
+    margin-top: 0;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  d-article pre a {
+    border-bottom: none;
+  }
+
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+
+  d-article details {
+    grid-column: text;
+    margin-bottom: 0.8em;
+  }
+
+  @media(min-width: 768px) {
+
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
+  }
+
+  d-article div.sourceCode pre {
+    padding-left: 18px;
+    font-size: 14px;
+  }
+
+  d-article pre {
+    font-size: 14px;
+  }
+
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for d-contents */
+
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .d-contents li {
+    list-style-type: none
+  }
+
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+
+  .d-contents ul {
+    padding-left: 1em
+  }
+
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+
+
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure img {
+    width: 100%;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+  /* Citations */
+
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
+
+  /* Citation hover box */
+
+  .tippy-box[data-theme~=light-border] {
+    background-color: rgba(250, 250, 250, 0.95);
+  }
+
+  .tippy-content > p {
+    margin-bottom: 0;
+    padding: 2px;
+  }
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Include appendix styles here so they can be overridden */
+
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  d-appendix > * {
+    grid-column: text;
+  }
+
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+
+  /* Include footnote styles here so they can be overridden */
+
+  d-footnote-list {
+    contain: layout style;
+  }
+
+  d-footnote-list > * {
+    grid-column: text;
+  }
+
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+
+
+
+  /* Anchor.js */
+
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+
+  /* Styles for posts lists (not auto-injected) */
+
+
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .posts-list img {
+    opacity: 1;
+  }
+
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+
+  .posts-more {
+    clear: both;
+  }
+
+
+  .posts-sidebar {
+    font-size: 16px;
+  }
+
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+
+  .categories li>a {
+    border-bottom: none;
+  }
+
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .categories .active {
+    font-weight: 600;
+  }
+
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+
+
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('details, div.sourceCode, pre, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // hoverable references
+      $('span.citation[data-cites]').each(function() {
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
+        window.tippy(this, {
+          allowHTML: true,
+          content: refHtml,
+          maxWidth: 500,
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        });
+      });
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-contents').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="kw_files/header-attrs-2.13/header-attrs.js"></script>
+  <link href="kw_files/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+  <script src="kw_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="kw_files/popper-2.6.0/popper.min.js"></script>
+  <link href="kw_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="kw_files/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="kw_files/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="kw_files/anchor-4.2.2/anchor.min.js"></script>
+  <script src="kw_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="kw_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="kw_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"R demo | Kruskal-Wallis test | How to conduct, visualize, interpret & more ;) (in progress)","description":"A short description of the post.","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-04-16T00:00:00.000+02:00","citationText":"Zablotski, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more ;) (in progress)</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+<div class="dt=tag">videos</div>
+<div class="dt=tag">statistics</div>
+<div class="dt=tag">anova</div>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>A short description of the post.</p></p>
+</div>
+
+<div class="d-byline">
+  Yury Zablotski <a href="https://yuzar-blog.netlify.app/"
+class="uri">https://yuzar-blog.netlify.app/</a> 
+  
+<br/>April 16, 2022
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#this-post-as-a-video">This post as a video</a></li>
+<li><a href="#previous-topics">Previous topics</a></li>
+<li><a href="#why-do-we-need-it-what-are-the-benefits">Why do we need
+it? What are the benefits?</a></li>
+<li><a href="#when-do-we-need-kruskalwallis-test">When do we need
+Kruskal–Wallis test?</a></li>
+<li><a
+href="#how-kruskalwallis-test-works-and-why-its-called-rank-sum-and-h">How
+Kruskal–Wallis test works and why it’s called “rank-sum” and
+“H”</a></li>
+<li><a href="#how-to-compute-kruskalwallis-test">How to compute
+Kruskal–Wallis test</a>
+<ul>
+<li><a href="#interpretation">Interpretation</a></li>
+</ul></li>
+<li><a href="#pairwise-comparisons---posthoc-analysis">Pairwise
+comparisons - PostHoc analysis</a>
+<ul>
+<li><a href="#interpretation-1">Interpretation</a></li>
+</ul></li>
+<li><a href="#dont-use-kruskalwallis-test-if">Don’t use Kruskal–Wallis
+test if:</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#whats-next">What’s next</a></li>
+<li><a href="#further-readings-and-references">Further readings and
+references</a></li>
+</ul>
+</nav>
+</div>
+<h2 id="this-post-as-a-video">This post as a video</h2>
+<p>I recommend to watch a video first, because I highlight things I talk
+about. It’s ca. … minutes long.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+<h2 id="previous-topics">Previous topics</h2>
+<p>To get the most out of this post, familiarize yourself with one
+parametric method - <a
+href="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/">One-Way
+ANOVA</a> and one non-parametric method - <a
+href="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/">Mann-Whitney
+U test</a>.</p>
+<h2 id="why-do-we-need-it-what-are-the-benefits">Why do we need it? What
+are the benefits?</h2>
+<p><em>Kruskal–Wallis test</em> <strong>extends</strong> the
+<em>Mann-Whitney-Wilcoxon test</em> to <strong>more then two independent
+groups</strong> and is therefore a non-parametric equivalent to
+<em>ANOVA</em> <strong>for the case where <em>ANOVAs</em> assumptions
+are violated</strong>, e.g. the residuals are distributed non-normally
+or variances are not equal. <em>Kruskal-Wallis test</em> will answer the
+question whether <strong>at least one group is different from other
+groups</strong> (<em>H<sub>alt</sub></em>). It is also <strong>less
+sensitive to outliers</strong> compared to <em>ANOVA</em>, and can be
+used for <strong>ordinal</strong> data, where <em>ANOVA</em> can’t.</p>
+<h2 id="when-do-we-need-kruskalwallis-test">When do we need
+Kruskal–Wallis test?</h2>
+<p>We need it if small samples (&lt;30) are <strong>not-normally (skewed
+/ not-bell shaped) distributed and if outliers are present</strong>.
+Thus, let’s first visualize our samples and look whether we need any
+test at all, or, if they visually differ, whether they are normally
+distributed or have some outliers.</p>
+<p>We know that higher education may lead to higher salary. But are the
+differences among salaries significantly different? To answer this
+question let’s take 100 individuals from 5 different education
+backgrounds, compare them and <strong>figure out whether education
+matters</strong>?</p>
+<p><img
+src="/post/2019-09-17-kruskal-wallis-test_files/EdMatters.png" /> The
+picture above is borrowed from <a
+href="https://www.ncforum.org/education-matters/">here</a>.</p>
+<p>Load all needed packages at once to avoid interruptions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># library(tidyverse)      # for data wrangling and visualization</span>
+<span class='co'># library(broom)          # for tidy test output</span>
+<span class='co'># library(knitr)          # for nice looking table</span>
+<span class='co'># library(ggpubr)         # for QQplot</span>
+<span class='co'># library(ISLR)           # for "Wage" dataset</span>
+<span class='co'># library(conover.test)   # for conover test  </span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("tidyverse")  # for everything ;)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+
+<span class='co'># install.packages("ISLR")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.statlearning.com'>ISLR</a></span><span class='op'>)</span>
+
+<span class='co'># stabilize the output of "sample_n()"</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+
+<span class='co'># rename some groups for better plotting experience</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Wage.html'>Wage</a></span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>education <span class='op'>=</span> 
+          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>education</span> <span class='op'>==</span> <span class='st'>"1. &lt; HS Grad"</span>,       <span class='st'>"1 &lt;HS"</span>,
+          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>education</span> <span class='op'>==</span> <span class='st'>"2. HS Grad"</span>,         <span class='st'>"2 HS"</span>,
+          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>education</span> <span class='op'>==</span> <span class='st'>"3. Some College"</span>,    <span class='st'>"3 &lt;College"</span>,
+          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>education</span> <span class='op'>==</span> <span class='st'>"4. College Grad"</span>,    <span class='st'>"4 College"</span>, 
+          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>education</span> <span class='op'>==</span> <span class='st'>"5. Advanced Degree"</span>, <span class='st'>"5 Advanced"</span>, <span class='va'>education</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>education <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/sample_n.html'>sample_n</a></span><span class='op'>(</span><span class='fl'>100</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>  <span class='co'># sample 100 random individuals for every group</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># visualize distributions of samples</span>
+<span class='co'># install.packages("ggpubr")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/ggpubr/'>ggpubr</a></span><span class='op'>)</span>         <span class='co'># for QQ &amp; density plots</span>
+<span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggdensity.html'>ggdensity</a></span><span class='op'>(</span><span class='va'>d</span>, x <span class='op'>=</span> <span class='st'>"wage"</span>, add <span class='op'>=</span> <span class='st'>"mean"</span>, color <span class='op'>=</span> <span class='st'>"education"</span>, fill <span class='op'>=</span> <span class='st'>"education"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="kw_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
+</div>
+<p>The salaries of people with different educational background seem to
+differ. But since we don’t know how significant this difference is, we
+need a statistical test. The only question is which one, <em>ANOVA</em>
+or <em>Kruskal-Wallis test</em>?</p>
+<p>The boxplot on the top shows some <strong>outliers</strong> in every
+group, which might compromise <em>ANOVA</em>. The density plot on the
+bottom shows that samples are not really normally distributed, but
+<strong>skewed</strong> to the right a lot, at least three out of five
+groups. Yes, with big samples <em>ANOVA</em> is kind of robust against
+non-normality, but since <em>ANOVA</em> compares means of the
+populations, I wouldn’t trust it because <strong>means of our samples
+are far away from the peaks of the corresponding distributions (dotted
+vertical lines)</strong>. For instance, the mean salary of the
+“Advanced” educational background is pulled to the right of the peak due
+to the high salaries of small number of (probably) managers and CEOs.
+This is a second reason not to use <em>ANOVA</em> for this dataset. But
+to be even more sure of that, let’s conduct two more checks: visual
+normality check using <code>QQplot</code> and <em>Shapiro-Wilk
+normality-test</em>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("dlookr")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/choonghyunryu/dlookr/'>dlookr</a></span><span class='op'>)</span>
+<span class='va'>d</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://choonghyunryu.github.io/dlookr/reference/normality.data.frame.html'>normality</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<pre><code># A tibble: 5 × 5
+  variable education  statistic       p_value sample
+  &lt;chr&gt;    &lt;fct&gt;          &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;
+1 wage     1 &lt;HS          0.982 0.191            100
+2 wage     2 HS           0.945 0.000385         100
+3 wage     3 &lt;College     0.870 0.0000000699     100
+4 wage     4 College      0.951 0.000955         100
+5 wage     5 Advanced     0.830 0.00000000227    100</code></pre>
+</div>
+<p>QQplot confirms the presence of <strong>outliers</strong> and both
+QQplot and low <em>p-values</em> (a bad thing here) of the normality
+test indicate the <strong>non-normality of distribution</strong> of 4
+out of 5 groups.</p>
+<p>Thus, <strong>here we really need a non-parametric alternative to
+<em>ANOVA</em>, which is a <em>Kruskal–Wallis-test</em>.</strong></p>
+<p>One more important thing to know before using a <em>Kruskal–Wallis
+test</em> is the <strong>shape of the distribution</strong>. Similar
+shapes among groups require the <em>Kruskal-Wallis test</em> to compare
+the medians of groups. However, if distribution shapes differ, the
+<em>Kruskal-Wallis test</em> compares <strong>mean ranks</strong> <a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a> (usually, the software takes care of
+it). As we can see from the visualisation above, the shapes of
+distributions are a bit different, so in the next chapters we’ll
+calculate and report the <strong>mean ranks</strong> instead of
+medians.</p>
+<h2
+id="how-kruskalwallis-test-works-and-why-its-called-rank-sum-and-h">How
+Kruskal–Wallis test works and why it’s called “rank-sum” and “H”</h2>
+<p>It compares medians or mean-ranks among groups. It takes just 4 steps
+to manually calculate the test: <a href="#fn2" class="footnote-ref"
+id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<ol type="1">
+<li><strong>rank values of all groups</strong> from low to high no
+matter which group each value belongs to</li>
+<li><strong>sum the ranks of every group</strong> (<span
+class="math inline">\(R_j\)</span>). This is where the
+<strong>rank-sum</strong> part of the name comes from. Also,
+<strong>average the ranks of every group</strong> (<span
+class="math inline">\(\bar{r_j}\)</span>). The <strong>mean
+rank</strong> is not needed for test statistics, but will be reported
+later.</li>
+</ol>
+<p><span class="math display">\[R_j = \sum_{i=1}^{n_j}r_i\]</span></p>
+<p><span class="math display">\[\bar{r_j} = \frac
+{\sum_{i=1}^{n_j}r_i}{n_j} \]</span></p>
+<ol start="3" type="1">
+<li>calculate test-statistic: <strong>H-value</strong> for <em>n</em>
+&lt; 5 (per group) or <strong>Chi-square</strong> for <em>n</em> &gt; 5.
+This is where the <strong>H</strong> part of the test name comes
+from.</li>
+</ol>
+<p><span class="math display">\[ H = (N-1)\frac{\sum_{i=1}^g
+n_i(\bar{r}_{i\cdot} - \bar{r})^2}{\sum_{i=1}^g\sum_{j=1}^{n_i}(r_{ij} -
+\bar{r})^2} \]</span></p>
+<p><span class="math display">\[ Chi-square = \frac
+{(N-1)(S_t^2-C)}{S_r^2-C} \]</span></p>
+<p>where:</p>
+<ul>
+<li><em>r</em> - rank</li>
+<li><em>N</em> - total number of observations</li>
+<li><em>n</em> - number of observations per group</li>
+</ul>
+<p><span class="math display">\[ S_t^2 = \sum_{i=1}^{g}
+\frac{R_i^2}{n_i} \]</span></p>
+<p><span class="math display">\[ S_r^2 = \sum_{i=1}^{N} {r_{ij}^2}
+\]</span></p>
+<p><span class="math display">\[ C = \frac {N(N+1)^2}{4}  \]</span></p>
+<ol start="4" type="1">
+<li>compare your test statistics to its critical value in the table of
+critical values (<em>Chi-squared</em> <a
+href="https://people.smp.uq.edu.au/YoniNazarathy/stat_models_B_course_spring_07/distributions/chisqtab.pdf">here</a>
+or <em>H-value</em> <a
+href="file:///Users/yzablotski/Downloads/kruskalwallish.pdf">here</a>)
+to get a <em>p-value</em>, which will answer our initial question about
+<strong>whether the difference is significant, namely whether education
+matters</strong>. If calculated test statistics is greater than or equal
+to the critical value, we reject <strong>H<sub>0</sub></strong> and
+accept <strong>H<sub>alt</sub></strong>, if lower, we accept
+<strong>H<sub>0</sub></strong> and reject
+<strong>H<sub>alt</sub></strong>.</li>
+</ol>
+<p><strong>Just my opinion:</strong> Calculating test statistic and
+looking up critical values in tests is not very pragmatic, since every
+statistical software always delivers both statistic and
+<em>p-value</em>. With multiple groups, e.g. <em>Kruskal-Wallis
+test</em>, it gets really messy. Thus, it is always good to understand
+how things work, but don’t feel bad if you never conduct the test
+manually.</p>
+<p>Since we have 100 observations in every sample, and chances are that
+you will rather have lots of data, below we manually calculate the
+<em>Chi-square</em> instead of <em>H-value</em>.</p>
+<p>The code below shows the step-by-step calculation procedure in a
+self-explanatory plain English. You can execute this code step-by-step
+to see the result of every step by simply executing everything above
+needed line.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># get mean-ranks</span>
+<span class='va'>first_table</span> <span class='op'>&lt;-</span> <span class='va'>d</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rank <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rank.html'>rank</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>   <span class='co'># mutate means - create new column</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>rank_sum  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>rank</span><span class='op'>)</span>,
+            rank_mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>rank</span><span class='op'>)</span>,
+            mean_wage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>)</span>,
+            median_wage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>)</span>,
+            n         <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>)</span> 
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span>
+<span class='co'># calculate the test statistics manually</span>
+<span class='va'>first_table</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>N     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>$</span><span class='va'>wage</span><span class='op'>)</span>,
+            S_t_2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>rank_sum</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>/</span><span class='va'>n</span><span class='op'>)</span>,
+            S_r_2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rank.html'>rank</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>$</span><span class='va'>wage</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>,
+            C     <span class='op'>=</span> <span class='op'>(</span><span class='va'>N</span><span class='op'>*</span><span class='op'>(</span><span class='va'>N</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span> <span class='op'>/</span> <span class='fl'>4</span><span class='op'>)</span>,
+            Chisq <span class='op'>=</span> <span class='op'>(</span><span class='op'>(</span><span class='va'>N</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>*</span><span class='op'>(</span><span class='va'>S_t_2</span> <span class='op'>-</span> <span class='va'>C</span><span class='op'>)</span><span class='op'>)</span>  <span class='op'>/</span> <span class='op'>(</span><span class='va'>S_r_2</span> <span class='op'>-</span> <span class='va'>C</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+S_t_2
+</th>
+<th style="text-align:right;">
+S_r_2
+</th>
+<th style="text-align:right;">
+C
+</th>
+<th style="text-align:right;">
+Chisq
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+500
+</td>
+<td style="text-align:right;">
+34475885
+</td>
+<td style="text-align:right;">
+41786603
+</td>
+<td style="text-align:right;">
+31375125
+</td>
+<td style="text-align:right;">
+148.6128
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="how-to-compute-kruskalwallis-test">How to compute Kruskal–Wallis
+test</h2>
+<p>The two-group case of the Kruskal–Wallis test is identical to the
+Mann–Whitney test.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span>, 
+  <span class='fu'><a href='https://rdrr.io/r/stats/kruskal.test.html'>kruskal.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+22995.00000
+</td>
+<td style="text-align:right;">
+3e-07
+</td>
+<td style="text-align:left;">
+Wilcoxon rank sum test with continuity correction
+</td>
+<td style="text-align:left;">
+two.sided
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+26.10365
+</td>
+<td style="text-align:right;">
+3e-07
+</td>
+<td style="text-align:left;">
+Kruskal-Wallis rank sum test
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>Wilcoxon-test</em> uses a different test statistic
+(<em>W-value</em> instead of the <em>H-value</em> of the Kruskal–Wallis
+test), but the <em>p-values</em> of both tests are identical.</p>
+<p>Before executing Kruskal-Wallis rank sum test, please have a look at
+the very first visualization one more time and answer this simple
+question: do you think that salaries of people with different education
+differ?</p>
+<p><strong>H<sub>0</sub></strong> - null hypothesis: all samples are the
+same</p>
+<p><strong>H<sub>alt</sub></strong> - alternative hypothesis: at least
+one sample differs from at least one other</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># old way</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/kruskal.test.html'>kruskal.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  wage by education
+Kruskal-Wallis chi-squared = 148.61, df = 4, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># new way ;)</span>
+<span class='co'># install.packages("ggstatsplot")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://indrajeetpatil.github.io/ggstatsplot/'>ggstatsplot</a></span><span class='op'>)</span>
+
+<span class='fu'><a href='https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html'>ggbetweenstats</a></span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>d</span>,
+  x    <span class='op'>=</span> <span class='va'>education</span>, 
+  y    <span class='op'>=</span> <span class='va'>wage</span>, 
+  type <span class='op'>=</span> <span class='st'>"nonparametric"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<img src="kw_files/figure-html5/unnamed-chunk-7-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># you can save the picture in the format and size of your choice</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggsave</a></span><span class='op'>(</span>filename <span class='op'>=</span> <span class='st'>"kw.jpg"</span>, plot <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/last_plot.html'>last_plot</a></span><span class='op'>(</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>8</span>, height <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="interpretation">Interpretation</h3>
+<ul>
+<li><strong>general conclusion</strong>: there is a statistically
+significant difference in salaries between the different education
+backgrounds, <em>Chi-square</em> = 148.61, <em>p-value</em> &lt;
+2.2e-16. Mean rank of salaries, which needed to be reported, and mean
+and median of salaries (just out of curiosity) are visualised in the
+picture below:</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>first_table</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span>, <span class='va'>mean_wage</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span>, <span class='va'>median_wage</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span>, <span class='va'>rank_mean</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ylab</a></span><span class='op'>(</span><span class='st'>"statistics"</span><span class='op'>)</span><span class='op'>+</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"Education levels from low (1 &lt;HS) to high (5 Advanced)"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/theme_pubr.html'>theme_classic2</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="kw_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+</div>
+<p>As you can see, the mean (in red) and the median (in blue) of group
+salaries are showing similar trend, but neither of them catches the
+high-salaries-bump of “Advanced” education group. The mean-rank (in
+black) does.</p>
+<ul>
+<li><p><strong>test statistics</strong> of <em>Kruskal-Wallis test</em>
+<em>Chi-square</em> = 148.61 is identical to the one we calculated
+manually above. Thus, we are confident, the test is fine and our
+calculation is correct. <em>W-value</em> is large (far from zero), thus
+we expect a significant difference between samples, which is confirmed
+by a…</p></li>
+<li><p><strong>p-value</strong> of <em>Kruskal-Wallis test</em>
+(<em>p-value</em> &lt;&lt; 0.05) which <strong>rejects the
+H<sub>0</sub></strong> that education does not matter for salary, and
+<strong>accepts the H<sub>alt</sub></strong> saying education matters
+for salary a lot (significantly).</p></li>
+</ul>
+<h2 id="pairwise-comparisons---posthoc-analysis">Pairwise comparisons -
+PostHoc analysis</h2>
+<p>This significant result in a <em>Kruskal–Wallis test</em> indicates
+that there are group differences, but it does not show which groups
+differ.</p>
+<p>To answer this question, we need to apply pairwise comparisons
+between all the groups. Three similarly good options for this are
+presented below. Choose one that suites you.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/pairwise.wilcox.test.html'>pairwise.wilcox.test</a></span><span class='op'>(</span><span class='va'>Wage</span><span class='op'>$</span><span class='va'>wage</span>, <span class='va'>Wage</span><span class='op'>$</span><span class='va'>education</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+    Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+
+data:  Wage$wage and Wage$education 
+
+                   1. &lt; HS Grad 2. HS Grad 3. Some College
+2. HS Grad         1.6e-11      -          -              
+3. Some College    &lt; 2e-16      &lt; 2e-16    -              
+4. College Grad    &lt; 2e-16      &lt; 2e-16    &lt; 2e-16        
+5. Advanced Degree &lt; 2e-16      &lt; 2e-16    &lt; 2e-16        
+                   4. College Grad
+2. HS Grad         -              
+3. Some College    -              
+4. College Grad    -              
+5. Advanced Degree &lt; 2e-16        
+
+P value adjustment method: holm </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/source.html'>source</a></span><span class='op'>(</span><span class='st'>"http://www.statmethods.net/RiA/wmc.txt"</span><span class='op'>)</span>
+<span class='fu'>wmc</span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, data <span class='op'>=</span> <span class='va'>Wage</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Descriptive Statistics
+
+       1. &lt; HS Grad 2. HS Grad 3. Some College 4. College Grad
+n         268.00000  971.00000       650.00000       685.00000
+median     81.28325   94.07271       104.92151       118.88436
+mad        18.77315   23.36766        23.24512        33.93792
+       5. Advanced Degree
+n               426.00000
+median          141.77517
+mad              36.66503
+
+Multiple Comparisons (Wilcoxon Rank Sum Tests)
+Probability Adjustment = holm
+
+           Group.1            Group.2        W            p    
+1     1. &lt; HS Grad         2. HS Grad  95177.5 1.595973e-11 ***
+2     1. &lt; HS Grad    3. Some College  43041.0 8.054022e-33 ***
+3     1. &lt; HS Grad    4. College Grad  31170.5 7.074354e-56 ***
+4     1. &lt; HS Grad 5. Advanced Degree   9893.0 2.726793e-74 ***
+5       2. HS Grad    3. Some College 233601.0 2.485272e-18 ***
+6       2. HS Grad    4. College Grad 173049.0 2.489121e-61 ***
+7       2. HS Grad 5. Advanced Degree  60792.0 2.860226e-97 ***
+8  3. Some College    4. College Grad 160955.5 3.867637e-18 ***
+9  3. Some College 5. Advanced Degree  60982.0 1.068422e-53 ***
+10 4. College Grad 5. Advanced Degree  99695.5 2.485272e-18 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># install.packages("conover.test")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>conover.test</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/conover.test/man/conover.test.html'>conover.test</a></span><span class='op'>(</span><span class='va'>Wage</span><span class='op'>$</span><span class='va'>wage</span>, <span class='va'>Wage</span><span class='op'>$</span><span class='va'>education</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>  Kruskal-Wallis rank sum test
+
+data: x and group
+Kruskal-Wallis chi-squared = 767.0481, df = 4, p-value = 0
+
+                           Comparison of x by group                            
+                                (No adjustment)                                
+Col Mean-|
+Row Mean |   1. &lt; HS    2. HS Gr   3. Some    4. Colle
+---------+--------------------------------------------
+2. HS Gr |  -6.473103
+         |    0.0000*
+         |
+3. Some  |  -12.47214  -9.051964
+         |    0.0000*    0.0000*
+         |
+4. Colle |  -19.32572  -18.95428  -8.894267
+         |    0.0000*    0.0000*    0.0000*
+         |
+5. Advan |  -24.72094  -25.47990  -16.39492  -8.670318
+         |    0.0000*    0.0000*    0.0000*    0.0000*
+
+alpha = 0.05
+Reject Ho if p &lt;= alpha/2</code></pre>
+</div>
+<h3 id="interpretation-1">Interpretation</h3>
+<p>The pairwise <em>p-values</em> tell us following story: there is no
+difference between finishing high school and doing some college years
+without finishing it. “Some college years” do not provide any
+graduation, so that your years spend studying won’t be appreciated by
+any employee. Even if you drop out of college at the very last day.</p>
+<p>But what about all the college dropouts - <strong>Group 1</strong>,
+like Steve Jobs (Apple), Bill Gates (Microsoft) or Mark Zuckerberg
+(facebook) which became millionaires because they finally had time for
+approaching their dreams? Hmmm, but what about millions of “no-names”
+who dropped out of college - <strong>Group 2</strong> and did not make
+it at all !, but regret their decision? Where are they now? No one
+knows, because no one cares, right? And what about another group of
+highly successful people, who did finish their advanced education and
+may be because of the education became so successful in their field -
+<strong>Group 3</strong>? Now, imagine we would be able to count all of
+them in every group. Just think for a moment about these 3 numbers. How
+far apart would the numbers in all three groups be? Would it be
+significant? I think so. But it’s just an opinion, a hypothesis, and I
+would love to see the data and test it if I could! But until then, I
+just believe the data I have seen, like the <code>Wage</code> dataset,
+and what it tells me is - <strong>EDUCATION MATTERS!</strong></p>
+<h2 id="dont-use-kruskalwallis-test-if">Don’t use Kruskal–Wallis test
+if:</h2>
+<ul>
+<li><p>assumptions of <em>ANOVA</em> are satisfied and the samples are
+big (n&gt;30), because <em>ANOVA</em> is considered to be more powerful.
+Lower power of <em>Kruskal-Wallis test</em> is due a slight loss of
+information, which happens when real data is replaced by ranks.</p></li>
+<li><p>groups are dependent (paired); in this case apply either
+<em>paired ANOVA</em> or the <em>Friedman test</em>.</p></li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Since the <strong>real world data is never perfect, the
+non-parametric tests are very important tools</strong> in a toolbox of
+any data scientist. Thus, <em>Kruskal-Wallis rank-sum unpaired H
+test</em> (such a beautiful name! :) is more powerful then
+<em>ANOVA</em> for highly skewed distributions and presence of outliers,
+while it looses some information, due to replacement of real data by
+ranks.</p>
+<h2 id="whats-next">What’s next</h2>
+<ul>
+<li><em>paired ANOVA</em></li>
+<li><em>Friedman test</em></li>
+<li><a
+href="https://yury-zablotski.netlify.com/post/simple-linear-regression/">simple
+linear regression</a></li>
+</ul>
+<p><strong>Thank you for reading!</strong></p>
+<h2 id="further-readings-and-references">Further readings and
+references</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a
+href="https://statistics.laerd.com/spss-tutorials/kruskal-wallis-h-test-using-spss-statistics.php"
+class="uri">https://statistics.laerd.com/spss-tutorials/kruskal-wallis-h-test-using-spss-statistics.php</a><a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a
+href="https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test"
+class="uri">https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test</a><a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

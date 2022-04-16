@@ -189,8 +189,6 @@ If you think, I missed something, please comment on it, and I’ll improve this 
 
 
 
-
-
 ## References and useful links
 
 - https://www.stat.auckland.ac.nz/~wild/ChanceEnc/Ch10.wilcoxon.pdf
