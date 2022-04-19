@@ -1506,9 +1506,6 @@ Kruskal–Wallis test</a></li>
 <li><a href="#kruskal-wallis-test-for-two-groups">Kruskal-Wallis test
 for two groups</a></li>
 <li><a
-href="#why-kruskal-wallis-test-is-somethimes-called-rank-sum-h-test">Why
-Kruskal-Wallis test is somethimes called Rank-Sum H test</a></li>
-<li><a
 href="#a-bit-of-theorie-how-kruskalwallis-test-works-and-why-its-called-rank-sum-and-h">A
 bit of theorie: How Kruskal–Wallis test works and why it’s called
 “rank-sum” and “H”</a></li>
@@ -1719,20 +1716,12 @@ W = 6141, p-value = 0.003675
 alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 <h2
-id="why-kruskal-wallis-test-is-somethimes-called-rank-sum-h-test">Why
-Kruskal-Wallis test is somethimes called Rank-Sum H test</h2>
-<p><em>Kruskal-Wallis test</em> compares <strong>sums of ranks</strong>
-<a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a>. So in the next chapter we’ll
-calculate and report the <strong>mean ranks</strong> instead of
-medians.</p>
-<h2
 id="a-bit-of-theorie-how-kruskalwallis-test-works-and-why-its-called-rank-sum-and-h">A
 bit of theorie: How Kruskal–Wallis test works and why it’s called
 “rank-sum” and “H”</h2>
 <p>It takes just 4 steps to manually calculate the test manually: <a
-href="#fn2" class="footnote-ref" id="fnref2"
-role="doc-noteref"><sup>2</sup></a></p>
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></p>
 <ol type="1">
 <li><strong>rank values independently of the group</strong></li>
 <li><strong>sum the ranks of every group</strong> (<span
@@ -1784,13 +1773,17 @@ accept <strong>H<sub>alt</sub></strong>, if lower, we accept
 </ol>
 <p><strong>Just my opinion:</strong> Calculating test statistic and
 looking up critical values in tests is not very pragmatic, since every
-statistical software always delivers both statistic and
+statistical software always delivers both statistics and
 <em>p-value</em>. With multiple groups, e.g. <em>Kruskal-Wallis
 test</em>, it gets really messy. Thus, it is always good to understand
 how things work, but don’t feel bad if you never conduct the test
 manually.</p>
 <h2 id="old-way-to-compute-kruskal-wallis-test-and-post-hoc">Old way to
 compute Kruskal-Wallis test and Post-Hoc</h2>
+<p>The {ggbetweenstats} is definitely the best way, but if you wanna
+check the old way of conducting Kruskal-Wallis and make either pairwise
+Mann-Whitney U or pairwise Conover tests instead of the Dunn test, use
+the code below.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/kruskal.test.html'>kruskal.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
@@ -1801,27 +1794,6 @@ compute Kruskal-Wallis test and Post-Hoc</h2>
 
 data:  wage by education
 Kruskal-Wallis chi-squared = 89.198, df = 4, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/pairwise.wilcox.test.html'>pairwise.wilcox.test</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>$</span><span class='va'>wage</span>, <span class='va'>d</span><span class='op'>$</span><span class='va'>education</span><span class='op'>)</span>
-</code></pre>
-</div>
-<pre><code>
-    Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
-
-data:  d$wage and d$education 
-
-                   1. &lt; HS Grad 2. HS Grad 3. Some College
-2. HS Grad         0.8496       -          -              
-3. Some College    0.0008       0.0021     -              
-4. College Grad    2.5e-08      2.4e-07    0.0039         
-5. Advanced Degree 3.8e-11      4.6e-10    1.8e-06        
-                   4. College Grad
-2. HS Grad         -              
-3. Some College    -              
-4. College Grad    -              
-5. Advanced Degree 0.0791         
-
-P value adjustment method: holm </code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/source.html'>source</a></span><span class='op'>(</span><span class='st'>"http://www.statmethods.net/RiA/wmc.txt"</span><span class='op'>)</span>
 <span class='fu'>wmc</span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span>
@@ -1888,21 +1860,19 @@ Reject Ho if p &lt;= alpha/2</code></pre>
 <h2 id="conclusion">Conclusion</h2>
 <p>Since the <strong>real world data is never perfect, the
 non-parametric tests are very important tools</strong> in a toolbox of
-any data scientist. Thus, <em>Kruskal-Wallis rank-sum unpaired H
-test</em> (such a beautiful name! :) is more powerful then
-<em>ANOVA</em> for highly skewed distributions and presence of outliers,
-while it looses some information, due to replacement of real data by
-ranks.</p>
+every data scientist. Thus, <em>Kruskal-Wallis rank-sum unpaired H
+test</em> (such a beautiful name! 😂) is more powerful then
+<em>ANOVA</em> for highly skewed distributions and presence of outliers.
+Howeverm, Kruskal-Wallis looses some information, due to replacement of
+real data by ranks, and is therefore less powerful for noramlly
+distributed data. But please, don’t use it instead of ANOVA just out of
+laziness to check ANOVAs assumptions, you might get a wrong result.</p>
 <h2 id="whats-next-or-dont-use-kruskalwallis-test-if">What’s next? Or,
 don’t use Kruskal–Wallis test if:</h2>
 <ul>
-<li><p>assumptions of <em>ANOVA</em> are satisfied, because
-<em>ANOVA</em> is considered to be more powerful. <strong>Lower power of
-<em>Kruskal-Wallis test</em> is due a slight loss of information, which
-happens when real data is replaced by ranks.</strong></p></li>
-<li><p>groups are dependent (paired); in this case apply either
-<em>paired ANOVA</em> if data is normally distributed or the
-<em>Friedman test</em> if data is not normally distributed.</p></li>
+<li>groups are dependent (paired); in this case apply either <em>paired
+ANOVA</em> if data is normally distributed or the <em>Friedman test</em>
+if data is not normally distributed.</li>
 </ul>
 <p><strong>Thank you for reading!</strong></p>
 <h2 id="further-readings-and-references">Further readings and
@@ -1911,20 +1881,16 @@ references</h2>
 <p>If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.</p>
 <p><strong>Thank you for learning!</strong></p>
-<div class="sourceCode" id="cb8"><pre
+<div class="sourceCode" id="cb7"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1" role="doc-endnote"><p><a
-href="https://statistics.laerd.com/spss-tutorials/kruskal-wallis-h-test-using-spss-statistics.php"
-class="uri">https://statistics.laerd.com/spss-tutorials/kruskal-wallis-h-test-using-spss-statistics.php</a><a
-href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p><a
 href="https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test"
 class="uri">https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test</a><a
-href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
