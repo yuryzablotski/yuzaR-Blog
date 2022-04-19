@@ -119,6 +119,7 @@ ggbetweenstats(
 # you can save the picture in the format and size of your choice
 ggsave(filename = "anova.jpg", plot = last_plot(), width = 8, height = 7)
 ```
+
 Such simple command results in this statistically rich and publication ready plot! Now, let's interpret the results.
 
 ## Interpret the result

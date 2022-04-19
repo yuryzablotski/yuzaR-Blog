@@ -138,10 +138,18 @@ multinom_test()
 
 library(mblm) # Median-Based Linear Models
 ts = mblm(mpg ~ hp, data = mtcars)
+library(sjPlot)
 plot_model(ts, type = "pred", show.data = T)
 tab_model(ts)
 
-# 2. Rank-based estimation regression uses estimators and inference that are robust to outliers.
+library(performance)
+performance(ts)
+
+
+
+
+# 2. Rank-based estimation regression uses estimators and 
+# inference that are robust to outliers. Is pretty shit though :) 
 
 library(Rfit)
 rb = rfit(mpg ~ hp, data = mtcars)
@@ -156,19 +164,39 @@ summary(rb)
 # functions for other types of dependent variables in the qtools package.
 # The model assumes that the terms are linearly related. Quantile 
 # regression is sometimes considered “semiparametric”.
-
+library(sjPlot)
 library(quantreg)
 
 qr = rq(mpg ~ hp, data = mtcars, tau = 0.5 )
 plot_model(qr, type = "pred", show.data = T)
 tab_model(qr)
+
+# qr wins 100%
+compare_performance(ts, qr, rank = T)
+
 library(rcompanion)
 nagelkerke(qr)
 
+multi_rqfit <- rq(mpg ~ wt, data = mtcars, tau = seq(0, 1, by = 0.2))
+multi_rqfit
+sumQR=summary(multi_rqfit)
+plot(sumQR)
+plot(summary(multi_rqfit), parm="wt")
+
+
+library(ggeffects)
+
+## fit Engel models (in levels) for tau = 0.1, ..., 0.9
+data("engel")
+fm <- rq(mpg ~ hp, data = mtcars, tau = 1:9/10)
+
+## visualizations
+plot(fm)
+plot(fm, parm = 2, mar = c(5.1, 4.1, 2.1, 2.1), main = "", xlab = "tau", 
+     ylab = "income coefficient", cex = 1, pch = 19)
+
 
 # 4. Local regression
-
-
 localr = loess(mpg ~ hp, data = mtcars,
                 span = 0.75,        ### higher numbers for smoother fits
                 degree=2,           ### use polynomials of order 2
@@ -183,12 +211,13 @@ library(mgcv)
 gam_m = gam(mpg ~ hp, data = mtcars, family=gaussian())
 
 compare_performance(ts, rb, qr, localr, gam_m, rank = T)
-compare_performance(ts, gam_m, rank = T)
+compare_performance(ts, gam_m, rank = T, rank = T)
 
 # 6. robust regression
 rmodel <- robustbase::lmrob(mpg ~ hp, data = mtcars)
 
 
+compare_performance(ts, qr, gam_m, rmodel, rank = T)
 
 
 
