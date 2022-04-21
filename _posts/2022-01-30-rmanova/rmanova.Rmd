@@ -54,7 +54,7 @@ library(tidyverse)
 # install.packages("datarium")   # for selfesteem data
 library(datarium)
 
-View(selfesteem)
+# View(selfesteem)
 ```
 
 ```{r echo=FALSE}
@@ -72,7 +72,7 @@ For that let's take {selfesteem} data from {datarium} package, and gather all th
 d <- selfesteem %>%
   gather(key = "time", value = "score", t1, t2, t3) 
 
-View(d)
+# View(d)
 ```
 
 
@@ -116,7 +116,7 @@ diffs <- selfesteem %>%
     diff_t3_t2 = t3 - t2,
     diff_t2_t1 = t2 - t1 )
 
-View(diffs)
+# View(diffs)
 ```
 
 

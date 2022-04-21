@@ -46,7 +46,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 
 ## Get the data
 
-For that we'll take 50 individuals from 5 different educational backgrounds, compare their salaries and **find out whether education matters**.
+For that we'll take 50 individuals from 5 different educational backgrounds, compare their salaries and **find out whether education matters**?
 
 ![](EdMatters.png){width=40%}
 
