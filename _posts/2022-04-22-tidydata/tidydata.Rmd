@@ -1,0 +1,58 @@
+---
+title: "Tidy data"
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - anova
+preview: thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+
+
+Tidy datasets are easy to manipulate, model and visualise, and have a specific structure: each variable is a column, each observation is a row, and each type of observational unit is a table.
+
+It is often said that 80% of data analysis is spent on the process of cleaning and preparing the data [^1]. Data preparation is not just a first step, but must be repeated many over the course of analysis as new problems come to light
+
+[^1]: Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning. Wiley-IEEE.
+
+
+Happy families are all alike; every unhappy family is unhappy in its own way. Leo Tolstoy
+
+Like families, tidy datasets are all alike but every messy dataset is messy in its own way. Hadley Wickham
+
+
+A dataset is a collection of values, usually either numbers (if quantitative) or strings (if qualitative). Values are organised in two ways. Every value belongs to a variable and an observation. A variable contains all values that measure the same underlying attribute (like height, temperature, duration) across units. An observation contains all values measured on the same unit (like a person, or a day, or a race) across attributes.
+
+In this experiment, the missing value represents an observation that should have been made, but wasn’t, so it’s important to keep it. Structural missing values, which represent measurements that can’t be made (e.g., the count of pregnant males) can be safely removed.
+
+Each row represents an observation, the result of one
+treatment on one person, and each column is a variable.
+
+## References
+
+https://vita.had.co.nz/papers/tidy-data.pdf
+
+Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning. Wiley-IEEE.
+

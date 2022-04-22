@@ -31,17 +31,17 @@ linkcolor: blue
 knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
 
-<!-- ## This post as a video  -->
+## This post as a video
 
-<!-- I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.  -->
+I recommend to watch a video first, because I highlight things I talk about. It's less then 5 minutes long.
 
-<!-- ```{r, eval=T, echo=F} -->
-<!-- vembedr::embed_youtube("") -->
-<!-- ``` -->
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("U-hS2zoRPOY")
+```
 
-<!-- ## Previous topics -->
+## Previous topics
 
-<!-- To get the most out of this post, familiarize yourself with one parametric method - [One-Way ANOVA](https://yuzar-blog.netlify.app/posts/2022-04-03-anova/) and one non-parametric method - [Mann-Whitney U test](https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/). -->
+To get the most out of this post, familiarize yourself with one parametric method - [One-Way ANOVA](https://yuzar-blog.netlify.app/posts/2022-04-03-anova/) and one non-parametric method - [Mann-Whitney U test](https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/).
 
 
 ## Get the data
@@ -79,7 +79,7 @@ And the best way to compute Kruskal-Wallis test IMO is the {ggbetweenstats} func
 - first, **our data** - d, with
 - **x-axes** - having grouping variable - education, and
 - **y-axes** - having salaries 
-- then, since our data is not-normally distributed or ordinal, we'll choose a **nonparametric type** of statistical approach, and {ggbetweenstats} automatically takes Kruskal-Wallis test if number of groups in "education" is higher then 2. 
+- then, since our data is not-normally distributed or ordinal, we'll choose a **nonparametric type** of statistical approach, and {ggbetweenstats} automatically takes Kruskal-Wallis test if number of groups in "education" is higher then two..
 
 ```{r fig.height=7}
 # install.packages("ggstatsplot")
