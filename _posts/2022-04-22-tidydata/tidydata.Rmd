@@ -1,5 +1,5 @@
 ---
-title: "Tidy data"
+title: "Tidy data (in progress, but really in progress mate ;)"
 description: |
   Tidy datasets are easy to manipulate, visualise, analyse and they don't interrapt the process. It's like not cooking three dished upfront for the dinner, but preparing one, eating it then needing to get up and cook again, before you continue eating. So, tidying up your data requires some upfront work, but that work pays off in the long term.
 author:
@@ -23,7 +23,7 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+#draft: true
 ---
 
 
