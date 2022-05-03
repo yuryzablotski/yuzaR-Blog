@@ -1,7 +1,7 @@
 ---
 title: "R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust"
 description: |
-  How does education influence our salary? ANOVA which is just the abbreviation for **An**alysis **O**f **Va**riances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.
+  How does education influence our salary? ANOVA which is just the abbreviation for Analysis Of Variances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -9,7 +9,6 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 categories:
   - videos
   - statistics
-  - anova
 preview: thumbnail.png
 output:
   distill::distill_article:
