@@ -34,7 +34,7 @@ If I had to summarize the whole idea of tidy data into one sentence, I'd say: **
 
 Why columns? Well, because it's **the easiest way to store similar data**, for example age or gender. So the data in a column is similar, it belongs together, by it is not the same, it varies. Age varies from 1 to 100, gender varies from male to female. And since data varies in a column, **a column is always a variable**. **A variable is what we need to make any type of analysis**.
 
-## Principles of tidy data
+## Principles of tidy data 
 
 If I had to summarize the idea of tidy data in three simple rules, I would cite the creator of tidy data Hadley Wickham: 
 
