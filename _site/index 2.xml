@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>yuzaR-Blog</title>
+    <link>https://yuzar-blog.netlify.app/</link>
+    <atom:link href="https://yuzar-blog.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Data Science with R
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Tue, 03 May 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Tidy data (in progress, but really in progress mate ;)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</link>
+      <description>
+
+
+&lt;p&gt;If I had to summarize the whole idea of tidy data into one sentence,
+I’d say: &lt;strong&gt;“Whatever changes in your data, put it into a
+column.”&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Why columns? Well, because it’s &lt;strong&gt;the easiest way to store
+similar data&lt;/strong&gt;, for example age or gender. So the data in a
+column is similar, it belongs together, by it is not the same, it
+varies. Age varies from 1 to 100, gender varies from male to female. And
+since data varies in a column, &lt;strong&gt;a column is always a
+variable&lt;/strong&gt;. &lt;strong&gt;A variable is what we need to make any type
+of analysis&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="principles-of-tidy-data"&gt;Principles of tidy data&lt;/h2&gt;
+&lt;p&gt;If I had to summarize the idea of tidy data in three simple rules, I
+would cite the creator of tidy data Hadley Wickham:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;strong&gt;each column is a variable&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;each row is an observation&lt;/strong&gt;, and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;each cell is a single value&lt;/strong&gt; or only one peace of
+information&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;For the sake of simplicity, let’s say that any other dataset which
+does not follow these three rules is &lt;strong&gt;messy&lt;/strong&gt;. And the
+problem with messy data is that it requires different strategies to
+extract different variables. This slows down analysis and invites
+errors.&lt;/p&gt;
+&lt;p&gt;It is often said that 80% of data analysis is spent on the process of
+cleaning and preparing the data &lt;a href="#fn1" class="footnote-ref"
+id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. Data preparation is not just a first step,
+but must be repeated many over the course of analysis as new problems
+come to light&lt;/p&gt;
+&lt;h2 id="does-messy-data-exist"&gt;Does messy data exist?&lt;/h2&gt;
+&lt;p&gt;These three rules of tidy data seem so obvious that you might wonder
+whether messy datasets even exist. Well, unfortunately, most real world
+data is messy, because there are soo many opportunities to mess things
+up. Leo Tolstoy once said:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;“Happy families are all alike; while every unhappy family is
+unhappy in its own way” Leo Tolstoy&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;“Like families, tidy datasets are all alike but every messy
+dataset is messy in its own way.” Hadley Wickham&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, data is often organised to make entry as easy as
+possible.&lt;/p&gt;
+&lt;p&gt;At this point, you might think that tidy data is so obvious that it
+is trivial. Surely, most data sets come in a tidy format, right? Wrong.
+In practice, raw data is rarely tidy and is much harder to work with as
+a result. Let me show you some typical cases I encountered the most and
+how to fix them…&lt;/p&gt;
+&lt;h2
+id="the-most-common-problems-with-messy-datasets-along-with-their-remedies"&gt;The
+most common problems with messy datasets, along with their remedies&lt;/h2&gt;
+&lt;h3
+id="one-variable-is-stored-in-multiple-columns-column-headers-are-values-not-variable-names"&gt;One
+variable is stored in multiple columns = Column headers are values, not
+variable names&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-9.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Different timepoints, for example years or days, are usually stored
+in different columns. And while it might be convenient for recording
+data, it’s hardly possible to analyse it, because a variable
+&lt;strong&gt;year&lt;/strong&gt; does not exist, and we have no idea what those
+&lt;strong&gt;numbers&lt;/strong&gt; are. Timepoints should represent different
+observations! So, in our example, every combination of a country and a
+year IS &lt;strong&gt;a single observation&lt;/strong&gt; of tuberculosis cases, and
+with that - &lt;strong&gt;a single row&lt;/strong&gt;. Making a &lt;strong&gt;wide dataset
+longer&lt;/strong&gt; creates two variables which can be immediately
+analysed.&lt;/p&gt;
+&lt;h3 id="multiple-variables-are-stored-in-one-column"&gt;Multiple variables
+are stored in one column&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-8.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Categorical variable, e.g. gender have categories “females” and
+“males”, which totally belong together. It’s important to separate
+several &lt;strong&gt;categories&lt;/strong&gt; of the same variable,from Our column
+&lt;strong&gt;key&lt;/strong&gt; stores &lt;strong&gt;two different variables&lt;/strong&gt;
+cases and population, which do not belong together, and thus can not be
+analysed. To solve this problem we have to make a long table wider.&lt;/p&gt;
+&lt;h3 id="more-then-one-value-in-one-cell"&gt;More then ONE value in ONE
+cell&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-17.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Remember the third rule? &lt;strong&gt;Each value should be in its own
+cell&lt;/strong&gt;. To fix this problem, we’ll need to separate variable
+“rate” into two variables “cases” and “population”. Now, we could
+actually create a real rate as a new column by dividing a column cases
+by the column population.&lt;/p&gt;
+&lt;h3
+id="different-types-of-data-numbers-text-in-the-same-variable"&gt;Different
+types of data (numbers &amp;amp; text) in the same variable&lt;/h3&gt;
+&lt;p&gt;Data can be either numbers or text. Mixing them into one column would
+make the whole column a text. Thus, convert all values to either numbers
+or text.&lt;/p&gt;
+&lt;h3 id="missing-values-are-mistreated"&gt;Missing values are
+mistreated&lt;/h3&gt;
+&lt;p&gt;In this experiment, the &lt;strong&gt;missing value&lt;/strong&gt; represents an
+observation that should have been made, but wasn’t, so it’s important to
+keep it. &lt;strong&gt;Structural missing values&lt;/strong&gt;, which represent
+measurements that can’t be made (e.g., the count of pregnant males) can
+be safely removed.&lt;/p&gt;
+&lt;h3
+id="matching-similar-but-not-identical-values-created-by-typos"&gt;matching
+similar but not identical values (created by typos)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Variables are stored in both rows and columns.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The most complicated form of messy data occurs when variables are
+stored in both rows and columns.&lt;/p&gt;
+&lt;h3 id="a-single-observational-unit-is-stored-in-multiple-tables."&gt;A
+single observational unit is stored in multiple tables.&lt;/h3&gt;
+&lt;p&gt;Typical example data for control and treatment groups are stored two
+different Excel sheets or even two different files. Here again, we do
+not have a variable &lt;strong&gt;groups&lt;/strong&gt;, while this is exactly what
+we want - compare &lt;strong&gt;groups&lt;/strong&gt;. The solution is obvious -
+combine all tables into a single table, one below the other, while
+adding a column which describes groups.&lt;/p&gt;
+&lt;h2 id="checklist-to-follaw"&gt;Checklist to follaw&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;no empty rows,&lt;/li&gt;
+&lt;li&gt;no empty columns&lt;/li&gt;
+&lt;li&gt;empty cells (or missing values) are sometimes ok. Surprisingly, a
+value can be missing in one of two possible ways:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Explicitly, i.e. flagged with NA. Implicitly, i.e. simply not present
+in the data.&lt;/p&gt;
+&lt;p&gt;It’s very important to separate missing values from zeros ;), because
+missing value indicates missing information, while a zero is
+infromation. For example, if you measured virus load in a cat, but did
+not find any, a zero means that a cat is healthy and it’s important!
+While if we could not take blood of the cat on Sunday, simply because
+the host did not bring the cat over, we have an NA. Don’t put points or
+text “missing”, or -77 into the cell with NA, just leave it empty&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;only the first raw is your header&lt;/li&gt;
+&lt;li&gt;no merged cells&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One way to think about the difference is with this Zen-like koan: An
+explicit missing value is the presence of an absence; an implicit
+missing value is the absence of a presence.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;simple is better the beautiful&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;turn colors into variables, because statistics is colorblind, the
+same applies to anything visual: italic, bold etc.&lt;/li&gt;
+&lt;li&gt;use short simple but still clear columns names, because long
+explanational names you’d need to write them out and it hirts, and the
+models look unübersichtlich. Column “d”, “s” do not communicate
+information, “days” and “species” do.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;a column should be either numeric or categorical, not
+mixed&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;avoid secial charakters, like @, €, *, ^, (), because
+&lt;code&gt;9a&lt;/code&gt; or &lt;code&gt;9+&lt;/code&gt; or &lt;code&gt;&amp;lt;9&lt;/code&gt; will be
+considered as text and will screw up the variable.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if you want to show that some of the observations aren’t sure
+(calibration error), create an column “error” and place 1 every time you
+aren’t sure, and 0 every time you are sure about the measurement. That
+would allow us to excude the data easily if we wish too&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;remove unnecessary/unused columns and data, even if they are for
+explanation, just create a copy of your table#&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;don’t summarize or explain something on the side or below the
+table, because a software will try to incorporate the
+information&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if you plan to use R software don’t code categorical variables
+into numbers, like sex 1 and 2, but write explicit words “female” and
+“male”. For SPSS you might code them.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if you thing your table will become too long, … stop thinking
+that :)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;use data and Filter function in Excel to check for spelling
+errors, empty spaces, special charakters&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="how-to-organise-data"&gt;How to organise data&lt;/h2&gt;
+&lt;p&gt;(random effects!!!!!!!!!) Fixed variables describe the experimental
+design and are known in advance. Computer scientists often call fixed
+variables dimensions, and statisticians usually denote them with
+subscripts on random variables. Measured variables are what we actually
+measure in the study. Fixed variables should come first, followed by
+measured variables, each ordered so that related variables are
+contiguous.&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;If I had to summarize the whole idea of tidy data into one sentence,
+I’d say: &lt;strong&gt;“Whatever changes in your data, put it in a column of
+your spreadsheet.”&lt;/strong&gt; Tidy datasets and tidy tools work hand in
+hand to make data analysis easier, allowing you to focus on the
+interesting domain problem, not on the uninteresting logistics of
+data.&lt;/p&gt;
+&lt;p&gt;That’s why it’s much easier to learn what to do then what not to do,
+we will see examples of messy data though. A standard makes initial data
+cleaning easier because you don’t need to start from scratch and
+reinvent the wheel every time.&lt;/p&gt;
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://vita.had.co.nz/papers/tidy-data.pdf"
+class="uri"&gt;https://vita.had.co.nz/papers/tidy-data.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning.
+Wiley-IEEE.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="footnotes footnotes-end-of-document"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1"&gt;&lt;p&gt;Dasu T, Johnson T (2003). Exploratory Data Mining and
+Data Cleaning. Wiley-IEEE.&lt;a href="#fnref1"
+class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+      <distill:md5>78f15f15f529d33e863e05042636176c</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>anova</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</guid>
+      <pubDate>Tue, 03 May 2022 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s less then 5 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/U-hS2zoRPOY" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;To get the most out of this post, familiarize yourself with one
+parametric method - &lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/"&gt;One-Way
+ANOVA&lt;/a&gt; and one non-parametric method - &lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/"&gt;Mann-Whitney
+U test&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="get-the-data"&gt;Get the data&lt;/h2&gt;
+&lt;p&gt;For that we’ll take 50 individuals from 5 different educational
+backgrounds, compare their salaries and &lt;strong&gt;find out whether
+education matters&lt;/strong&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-13-kw/EdMatters.png" style="width:40.0%" /&gt;&lt;/p&gt;
+&lt;p&gt;The picture above is borrowed from &lt;a
+href="https://www.ncforum.org/education-matters/"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)  # for everything ;)
+library(tidyverse)
+
+# install.packages(&amp;quot;ISLR&amp;quot;)
+library(ISLR)
+
+# stabilize the output of &amp;quot;sample_n()&amp;quot;
+set.seed(1)
+d &amp;lt;- Wage %&amp;gt;% 
+  group_by(education) %&amp;gt;% 
+  sample_n(50, replace = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="how-to-compute-kruskalwallis-test"&gt;How to compute Kruskal–Wallis
+test&lt;/h2&gt;
+&lt;p&gt;And the best way to compute Kruskal-Wallis test IMO is the
+{ggbetweenstats} function from {ggstatsplot} package, which needs only 4
+arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first, &lt;strong&gt;our data&lt;/strong&gt; - d, with&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x-axes&lt;/strong&gt; - having grouping variable - education,
+and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y-axes&lt;/strong&gt; - having salaries&lt;/li&gt;
+&lt;li&gt;then, since our data is not-normally distributed or ordinal, we’ll
+choose a &lt;strong&gt;nonparametric type&lt;/strong&gt; of statistical approach,
+and {ggbetweenstats} automatically takes Kruskal-Wallis test if number
+of groups in “education” is higher then two..&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  type = &amp;quot;nonparametric&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1fad55e3c7d2_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# you can save the picture in the format and size of your choice
+ggsave(filename = &amp;quot;kw.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Such simple command results in this statistically rich and
+publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-squared test statistics&lt;/strong&gt; and the degrees of
+freedom were previously used to manually calculate p-value, but
+nowadays, since p-values are always calculated by computers, we can
+safely ignore it&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;our very small &lt;strong&gt;P-value&lt;/strong&gt; shows a very strong
+evidence against the null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;), that salaries
+across all groups are similar, in favor of the alternative hypothesis
+(H&lt;sub&gt;Alt&lt;/sub&gt;), that salaries of at least one group differ. However,
+&lt;strong&gt;there are two problems with a p-value&lt;/strong&gt;. First, a
+significant P-value only tells you that a difference between groups
+definitely exists and did not happen just by chance, but &lt;strong&gt;a
+p-value can not tell how large this difference is&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-13-kw/p_value_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fortunately, {ggbetweenstats} provides &lt;strong&gt;partial epsilon
+squared&lt;/strong&gt; with 95% Confidence Intervals as the measure of the
+&lt;strong&gt;Effect Size&lt;/strong&gt; for Kruskal-Wallis test. Our effect size of
+0.36 indicates that the &lt;strong&gt;effect of education on salaries is
+large&lt;/strong&gt;. For example a person who studied a lot earns
+approximately twice as much, as the person who did not even finish a
+high school. So, the effect size makes total sense to me.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;effectsize&amp;quot;)
+library(effectsize)
+
+interpret_epsilon_squared(0.36)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;large&amp;quot;
+(Rules: field2013)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?interpret_epsilon_squared()&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;a second problem &lt;strong&gt;p-value&lt;/strong&gt; has is that it tell us
+that a difference between groups exists, but it &lt;strong&gt;doesn’t show
+between which groups exactly&lt;/strong&gt;. That’s why we need to compare
+every education category to every other education category
+pairwisely.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;and luckily for us {ggbetweenstats} &lt;strong&gt;automatically knows
+that we need Dunn pairwise Tests for a significant Kruskal-Wallis,
+conducts those tests, displays p-values and even corrects these p-values
+for multiple comparisons without any additional code&lt;/strong&gt;. How cool
+is that!&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-13-kw/what-dog.gif" style="width:50.0%" /&gt;&lt;/p&gt;
+&lt;h2 id="customise-the-result"&gt;Customise the result&lt;/h2&gt;
+&lt;p&gt;However, if we want to, we can easily customize the results by using
+either additional code within the function, or code from {ggplot2}
+package outside of it. For example,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;you can manipulate the data&lt;/li&gt;
+&lt;li&gt;you can display outliers&lt;/li&gt;
+&lt;li&gt;you can change &lt;strong&gt;Holm correction for multiple
+comparisons&lt;/strong&gt; to a more famous &lt;strong&gt;Bonferroni
+correction&lt;/strong&gt; … but I wouldn’t recommend it, because Bonferroni
+correction is too conservative and we might miss an important
+discovery&lt;/li&gt;
+&lt;li&gt;then, if you want to display &lt;strong&gt;not only significant&lt;/strong&gt;,
+but &lt;strong&gt;all comparisons&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;or change the appearance of your plot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;… you can easily do that and much more. Just write a question mark in
+front of {ggbetweenstats} and explore this interesting function.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = d %&amp;gt;% mutate(wage = round(wage)),
+  x    = education, 
+  y    = wage, 
+  outlier.tagging = T,
+  type = &amp;quot;np&amp;quot;, 
+  p.adjust.method = &amp;quot;bonferroni&amp;quot;,
+  pairwise.display = &amp;quot;all&amp;quot;
+) + 
+  ylab(&amp;quot;pay check&amp;quot;)+
+  theme_classic()+
+  theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file1fad55e3c7d2_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;kw2.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?ggbetweenstats&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="kruskal-wallis-test-for-two-groups"&gt;Kruskal-Wallis test for two
+groups&lt;/h2&gt;
+&lt;p&gt;But what is even more interesting, is the fact, that the two-group
+case of &lt;strong&gt;Kruskal–Wallis test&lt;/strong&gt; is identical to the
+&lt;strong&gt;Wilcoxon rank sum test&lt;/strong&gt;, because they both compare
+rank-sums of groups, &lt;strong&gt;not medians&lt;/strong&gt;, although medians are
+often displayed. In fact the groups can be significantly different even
+when medians are identical, and if you wanna learn more about it, check
+out this video.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;kruskal.test(wage ~ jobclass, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Kruskal-Wallis rank sum test
+
+data:  wage by jobclass
+Kruskal-Wallis chi-squared = 8.4377, df = 1, p-value =
+0.003675&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;wilcox.test(wage ~ jobclass, data = d, correct = F)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Wilcoxon rank sum test
+
+data:  wage by jobclass
+W = 6141, p-value = 0.003675
+alternative hypothesis: true location shift is not equal to 0&lt;/code&gt;&lt;/pre&gt;
+&lt;h2
+id="a-bit-of-theorie-how-kruskalwallis-test-works-and-why-its-called-rank-sum-and-h"&gt;A
+bit of theorie: How Kruskal–Wallis test works and why it’s called
+“rank-sum” and “H”&lt;/h2&gt;
+&lt;p&gt;It takes just 4 steps to manually calculate the test manually: &lt;a
+href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;strong&gt;rank values independently of the group&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;sum the ranks of every group&lt;/strong&gt; (&lt;span
+class="math inline"&gt;\(R_j\)&lt;/span&gt;). This is where the
+&lt;strong&gt;rank-sum&lt;/strong&gt; part of the name comes from. Also,
+&lt;strong&gt;average the ranks of every group&lt;/strong&gt; (&lt;span
+class="math inline"&gt;\(\bar{r_j}\)&lt;/span&gt;). The &lt;strong&gt;mean
+rank&lt;/strong&gt; is not needed for test statistics, but will be reported
+later.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[R_j = \sum_{i=1}^{n_j}r_i\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[\bar{r_j} = \frac
+{\sum_{i=1}^{n_j}r_i}{n_j} \]&lt;/span&gt;&lt;/p&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;calculate test-statistic: &lt;strong&gt;H-value&lt;/strong&gt; for &lt;em&gt;n&lt;/em&gt;
+&amp;lt; 5 (per group) or &lt;strong&gt;Chi-square&lt;/strong&gt; for &lt;em&gt;n&lt;/em&gt; &amp;gt; 5.
+This is where the &lt;strong&gt;H&lt;/strong&gt; part of the test name comes
+from.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ H = (N-1)\frac{\sum_{i=1}^g
+n_i(\bar{r}_{i\cdot} - \bar{r})^2}{\sum_{i=1}^g\sum_{j=1}^{n_i}(r_{ij} -
+\bar{r})^2} \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ Chi-square = \frac
+{(N-1)(S_t^2-C)}{S_r^2-C} \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;r&lt;/em&gt; - rank&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;N&lt;/em&gt; - total number of observations&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;n&lt;/em&gt; - number of observations per group&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ S_t^2 = \sum_{i=1}^{g}
+\frac{R_i^2}{n_i} \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ S_r^2 = \sum_{i=1}^{N} {r_{ij}^2}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ C = \frac {N(N+1)^2}{4}  \]&lt;/span&gt;&lt;/p&gt;
+&lt;ol start="4" style="list-style-type: decimal"&gt;
+&lt;li&gt;compare your test statistics to its critical value in the table of
+critical values (&lt;em&gt;Chi-squared&lt;/em&gt; &lt;a
+href="https://people.smp.uq.edu.au/YoniNazarathy/stat_models_B_course_spring_07/distributions/chisqtab.pdf"&gt;here&lt;/a&gt;
+or &lt;em&gt;H-value&lt;/em&gt; &lt;a
+href="file:///Users/yzablotski/Downloads/kruskalwallish.pdf"&gt;here&lt;/a&gt;)
+to get a &lt;em&gt;p-value&lt;/em&gt;, which will answer our initial question about
+&lt;strong&gt;whether the difference is significant, namely whether education
+matters&lt;/strong&gt;. If calculated test statistics is greater than or equal
+to the critical value, we reject &lt;strong&gt;H&lt;sub&gt;0&lt;/sub&gt;&lt;/strong&gt; and
+accept &lt;strong&gt;H&lt;sub&gt;alt&lt;/sub&gt;&lt;/strong&gt;, if lower, we accept
+&lt;strong&gt;H&lt;sub&gt;0&lt;/sub&gt;&lt;/strong&gt; and reject
+&lt;strong&gt;H&lt;sub&gt;alt&lt;/sub&gt;&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Just my opinion:&lt;/strong&gt; Calculating test statistic and
+looking up critical values in tests is not very pragmatic, since every
+statistical software always delivers both statistics and
+&lt;em&gt;p-value&lt;/em&gt;. With multiple groups, e.g. &lt;em&gt;Kruskal-Wallis
+test&lt;/em&gt;, it gets really messy. Thus, it is always good to understand
+how things work, but don’t feel bad if you never conduct the test
+manually.&lt;/p&gt;
+&lt;h2 id="old-way-to-compute-kruskal-wallis-test-and-post-hoc"&gt;Old way to
+compute Kruskal-Wallis test and Post-Hoc&lt;/h2&gt;
+&lt;p&gt;The {ggbetweenstats} is definitely the best way, but if you wanna
+check the old way of conducting Kruskal-Wallis and make either pairwise
+Mann-Whitney U or pairwise Conover tests instead of the Dunn test, use
+the code below.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;kruskal.test(wage ~ education, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Kruskal-Wallis rank sum test
+
+data:  wage by education
+Kruskal-Wallis chi-squared = 89.198, df = 4, p-value &amp;lt; 2.2e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;source(&amp;quot;http://www.statmethods.net/RiA/wmc.txt&amp;quot;)
+wmc(wage ~ education, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Descriptive Statistics
+
+       2. HS Grad 1. &amp;lt; HS Grad 3. Some College 4. College Grad
+n        50.00000     50.00000        50.00000        50.00000
+median   86.03955     88.73676       106.72398       129.04896
+mad      29.42843     22.18120        17.03991        27.20001
+       5. Advanced Degree
+n                50.00000
+median          137.58775
+mad              27.72964
+
+Multiple Comparisons (Wilcoxon Rank Sum Tests)
+Probability Adjustment = holm
+
+           Group.1            Group.2      W            p    
+1       2. HS Grad       1. &amp;lt; HS Grad 1222.0 8.495624e-01    
+2       2. HS Grad    3. Some College  746.5 2.090676e-03  **
+3       2. HS Grad    4. College Grad  449.0 2.374652e-07 ***
+4       2. HS Grad 5. Advanced Degree  297.0 4.596310e-10 ***
+5     1. &amp;lt; HS Grad    3. Some College  702.0 7.974574e-04 ***
+6     1. &amp;lt; HS Grad    4. College Grad  390.0 2.468970e-08 ***
+7     1. &amp;lt; HS Grad 5. Advanced Degree  242.5 3.815055e-11 ***
+8  3. Some College    4. College Grad  783.5 3.933652e-03  **
+9  3. Some College 5. Advanced Degree  506.0 1.765640e-06 ***
+10 4. College Grad 5. Advanced Degree  951.0 7.906592e-02   .
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;conover.test&amp;quot;)
+library(conover.test)
+conover.test(d$wage, d$education)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  Kruskal-Wallis rank sum test
+
+data: x and group
+Kruskal-Wallis chi-squared = 89.1976, df = 4, p-value = 0
+
+                           Comparison of x by group                            
+                                (No adjustment)                                
+Col Mean-|
+Row Mean |   1. &amp;lt; HS    2. HS Gr   3. Some    4. Colle
+---------+--------------------------------------------
+2. HS Gr |  -0.174682
+         |     0.4307
+         |
+3. Some  |  -3.816479  -3.641797
+         |    0.0001*    0.0002*
+         |
+4. Colle |  -7.220228  -7.045545  -3.403748
+         |    0.0000*    0.0000*    0.0004*
+         |
+5. Advan |  -9.232507  -9.057824  -5.416027  -2.012279
+         |    0.0000*    0.0000*    0.0000*    0.0226*
+
+alpha = 0.05
+Reject Ho if p &amp;lt;= alpha/2&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Since the &lt;strong&gt;real world data is never perfect, the
+non-parametric tests are very important tools&lt;/strong&gt; in a toolbox of
+every data scientist. Thus, &lt;em&gt;Kruskal-Wallis rank-sum unpaired H
+test&lt;/em&gt; (such a beautiful name! 😂) is more powerful then
+&lt;em&gt;ANOVA&lt;/em&gt; for highly skewed distributions and presence of outliers.
+Howeverm, Kruskal-Wallis looses some information, due to replacement of
+real data by ranks, and is therefore less powerful for noramlly
+distributed data. But please, don’t use it instead of ANOVA just out of
+laziness to check ANOVAs assumptions, you might get a wrong result.&lt;/p&gt;
+&lt;h2 id="whats-next-or-dont-use-kruskalwallis-test-if"&gt;What’s next? Or,
+don’t use Kruskal–Wallis test if:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;groups are dependent (paired); in this case apply either &lt;em&gt;paired
+ANOVA&lt;/em&gt; if data is normally distributed or the &lt;em&gt;Friedman test&lt;/em&gt;
+if data is not normally distributed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for reading!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-references"&gt;Further readings and
+references&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="footnotes footnotes-end-of-document"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1"&gt;&lt;p&gt;&lt;a
+href="https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test"
+class="uri"&gt;https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test&lt;/a&gt;&lt;a
+href="#fnref1" class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+      <distill:md5>929360629e4f8a58b3428d28f6427778</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</guid>
+      <pubDate>Mon, 02 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-13-kw/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova</link>
+      <description>Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova</guid>
+      <pubDate>Thu, 21 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</link>
+      <description>How does education influence our salary? ANOVA which is just the abbreviation for **An**alysis **O**f **Va**riances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>anova</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</guid>
+      <pubDate>Thu, 21 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Cochran’s Q Test + Pairwise McNemar Tests (post-hoc)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-04-cochran</link>
+      <description>Cochran test is an extension of the McNemar test for comparing MORE than two PAIRED categorical samples in which the same individuals appear in each sample. If Cochran test is significant, we'd need to compare samples among each other pairwisely with McNemar tests. So, let's do that.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-04-cochran</guid>
+      <pubDate>Wed, 20 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-04-cochran/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise &amp; interpret 🥳 What happens if we use a wrong test 😱</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest</link>
+      <description>Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn't use this name</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest</guid>
+      <pubDate>Sat, 16 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Correlation Matrix | Danger or opportunity?</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr</link>
+      <description>Having several numeric variables, we often wanna know which of them are correlated and how. Correlation Matrix seems to be a good solution for it. But drawing conclusions from plain correlation coeffitients and p-values is dangerous, if we don't visualize the data. Let's learn a better way to produce a correlation matrix.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr</guid>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Two-Samples t-Test | Student's &amp; Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest</link>
+      <description>Two-samples t-test can answer useful questions, for example - where can we get more money, working in a factory or in the IT-industry? So, let's learn (1) how to make sure t-test is a CORRECT test for our data, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest</guid>
+      <pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples t-Test | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</link>
+      <description>Can one week of training significantly improve your number of sit-ups? Well, Paired t-Test can answer this question by comparing your performance Before and After this week. So, let's learn how to produce this statistically rich plot using only one simple command, how to interpret all these results and see what happens if we use a wrong test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</guid>
+      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | McNemar Test | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar</link>
+      <description>If you need to compare two PAIRED categorical samples, McNemar test is a correct choise for you. Though, people often use Chi-Square test instead. Thus, in this blog-post we'll first conduct, visualize and interpret McNemac test you see on the picture to your right using only one simple command and then see what happens if we use Chi-Square test for paired data.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar</guid>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Friedman Test | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-02-08-friedman</link>
+      <description>The Friedman Test is a non-parametric brother of Repeated Measures ANOVA, which does much better job when data is not-normally distributed (which happens pretty often ;). Friedman test is also superior to Repeated Measures ANOVA when our data is ordinal (e.g., scales from 1 to 10). Friedman Test can also be a non-parametric father of the Paired Wilcoxon test, because it can compare more then two groups.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-02-08-friedman</guid>
+      <pubDate>Sun, 20 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples Wilcoxon Signed Rank Test</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</link>
+      <description>Can a speed-reading exercise make you a faster reader? Well, Wilcoxon Signed Rank Test displayed here is a correct test to answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, why Wilcoxon test is called Signed Rank and how to produce and interpret this statistically rich plot using only one simple command.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</guid>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</link>
+      <description>Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</guid>
+      <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others.</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</link>
+      <description>Imagine you get 7 out of 10 to-dos from your list done on average. Are you then more productive then others? One-sample t-test and One-sample Wilcoxon test can answer this question. So, in this blog-post you'll learn how to conduct and visualize these tests with only one simple command, how to interpret all these results and how to choose the right test in the first place. Let's get straight into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</guid>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Chi-Square Test | how to conduct, visualize &amp; interpret | + pairwise post-hoc tests</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</link>
+      <description>Chi-Square Test checks the independence between two categorical variables, where variables can have two or more categories. Need to do Chi-Square test? It can actually be done with only one line of code. There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. In this short blog-post you'll learn how to conduct, visualize and interpret Chi-Square test &amp; pairwise post-hoc tests in R.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {dlookr} diagnose, explore and transform your data</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</link>
+      <description>Raw data need to be diagnosed for existing problems, explored for new hypotheses and repaired in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. {dlookr} generates automated reports and performs compex operations, like imputing missing values or outliers, with simple functions. Moreover, {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2} to name just a few!</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>R package reviews</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</guid>
+      <pubDate>Sat, 30 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/dlookr_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Deep Exploratory Data Analysis (EDA) in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</link>
+      <description>Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this post I'll provide the simplest and most effective ways to explore data in R, which will significantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/DEDA_thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>How to impute missing values with Machine Learning in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</link>
+      <description>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</description>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <category>machine learning</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_missing_values.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Null Hypothesis, Alternative Hypothesis and Hypothesis Testing</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</link>
+      <description>Hypothesis testing is one of the most important concepts in (frequentiest) statistics and science. However, most people who test hypotheses are scientists, but not statisticians. That's why scientists often do not test hypotheses properly, without any bad intensionс. So, in this blog-post we'll break down hypothesis testing in small parts and try to properly understand every of them.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>What is p-value and why we need it</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</link>
+      <description>Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {DataExplorer} explore your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</link>
+      <description>What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...</description>
+      <category>R package reviews</category>
+      <category>EDA</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 2: parametric survival models</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</link>
+      <description>The non-parametric Kaplan-Meier method (KM) can not describe survival probability by a smooth function, which means it can not predict anything. The parametric models (e.g. Exponential, Weibull etc.) can! Besides, in case where parametric models are appropriate, they are more exact, more effective and more informative than KM or Cox. However, unfortunately, this step is often left out due to the rear use of parametric models. In this post we’ll try to close this gap.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {performance} check how good your model is! </title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</link>
+      <description>There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/14.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 1: a gentle introduction into Kaplan-Meier Curves</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</link>
+      <description>Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/thumbnail_survival_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {janitor} clean your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</link>
+      <description>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</guid>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/11.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to visualize models, their assumptions and post-hocs</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</link>
+      <description>A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code &amp; maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.</description>
+      <category>visualization</category>
+      <category>videos</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</guid>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to create a blog or a website in R with {Distill} package</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</link>
+      <description>If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.</description>
+      <category>R &amp; the Web</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/images/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+  </channel>
+</rss>
