@@ -145,7 +145,7 @@ One way to think about the difference is with this Zen-like koan: An explicit mi
 
 - if you thing your table will become too long, ... stop thinking that :)
 
-- use data and Filter function in Excel to check for spelling errors, empty spaces, special charakters
+- use data and Filter function in Excel to check for spelling errors, empty spaces, special characters
 
 ## How to organise data
 
