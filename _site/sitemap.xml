@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-04-13-kw/</loc>
-    <lastmod>2022-04-22T16:12:02+02:00</lastmod>
+    <lastmod>2022-05-03T23:00:37+02:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/</loc>
@@ -30,39 +30,39 @@
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr/</loc>
-    <lastmod>2022-04-01T13:24:57+02:00</lastmod>
+    <lastmod>2022-04-01T13:25:49+02:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/</loc>
-    <lastmod>2022-03-22T08:17:32+01:00</lastmod>
+    <lastmod>2022-03-22T08:19:47+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/</loc>
-    <lastmod>2022-03-11T22:52:33+01:00</lastmod>
+    <lastmod>2022-03-11T22:54:48+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar/</loc>
-    <lastmod>2022-03-05T10:41:16+01:00</lastmod>
+    <lastmod>2022-03-05T10:42:58+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/</loc>
-    <lastmod>2022-02-20T10:33:30+01:00</lastmod>
+    <lastmod>2022-02-20T10:34:53+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/</loc>
-    <lastmod>2022-01-26T17:10:42+01:00</lastmod>
+    <lastmod>2022-01-26T17:11:46+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/</loc>
-    <lastmod>2022-01-03T11:29:17+01:00</lastmod>
+    <lastmod>2022-01-03T11:29:43+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/</loc>
-    <lastmod>2022-01-03T11:31:03+01:00</lastmod>
+    <lastmod>2022-01-03T11:31:29+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/</loc>
-    <lastmod>2022-01-03T11:31:59+01:00</lastmod>
+    <lastmod>2022-01-03T11:32:27+01:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/</loc>
@@ -73,16 +73,16 @@
     <lastmod>2021-06-04T17:13:07+02:00</lastmod>
   </url>
   <url>
+    <loc>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/</loc>
+    <lastmod>2022-04-03T12:46:25+02:00</lastmod>
+  </url>
+  <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/</loc>
     <lastmod>2021-07-31T11:46:43+02:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/</loc>
-    <lastmod>2021-09-28T10:53:02+02:00</lastmod>
-  </url>
-  <url>
-    <loc>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/</loc>
-    <lastmod>2022-04-03T12:45:10+02:00</lastmod>
+    <lastmod>2021-09-28T10:53:03+02:00</lastmod>
   </url>
   <url>
     <loc>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/</loc>

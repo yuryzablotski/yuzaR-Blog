@@ -1886,6 +1886,12 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
+      if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+        var fn = $(this).children()[0]
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
       var refs = $(this).attr('data-cites').split(" ");
       var refHtml = refs.map(function(ref) {
         return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -2432,7 +2438,6 @@ gtag('config', 'G-Q28WX9Y4VS');
 <a href="../../index.xml">
 <i class="fa fa-rss" aria-hidden="true"></i>
 </a>
-<a href="https://www.r-bloggers.com/">R-bloggers</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2729,20 +2734,20 @@ A BibTeX entry for LaTeX users is
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=One-sample%20Student%E2%80%99s%20t-test%20and%20One-sample%20Wilcoxon%20test%3A%20or%20how%20to%20compare%20your%20work%20to%20the%20work%20of%20others.&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F">
-        <i class="fab fa-twitter"></i>
+      <a href="https://twitter.com/share?text=One-sample%20Student%E2%80%99s%20t-test%20and%20One-sample%20Wilcoxon%20test%3A%20or%20how%20to%20compare%20your%20work%20to%20the%20work%20of%20others.&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F&amp;title=One-sample%20Student%E2%80%99s%20t-test%20and%20One-sample%20Wilcoxon%20test%3A%20or%20how%20to%20compare%20your%20work%20to%20the%20work%20of%20others.">
-        <i class="fab fa-linkedin"></i>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F&amp;title=One-sample%20Student%E2%80%99s%20t-test%20and%20One-sample%20Wilcoxon%20test%3A%20or%20how%20to%20compare%20your%20work%20to%20the%20work%20of%20others." aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
       </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F">
-        <i class="fab fa-facebook"></i>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
       </a>
-      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F">
-        <i class="fab fa-google-plus"></i>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
       </a>
-      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F&amp;description=One-sample%20Student%E2%80%99s%20t-test%20and%20One-sample%20Wilcoxon%20test%3A%20or%20how%20to%20compare%20your%20work%20to%20the%20work%20of%20others.">
-        <i class="fab fa-pinterest"></i>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others%2F&amp;description=One-sample%20Student%E2%80%99s%20t-test%20and%20One-sample%20Wilcoxon%20test%3A%20or%20how%20to%20compare%20your%20work%20to%20the%20work%20of%20others." aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
       </a>
     </span>
   </p>

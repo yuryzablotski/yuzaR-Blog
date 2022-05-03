@@ -1,5 +1,0 @@
----
-title: "A cool name of my blog"
-site: distill::distill_website
-listing: posts
----

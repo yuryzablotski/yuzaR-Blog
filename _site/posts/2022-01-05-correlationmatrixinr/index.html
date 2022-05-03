@@ -1886,6 +1886,12 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
+      if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+        var fn = $(this).children()[0]
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
       var refs = $(this).attr('data-cites').split(" ");
       var refHtml = refs.map(function(ref) {
         return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -2785,20 +2791,20 @@ class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"><
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=R%20demo%20%7C%20Correlation%20Matrix%20%7C%20Danger%20or%20opportunity%3F&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F">
-        <i class="fab fa-twitter"></i>
+      <a href="https://twitter.com/share?text=R%20demo%20%7C%20Correlation%20Matrix%20%7C%20Danger%20or%20opportunity%3F&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F&amp;title=R%20demo%20%7C%20Correlation%20Matrix%20%7C%20Danger%20or%20opportunity%3F">
-        <i class="fab fa-linkedin"></i>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F&amp;title=R%20demo%20%7C%20Correlation%20Matrix%20%7C%20Danger%20or%20opportunity%3F" aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
       </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F">
-        <i class="fab fa-facebook"></i>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
       </a>
-      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F">
-        <i class="fab fa-google-plus"></i>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
       </a>
-      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F&amp;description=R%20demo%20%7C%20Correlation%20Matrix%20%7C%20Danger%20or%20opportunity%3F">
-        <i class="fab fa-pinterest"></i>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-05-correlationmatrixinr%2F&amp;description=R%20demo%20%7C%20Correlation%20Matrix%20%7C%20Danger%20or%20opportunity%3F" aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
       </a>
     </span>
   </p>

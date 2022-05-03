@@ -1890,6 +1890,12 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
+      if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+        var fn = $(this).children()[0]
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
       var refs = $(this).attr('data-cites').split(" ");
       var refHtml = refs.map(function(ref) {
         return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -2681,20 +2687,20 @@ W = 0.75787, p-value = 0.001112</code></pre>
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=R%20demo%20%7C%20Paired%20Samples%20Wilcoxon%20Signed%20Rank%20Test&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F">
-        <i class="fab fa-twitter"></i>
+      <a href="https://twitter.com/share?text=R%20demo%20%7C%20Paired%20Samples%20Wilcoxon%20Signed%20Rank%20Test&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F&amp;title=R%20demo%20%7C%20Paired%20Samples%20Wilcoxon%20Signed%20Rank%20Test">
-        <i class="fab fa-linkedin"></i>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F&amp;title=R%20demo%20%7C%20Paired%20Samples%20Wilcoxon%20Signed%20Rank%20Test" aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
       </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F">
-        <i class="fab fa-facebook"></i>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
       </a>
-      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F">
-        <i class="fab fa-google-plus"></i>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
       </a>
-      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F&amp;description=R%20demo%20%7C%20Paired%20Samples%20Wilcoxon%20Signed%20Rank%20Test">
-        <i class="fab fa-pinterest"></i>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2022-01-13-pairedsampleswilcoxonsigned-ranktestinr%2F&amp;description=R%20demo%20%7C%20Paired%20Samples%20Wilcoxon%20Signed%20Rank%20Test" aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
       </a>
     </span>
   </p>

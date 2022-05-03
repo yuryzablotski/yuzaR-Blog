@@ -51,16 +51,17 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
+code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -74,9 +75,9 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -85,6 +86,7 @@ code span.va { color: #111111; } /* Variable */
 code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
+
 
   <!--radix_placeholder_meta_tags-->
   <title>yuzaR-Blog: Latest posts</title>
@@ -455,7 +457,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   </style>
 
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
   <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
   <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -1862,6 +1864,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
+        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+          var fn = $(this).children()[0]
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
           return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -2350,7 +2358,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2406,7 +2414,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <a href="index.xml">
 <i class="fa fa-rss" aria-hidden="true"></i>
 </a>
-<a href="https://www.r-bloggers.com/">R-bloggers</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2550,70 +2557,72 @@ function init_posts_list() {
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="Latest posts">Latest posts</h1>
-<a href="posts/2022-01-05-correlationmatrixinr/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
+<a href="posts/2022-04-13-kw/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics","anova"]}</script>
 <div class="metadata">
-<div class="publishedDate">April 1, 2022</div>
+<div class="publishedDate">May 3, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2022-01-05-correlationmatrixinr/thumbnail.jpg"/>
+<img src="posts/2022-04-13-kw/thumbnail.png"/>
 </div>
 <div class="description">
-<h2>R demo | Correlation Matrix | Danger or opportunity?</h2>
+<h2>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</h2>
 <div class="dt-tags">
 <div class="dt-tag">videos</div>
 <div class="dt-tag">statistics</div>
+<div class="dt-tag">anova</div>
 </div>
-<p>Having several numeric variables, we often wanna know which of them are correlated and how. Correlation Matrix seems to be a good solution for it. But drawing conclusions from plain correlation coeffitients and p-values is dangerous, if we don't visualize the data. Let's learn a better way to produce a correlation matrix.</p>
+<p>If we have ordinal or not-normally distributed data, ANOVA might produce a wrong result. That's why we need Kruskal-Wallis test. Kruskal-Wallis test you see on the screen answers two question (1) whether at least one group is different from other groups and (2) between which groups exactly this difference is. So, let's learn how to get and interpret all these results.</p>
 </div>
 </a>
-<a href="posts/2022-03-16-mwutest/" class="post-preview">
+<a href="posts/2022-01-30-rmanova/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
 <div class="metadata">
-<div class="publishedDate">April 1, 2022</div>
+<div class="publishedDate">April 21, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2022-03-16-mwutest/thumbnail.png"/>
+<img src="posts/2022-01-30-rmanova/thumbnail.png"/>
 </div>
 <div class="description">
-<h2>R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise &amp; interpret 🥳 What happens if we use a wrong test 😱</h2>
+<h2>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</h2>
 <div class="dt-tags">
 <div class="dt-tag">videos</div>
 <div class="dt-tag">statistics</div>
 </div>
-<p>Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn't use this name</p>
+<p>Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.</p>
 </div>
 </a>
-<a href="posts/2022-03-11-ttest/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
+<a href="posts/2022-04-03-anova/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics","anova"]}</script>
 <div class="metadata">
-<div class="publishedDate">March 22, 2022</div>
+<div class="publishedDate">April 21, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2022-03-11-ttest/thumbnail.png"/>
+<img src="posts/2022-04-03-anova/thumbnail.png"/>
 </div>
 <div class="description">
-<h2>R demo | Two-Samples t-Test | Student's &amp; Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱</h2>
+<h2>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</h2>
 <div class="dt-tags">
 <div class="dt-tag">videos</div>
 <div class="dt-tag">statistics</div>
+<div class="dt-tag">anova</div>
 </div>
-<p>Two-samples t-test can answer useful questions, for example - where can we get more money, working in a factory or in the IT-industry? So, let's learn (1) how to make sure t-test is a CORRECT test for our data, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.</p>
+<p>How does education influence our salary? ANOVA which is just the abbreviation for **An**alysis **O**f **Va**riances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</p>
 </div>
 </a>
 <a href="posts/2022-03-04-cochran/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
 <div class="metadata">
-<div class="publishedDate">March 11, 2022</div>
+<div class="publishedDate">April 20, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
@@ -2630,6 +2639,66 @@ function init_posts_list() {
 <p>Cochran test is an extension of the McNemar test for comparing MORE than two PAIRED categorical samples in which the same individuals appear in each sample. If Cochran test is significant, we'd need to compare samples among each other pairwisely with McNemar tests. So, let's do that.</p>
 </div>
 </a>
+<a href="posts/2022-03-16-mwutest/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 16, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img src="posts/2022-03-16-mwutest/thumbnail.png"/>
+</div>
+<div class="description">
+<h2>R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise &amp; interpret 🥳 What happens if we use a wrong test 😱</h2>
+<div class="dt-tags">
+<div class="dt-tag">videos</div>
+<div class="dt-tag">statistics</div>
+</div>
+<p>Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn't use this name</p>
+</div>
+</a>
+<a href="posts/2022-01-05-correlationmatrixinr/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
+<div class="metadata">
+<div class="publishedDate">April 1, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/2022-01-05-correlationmatrixinr/thumbnail.jpg"/>
+</div>
+<div class="description">
+<h2>R demo | Correlation Matrix | Danger or opportunity?</h2>
+<div class="dt-tags">
+<div class="dt-tag">videos</div>
+<div class="dt-tag">statistics</div>
+</div>
+<p>Having several numeric variables, we often wanna know which of them are correlated and how. Correlation Matrix seems to be a good solution for it. But drawing conclusions from plain correlation coeffitients and p-values is dangerous, if we don't visualize the data. Let's learn a better way to produce a correlation matrix.</p>
+</div>
+</a>
+<a href="posts/2022-03-11-ttest/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
+<div class="metadata">
+<div class="publishedDate">March 22, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/2022-03-11-ttest/thumbnail.png"/>
+</div>
+<div class="description">
+<h2>R demo | Two-Samples t-Test | Student's &amp; Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱</h2>
+<div class="dt-tags">
+<div class="dt-tag">videos</div>
+<div class="dt-tag">statistics</div>
+</div>
+<p>Two-samples t-test can answer useful questions, for example - where can we get more money, working in a factory or in the IT-industry? So, let's learn (1) how to make sure t-test is a CORRECT test for our data, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.</p>
+</div>
+</a>
 <a href="posts/2022-01-22-pairedsamplesttestinr/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
 <div class="metadata">
@@ -2639,7 +2708,7 @@ function init_posts_list() {
 </div>
 </div>
 <div class="thumbnail">
-<img src="posts/2022-01-22-pairedsamplesttestinr/thumbnail.png"/>
+<img data-src="posts/2022-01-22-pairedsamplesttestinr/thumbnail.png"/>
 </div>
 <div class="description">
 <h2>R demo | Paired Samples t-Test | How to conduct, visualise and interpret</h2>
@@ -2688,26 +2757,6 @@ function init_posts_list() {
 <div class="dt-tag">statistics</div>
 </div>
 <p>The Friedman Test is a non-parametric brother of Repeated Measures ANOVA, which does much better job when data is not-normally distributed (which happens pretty often ;). Friedman test is also superior to Repeated Measures ANOVA when our data is ordinal (e.g., scales from 1 to 10). Friedman Test can also be a non-parametric father of the Paired Wilcoxon test, because it can compare more then two groups.</p>
-</div>
-</a>
-<a href="posts/2022-01-30-rmanova/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
-<div class="metadata">
-<div class="publishedDate">Feb. 8, 2022</div>
-<div class="dt-authors">
-<div class="dt-author">Yury Zablotski</div>
-</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2022-01-30-rmanova/thumbnail.png"/>
-</div>
-<div class="description">
-<h2>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</h2>
-<div class="dt-tags">
-<div class="dt-tag">videos</div>
-<div class="dt-tag">statistics</div>
-</div>
-<p>Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.</p>
 </div>
 </a>
 <a href="posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/" class="post-preview">
@@ -2835,6 +2884,28 @@ function init_posts_list() {
 <p>Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this post I'll provide the simplest and most effective ways to explore data in R, which will significantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.</p>
 </div>
 </a>
+<a href="posts/2021-03-04-how-to-impute-missing-values-in-r/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","data wrangling","visualization","machine learning"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 9, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_missing_values.png"/>
+</div>
+<div class="description">
+<h2>How to impute missing values with Machine Learning in R</h2>
+<div class="dt-tags">
+<div class="dt-tag">videos</div>
+<div class="dt-tag">data wrangling</div>
+<div class="dt-tag">visualization</div>
+<div class="dt-tag">machine learning</div>
+</div>
+<p>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</p>
+</div>
+</a>
 <a href="posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics"]}</script>
 <div class="metadata">
@@ -2873,28 +2944,6 @@ function init_posts_list() {
 <div class="dt-tag">statistics</div>
 </div>
 <p>Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.</p>
-</div>
-</a>
-<a href="posts/2021-03-04-how-to-impute-missing-values-in-r/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["videos","data wrangling","visualization","machine learning"]}</script>
-<div class="metadata">
-<div class="publishedDate">Jan. 8, 2021</div>
-<div class="dt-authors">
-<div class="dt-author">Yury Zablotski</div>
-</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_missing_values.png"/>
-</div>
-<div class="description">
-<h2>How to impute missing values with Machine Learning in R</h2>
-<div class="dt-tags">
-<div class="dt-tag">videos</div>
-<div class="dt-tag">data wrangling</div>
-<div class="dt-tag">visualization</div>
-<div class="dt-tag">machine learning</div>
-</div>
-<p>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</p>
 </div>
 </a>
 <a href="posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/" class="post-preview">
@@ -3047,7 +3096,11 @@ function init_posts_list() {
 <ul>
 <li>
 <a href="#category:Articles">Articles</a>
-<span class="category-count">(24)</span>
+<span class="category-count">(26)</span>
+</li>
+<li>
+<a href="#category:anova">anova</a>
+<span class="category-count">(2)</span>
 </li>
 <li>
 <a href="#category:data_wrangling">data wrangling</a>
@@ -3075,7 +3128,7 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#category:statistics">statistics</a>
-<span class="category-count">(14)</span>
+<span class="category-count">(16)</span>
 </li>
 <li>
 <a href="#category:survival_analysis">survival analysis</a>
@@ -3083,7 +3136,7 @@ function init_posts_list() {
 </li>
 <li>
 <a href="#category:videos">videos</a>
-<span class="category-count">(24)</span>
+<span class="category-count">(26)</span>
 </li>
 <li>
 <a href="#category:visualization">visualization</a>
@@ -3107,7 +3160,8 @@ function init_posts_list() {
 
 
 <div class="d-article">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

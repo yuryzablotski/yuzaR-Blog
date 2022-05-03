@@ -483,7 +483,7 @@ d-title {
 
 </style>
 
-<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
 <link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
 <script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -1890,6 +1890,12 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
+      if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+        var fn = $(this).children()[0]
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
       var refs = $(this).attr('data-cites').split(" ");
       var refHtml = refs.map(function(ref) {
         return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -2436,7 +2442,6 @@ gtag('config', 'G-Q28WX9Y4VS');
 <a href="../../index.xml">
 <i class="fa fa-rss" aria-hidden="true"></i>
 </a>
-<a href="https://www.r-bloggers.com/">R-bloggers</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2682,20 +2687,20 @@ Wasserstein, Ronald L, Allen L Schirm, and Nicole A Lazar. 2019. <span>“<span 
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=What%20is%20p-value%20and%20why%20we%20need%20it&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F">
-        <i class="fab fa-twitter"></i>
+      <a href="https://twitter.com/share?text=What%20is%20p-value%20and%20why%20we%20need%20it&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F&amp;title=What%20is%20p-value%20and%20why%20we%20need%20it">
-        <i class="fab fa-linkedin"></i>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F&amp;title=What%20is%20p-value%20and%20why%20we%20need%20it" aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
       </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F">
-        <i class="fab fa-facebook"></i>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
       </a>
-      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F">
-        <i class="fab fa-google-plus"></i>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
       </a>
-      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F&amp;description=What%20is%20p-value%20and%20why%20we%20need%20it">
-        <i class="fab fa-pinterest"></i>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuzar-blog.netlify.app%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F&amp;description=What%20is%20p-value%20and%20why%20we%20need%20it" aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
       </a>
     </span>
   </p>
