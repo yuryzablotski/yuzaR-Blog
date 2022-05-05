@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 
 ## This post as a video 
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. 8 minutes long. 
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 8 minutes long.
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("JDGtLG0Tceo")

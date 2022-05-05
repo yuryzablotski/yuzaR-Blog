@@ -1,7 +1,7 @@
 ---
 title: "R demo | Kruskal-Wallis test | How to conduct, visualize, interpret & more 😉"
 description: |
-  If we have ordinal or not-normally distributed data, ANOVA might produce a wrong result. That's why we need Kruskal-Wallis test. Kruskal-Wallis test you see on the screen answers two question (1) whether at least one group is different from other groups and (2) between which groups exactly this difference is. So, let's learn how to get and interpret all these results. 
+  If we have ordinal or not-normally distributed data, ANOVA might produce a wrong result. That's why we need Kruskal-Wallis test. Kruskal-Wallis test you see on the screen answers two question (1) whether at least one group is different from other groups and (2) between which groups exactly this difference is. So, let's learn how to get and interpret all these results.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
