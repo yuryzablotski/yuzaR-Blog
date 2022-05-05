@@ -225,7 +225,9 @@ Since the **real world data is never perfect, the non-parametric tests are very 
 
 ## What's next? Or, don’t use Kruskal–Wallis test if:
 
-- groups are dependent (paired); in this case apply either *paired ANOVA* if data is normally distributed or the *Friedman test* if data is not normally distributed.
+- groups are dependent (paired), in this case apply either [paired ANOVA](https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/) if data is normally distributed or 
+
+- [Friedman test](https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/) if data is not normally distributed.
 
 **Thank you for reading!**
 

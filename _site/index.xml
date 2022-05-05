@@ -9,17 +9,6 @@
     <generator>Distill</generator>
     <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</link>
-      <description>If we have ordinal or not-normally distributed data, ANOVA might produce a wrong result. That's why we need Kruskal-Wallis test. Kruskal-Wallis test you see on the screen answers two question (1) whether at least one group is different from other groups and (2) between which groups exactly this difference is. So, let's learn how to get and interpret all these results.</description>
-      <category>videos</category>
-      <category>statistics</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</guid>
-      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-13-kw/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
-    </item>
-    <item>
       <title>Tidy data (in progress, but really in progress mate ;)</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</link>
@@ -346,7 +335,7 @@ ggbetweenstats(
   y    = wage, 
   type = &amp;quot;parametric&amp;quot;, 
   var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filedc84b205a43_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# you can save the picture in the format and size of your choice
 ggsave(filename = &amp;quot;anova.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Such simple command results in this statistically rich and
@@ -474,7 +463,7 @@ try some things out, I am sure you’ll enjoy it.&lt;/p&gt;
   y    = wage, 
   outlier.tagging = T,
   type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filedc84b205a43_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
   data = d,
   x    = education, 
@@ -489,7 +478,7 @@ try some things out, I am sure you’ll enjoy it.&lt;/p&gt;
   ylab(&amp;quot;pay check&amp;quot;)+
   theme_classic()+
   theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filedc84b205a43_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggbetweenstats&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;But what you could enjoy even more is the &lt;strong&gt;Repeated Measures
 ANOVA&lt;/strong&gt;, which you would use if you followed a destiny of the
@@ -502,7 +491,7 @@ ggwithinstats(
     y    = wage, 
     type = &amp;quot;parametric&amp;quot;, 
     var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filedc84b205a43_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="a-little-bit-of-theory-about-anova"&gt;A little bit of theory about
 ANOVA&lt;/h2&gt;
 &lt;p&gt;The variance between groups can be easily calculated by the variance
@@ -643,8 +632,351 @@ improve this tutorial.&lt;/p&gt;
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</guid>
-      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s less then 5 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/U-hS2zoRPOY" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;To get the most out of this post, familiarize yourself with one
+parametric method - &lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/"&gt;One-Way
+ANOVA&lt;/a&gt; and one non-parametric method - &lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/"&gt;Mann-Whitney
+U test&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="get-the-data"&gt;Get the data&lt;/h2&gt;
+&lt;p&gt;For that we’ll take 50 individuals from 5 different educational
+backgrounds, compare their salaries and &lt;strong&gt;find out whether
+education matters&lt;/strong&gt;?&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-13-kw/EdMatters.png" style="width:40.0%" /&gt;&lt;/p&gt;
+&lt;p&gt;The picture above is borrowed from &lt;a
+href="https://www.ncforum.org/education-matters/"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)  # for everything ;)
+library(tidyverse)
+
+# install.packages(&amp;quot;ISLR&amp;quot;)
+library(ISLR)
+
+# stabilize the output of &amp;quot;sample_n()&amp;quot;
+set.seed(1)
+d &amp;lt;- Wage %&amp;gt;% 
+  group_by(education) %&amp;gt;% 
+  sample_n(50, replace = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="how-to-compute-kruskalwallis-test"&gt;How to compute Kruskal–Wallis
+test&lt;/h2&gt;
+&lt;p&gt;And the best way to compute Kruskal-Wallis test IMO is the
+{ggbetweenstats} function from {ggstatsplot} package, which needs only 4
+arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first, &lt;strong&gt;our data&lt;/strong&gt; - d, with&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x-axes&lt;/strong&gt; - having grouping variable - education,
+and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y-axes&lt;/strong&gt; - having salaries&lt;/li&gt;
+&lt;li&gt;then, since our data is not-normally distributed or ordinal, we’ll
+choose a &lt;strong&gt;nonparametric type&lt;/strong&gt; of statistical approach,
+and {ggbetweenstats} automatically takes Kruskal-Wallis test if number
+of groups in “education” is higher then two..&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  type = &amp;quot;nonparametric&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filedc82c59289c_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# you can save the picture in the format and size of your choice
+ggsave(filename = &amp;quot;kw.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Such simple command results in this statistically rich and
+publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;h2 id="interpretation"&gt;Interpretation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Chi-squared test statistics&lt;/strong&gt; and the degrees of
+freedom were previously used to manually calculate p-value, but
+nowadays, since p-values are always calculated by computers, we can
+safely ignore it&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;our very small &lt;strong&gt;P-value&lt;/strong&gt; shows a very strong
+evidence against the null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;), that salaries
+across all groups are similar, in favor of the alternative hypothesis
+(H&lt;sub&gt;Alt&lt;/sub&gt;), that salaries of at least one group differ. However,
+&lt;strong&gt;there are two problems with a p-value&lt;/strong&gt;. First, a
+significant P-value only tells you that a difference between groups
+definitely exists and did not happen just by chance, but &lt;strong&gt;a
+p-value can not tell how large this difference is&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-13-kw/p_value_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fortunately, {ggbetweenstats} provides &lt;strong&gt;partial epsilon
+squared&lt;/strong&gt; with 95% Confidence Intervals as the measure of the
+&lt;strong&gt;Effect Size&lt;/strong&gt; for Kruskal-Wallis test. Our effect size of
+0.36 indicates that the &lt;strong&gt;effect of education on salaries is
+large&lt;/strong&gt;. For example a person who studied a lot earns
+approximately twice as much, as the person who did not even finish a
+high school. So, the effect size makes total sense to me.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;effectsize&amp;quot;)
+library(effectsize)
+
+interpret_epsilon_squared(0.36)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;large&amp;quot;
+(Rules: field2013)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?interpret_epsilon_squared()&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;a second problem &lt;strong&gt;p-value&lt;/strong&gt; has is that it tell us
+that a difference between groups exists, but it &lt;strong&gt;doesn’t show
+between which groups exactly&lt;/strong&gt;. That’s why we need to compare
+every education category to every other education category
+pairwisely.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;and luckily for us {ggbetweenstats} &lt;strong&gt;automatically knows
+that we need Dunn pairwise Tests for a significant Kruskal-Wallis,
+conducts those tests, displays p-values and even corrects these p-values
+for multiple comparisons without any additional code&lt;/strong&gt;. How cool
+is that!&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-13-kw/what-dog.gif" style="width:50.0%" /&gt;&lt;/p&gt;
+&lt;h2 id="customise-the-result"&gt;Customise the result&lt;/h2&gt;
+&lt;p&gt;However, if we want to, we can easily customize the results by using
+either additional code within the function, or code from {ggplot2}
+package outside of it. For example,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;you can manipulate the data&lt;/li&gt;
+&lt;li&gt;you can display outliers&lt;/li&gt;
+&lt;li&gt;you can change &lt;strong&gt;Holm correction for multiple
+comparisons&lt;/strong&gt; to a more famous &lt;strong&gt;Bonferroni
+correction&lt;/strong&gt; … but I wouldn’t recommend it, because Bonferroni
+correction is too conservative and we might miss an important
+discovery&lt;/li&gt;
+&lt;li&gt;then, if you want to display &lt;strong&gt;not only significant&lt;/strong&gt;,
+but &lt;strong&gt;all comparisons&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;or change the appearance of your plot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;… you can easily do that and much more. Just write a question mark in
+front of {ggbetweenstats} and explore this interesting function.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = d %&amp;gt;% mutate(wage = round(wage)),
+  x    = education, 
+  y    = wage, 
+  outlier.tagging = T,
+  type = &amp;quot;np&amp;quot;, 
+  p.adjust.method = &amp;quot;bonferroni&amp;quot;,
+  pairwise.display = &amp;quot;all&amp;quot;
+) + 
+  ylab(&amp;quot;pay check&amp;quot;)+
+  theme_classic()+
+  theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filedc82c59289c_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(filename = &amp;quot;kw2.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?ggbetweenstats&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="kruskal-wallis-test-for-two-groups"&gt;Kruskal-Wallis test for two
+groups&lt;/h2&gt;
+&lt;p&gt;But what is even more interesting, is the fact, that the two-group
+case of &lt;strong&gt;Kruskal–Wallis test&lt;/strong&gt; is identical to the
+&lt;strong&gt;Wilcoxon rank sum test&lt;/strong&gt;, because they both compare
+rank-sums of groups, &lt;strong&gt;not medians&lt;/strong&gt;, although medians are
+often displayed. In fact the groups can be significantly different even
+when medians are identical, and if you wanna learn more about it, check
+out this video.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;kruskal.test(wage ~ jobclass, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Kruskal-Wallis rank sum test
+
+data:  wage by jobclass
+Kruskal-Wallis chi-squared = 8.4377, df = 1, p-value =
+0.003675&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;wilcox.test(wage ~ jobclass, data = d, correct = F)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Wilcoxon rank sum test
+
+data:  wage by jobclass
+W = 6141, p-value = 0.003675
+alternative hypothesis: true location shift is not equal to 0&lt;/code&gt;&lt;/pre&gt;
+&lt;h2
+id="a-bit-of-theorie-how-kruskalwallis-test-works-and-why-its-called-rank-sum-and-h"&gt;A
+bit of theorie: How Kruskal–Wallis test works and why it’s called
+“rank-sum” and “H”&lt;/h2&gt;
+&lt;p&gt;It takes just 4 steps to manually calculate the test manually: &lt;a
+href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;strong&gt;rank values independently of the group&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;sum the ranks of every group&lt;/strong&gt; (&lt;span
+class="math inline"&gt;\(R_j\)&lt;/span&gt;). This is where the
+&lt;strong&gt;rank-sum&lt;/strong&gt; part of the name comes from. Also,
+&lt;strong&gt;average the ranks of every group&lt;/strong&gt; (&lt;span
+class="math inline"&gt;\(\bar{r_j}\)&lt;/span&gt;). The &lt;strong&gt;mean
+rank&lt;/strong&gt; is not needed for test statistics, but will be reported
+later.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[R_j = \sum_{i=1}^{n_j}r_i\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[\bar{r_j} = \frac
+{\sum_{i=1}^{n_j}r_i}{n_j} \]&lt;/span&gt;&lt;/p&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;calculate test-statistic: &lt;strong&gt;H-value&lt;/strong&gt; for &lt;em&gt;n&lt;/em&gt;
+&amp;lt; 5 (per group) or &lt;strong&gt;Chi-square&lt;/strong&gt; for &lt;em&gt;n&lt;/em&gt; &amp;gt; 5.
+This is where the &lt;strong&gt;H&lt;/strong&gt; part of the test name comes
+from.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ H = (N-1)\frac{\sum_{i=1}^g
+n_i(\bar{r}_{i\cdot} - \bar{r})^2}{\sum_{i=1}^g\sum_{j=1}^{n_i}(r_{ij} -
+\bar{r})^2} \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ Chi-square = \frac
+{(N-1)(S_t^2-C)}{S_r^2-C} \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;r&lt;/em&gt; - rank&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;N&lt;/em&gt; - total number of observations&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;n&lt;/em&gt; - number of observations per group&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ S_t^2 = \sum_{i=1}^{g}
+\frac{R_i^2}{n_i} \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ S_r^2 = \sum_{i=1}^{N} {r_{ij}^2}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ C = \frac {N(N+1)^2}{4}  \]&lt;/span&gt;&lt;/p&gt;
+&lt;ol start="4" style="list-style-type: decimal"&gt;
+&lt;li&gt;compare your test statistics to its critical value in the table of
+critical values (&lt;em&gt;Chi-squared&lt;/em&gt; &lt;a
+href="https://people.smp.uq.edu.au/YoniNazarathy/stat_models_B_course_spring_07/distributions/chisqtab.pdf"&gt;here&lt;/a&gt;
+or &lt;em&gt;H-value&lt;/em&gt; &lt;a
+href="file:///Users/yzablotski/Downloads/kruskalwallish.pdf"&gt;here&lt;/a&gt;)
+to get a &lt;em&gt;p-value&lt;/em&gt;, which will answer our initial question about
+&lt;strong&gt;whether the difference is significant, namely whether education
+matters&lt;/strong&gt;. If calculated test statistics is greater than or equal
+to the critical value, we reject &lt;strong&gt;H&lt;sub&gt;0&lt;/sub&gt;&lt;/strong&gt; and
+accept &lt;strong&gt;H&lt;sub&gt;alt&lt;/sub&gt;&lt;/strong&gt;, if lower, we accept
+&lt;strong&gt;H&lt;sub&gt;0&lt;/sub&gt;&lt;/strong&gt; and reject
+&lt;strong&gt;H&lt;sub&gt;alt&lt;/sub&gt;&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Just my opinion:&lt;/strong&gt; Calculating test statistic and
+looking up critical values in tests is not very pragmatic, since every
+statistical software always delivers both statistics and
+&lt;em&gt;p-value&lt;/em&gt;. With multiple groups, e.g. &lt;em&gt;Kruskal-Wallis
+test&lt;/em&gt;, it gets really messy. Thus, it is always good to understand
+how things work, but don’t feel bad if you never conduct the test
+manually.&lt;/p&gt;
+&lt;h2 id="old-way-to-compute-kruskal-wallis-test-and-post-hoc"&gt;Old way to
+compute Kruskal-Wallis test and Post-Hoc&lt;/h2&gt;
+&lt;p&gt;The {ggbetweenstats} is definitely the best way, but if you wanna
+check the old way of conducting Kruskal-Wallis and make either pairwise
+Mann-Whitney U or pairwise Conover tests instead of the Dunn test, use
+the code below.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;kruskal.test(wage ~ education, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Kruskal-Wallis rank sum test
+
+data:  wage by education
+Kruskal-Wallis chi-squared = 89.198, df = 4, p-value &amp;lt; 2.2e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;source(&amp;quot;http://www.statmethods.net/RiA/wmc.txt&amp;quot;)
+wmc(wage ~ education, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Descriptive Statistics
+
+       2. HS Grad 1. &amp;lt; HS Grad 3. Some College 4. College Grad
+n        50.00000     50.00000        50.00000        50.00000
+median   86.03955     88.73676       106.72398       129.04896
+mad      29.42843     22.18120        17.03991        27.20001
+       5. Advanced Degree
+n                50.00000
+median          137.58775
+mad              27.72964
+
+Multiple Comparisons (Wilcoxon Rank Sum Tests)
+Probability Adjustment = holm
+
+           Group.1            Group.2      W            p    
+1       2. HS Grad       1. &amp;lt; HS Grad 1222.0 8.495624e-01    
+2       2. HS Grad    3. Some College  746.5 2.090676e-03  **
+3       2. HS Grad    4. College Grad  449.0 2.374652e-07 ***
+4       2. HS Grad 5. Advanced Degree  297.0 4.596310e-10 ***
+5     1. &amp;lt; HS Grad    3. Some College  702.0 7.974574e-04 ***
+6     1. &amp;lt; HS Grad    4. College Grad  390.0 2.468970e-08 ***
+7     1. &amp;lt; HS Grad 5. Advanced Degree  242.5 3.815055e-11 ***
+8  3. Some College    4. College Grad  783.5 3.933652e-03  **
+9  3. Some College 5. Advanced Degree  506.0 1.765640e-06 ***
+10 4. College Grad 5. Advanced Degree  951.0 7.906592e-02   .
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;conover.test&amp;quot;)
+library(conover.test)
+conover.test(d$wage, d$education)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  Kruskal-Wallis rank sum test
+
+data: x and group
+Kruskal-Wallis chi-squared = 89.1976, df = 4, p-value = 0
+
+                           Comparison of x by group                            
+                                (No adjustment)                                
+Col Mean-|
+Row Mean |   1. &amp;lt; HS    2. HS Gr   3. Some    4. Colle
+---------+--------------------------------------------
+2. HS Gr |  -0.174682
+         |     0.4307
+         |
+3. Some  |  -3.816479  -3.641797
+         |    0.0001*    0.0002*
+         |
+4. Colle |  -7.220228  -7.045545  -3.403748
+         |    0.0000*    0.0000*    0.0004*
+         |
+5. Advan |  -9.232507  -9.057824  -5.416027  -2.012279
+         |    0.0000*    0.0000*    0.0000*    0.0226*
+
+alpha = 0.05
+Reject Ho if p &amp;lt;= alpha/2&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Since the &lt;strong&gt;real world data is never perfect, the
+non-parametric tests are very important tools&lt;/strong&gt; in a toolbox of
+every data scientist. Thus, &lt;em&gt;Kruskal-Wallis rank-sum unpaired H
+test&lt;/em&gt; (such a beautiful name! 😂) is more powerful then
+&lt;em&gt;ANOVA&lt;/em&gt; for highly skewed distributions and presence of outliers.
+Howeverm, Kruskal-Wallis looses some information, due to replacement of
+real data by ranks, and is therefore less powerful for noramlly
+distributed data. But please, don’t use it instead of ANOVA just out of
+laziness to check ANOVAs assumptions, you might get a wrong result.&lt;/p&gt;
+&lt;h2 id="whats-next-or-dont-use-kruskalwallis-test-if"&gt;What’s next? Or,
+don’t use Kruskal–Wallis test if:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;groups are dependent (paired), in this case apply either &lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/"&gt;paired
+ANOVA&lt;/a&gt; if data is normally distributed or&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/"&gt;Friedman
+test&lt;/a&gt; if data is not normally distributed.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for reading!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-references"&gt;Further readings and
+references&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="footnotes footnotes-end-of-document"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1"&gt;&lt;p&gt;&lt;a
+href="https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test"
+class="uri"&gt;https://www.sciencedirect.com/topics/medicine-and-dentistry/kruskal-wallis-test&lt;/a&gt;&lt;a
+href="#fnref1" class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+      <distill:md5>ba1b69c769403eb11f7468727cec64b3</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</guid>
+      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-13-kw/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</title>

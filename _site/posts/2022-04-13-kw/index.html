@@ -138,7 +138,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["EdMatters.png","kw_files/anchor-4.2.2/anchor.min.js","kw_files/bowser-1.9.3/bowser.min.js","kw_files/distill-2.2.21/template.v2.js","kw_files/figure-html5/unnamed-chunk-2-1.png","kw_files/figure-html5/unnamed-chunk-3-1 2.png","kw_files/figure-html5/unnamed-chunk-3-1.png","kw_files/figure-html5/unnamed-chunk-4-1.png","kw_files/figure-html5/unnamed-chunk-5-1.png","kw_files/figure-html5/unnamed-chunk-6-1.png","kw_files/figure-html5/unnamed-chunk-7-1.png","kw_files/figure-html5/unnamed-chunk-8-1.png","kw_files/header-attrs-2.13/header-attrs.js","kw_files/header-attrs-2.14/header-attrs.js","kw_files/jquery-3.6.0/jquery-3.6.0.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.map","kw_files/popper-2.6.0/popper.min.js","kw_files/tippy-6.2.7/tippy-bundle.umd.min.js","kw_files/tippy-6.2.7/tippy-light-border.css","kw_files/tippy-6.2.7/tippy.css","kw_files/tippy-6.2.7/tippy.umd.min.js","kw_files/vembedr-0.1.5/css/vembedr.css","kw_files/webcomponents-2.0.0/webcomponents.js","kw.jpg","kw2.jpg","p_value_interpretation.png","thumbnail.png","what-dog.gif"]}
+  {"type":"character","attributes":{},"value":["EdMatters.png","kw_files/anchor-4.2.2/anchor.min 4.js","kw_files/anchor-4.2.2/anchor.min.js","kw_files/bowser-1.9.3/bowser.min 4.js","kw_files/bowser-1.9.3/bowser.min.js","kw_files/distill-2.2.21/template.v2 4.js","kw_files/distill-2.2.21/template.v2.js","kw_files/figure-html5/unnamed-chunk-2-1.png","kw_files/figure-html5/unnamed-chunk-3-1 2.png","kw_files/figure-html5/unnamed-chunk-3-1 3.png","kw_files/figure-html5/unnamed-chunk-3-1.png","kw_files/figure-html5/unnamed-chunk-4-1.png","kw_files/figure-html5/unnamed-chunk-5-1 2.png","kw_files/figure-html5/unnamed-chunk-5-1.png","kw_files/figure-html5/unnamed-chunk-6-1.png","kw_files/figure-html5/unnamed-chunk-7-1.png","kw_files/figure-html5/unnamed-chunk-8-1.png","kw_files/header-attrs-2.13/header-attrs.js","kw_files/header-attrs-2.14/header-attrs 4.js","kw_files/header-attrs-2.14/header-attrs.js","kw_files/jquery-3.6.0/jquery-3.6.0 4.js","kw_files/jquery-3.6.0/jquery-3.6.0.js","kw_files/jquery-3.6.0/jquery-3.6.0.min 4.js","kw_files/jquery-3.6.0/jquery-3.6.0.min 4.map","kw_files/jquery-3.6.0/jquery-3.6.0.min.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.map","kw_files/popper-2.6.0/popper.min 4.js","kw_files/popper-2.6.0/popper.min.js","kw_files/tippy-6.2.7/tippy 4.css","kw_files/tippy-6.2.7/tippy-bundle.umd.min 4.js","kw_files/tippy-6.2.7/tippy-bundle.umd.min.js","kw_files/tippy-6.2.7/tippy-light-border 4.css","kw_files/tippy-6.2.7/tippy-light-border.css","kw_files/tippy-6.2.7/tippy.css","kw_files/tippy-6.2.7/tippy.umd.min 4.js","kw_files/tippy-6.2.7/tippy.umd.min.js","kw_files/vembedr-0.1.5/css/vembedr 4.css","kw_files/vembedr-0.1.5/css/vembedr.css","kw_files/webcomponents-2.0.0/webcomponents 4.js","kw_files/webcomponents-2.0.0/webcomponents.js","kw.jpg","kw2.jpg","p_value_interpretation.png","thumbnail.png","what-dog.gif"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -1912,6 +1912,31 @@ function init_distill() {
       });
     });
 
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+    
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
+
     // clear polling timer
     clearInterval(tid);
 
@@ -2010,6 +2035,8 @@ function init_common() {
   // mark non-body figures created by knitr chunks as 100% width
   $('.layout-chunk').each(function(i, val) {
     var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
     if ($(this).attr('data-layout') !== "l-body") {
       figures.css('width', '100%');
     } else {
@@ -2863,9 +2890,12 @@ laziness to check ANOVAs assumptions, you might get a wrong result.</p>
 <h2 id="whats-next-or-dont-use-kruskalwallis-test-if">What’s next? Or,
 don’t use Kruskal–Wallis test if:</h2>
 <ul>
-<li>groups are dependent (paired); in this case apply either <em>paired
-ANOVA</em> if data is normally distributed or the <em>Friedman test</em>
-if data is not normally distributed.</li>
+<li><p>groups are dependent (paired), in this case apply either <a
+href="https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/">paired
+ANOVA</a> if data is normally distributed or</p></li>
+<li><p><a
+href="https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/">Friedman
+test</a> if data is not normally distributed.</p></li>
 </ul>
 <p><strong>Thank you for reading!</strong></p>
 <h2 id="further-readings-and-references">Further readings and
