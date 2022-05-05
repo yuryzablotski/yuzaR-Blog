@@ -119,7 +119,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["tidy-1.png","tidy-17.png","tidy-8.png","tidy-9.png","tidydata_files/anchor-4.2.2/anchor.min.js","tidydata_files/bowser-1.9.3/bowser.min.js","tidydata_files/distill-2.2.21/template.v2.js","tidydata_files/header-attrs-2.13/header-attrs 2.js","tidydata_files/header-attrs-2.13/header-attrs.js","tidydata_files/header-attrs-2.14/header-attrs.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.min.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.min.map","tidydata_files/popper-2.6.0/popper.min.js","tidydata_files/tippy-6.2.7/tippy-bundle.umd.min.js","tidydata_files/tippy-6.2.7/tippy-light-border.css","tidydata_files/tippy-6.2.7/tippy.css","tidydata_files/tippy-6.2.7/tippy.umd.min.js","tidydata_files/webcomponents-2.0.0/webcomponents.js","tidyr-pivoting.gif","tidyr.pdf"]}
+  {"type":"character","attributes":{},"value":["tidy-1.png","tidy-17.png","tidy-8.png","tidy-9.png","tidydata_files/anchor-4.2.2/anchor.min 2.js","tidydata_files/anchor-4.2.2/anchor.min.js","tidydata_files/bowser-1.9.3/bowser.min 2.js","tidydata_files/bowser-1.9.3/bowser.min.js","tidydata_files/distill-2.2.21/template.v2 2.js","tidydata_files/distill-2.2.21/template.v2.js","tidydata_files/header-attrs-2.13/header-attrs 2.js","tidydata_files/header-attrs-2.13/header-attrs.js","tidydata_files/header-attrs-2.14/header-attrs 2.js","tidydata_files/header-attrs-2.14/header-attrs.js","tidydata_files/jquery-3.6.0/jquery-3.6.0 2.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.min 2.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.min 2.map","tidydata_files/jquery-3.6.0/jquery-3.6.0.min.js","tidydata_files/jquery-3.6.0/jquery-3.6.0.min.map","tidydata_files/popper-2.6.0/popper.min 2.js","tidydata_files/popper-2.6.0/popper.min.js","tidydata_files/tippy-6.2.7/tippy 2.css","tidydata_files/tippy-6.2.7/tippy-bundle.umd.min 2.js","tidydata_files/tippy-6.2.7/tippy-bundle.umd.min.js","tidydata_files/tippy-6.2.7/tippy-light-border 2.css","tidydata_files/tippy-6.2.7/tippy-light-border.css","tidydata_files/tippy-6.2.7/tippy.css","tidydata_files/tippy-6.2.7/tippy.umd.min 2.js","tidydata_files/tippy-6.2.7/tippy.umd.min.js","tidydata_files/webcomponents-2.0.0/webcomponents 2.js","tidydata_files/webcomponents-2.0.0/webcomponents.js","tidyr-pivoting.gif","tidyr.pdf"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1287,6 +1287,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
         });
       });
 
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+      
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
       // clear polling timer
       clearInterval(tid);
 
@@ -1385,6 +1410,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {

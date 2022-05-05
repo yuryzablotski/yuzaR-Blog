@@ -23,7 +23,208 @@
       <title>Tidy data (in progress, but really in progress mate ;)</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</link>
-      <description>Tidy datasets are easy to manipulate, visualise, analyse and they don't interrapt the process. It's like not cooking three dished upfront for the dinner, but preparing one, eating it then needing to get up and cook again, before you continue eating. So, tidying up your data requires some upfront work, but that work pays off in the long term.</description>
+      <description>
+
+
+&lt;p&gt;If I had to summarize the whole idea of tidy data into one sentence,
+I’d say: &lt;strong&gt;“Whatever changes in your data, put it into a
+column.”&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Why columns? Well, because it’s &lt;strong&gt;the easiest way to store
+similar data&lt;/strong&gt;, for example age or gender. So the data in a
+column is similar, it belongs together, by it is not the same, it
+varies. Age varies from 1 to 100, gender varies from male to female. And
+since data varies in a column, &lt;strong&gt;a column is always a
+variable&lt;/strong&gt;. &lt;strong&gt;A variable is what we need to make any type
+of analysis&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="principles-of-tidy-data"&gt;Principles of tidy data&lt;/h2&gt;
+&lt;p&gt;If I had to summarize the idea of tidy data in three simple rules, I
+would cite the creator of tidy data Hadley Wickham:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&lt;strong&gt;each column is a variable&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;each row is an observation&lt;/strong&gt;, and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;each cell is a single value&lt;/strong&gt; or only one peace of
+information&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;For the sake of simplicity, let’s say that any other dataset which
+does not follow these three rules is &lt;strong&gt;messy&lt;/strong&gt;. And the
+problem with messy data is that it requires different strategies to
+extract different variables. This slows down analysis and invites
+errors.&lt;/p&gt;
+&lt;p&gt;It is often said that 80% of data analysis is spent on the process of
+cleaning and preparing the data &lt;a href="#fn1" class="footnote-ref"
+id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. Data preparation is not just a first step,
+but must be repeated many over the course of analysis as new problems
+come to light&lt;/p&gt;
+&lt;h2 id="does-messy-data-exist"&gt;Does messy data exist?&lt;/h2&gt;
+&lt;p&gt;These three rules of tidy data seem so obvious that you might wonder
+whether messy datasets even exist. Well, unfortunately, most real world
+data is messy, because there are soo many opportunities to mess things
+up. Leo Tolstoy once said:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;“Happy families are all alike; while every unhappy family is
+unhappy in its own way” Leo Tolstoy&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;“Like families, tidy datasets are all alike but every messy
+dataset is messy in its own way.” Hadley Wickham&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, data is often organised to make entry as easy as
+possible.&lt;/p&gt;
+&lt;p&gt;At this point, you might think that tidy data is so obvious that it
+is trivial. Surely, most data sets come in a tidy format, right? Wrong.
+In practice, raw data is rarely tidy and is much harder to work with as
+a result. Let me show you some typical cases I encountered the most and
+how to fix them…&lt;/p&gt;
+&lt;h2
+id="the-most-common-problems-with-messy-datasets-along-with-their-remedies"&gt;The
+most common problems with messy datasets, along with their remedies&lt;/h2&gt;
+&lt;h3
+id="one-variable-is-stored-in-multiple-columns-column-headers-are-values-not-variable-names"&gt;One
+variable is stored in multiple columns = Column headers are values, not
+variable names&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-9.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Different timepoints, for example years or days, are usually stored
+in different columns. And while it might be convenient for recording
+data, it’s hardly possible to analyse it, because a variable
+&lt;strong&gt;year&lt;/strong&gt; does not exist, and we have no idea what those
+&lt;strong&gt;numbers&lt;/strong&gt; are. Timepoints should represent different
+observations! So, in our example, every combination of a country and a
+year IS &lt;strong&gt;a single observation&lt;/strong&gt; of tuberculosis cases, and
+with that - &lt;strong&gt;a single row&lt;/strong&gt;. Making a &lt;strong&gt;wide dataset
+longer&lt;/strong&gt; creates two variables which can be immediately
+analysed.&lt;/p&gt;
+&lt;h3 id="multiple-variables-are-stored-in-one-column"&gt;Multiple variables
+are stored in one column&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-8.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Categorical variable, e.g. gender have categories “females” and
+“males”, which totally belong together. It’s important to separate
+several &lt;strong&gt;categories&lt;/strong&gt; of the same variable,from Our column
+&lt;strong&gt;key&lt;/strong&gt; stores &lt;strong&gt;two different variables&lt;/strong&gt;
+cases and population, which do not belong together, and thus can not be
+analysed. To solve this problem we have to make a long table wider.&lt;/p&gt;
+&lt;h3 id="more-then-one-value-in-one-cell"&gt;More then ONE value in ONE
+cell&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-22-tidydata/tidy-17.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Remember the third rule? &lt;strong&gt;Each value should be in its own
+cell&lt;/strong&gt;. To fix this problem, we’ll need to separate variable
+“rate” into two variables “cases” and “population”. Now, we could
+actually create a real rate as a new column by dividing a column cases
+by the column population.&lt;/p&gt;
+&lt;h3
+id="different-types-of-data-numbers-text-in-the-same-variable"&gt;Different
+types of data (numbers &amp;amp; text) in the same variable&lt;/h3&gt;
+&lt;p&gt;Data can be either numbers or text. Mixing them into one column would
+make the whole column a text. Thus, convert all values to either numbers
+or text.&lt;/p&gt;
+&lt;h3 id="missing-values-are-mistreated"&gt;Missing values are
+mistreated&lt;/h3&gt;
+&lt;p&gt;In this experiment, the &lt;strong&gt;missing value&lt;/strong&gt; represents an
+observation that should have been made, but wasn’t, so it’s important to
+keep it. &lt;strong&gt;Structural missing values&lt;/strong&gt;, which represent
+measurements that can’t be made (e.g., the count of pregnant males) can
+be safely removed.&lt;/p&gt;
+&lt;h3
+id="matching-similar-but-not-identical-values-created-by-typos"&gt;matching
+similar but not identical values (created by typos)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Variables are stored in both rows and columns.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The most complicated form of messy data occurs when variables are
+stored in both rows and columns.&lt;/p&gt;
+&lt;h3 id="a-single-observational-unit-is-stored-in-multiple-tables."&gt;A
+single observational unit is stored in multiple tables.&lt;/h3&gt;
+&lt;p&gt;Typical example data for control and treatment groups are stored two
+different Excel sheets or even two different files. Here again, we do
+not have a variable &lt;strong&gt;groups&lt;/strong&gt;, while this is exactly what
+we want - compare &lt;strong&gt;groups&lt;/strong&gt;. The solution is obvious -
+combine all tables into a single table, one below the other, while
+adding a column which describes groups.&lt;/p&gt;
+&lt;h2 id="checklist-to-follaw"&gt;Checklist to follaw&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;no empty rows,&lt;/li&gt;
+&lt;li&gt;no empty columns&lt;/li&gt;
+&lt;li&gt;empty cells (or missing values) are sometimes ok. Surprisingly, a
+value can be missing in one of two possible ways:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Explicitly, i.e. flagged with NA. Implicitly, i.e. simply not present
+in the data.&lt;/p&gt;
+&lt;p&gt;It’s very important to separate missing values from zeros ;), because
+missing value indicates missing information, while a zero is
+infromation. For example, if you measured virus load in a cat, but did
+not find any, a zero means that a cat is healthy and it’s important!
+While if we could not take blood of the cat on Sunday, simply because
+the host did not bring the cat over, we have an NA. Don’t put points or
+text “missing”, or -77 into the cell with NA, just leave it empty&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;only the first raw is your header&lt;/li&gt;
+&lt;li&gt;no merged cells&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One way to think about the difference is with this Zen-like koan: An
+explicit missing value is the presence of an absence; an implicit
+missing value is the absence of a presence.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;simple is better the beautiful&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;turn colors into variables, because statistics is colorblind, the
+same applies to anything visual: italic, bold etc.&lt;/li&gt;
+&lt;li&gt;use short simple but still clear columns names, because long
+explanational names you’d need to write them out and it hirts, and the
+models look unübersichtlich. Column “d”, “s” do not communicate
+information, “days” and “species” do.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;a column should be either numeric or categorical, not
+mixed&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;avoid secial charakters, like @, €, *, ^, (), because
+&lt;code&gt;9a&lt;/code&gt; or &lt;code&gt;9+&lt;/code&gt; or &lt;code&gt;&amp;lt;9&lt;/code&gt; will be
+considered as text and will screw up the variable.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if you want to show that some of the observations aren’t sure
+(calibration error), create an column “error” and place 1 every time you
+aren’t sure, and 0 every time you are sure about the measurement. That
+would allow us to excude the data easily if we wish too&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;remove unnecessary/unused columns and data, even if they are for
+explanation, just create a copy of your table#&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;don’t summarize or explain something on the side or below the
+table, because a software will try to incorporate the
+information&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if you plan to use R software don’t code categorical variables
+into numbers, like sex 1 and 2, but write explicit words “female” and
+“male”. For SPSS you might code them.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if you thing your table will become too long, … stop thinking
+that :)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;use data and Filter function in Excel to check for spelling
+errors, empty spaces, special characters&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="how-to-organise-data"&gt;How to organise data&lt;/h2&gt;
+&lt;p&gt;(random effects!!!!!!!!!) Fixed variables describe the experimental
+design and are known in advance. Computer scientists often call fixed
+variables dimensions, and statisticians usually denote them with
+subscripts on random variables. Measured variables are what we actually
+measure in the study. Fixed variables should come first, followed by
+measured variables, each ordered so that related variables are
+contiguous.&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;If I had to summarize the whole idea of tidy data into one sentence,
+I’d say: &lt;strong&gt;“Whatever changes in your data, put it in a column of
+your spreadsheet.”&lt;/strong&gt; Tidy datasets and tidy tools work hand in
+hand to make data analysis easier, allowing you to focus on the
+interesting domain problem, not on the uninteresting logistics of
+data.&lt;/p&gt;
+&lt;p&gt;That’s why it’s much easier to learn what to do then what not to do,
+we will see examples of messy data though. A standard makes initial data
+cleaning easier because you don’t need to start from scratch and
+reinvent the wheel every time.&lt;/p&gt;
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://vita.had.co.nz/papers/tidy-data.pdf"
+class="uri"&gt;https://vita.had.co.nz/papers/tidy-data.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning.
+Wiley-IEEE.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="footnotes footnotes-end-of-document"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1"&gt;&lt;p&gt;Dasu T, Johnson T (2003). Exploratory Data Mining and
+Data Cleaning. Wiley-IEEE.&lt;a href="#fnref1"
+class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+      <distill:md5>d96681a1558b263f1642c3de040596c8</distill:md5>
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</guid>
@@ -145,7 +346,7 @@ ggbetweenstats(
   y    = wage, 
   type = &amp;quot;parametric&amp;quot;, 
   var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# you can save the picture in the format and size of your choice
 ggsave(filename = &amp;quot;anova.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Such simple command results in this statistically rich and
@@ -273,7 +474,7 @@ try some things out, I am sure you’ll enjoy it.&lt;/p&gt;
   y    = wage, 
   outlier.tagging = T,
   type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
   data = d,
   x    = education, 
@@ -288,7 +489,7 @@ try some things out, I am sure you’ll enjoy it.&lt;/p&gt;
   ylab(&amp;quot;pay check&amp;quot;)+
   theme_classic()+
   theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?ggbetweenstats&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;But what you could enjoy even more is the &lt;strong&gt;Repeated Measures
 ANOVA&lt;/strong&gt;, which you would use if you followed a destiny of the
@@ -301,7 +502,7 @@ ggwithinstats(
     y    = wage, 
     type = &amp;quot;parametric&amp;quot;, 
     var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="fileccb79992335_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="a-little-bit-of-theory-about-anova"&gt;A little bit of theory about
 ANOVA&lt;/h2&gt;
 &lt;p&gt;The variance between groups can be easily calculated by the variance
@@ -425,8 +626,13 @@ F-statistic: 4.776 on 1 and 148 DF,  p-value: 0.03044&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="whats-next-or-when-not-to-use-repeated-measures-anova"&gt;What’s
 next, or when not to use Repeated Measures ANOVA&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Repeated-Measures ANOVA&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Kruskal-Wallis if data is not-normally distributed&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-04-13-kw/"&gt;Kruskal-Wallis&lt;/a&gt;
+if data is not-normally distributed or&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/"&gt;Repeated-Measures
+ANOVA&lt;/a&gt; if observations are dependend / paired / repeated
+measures&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll

@@ -301,9 +301,11 @@ lm(wage ~ jobclass, d) %>% summary()
 
 ## What's next, or when not to use Repeated Measures ANOVA
 
-- Repeated-Measures ANOVA
+- [Kruskal-Wallis](https://yuzar-blog.netlify.app/posts/2022-04-13-kw/) if data is not-normally distributed or
 
-- Kruskal-Wallis if data is not-normally distributed
+- [Repeated-Measures ANOVA](https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/) if observations are dependend / paired / repeated measures
+
+
 
 
 ---
