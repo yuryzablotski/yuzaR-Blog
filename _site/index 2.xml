@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>yuzaR-Blog</title>
+    <link>https://yuzar-blog.netlify.app/</link>
+    <atom:link href="https://yuzar-blog.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Data Science with R
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Tidy data (in progress, but really in progress mate ;)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</link>
+      <description>Tidy datasets are easy to manipulate, visualise, analyse and they don't interrapt the process. It's like not cooking three dished upfront for the dinner, but preparing one, eating it then needing to get up and cook again, before you continue eating. So, tidying up your data requires some upfront work, but that work pays off in the long term.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</guid>
+      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</link>
+      <description>If we have ordinal or not-normally distributed data, ANOVA might produce a wrong result. That's why we need Kruskal-Wallis test. Kruskal-Wallis test you see on the screen answers two question (1) whether at least one group is different from other groups and (2) between which groups exactly this difference is. So, let's learn how to get and interpret all these results.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</guid>
+      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-13-kw/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</link>
+      <description>How does education influence our salary? ANOVA which is just the abbreviation for Analysis Of Variances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</guid>
+      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova</link>
+      <description>Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova</guid>
+      <pubDate>Thu, 21 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Cochran’s Q Test + Pairwise McNemar Tests (post-hoc)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-04-cochran</link>
+      <description>Cochran test is an extension of the McNemar test for comparing MORE than two PAIRED categorical samples in which the same individuals appear in each sample. If Cochran test is significant, we'd need to compare samples among each other pairwisely with McNemar tests. So, let's do that.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-04-cochran</guid>
+      <pubDate>Wed, 20 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-04-cochran/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise &amp; interpret 🥳 What happens if we use a wrong test 😱</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest</link>
+      <description>Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn't use this name</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest</guid>
+      <pubDate>Sat, 16 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Correlation Matrix | Danger or opportunity?</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr</link>
+      <description>Having several numeric variables, we often wanna know which of them are correlated and how. Correlation Matrix seems to be a good solution for it. But drawing conclusions from plain correlation coeffitients and p-values is dangerous, if we don't visualize the data. Let's learn a better way to produce a correlation matrix.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr</guid>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Two-Samples t-Test | Student's &amp; Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest</link>
+      <description>Two-samples t-test can answer useful questions, for example - where can we get more money, working in a factory or in the IT-industry? So, let's learn (1) how to make sure t-test is a CORRECT test for our data, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-03-11-ttest</guid>
+      <pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples t-Test | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</link>
+      <description>Can one week of training significantly improve your number of sit-ups? Well, Paired t-Test can answer this question by comparing your performance Before and After this week. So, let's learn how to produce this statistically rich plot using only one simple command, how to interpret all these results and see what happens if we use a wrong test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr</guid>
+      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | McNemar Test | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar</link>
+      <description>If you need to compare two PAIRED categorical samples, McNemar test is a correct choise for you. Though, people often use Chi-Square test instead. Thus, in this blog-post we'll first conduct, visualize and interpret McNemac test you see on the picture to your right using only one simple command and then see what happens if we use Chi-Square test for paired data.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar</guid>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Friedman Test | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-02-08-friedman</link>
+      <description>The Friedman Test is a non-parametric brother of Repeated Measures ANOVA, which does much better job when data is not-normally distributed (which happens pretty often ;). Friedman test is also superior to Repeated Measures ANOVA when our data is ordinal (e.g., scales from 1 to 10). Friedman Test can also be a non-parametric father of the Paired Wilcoxon test, because it can compare more then two groups.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-02-08-friedman</guid>
+      <pubDate>Sun, 20 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples Wilcoxon Signed Rank Test</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</link>
+      <description>Can a speed-reading exercise make you a faster reader? Well, Wilcoxon Signed Rank Test displayed here is a correct test to answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, why Wilcoxon test is called Signed Rank and how to produce and interpret this statistically rich plot using only one simple command.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</guid>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</link>
+      <description>Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr</guid>
+      <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others.</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</link>
+      <description>Imagine you get 7 out of 10 to-dos from your list done on average. Are you then more productive then others? One-sample t-test and One-sample Wilcoxon test can answer this question. So, in this blog-post you'll learn how to conduct and visualize these tests with only one simple command, how to interpret all these results and how to choose the right test in the first place. Let's get straight into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</guid>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Chi-Square Test | how to conduct, visualize &amp; interpret | + pairwise post-hoc tests</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</link>
+      <description>Chi-Square Test checks the independence between two categorical variables, where variables can have two or more categories. Need to do Chi-Square test? It can actually be done with only one line of code. There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. In this short blog-post you'll learn how to conduct, visualize and interpret Chi-Square test &amp; pairwise post-hoc tests in R.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {dlookr} diagnose, explore and transform your data</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</link>
+      <description>Raw data need to be diagnosed for existing problems, explored for new hypotheses and repaired in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. {dlookr} generates automated reports and performs compex operations, like imputing missing values or outliers, with simple functions. Moreover, {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2} to name just a few!</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>R package reviews</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</guid>
+      <pubDate>Sat, 30 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/dlookr_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Deep Exploratory Data Analysis (EDA) in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</link>
+      <description>Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this post I'll provide the simplest and most effective ways to explore data in R, which will significantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/DEDA_thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>How to impute missing values with Machine Learning in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</link>
+      <description>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</description>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <category>machine learning</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_missing_values.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Null Hypothesis, Alternative Hypothesis and Hypothesis Testing</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</link>
+      <description>Hypothesis testing is one of the most important concepts in (frequentiest) statistics and science. However, most people who test hypotheses are scientists, but not statisticians. That's why scientists often do not test hypotheses properly, without any bad intensionс. So, in this blog-post we'll break down hypothesis testing in small parts and try to properly understand every of them.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>What is p-value and why we need it</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</link>
+      <description>Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {DataExplorer} explore your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</link>
+      <description>What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...</description>
+      <category>R package reviews</category>
+      <category>EDA</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 2: parametric survival models</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</link>
+      <description>The non-parametric Kaplan-Meier method (KM) can not describe survival probability by a smooth function, which means it can not predict anything. The parametric models (e.g. Exponential, Weibull etc.) can! Besides, in case where parametric models are appropriate, they are more exact, more effective and more informative than KM or Cox. However, unfortunately, this step is often left out due to the rear use of parametric models. In this post we’ll try to close this gap.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {performance} check how good your model is! </title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</link>
+      <description>There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/14.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 1: a gentle introduction into Kaplan-Meier Curves</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</link>
+      <description>Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/thumbnail_survival_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {janitor} clean your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</link>
+      <description>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</guid>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/11.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to visualize models, their assumptions and post-hocs</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</link>
+      <description>A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code &amp; maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.</description>
+      <category>visualization</category>
+      <category>videos</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</guid>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to create a blog or a website in R with {Distill} package</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</link>
+      <description>If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.</description>
+      <category>R &amp; the Web</category>
+      <category>videos</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/images/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+  </channel>
+</rss>

@@ -119,7 +119,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["anova_files/anchor-4.2.2/anchor.min.js","anova_files/bowser-1.9.3/bowser.min.js","anova_files/distill-2.2.21/template.v2.js","anova_files/figure-html5/unnamed-chunk-10-1.png","anova_files/figure-html5/unnamed-chunk-5-1.png","anova_files/figure-html5/unnamed-chunk-6-1.png","anova_files/figure-html5/unnamed-chunk-6-2.png","anova_files/figure-html5/unnamed-chunk-7-1.png","anova_files/figure-html5/unnamed-chunk-8-1.png","anova_files/figure-html5/unnamed-chunk-8-2.png","anova_files/figure-html5/unnamed-chunk-9-1.png","anova_files/figure-html5/unnamed-chunk-9-2.png","anova_files/header-attrs-2.13/header-attrs.js","anova_files/header-attrs-2.14/header-attrs.js","anova_files/jquery-3.6.0/jquery-3.6.0.js","anova_files/jquery-3.6.0/jquery-3.6.0.min.js","anova_files/jquery-3.6.0/jquery-3.6.0.min.map","anova_files/popper-2.6.0/popper.min.js","anova_files/tabwid-1.0.0/tabwid.css","anova_files/tippy-6.2.7/tippy-bundle.umd.min.js","anova_files/tippy-6.2.7/tippy-light-border.css","anova_files/tippy-6.2.7/tippy.css","anova_files/tippy-6.2.7/tippy.umd.min.js","anova_files/vembedr-0.1.5/css/vembedr.css","anova_files/webcomponents-2.0.0/webcomponents.js","anova.jpg","bf_interpretation.png","huge_variance.jpg","interpret_omega_squared.png","interpret_r_squared.png","interpretation.png","kw.jpg","not_normal.png","p_value_interpretation.png","small_variance.jpg","thumbnail.png","what-dog.gif"]}
+  {"type":"character","attributes":{},"value":["anova_files/anchor-4.2.2/anchor.min.js","anova_files/bowser-1.9.3/bowser.min.js","anova_files/distill-2.2.21/template.v2.js","anova_files/figure-html5/unnamed-chunk-10-1.png","anova_files/figure-html5/unnamed-chunk-5-1 2.png","anova_files/figure-html5/unnamed-chunk-5-1.png","anova_files/figure-html5/unnamed-chunk-6-1.png","anova_files/figure-html5/unnamed-chunk-6-2.png","anova_files/figure-html5/unnamed-chunk-7-1.png","anova_files/figure-html5/unnamed-chunk-8-1.png","anova_files/figure-html5/unnamed-chunk-8-2.png","anova_files/figure-html5/unnamed-chunk-9-1 2.png","anova_files/figure-html5/unnamed-chunk-9-1.png","anova_files/figure-html5/unnamed-chunk-9-2.png","anova_files/header-attrs-2.13/header-attrs.js","anova_files/header-attrs-2.14/header-attrs.js","anova_files/jquery-3.6.0/jquery-3.6.0.js","anova_files/jquery-3.6.0/jquery-3.6.0.min.js","anova_files/jquery-3.6.0/jquery-3.6.0.min.map","anova_files/popper-2.6.0/popper.min.js","anova_files/tabwid-1.0.0/tabwid.css","anova_files/tippy-6.2.7/tippy-bundle.umd.min.js","anova_files/tippy-6.2.7/tippy-light-border.css","anova_files/tippy-6.2.7/tippy.css","anova_files/tippy-6.2.7/tippy.umd.min.js","anova_files/vembedr-0.1.5/css/vembedr.css","anova_files/webcomponents-2.0.0/webcomponents.js","anova.jpg","bf_interpretation.png","huge_variance.jpg","interpret_omega_squared.png","interpret_r_squared.png","interpretation.png","kw.jpg","not_normal.png","p_value_interpretation.png","small_variance.jpg","thumbnail.png","what-dog.gif"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1287,6 +1287,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
         });
       });
 
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+      
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
+
       // clear polling timer
       clearInterval(tid);
 
@@ -1385,6 +1410,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -1531,7 +1558,7 @@ next, or when not to use Repeated Measures ANOVA</a></li>
 </div>
 <h2 id="this-post-as-a-video">This post as a video</h2>
 <p>I recommend to watch a video first, because I highlight things I talk
-about. It’s ca. 8 minutes looong…</p>
+about. It’s ca. 8 minutes long.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="vembedr">
 <div>

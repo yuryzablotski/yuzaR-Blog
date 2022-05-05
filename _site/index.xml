@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
   <channel>
     <title>yuzaR-Blog</title>
     <link>https://yuzar-blog.netlify.app/</link>
@@ -33,7 +33,407 @@
       <title>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</link>
-      <description>How does education influence our salary? ANOVA which is just the abbreviation for Analysis Of Variances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</description>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s ca. 8 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/JDGtLG0Tceo" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="previous-topics"&gt;Previous topics&lt;/h2&gt;
+&lt;p&gt;&lt;a
+href="https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/"&gt;Two-Samples
+t-Test&lt;/a&gt; would help.&lt;/p&gt;
+&lt;h2 id="get-the-data"&gt;Get the data&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;tidyverse&amp;quot;)  # for everything ;)
+library(tidyverse)
+
+#install.packages(&amp;quot;ISLR&amp;quot;)
+library(ISLR)
+
+set.seed(4)  # for reproducibility
+d &amp;lt;- Wage %&amp;gt;% 
+  group_by(education) %&amp;gt;% 
+  sample_n(30)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;{ISLR} package provides a {Wage} dataset, with salaries for 5
+different educational groups, starting with people who did not finish a
+high school and ending with people having university or doctoral degree.
+We’ll sample 30 random people from every group and compare their AVERAGE
+salaries. But wait, &lt;strong&gt;is average&lt;/strong&gt; actually a good choice?
+That question is very important, because comparing averages only makes
+sense if the data is normally distributed. While if data is not-normally
+distributed, an average would not represent our data well and ANOVA
+would be a wrong test - producing wrong result. Kruskal-Wallis test
+would be better for not normally distributed data, but that’s a topic
+for another blog-post.&lt;/p&gt;
+&lt;h2 id="check-normality"&gt;Check normality&lt;/h2&gt;
+&lt;p&gt;For now, it’s obvious that we NEED to check for normality. For that
+we’ll use the {normality} function from {dlookr} package, which conducts
+Shapiro-Wilk normality tests with every educational group. High p-values
+in all groups indicate that our data IS normally distributed, so now we
+are sure that using &lt;strong&gt;ANOVA&lt;/strong&gt; is a right choice.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/not_normal.png" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;dlookr&amp;quot;)
+library(dlookr)
+d %&amp;gt;% 
+  group_by(education) %&amp;gt;% 
+  normality(wage) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 5 × 5
+  variable education          statistic p_value sample
+  &amp;lt;chr&amp;gt;    &amp;lt;fct&amp;gt;                  &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
+1 wage     1. &amp;lt; HS Grad           0.966  0.427      30
+2 wage     2. HS Grad             0.972  0.606      30
+3 wage     3. Some College        0.980  0.814      30
+4 wage     4. College Grad        0.965  0.412      30
+5 wage     5. Advanced Degree     0.941  0.0942     30&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="check-homogeneity-of-variances-homoscedasticity"&gt;Check
+Homogeneity of Variances (Homoscedasticity)&lt;/h2&gt;
+&lt;p&gt;However, the normality alone is not enough to make a right decision,
+because there are two different ANOVAs: &lt;strong&gt;Fisher’s ANOVA&lt;/strong&gt;
+for similar variances across groups and &lt;strong&gt;Welch’s ANOVA&lt;/strong&gt;
+for different variances across groups. In fact, the variance is sooo
+important that it’s even part of the name, were &lt;strong&gt;Analysis Of
+Variances&lt;/strong&gt; compares the &lt;strong&gt;variances between the
+groups&lt;/strong&gt; to the &lt;strong&gt;variances within the groups&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;It’s also important, because (1) even very different means with huge
+variance (samples a and b) may not be significantly different (p = 0.1)
+while (2) even very similar means with small variance (samples c and d)
+can be significantly different (p = 0.04). And a classic - Fisher’s
+ANOVA can only be applied when variances are similar! While groups with
+different variances (samples b and c) should be analyzed with Welch’s
+ANOVA.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/huge_variance.jpg" style="width:45.0%" /&gt; &lt;img
+src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/small_variance.jpg" style="width:45.0%" /&gt;&lt;/p&gt;
+&lt;p&gt;Levene’s Test for Homogeneity of Variance helps to decide which ANOVA
+to use. A small p-value of Levene’s Test tells us that our variances
+differ and that we need to use Welch’s ANOVA.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;#install.packages(&amp;quot;car&amp;quot;)
+library(car)
+leveneTest(wage ~ education, d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Levene&amp;#39;s Test for Homogeneity of Variance (center = median)
+       Df F value    Pr(&amp;gt;F)    
+group   4  8.4462 3.737e-06 ***
+      145                      
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, having checked both, Normality and Homogeneity of Variance
+assumptions, we are ready to compute Welch’s ANOVA.&lt;/p&gt;
+&lt;h2 id="compute-anova"&gt;Compute ANOVA&lt;/h2&gt;
+&lt;p&gt;And the best way to compute ANOVA is the {ggbetweenstats} function
+from {ggstatsplot} package, which needs only 5 arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first, &lt;strong&gt;our data&lt;/strong&gt; - d, with&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;x-axes&lt;/strong&gt; - having grouping variable - education,
+and&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;y-axes&lt;/strong&gt; - having salaries&lt;/li&gt;
+&lt;li&gt;then, since our data is normally distributed, we’ll choose a
+&lt;strong&gt;parametric type&lt;/strong&gt; of statistical approach,&lt;/li&gt;
+&lt;li&gt;and since our education groups have different variances, we set
+&lt;strong&gt;var.equal&lt;/strong&gt; argument to &lt;strong&gt;FALSE&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;ggstatsplot&amp;quot;)
+library(ggstatsplot)
+
+set.seed(4)   # for Bayesian reproducibility of 95% CIs
+ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  type = &amp;quot;parametric&amp;quot;, 
+  var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# you can save the picture in the format and size of your choice
+ggsave(filename = &amp;quot;anova.jpg&amp;quot;, plot = last_plot(), width = 8, height = 7)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Such simple command results in this statistically rich and
+publication ready plot! Now, let’s interpret the results.&lt;/p&gt;
+&lt;h2 id="interpret-the-result"&gt;Interpret the result&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Welch’s F-statistics&lt;/strong&gt; is the reason ANOVA is
+called Analysis of Variances, because F is a ratio of the
+&lt;strong&gt;variance between groups&lt;/strong&gt; to the &lt;strong&gt;variance withing
+groups&lt;/strong&gt;. If that ratio is close to one, samples are similar, and
+the further &lt;em&gt;F-value&lt;/em&gt; is from one, the more different are the
+samples. But &lt;strong&gt;F-value&lt;/strong&gt; by itself can not say how far from
+one is far enough, to conclude that this difference is significant.
+That’s why &lt;strong&gt;F-value&lt;/strong&gt; and the degrees of freedom were
+previously used to get a &lt;strong&gt;p-value&lt;/strong&gt;. But nowadays every
+software delivers both F and p-values by default. That is why nowadays
+nobody calculates F values anymore, but if you wanna know how to
+calculate it, check out the chapter on that below.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;our very small &lt;strong&gt;P-value&lt;/strong&gt; shows a very strong
+evidence against the null hypothesis (H&lt;sub&gt;0&lt;/sub&gt;), that mean salaries
+are similar, in favor of the alternative hypothesis (H&lt;sub&gt;Alt&lt;/sub&gt;),
+that mean salaries differ. However, a significant P-value only tells you
+that a difference between groups definitely exists and did not happen
+just by chance, but a p-value can not tell how large this difference
+is.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/p_value_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fortunately, {ggbetweenstats} provides &lt;strong&gt;partial omega
+squared&lt;/strong&gt; with 95% Confidence Intervals as the measure of the
+&lt;strong&gt;Effect Size&lt;/strong&gt; for ANOVA. The {interpret_omega_squared}
+function from {effectsize} package helps to interpret this effect size
+and even provides a reference. Our effect size of 0.34 indicates that
+the &lt;strong&gt;effect of education on salaries is large&lt;/strong&gt;. For
+example a person who invested a lot of years and effort into studying
+earns twice as much on average, as the person who did not even finish a
+high school. So, the effect size makes total sense to me.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# install.packages(&amp;quot;effectsize&amp;quot;)
+library(effectsize)
+
+interpret_omega_squared(0.34)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;large&amp;quot;
+(Rules: field2013)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# ?interpret_omega_squared&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/interpret_omega_squared.png" style="width:50.0%" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;But that’s not all, {ggbetweenstats} also provides a
+&lt;strong&gt;Bayesian Effect Size&lt;/strong&gt;, namely the &lt;strong&gt;coefficient of
+determination&lt;/strong&gt; - &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; with
+95% Highest Density Intervals. &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt;
+shows the &lt;strong&gt;explanatory power&lt;/strong&gt; of our ANOVA model and
+&lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; of 27% is substantial, which
+means - we can totally trust these results.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;interpret_r2(0.27)
+# ?interpret_r2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/interpret_r_squared.png" style="width:50.0%" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Moreover, the &lt;strong&gt;Bayes Factor&lt;/strong&gt;, which is conceptually
+similar to the &lt;strong&gt;p-value&lt;/strong&gt; indicates an &lt;strong&gt;extreme
+evidence for the alternative hypothesis&lt;/strong&gt; - that education does
+affect wages … which IS in line with a p-value on the top of the
+plot.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;interpret_bf(exp(-17.13))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;extreme evidence against&amp;quot;
+(Rules: jeffreys1961)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# ?interpret_bf&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/bf_interpretation.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;now, both, &lt;strong&gt;Bayes Factor&lt;/strong&gt; and
+&lt;strong&gt;p-value&lt;/strong&gt; tell us that a difference between groups
+exists, however, they don’t show between which groups exactly. That’s
+why we need to compare every education category to every other education
+category pairwisely.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;and luckily for us {ggbetweenstats} &lt;strong&gt;automatically knows
+that we need Games-Howell pairwise Tests for a significant Welch’s
+ANOVA, conducts those tests, displays p-values and even corrects these
+p-values for multiple comparisons without any additional code&lt;/strong&gt;.
+How cool is that!&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-04-03-anova/what-dog.gif" style="width:50.0%" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;by the way, our two global tests are often called with a strange
+name - &lt;strong&gt;omnibus test&lt;/strong&gt;, while the pairwise tests between
+time-points, are sometimes described in a dead Latin language as -
+&lt;strong&gt;post-hoc&lt;/strong&gt; - which in English means - &lt;strong&gt;after the
+event&lt;/strong&gt;. So many unnecessary names just confuse people and I hate
+that. A test we are learning about right now is called &lt;strong&gt;ONE-WAY
+ANOVA&lt;/strong&gt; simply because these is only one categorical variable -
+education. But there is no one-way regression, or one-way t-test …&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="customise-the-result"&gt;Customise the result&lt;/h2&gt;
+&lt;p&gt;However, if we want to, we can easily customize the results by using
+either additional code within the function, or code from {ggplot2}
+package outside of it. For example,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;if you found outliers in your data, you can display them on the plot
+and&lt;/li&gt;
+&lt;li&gt;use a &lt;strong&gt;robust ANOVA&lt;/strong&gt; to minimize the effect of
+outliers,&lt;/li&gt;
+&lt;li&gt;here again, the function automatically uses correct &lt;strong&gt;Yuen’s
+trimmed means pairwise tests&lt;/strong&gt; for this &lt;strong&gt;robust
+ANOVA&lt;/strong&gt; and corrects p-values for multiple comparisons with a
+Holm method,&lt;/li&gt;
+&lt;li&gt;which you can easily change to a more famous &lt;strong&gt;Bonferroni
+correction&lt;/strong&gt; … but I wouldn’t recommend it, because Bonferroni
+correction is too conservative and miss an important discovery. And
+that’s exactly what happens with our robust ANOVA, the bonferroni
+correction finds only 6 instead of 8 significant pairwise
+comparisons.&lt;/li&gt;
+&lt;li&gt;then, if you want to display &lt;strong&gt;not only significant&lt;/strong&gt;,
+but &lt;strong&gt;all comparisons&lt;/strong&gt;,&lt;/li&gt;
+&lt;li&gt;if you want to hide either Frequentists or Bayesian statistics, or
+both…&lt;/li&gt;
+&lt;li&gt;or change the appearance of your plot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;… you can easily do that and much more. Just ask R about
+{ggbetweenstats} by writing a question mark in front of the function and
+try some things out, I am sure you’ll enjoy it.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  outlier.tagging = T,
+  type = &amp;quot;robust&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggbetweenstats(
+  data = d,
+  x    = education, 
+  y    = wage, 
+  outlier.tagging = T,
+  type = &amp;quot;robust&amp;quot;, 
+  p.adjust.method = &amp;quot;bonferroni&amp;quot;, 
+  pairwise.display = &amp;quot;all&amp;quot;,
+  results.subtitle = F,
+  bf.message = F
+) + 
+  ylab(&amp;quot;pay check&amp;quot;)+
+  theme_classic()+
+  theme(legend.position = &amp;quot;top&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?ggbetweenstats&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But what you could enjoy even more is the &lt;strong&gt;Repeated Measures
+ANOVA&lt;/strong&gt;, which you would use if you followed a destiny of the
+same 30 people throughout their life and see whether their wage increase
+every time they step up their education.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;set.seed(1)   # for Bayesian reproducibility of 95% CIs
+ggwithinstats(
+    data = d,
+    x    = education, 
+    y    = wage, 
+    type = &amp;quot;parametric&amp;quot;, 
+    var.equal = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file8801eca1ba8_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="a-little-bit-of-theory-about-anova"&gt;A little bit of theory about
+ANOVA&lt;/h2&gt;
+&lt;p&gt;The variance between groups can be easily calculated by the variance
+of the group means multiplied by the number of observations per group.
+The within group variance is also called &lt;strong&gt;residual
+variance&lt;/strong&gt; (or “error”), because it is what is left when the
+group effect is removed. That can be confusing, because there is nothing
+erroneous about within group variance (real biological variance among
+individuals).&lt;/p&gt;
+&lt;p&gt;For unequal group sized or unequal variances (Welch’s ANOVA) the
+calculation get more complex, but there is no need to get there, if you
+understood the “classic” case below, because all of those calculations
+are done by computer.&lt;/p&gt;
+&lt;p&gt;The among-group degrees of freedom is the number of groups minus one.
+The within-groups degrees of freedom is the total number of
+observations, minus the number of groups.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# overall sums of squares
+d %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  mutate(squares = (wage - mean(d$wage))^2) %&amp;gt;% 
+  summarise(overall_ss   = sum(squares))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 1 × 1
+  overall_ss
+       &amp;lt;dbl&amp;gt;
+1    287217.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;means &amp;lt;- d %&amp;gt;% 
+  group_by(education) %&amp;gt;% 
+  summarise(n = n(), 
+            means = mean(wage))
+
+d &amp;lt;- left_join(d, means)
+
+# wgss - within groups sum of squares
+wgvar &amp;lt;- d %&amp;gt;% 
+  mutate(squares = (wage - means)^2) %&amp;gt;% 
+  #group_by(education) %&amp;gt;% # already grouped before
+  summarise(wgss   = sum(squares)) %&amp;gt;%    # wgss - within groups sum of squares
+  summarise(ss_total = sum(wgss)) %&amp;gt;% 
+  mutate(df = dim(d)[1] - length(unique(d$education))) %&amp;gt;% 
+  mutate(var = ss_total / df ) %&amp;gt;% 
+  mutate(variance_type = &amp;quot;withing groups variance&amp;quot;) # wgvar - within group or residual variance
+
+## between groups sums of squares
+bgvar &amp;lt;- means %&amp;gt;% 
+  mutate(sample_mean = mean(d$wage)) %&amp;gt;% 
+  mutate(ss = n*(sample_mean - means)^2) %&amp;gt;% 
+  summarise(ss_total = sum(ss)) %&amp;gt;% 
+  mutate(df = length(unique(d$education))-1) %&amp;gt;% 
+  mutate(var = ss_total / df ) %&amp;gt;% 
+  mutate(variance_type = &amp;quot;between groups variance&amp;quot;)
+  
+
+# actually it goes easies
+var(means$means)*30&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 20741.91&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;rbind(bgvar, wgvar) %&amp;gt;% 
+  mutate(F_value = var[1]/var[2])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 2 × 5
+  ss_total    df    var variance_type           F_value
+     &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;                     &amp;lt;dbl&amp;gt;
+1   82968.     4 20742. between groups variance    14.7
+2  204249.   145  1409. withing groups variance    14.7&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="old-way-to-conduct-anova-in-r"&gt;Old way to conduct anova in
+R&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;aov(wage ~ education, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;             Df Sum Sq Mean Sq F value   Pr(&amp;gt;F)    
+education     4  82968   20742   14.72 4.05e-10 ***
+Residuals   145 204249    1409                     
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;oneway.test(wage ~ education, d, var.equal = FALSE) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    One-way analysis of means (not assuming equal variances)
+
+data:  wage and education
+F = 10.78, num df = 4.000, denom df = 71.237, p-value =
+6.877e-07&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="anova-t-test-linear-regression-check-this-out"&gt;ANOVA = t-test =
+Linear Regression! Check this out…&lt;/h2&gt;
+&lt;p&gt;For only two groups, ANOVA is exactly the same as the Student’s
+t-test and, moreover, exactly the same as linear regression ;). Just
+square the t-value from the t-test and you’ll get the F value from ANOVA
+and regression.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(wage ~ jobclass, d) # square t-value to get F value&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Welch Two Sample t-test
+
+data:  wage by jobclass
+t = -2.1403, df = 127.16, p-value = 0.03424
+alternative hypothesis: true difference in means between group 1. Industrial and group 2. Information is not equal to 0
+95 percent confidence interval:
+ -29.949638  -1.174623
+sample estimates:
+ mean in group 1. Industrial mean in group 2. Information 
+                    107.2967                     122.8588 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;aov(wage ~ jobclass, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;             Df Sum Sq Mean Sq F value Pr(&amp;gt;F)  
+jobclass      1   8978    8978   4.776 0.0304 *
+Residuals   148 278238    1880                 
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;lm(wage ~ jobclass, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Call:
+lm(formula = wage ~ jobclass, data = d)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-84.635 -26.013  -6.122  23.335 170.503 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&amp;gt;|t|)    
+(Intercept)             107.297      4.759  22.545   &amp;lt;2e-16 ***
+jobclass2. Information   15.562      7.121   2.185   0.0304 *  
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+
+Residual standard error: 43.36 on 148 degrees of freedom
+Multiple R-squared:  0.03126,   Adjusted R-squared:  0.02471 
+F-statistic: 4.776 on 1 and 148 DF,  p-value: 0.03044&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="whats-next-or-when-not-to-use-repeated-measures-anova"&gt;What’s
+next, or when not to use Repeated Measures ANOVA&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Repeated-Measures ANOVA&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Kruskal-Wallis if data is not-normally distributed&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>c0858130391b7441e2b358654ae1a7c2</distill:md5>
       <category>videos</category>
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</guid>
