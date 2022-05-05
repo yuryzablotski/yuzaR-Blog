@@ -9,17 +9,6 @@
     <generator>Distill</generator>
     <lastBuildDate>Thu, 05 May 2022 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</link>
-      <description>How does education influence our salary? ANOVA which is just the abbreviation for Analysis Of Variances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</description>
-      <category>videos</category>
-      <category>statistics</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</guid>
-      <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
-    </item>
-    <item>
       <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2022-04-13-kw</link>
@@ -39,6 +28,17 @@
       <category>statistics</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata</guid>
       <pubDate>Thu, 05 May 2022 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</link>
+      <description>How does education influence our salary? ANOVA which is just the abbreviation for Analysis Of Variances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-04-03-anova</guid>
+      <pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-04-03-anova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</title>
