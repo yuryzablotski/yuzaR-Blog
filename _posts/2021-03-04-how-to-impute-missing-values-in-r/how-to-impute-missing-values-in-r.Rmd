@@ -29,7 +29,7 @@ linkcolor: blue
 
 
 ```{r setup}
-knitr::opts_chunk$set(echo = T, include=FALSE, warning=F, message=F)
+knitr::opts_chunk$set(echo = T, warning=F, message=F)
 library(grid)
 ```
 
