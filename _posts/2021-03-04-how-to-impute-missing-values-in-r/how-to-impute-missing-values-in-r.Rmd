@@ -4,7 +4,7 @@ description: |
   Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.
 author:
   - name: Yury Zablotski
-    url: https://yury-zablotski.netlify.app/
+    url: https://yuzar-blog.netlify.app/
 date: 01-09-2021
 categories:
   - videos
@@ -19,13 +19,18 @@ output:
     toc_float: true
     toc_depth: 6
     code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+
 ---
 
 
-```{r setup, include=FALSE, warning=F, message=F}
-knitr::opts_chunk$set(echo = T)
+```{r setup}
+knitr::opts_chunk$set(echo = T, include=FALSE, warning=F, message=F)
 library(grid)
-library(plotly)
 ```
 
 
@@ -73,8 +78,8 @@ The only thing here is that we don't exactly know which two observation are the 
 
 ```{r}
 library(visdat)      # for visualizing NAs
-#library(plotly)      # for interactive visualization
-vis_miss(airquality) #%>% ggplotly()
+library(plotly)      # for interactive visualization
+vis_miss(airquality) %>% ggplotly()
 ```
 Now, since we know we have missing values in two variables, we can impute them in *every particular variable separately* using {dlookr} package, or, impute missing values in the *whole dataset at the same time* with the {missRanger} package. Let's do both and check the quality of our imputation by visualizing imputed values.
 
@@ -96,6 +101,7 @@ Now every variable in our dataset misses at least 10% of observations. Using the
 
 
 ```{r fig.height=5}
+library(grid)
 # produce more NAs with missRanger package
 library(missRanger)
 set.seed(111)

@@ -156,6 +156,13 @@ rb = rfit(mpg ~ hp, data = mtcars)
 #plot_model(rb, type = "pred", show.data = T)
 summary(rb)
 
+# these both are the same! :) and they both are better then rfit.
+rb_lm <- lm(rank(mpg) ~ rank(hp), data = mtcars)
+ggscatterstats(mtcars, mpg, hp, type = "n")
+
+library(performance)
+compare_performance(rb, rb_lm, rank = T)
+
 # 3. Quantile regression models the conditional median or other quantile. 
 #  25th , 50th, 75th or 95th percentiles, could be investigated simultaneously.
 # Quantile regression makes no assumptions about the distribution of the
@@ -189,7 +196,6 @@ library(ggeffects)
 ## fit Engel models (in levels) for tau = 0.1, ..., 0.9
 data("engel")
 fm <- rq(mpg ~ hp, data = mtcars, tau = 1:9/10)
-
 ## visualizations
 plot(fm)
 plot(fm, parm = 2, mar = c(5.1, 4.1, 2.1, 2.1), main = "", xlab = "tau", 
