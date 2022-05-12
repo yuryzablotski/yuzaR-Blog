@@ -164,7 +164,7 @@ The **missRanger** approach, is a **non-parametric multivariate imputation by th
  
 So, let's impute *all the missing values in our dataset at once*. For this we just need to specify our dataset and provide the formula. The formula is interesting: a point on the left side of the tilde will *find all the variables* with missing and fill them up, and the point on the right side of the tilde will *use all the predictors* in a dataset for imputation, even those with missing values ;). How amazing is that!?
 
-So, if we then plot the imputed dataset in red, and the original in black, we'll not only see that *missRanger* did not produce any weird values outside of the original distribution, but also that most of the new red points are placed in the area where the most of the old black points are. So, in a few lines of code and a few seconds we filled up all variables, numeric and categorical, without skewing our data. That's just madness!
+So, if we then plot the imputed dataset in red, and the original in black, we'll not only see that *missRanger* did not produce any weird values outside of the original distribution, but also that most of the new red points are placed in the area where the most of the old black points are. So, in a few lines of code and a few seconds we filled up all variables, numeric and categorical, without skewing our data. Besides, the arguments `verbose = 2` and `returnOOB = T` show you the OOB (out of bag error) for every variable and every iteration - so we can see how the result improves! **That's just madness!**
 
 
 ```{r warning=F, message=F}
@@ -172,7 +172,9 @@ airquality_imputet <- missRanger(
   airquality_NA, 
   formula = . ~ . ,
   num.trees = 1000, 
-  verbose = 1, seed = 111)
+  verbose = 2, 
+  seed = 111,  
+  returnOOB = T)
 
 # numeric imputation
 ggplot()+
