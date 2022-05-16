@@ -219,6 +219,16 @@ library(conover.test)
 conover.test(d$wage, d$education)
 ```
 
+## Kruskal Wallis = Mann-Whitney test = Ranked Linear Regression! Check this out...
+ 
+For only two groups, Kruskal-Wallis is exactly the same as the Mann-Whitney U test (in R lingo, the function is `wilcox.test` by they are synonyms, and you'd need `var.equal = T` argument to stop the continuity correction) and, moreover, almost exactly the same as ranked-linear regression ;). Almost, because the p.value of a regression is not completely identical.
+
+```{r}
+wilcox.test(wage ~ jobclass, data = d, correct = F)
+kruskal.test(wage ~ jobclass, d) %>% summary()
+lm(rank(wage) ~ jobclass, data = d) %>% summary()
+```
+
 ## Conclusion
 
 Since the **real world data is never perfect, the non-parametric tests are very important tools** in a toolbox of every data scientist. Thus, *Kruskal-Wallis rank-sum unpaired H test* (such a beautiful name! 😂) is more powerful then *ANOVA* for highly skewed distributions and presence of outliers. Howeverm, Kruskal-Wallis looses some information, due to replacement of real data by ranks, and is therefore less powerful for noramlly distributed data. But please, don't use it instead of ANOVA just out of laziness to check ANOVAs assumptions, you might get a wrong result.
@@ -229,7 +239,6 @@ Since the **real world data is never perfect, the non-parametric tests are very 
 
 - [Friedman test](https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/) if data is not normally distributed.
 
-**Thank you for reading!**
 
 ## Further readings and references
 

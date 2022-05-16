@@ -1,7 +1,7 @@
 ---
-title: "Tidy data (in progress, but really in progress mate ;)"
+title: "Tidy data (in progress)"
 description: |
-  Tidy datasets are easy to manipulate, visualise, analyse and they don't interrapt the process. It's like not cooking three dished upfront for the dinner, but preparing one, eating it then needing to get up and cook again, before you continue eating. So, tidying up your data requires some upfront work, but that work pays off in the long term.
+  Tidy data are easy to manipulate, visualise and analyse, while messy data always interrupts the analysis and invates mistakes. So, tidying up data before analysis pays off a great deal in the long term. But how do we tidy up data?
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -25,141 +25,134 @@ linkcolor: blue
 #draft: true
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
 
-If I had to summarize the whole idea of tidy data into one sentence, I'd say: **"Whatever changes in your data, put it into a column."**
+## This post as a video
 
-Why columns? Well, because it's **the easiest way to store similar data**, for example age or gender. So the data in a column is similar, it belongs together, by it is not the same, it varies. Age varies from 1 to 100, gender varies from male to female. And since data varies in a column, **a column is always a variable**. **A variable is what we need to make any type of analysis**. 
+I recommend to watch a video first, because I highlight things I talk about and you have visual examples. It's ca. 12 minutes long.
 
-## Principles of tidy data 
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
 
-If I had to summarize the idea of tidy data in three simple rules, I would cite the creator of tidy data Hadley Wickham: 
+Well, if I had to summarize the whole idea of tidy data into one sentence, I'd say: **"Whatever changes in your data, put it into a column."**
 
-1. **each column is a variable**, 
-2. **each row is an observation**, and 
-3. **each cell is a single value** or only one peace of information
+Why columns? Because columns are **the easiest way to store similar data***.* Important is that the data in every column is **similar, but not identical**, so, **the data vary**. For example *age* varies from 1 to 100, *gender* varies from male to female. That's actually why **a column is always a variable**. And a **VARIABLE IS what we need to make any type of analysis possible**. Let me make tidy data even easier for you.
+
+## Principles of tidy data
+
+There are only **3 simple principles for tidy data** (postulated by the father of tidy data Hadley Wickham):
+
+1.  **each column is a variable**,
+2.  **each row is an observation**, and
+3.  **each cell is a single value** or only one peace of information
 
 ![](tidy-1.png)
 
-For the sake of simplicity, let's say that any other dataset which does not follow these three rules is **messy**. And the problem with messy data is that it requires different strategies to extract different variables. This slows down analysis and invites errors.
-
-It is often said that 80% of data analysis is spent on the process of cleaning and preparing the data [^1]. Data preparation is not just a first step, but must be repeated many over the course of analysis as new problems come to light
-
-[^1]: Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning. Wiley-IEEE.
-
+For the sake of simplicity, let's say that any dataset which does not follow these three rules is **messy**. And the problem with messy data is that it requires different strategies and **tons of work** to extract different variables, in order to enable different statistical analyses.
 
 ## Does messy data exist?
 
-These three rules of tidy data seem so obvious that you might wonder whether messy datasets even exist. Well, unfortunately, most real world data is messy, because there are soo many opportunities to mess things up. Leo Tolstoy once said:
+These three rules of tidy data seem so obvious that you might wonder whether messy datasets even exist. Well, unfortunately, most real world data is messy, because there are soo many opportunities to mess things up, and people are usually very creative. Leo Tolstoy once said:
 
-**"Happy families are all alike; while every unhappy family is unhappy in its own way" Leo Tolstoy**
+**"Happy families are all alike; while every unhappy family is unhappy in its own way"**
 
-**"Like families, tidy datasets are all alike but every messy dataset is messy in its own way." Hadley Wickham**
+**"Like families, tidy datasets are all alike but every messy dataset is messy in its own way." - Hadley Wickham**
 
-For example, data is often organised to make entry as easy as possible.
-
-At this point, you might think that tidy data is so obvious that it is trivial. Surely, most data sets come in a tidy format, right? Wrong. In practice, raw data is rarely tidy and is much harder to work with as a result. Let me show you some typical cases I encountered the most and how to fix them...
+Does this mean, that messy data is bad? Absolutely not. Messy datasets might be very convenient for data collection and for having a good overview of the whole dataset, containing all the information we have, including explanatory columns, commentaries, colors etc. . However, while useful for you, it is useless for **statistics**, which **needs only variables and observations**. So, you might end up having two tables, one for you, and the other one for statistical analysis. Let me show you the most common cases of messy data and how to fix them. The first one is when...
 
 ## The most common problems with messy datasets, along with their remedies
 
-### One variable is stored in multiple columns = Column headers are values, not variable names
+### 1. One variable is stored in multiple columns, or when column headers are actually values, not variable names
 
 ![](tidy-9.png)
 
-Different timepoints, for example years or days, are usually stored in different columns. And while it might be convenient for recording data, it's hardly possible to analyse it, because a variable **year** does not exist, and we have no idea what those **numbers** are. Timepoints should represent different observations! So, in our example, every combination of a country and a year IS **a single observation** of tuberculosis cases, and with that - **a single row**. Making a **wide dataset longer** creates two variables which can be immediately analysed.
+Different *timepoints*, for example *years* or *days*, are usually stored in different columns. And while it might be convenient for recording data, it's hardly possible to analyse it. Why? Well, if we have time, we usually want to study change in something over time, right? But a variable **time** does not exist if years are spread across different columns. Moreover, if we see this table for the first time, we have no idea what those **numbers** are, so they are also not a variable, because they are not in a single named column. Making this **wide dataset longer** creates two new variables which immideatly allows to study the **change in tuberculosis cases over time** for every country.
 
-### Multiple variables are stored in one column
+So, every combination of a country and a year BECOMES **a single observation** of tuberculosis cases, and with that - **a single row**. But if we overdo that, we can end up with a second common problem, where...
+
+### 2. Multiple variables are stored in one column
 
 ![](tidy-8.png)
 
-Categorical variable, e.g. gender have categories "females" and "males", which totally belong together. It's important to separate several **categories** of the same variable,from Our column **key** stores **two different variables** cases and population, which do not belong together, and thus can not be analysed. To solve this problem we have to make a long table wider.
+As mentioned before, the observations within one column suppose to belong together, for example gender with categories "females" and "males", or countries like Brazil and China. However, it's important to separate several **categories** of the same variable, from the column **key**, which stores **two different variables** *cases and population* in one column. *Cases and population* do not belong together, and thus can not be analysed. To solve this problem we simply **make a long table wider**. Now, having two variables we can calculate the rate of tuberculosis by dividing a column cases by the column population. Which would not be possible if both values would be stored in the same cell, being the third common problem...
 
-### More then ONE value in ONE cell
+### 3. More then ONE value in ONE cell
 
 ![](tidy-17.png)
 
-Remember the third rule? **Each value should be in its own cell**. To fix this problem, we’ll need to separate variable "rate" into two variables "cases" and "population". Now, we could actually create a real rate as a new column by dividing a column cases by the column population. 
+This one can be very sneaky, because it pretends to convey a lot of useful information, like a range of values from zero to five (0-5), undecided values, like 2 or 3 or some borderline values, like \<3 or \>99. To fix this problem, follow the third principle of tidy data and always put only one value in one cell. And, please, **don't use any special characters for numeric values**, because it will produce the next most common problem, where...
 
+### 4. Different types of data (numbers & text) are stored in the same column
 
-### Different types of data (numbers & text) in the same variable
+![](missing_data1.png)
 
-Data can be either numbers or text. Mixing them into one column would make the whole column a text. Thus, convert all values to either numbers or text.
+**Data can be either numbers or text (categories)**. Any text or special characters (like \@, €, \*, \^, \>, \<, +, (), " ", . ) inside of a numeric column converts the whole variable into text. Words like "unknown" or "missing" are the most common examples of text inside of numeric columns. **If the value is missing, it's better to leave the cell empty**. By the way, ironically, missing values can sometimes cause the most damage, so it's really important to ...
 
+### 5. Understand what a missing value really is
 
-### Missing values are mistreated
+![](missing_data.png)
 
-In this experiment, the **missing value** represents an observation that should have been made, but wasn’t, so it’s important to keep it. **Structural missing values**, which represent measurements that can’t be made (e.g., the count of pregnant males) can be safely removed.
+The **real missing value** represents a measurement or observation that should have been made, but wasn't. One of the non-intentional mistakes is to put *zeros* (0) into cells with missing values. Think about measuring blood pressure of a cat for example. If cat's owner doesn't bring the cat to the clinic at Monday, the blood pressure record **should remain empty**. However, if we put zero instead of a missing value on Monday, that would mean that blood pressure of our cat WAS measured and it WAS zero - so our Monday cat was either dead or a zombie. An example of a real zero is if you measured virus load of that cat on Tuesday, but did not find any virus. In this case a zero means that our cat is absolutely healthy and it's important to record that 0! So, **a zero conveys a lot of information, while a** **missing value conveys NO information and should therefore remain empty**.
 
-### matching similar but not identical values (created by typos)
+### 6. Variables are stored in both rows and columns.
 
+The most complicated form of messy data occurs when variables are stored in both rows and columns. For example, days of the week is our "day" variable which we would like to have in order to study blood pressure of cats over time, so we'd need to put the days into a single column. Then, if we want to estimate an average for Monday we can't do that, because Monday contains two different values, blood pressure and virus load. Thus we need to split the column "test" into two different columns and just move the values. In this tidy data values inside of every columns belong together. Finally, let me quickly show you a few more...
 
+![](tidied_up_data.png)
 
+### 7. Examples of messyness and the checklist to follow in order to keep the data tidy
 
+![](messy_data.png)
 
-- Variables are stored in both rows and columns.
+-   remove empty rows
 
-The most complicated form of messy data occurs when variables are stored in both rows and columns.
+-   remove empty and constant columns
 
- 
+-   remove merged cells
 
-### A single observational unit is stored in multiple tables.
+-   use only the first raw as your header
 
-Typical example data for control and treatment groups are stored two different Excel sheets or even two different files. Here again, we do not have a variable **groups**, while this is exactly what we want - compare **groups**. The solution is obvious - combine all tables into a single table, one below the other, while adding a column which describes groups.
+-   store same data in the same table, for instance:
 
+    -   if control and treatment are in two tables, put them below each other and create a new variable - "group", because this is exactly what we want - compare **groups**, then...
+    -   if multiple excel sheets contain similar information, for example multiple years, combine them into one table and create a variable - "years", because we often want to study something over time
 
-## Checklist to follaw 
+-   a think to remember is that statistics has no good taste, thus simple is better then beautiful:
 
-- no empty rows, 
-- no empty columns
-- empty cells (or missing values) are sometimes ok. Surprisingly, a value can be missing in one of two possible ways:
+    -   so, any visual effects like colors, italic or bold font etc. don't provide any information, because statistics is blind, thus if colors are important, turn them into variables
+    -   if you want to show that some of the observations aren't very good (e.g. calibration error), create a new column "error" and use 1 every time you aren't sure, and 0 every time you are sure about the measurement. That would later allow to exclude these ones easily if we would want to.
 
-Explicitly, i.e. flagged with NA.
-Implicitly, i.e. simply not present in the data.
+-   use short, simple, but still clear column names, instead of long explanational names, because when you start to work with them, it will hurt. Too short names, like "d" or "s" are also bad, because they don't communicate any information, while "days" or "species" do.
 
-It's very important to separate missing values from zeros ;), because missing value indicates missing information, while a zero is infromation. For example, if you measured virus load in a cat, but did not find any, a zero means that a cat is healthy and it's important! While if we could not take blood of the cat on Sunday, simply because the host did not bring the cat over, we have an NA. Don't put points or text "missing", or -77 into the cell with NA, just leave it empty
+-   check for similar but not identical categories (mostly created by typos), because "cat", "cat\_" with a space and "cat." with a dot could be considered three different categories. The solution for that is to go to Excel Table \> Data \> Filter, and to check all categorical variables
 
-- only the first raw is your header
-- no merged cells
+-   remove all the columns and data which do not participate in the analyses. As mentioned above, you may keep two tables, one for yourself, with all the explanations and colors, and one new minimalistic table for the analyses
 
+-   but please don't remove rows or columns only because they have some missing values (empty cells), otherwise we would lose a lot of existing information
 
-One way to think about the difference is with this Zen-like koan: An explicit missing value is the presence of an absence; an implicit missing value is the absence of a presence.
+-   don't summarize, calculate or explain something on the side or below the table, because a software will try to incorporate this information in form of variables or observations
 
-- simple is better the beautiful
-  - turn colors into variables, because statistics is colorblind, the same applies to anything visual: italic, bold etc.
-  - use short simple but still clear columns names, because long explanational names  you'd need to write them out and it hirts, and the models look unübersichtlich. Column "d", "s" do not communicate information, "days" and "species" do.
-  
-- a column should be either numeric or categorical, not mixed
- 
-- avoid secial charakters, like @, €, *, ^, (), because `9a` or `9+` or `<9` will be considered as text and will screw up the variable. 
+-   if you plan to use R software don't code categorical variables into numbers, for example instead 1 and 2 for sex, write "female" and "male". For SPSS or other software you might need to code them, and last but not least ...
 
-- if you want to show that some of the observations aren't sure (calibration error), create an column "error" and place 1 every time you aren't sure, and 0 every time you are sure about the measurement. That would allow us to excude the data easily if we wish too
-  
-- remove unnecessary/unused columns and data, even if they are for explanation, just create a copy of your table#
+-   if you think your table will become too long or that tidying up the data is too much work ... **stop thinking that** :), because approximately 80% of time in data analysis is spent on cleaning and preparing the data [^1] for calculations
 
-- don't summarize or explain something on the side or below the table, because a software will try to incorporate the information 
-
-- if you plan to use R software don't code categorical variables into numbers, like sex 1 and 2, but write explicit words "female" and "male". For SPSS you might code them.
-
-- if you thing your table will become too long, ... stop thinking that :)
-
-- use data and Filter function in Excel to check for spelling errors, empty spaces, special characters
-
-## How to organise data
-
-(random effects!!!!!!!!!) Fixed variables describe the experimental design and are known in advance. Computer scientists often call fixed variables dimensions, and statisticians usually denote them with subscripts on random variables. Measured variables are what we actually measure in the study. Fixed variables should come first, followed by measured variables, each ordered so that related variables are contiguous.
+[^1]: Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning. Wiley-IEEE.
 
 ## Conclusion
 
-If I had to summarize the whole idea of tidy data into one sentence, I'd say: **"Whatever changes in your data, put it in a column of your spreadsheet."**  Tidy datasets and tidy tools work hand in hand to make data analysis easier, allowing you to focus on the interesting domain problem, not on the uninteresting logistics of data.
-
-That's why it's much easier to learn what to do then what not to do, we will see examples of messy data though. A standard makes initial data cleaning easier because you don’t need to start from scratch and reinvent the wheel every time.
+So, these were just the most common messyness examples I encountered. But the human creativity is not be underestimated. Thus, as you can see - it is much easier to learn what to do, namely **only three principles of tidy data**, then what not to do.
 
 ## References
 
-https://vita.had.co.nz/papers/tidy-data.pdf
+<https://vita.had.co.nz/papers/tidy-data.pdf>
 
 Dasu T, Johnson T (2003). Exploratory Data Mining and Data Cleaning. Wiley-IEEE.
 
+------------------------------------------------------------------------
+
+If you think, I missed something, please comment on it, and I'll improve this tutorial.
+
+**Thank you for learning!**

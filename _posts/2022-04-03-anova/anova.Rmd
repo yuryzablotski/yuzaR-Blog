@@ -285,11 +285,10 @@ oneway.test(wage ~ education, d, var.equal = FALSE)
 
 ## ANOVA = t-test = Linear Regression! Check this out...
  
-
-For only two groups, ANOVA is exactly the same as the Student's t-test and, moreover, exactly the same as linear regression ;). Just square the t-value from the t-test and you'll get the F value from ANOVA and regression.
+For only two groups, ANOVA is exactly the same as the Student's t-test (that's why `var.equal = T` is there) and, moreover, exactly the same as linear regression ;). Just square the t-value from the t-test and you'll get the F value from ANOVA and regression. And the p-values are identical ;)
 
 ```{r}
-t.test(wage ~ jobclass, d) # square t-value to get F value
+t.test(wage ~ jobclass, d, var.equal = T) # square t-value to get F value
 aov(wage ~ jobclass, d) %>% summary()
 lm(wage ~ jobclass, d) %>% summary()
 ```
