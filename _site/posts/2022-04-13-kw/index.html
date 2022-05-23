@@ -138,7 +138,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["EdMatters.png","kw_files/anchor-4.2.2/anchor.min 2.js","kw_files/anchor-4.2.2/anchor.min.js","kw_files/bowser-1.9.3/bowser.min 2.js","kw_files/bowser-1.9.3/bowser.min.js","kw_files/distill-2.2.21/template.v2 2.js","kw_files/distill-2.2.21/template.v2.js","kw_files/figure-html5/unnamed-chunk-2-1.png","kw_files/figure-html5/unnamed-chunk-3-1 2.png","kw_files/figure-html5/unnamed-chunk-3-1 3.png","kw_files/figure-html5/unnamed-chunk-3-1.png","kw_files/figure-html5/unnamed-chunk-4-1.png","kw_files/figure-html5/unnamed-chunk-5-1 2.png","kw_files/figure-html5/unnamed-chunk-5-1.png","kw_files/figure-html5/unnamed-chunk-6-1.png","kw_files/figure-html5/unnamed-chunk-7-1.png","kw_files/figure-html5/unnamed-chunk-8-1.png","kw_files/header-attrs-2.13/header-attrs.js","kw_files/header-attrs-2.14/header-attrs 2.js","kw_files/header-attrs-2.14/header-attrs.js","kw_files/jquery-3.6.0/jquery-3.6.0 2.js","kw_files/jquery-3.6.0/jquery-3.6.0.js","kw_files/jquery-3.6.0/jquery-3.6.0.min 2.js","kw_files/jquery-3.6.0/jquery-3.6.0.min 2.map","kw_files/jquery-3.6.0/jquery-3.6.0.min.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.map","kw_files/popper-2.6.0/popper.min 2.js","kw_files/popper-2.6.0/popper.min.js","kw_files/tippy-6.2.7/tippy 2.css","kw_files/tippy-6.2.7/tippy-bundle.umd.min 2.js","kw_files/tippy-6.2.7/tippy-bundle.umd.min.js","kw_files/tippy-6.2.7/tippy-light-border 2.css","kw_files/tippy-6.2.7/tippy-light-border.css","kw_files/tippy-6.2.7/tippy.css","kw_files/tippy-6.2.7/tippy.umd.min 2.js","kw_files/tippy-6.2.7/tippy.umd.min.js","kw_files/vembedr-0.1.5/css/vembedr 2.css","kw_files/vembedr-0.1.5/css/vembedr.css","kw_files/webcomponents-2.0.0/webcomponents 2.js","kw_files/webcomponents-2.0.0/webcomponents.js","kw.jpg","kw2.jpg","p_value_interpretation.png","thumbnail.png","what-dog.gif"]}
+  {"type":"character","attributes":{},"value":["EdMatters.png","kw_files/anchor-4.2.2/anchor.min.js","kw_files/bowser-1.9.3/bowser.min.js","kw_files/distill-2.2.21/template.v2.js","kw_files/figure-html5/unnamed-chunk-2-1.png","kw_files/figure-html5/unnamed-chunk-3-1 2.png","kw_files/figure-html5/unnamed-chunk-3-1 3.png","kw_files/figure-html5/unnamed-chunk-3-1.png","kw_files/figure-html5/unnamed-chunk-4-1.png","kw_files/figure-html5/unnamed-chunk-5-1 2.png","kw_files/figure-html5/unnamed-chunk-5-1.png","kw_files/figure-html5/unnamed-chunk-6-1.png","kw_files/figure-html5/unnamed-chunk-7-1.png","kw_files/figure-html5/unnamed-chunk-8-1.png","kw_files/header-attrs-2.13/header-attrs.js","kw_files/header-attrs-2.14/header-attrs.js","kw_files/jquery-3.6.0/jquery-3.6.0.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.js","kw_files/jquery-3.6.0/jquery-3.6.0.min.map","kw_files/popper-2.6.0/popper.min.js","kw_files/tippy-6.2.7/tippy-bundle.umd.min.js","kw_files/tippy-6.2.7/tippy-light-border.css","kw_files/tippy-6.2.7/tippy.css","kw_files/tippy-6.2.7/tippy.umd.min.js","kw_files/vembedr-0.1.5/css/vembedr.css","kw_files/webcomponents-2.0.0/webcomponents.js","kw.jpg","kw2.jpg","p_value_interpretation.png","thumbnail.png","what-dog.gif"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2904,15 +2904,15 @@ data:  wage by jobclass
 W = 6141, p-value = 0.003675
 alternative hypothesis: true location shift is not equal to 0</code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/kruskal.test.html'>kruskal.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/kruskal.test.html'>kruskal.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, <span class='va'>d</span><span class='op'>)</span> 
 </code></pre>
 </div>
-<pre><code>          Length Class  Mode     
-statistic 1      -none- numeric  
-parameter 1      -none- numeric  
-p.value   1      -none- numeric  
-method    1      -none- character
-data.name 1      -none- character</code></pre>
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  wage by jobclass
+Kruskal-Wallis chi-squared = 8.4377, df = 1, p-value =
+0.003675</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rank.html'>rank</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>jobclass</span>, data <span class='op'>=</span> <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>

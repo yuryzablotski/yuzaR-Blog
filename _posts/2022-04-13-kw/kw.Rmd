@@ -225,7 +225,7 @@ For only two groups, Kruskal-Wallis is exactly the same as the Mann-Whitney U te
 
 ```{r}
 wilcox.test(wage ~ jobclass, data = d, correct = F)
-kruskal.test(wage ~ jobclass, d) %>% summary()
+kruskal.test(wage ~ jobclass, d) 
 lm(rank(wage) ~ jobclass, data = d) %>% summary()
 ```
 

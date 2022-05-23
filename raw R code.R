@@ -234,6 +234,8 @@ set.seed(123)
 library(metaplus)
 #> Error in library(metaplus): there is no package called 'metaplus'
 
+
+
 # renaming to what the function expects
 df <- dplyr::rename(mag, estimate = yi, std.error = sei, term = study)
 #> Error in dplyr::rename(mag, estimate = yi, std.error = sei, term = study): object 'mag' not found

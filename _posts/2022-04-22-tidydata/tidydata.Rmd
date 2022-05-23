@@ -1,7 +1,7 @@
 ---
-title: "Tidy data (in progress)"
+title: "Tidy Data and Why We Need It!"
 description: |
-  Tidy data are easy to manipulate, visualise and analyse, while messy data always interrupts the analysis and invates mistakes. So, tidying up data before analysis pays off a great deal in the long term. But how do we tidy up data?
+  Tidy data are easy to manipulate, visualise and analyse, while messy data always interrupts the analysis and invates mistakes. So, tidying up data before analysis pays off a great deal in the long term. In this post you'll learn how do we tidy up data.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -9,7 +9,7 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 categories:
   - videos
   - statistics
-preview: thumbnail.png
+preview: tidydata_2.jpeg
 output:
   distill::distill_article:
     self_contained: false
@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 I recommend to watch a video first, because I highlight things I talk about and you have visual examples. It's ca. 12 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("KW1laBLEiw0")
 ```
 
 Well, if I had to summarize the whole idea of tidy data into one sentence, I'd say: **"Whatever changes in your data, put it into a column."**
@@ -51,7 +51,7 @@ There are only **3 simple principles for tidy data** (postulated by the father o
 
 ![](tidy-1.png)
 
-For the sake of simplicity, let's say that any dataset which does not follow these three rules is **messy**. And the problem with messy data is that it requires different strategies and **tons of work** to extract different variables, in order to enable different statistical analyses.
+For the sake of simplicity, let's say that any dataset which does not follow these three rules is **messy**. And the problem with messy data is that **it requires different strategies** and **tons of work** to extract different variables, in order to enable different statistical analyses.
 
 ## Does messy data exist?
 
@@ -59,17 +59,15 @@ These three rules of tidy data seem so obvious that you might wonder whether mes
 
 **"Happy families are all alike; while every unhappy family is unhappy in its own way"**
 
-**"Like families, tidy datasets are all alike but every messy dataset is messy in its own way." - Hadley Wickham**
+**"Like families, tidy datasets are all alike; but every messy dataset is messy in its own way." - Hadley Wickham**
 
 Does this mean, that messy data is bad? Absolutely not. Messy datasets might be very convenient for data collection and for having a good overview of the whole dataset, containing all the information we have, including explanatory columns, commentaries, colors etc. . However, while useful for you, it is useless for **statistics**, which **needs only variables and observations**. So, you might end up having two tables, one for you, and the other one for statistical analysis. Let me show you the most common cases of messy data and how to fix them. The first one is when...
-
-## The most common problems with messy datasets, along with their remedies
 
 ### 1. One variable is stored in multiple columns, or when column headers are actually values, not variable names
 
 ![](tidy-9.png)
 
-Different *timepoints*, for example *years* or *days*, are usually stored in different columns. And while it might be convenient for recording data, it's hardly possible to analyse it. Why? Well, if we have time, we usually want to study change in something over time, right? But a variable **time** does not exist if years are spread across different columns. Moreover, if we see this table for the first time, we have no idea what those **numbers** are, so they are also not a variable, because they are not in a single named column. Making this **wide dataset longer** creates two new variables which immideatly allows to study the **change in tuberculosis cases over time** for every country.
+Different *timepoints*, for example *years* or *days*, are usually stored in different columns. And while it might be convenient for recording data, it's hardly possible to analyse it. Why? Well, if we have time, we usually want to study change in something over time, right? But a variable **time** does not exist if years are spread across different columns. Moreover, if we see this table for the first time, we have no idea what those **numbers** are, so they are also not a variable, because they are not in a single named column. Making this **wide dataset longer** creates two new variables which immedeatly allows to study the **change in tuberculosis cases over time** for every country.
 
 So, every combination of a country and a year BECOMES **a single observation** of tuberculosis cases, and with that - **a single row**. But if we overdo that, we can end up with a second common problem, where...
 
@@ -89,19 +87,19 @@ This one can be very sneaky, because it pretends to convey a lot of useful infor
 
 ![](missing_data1.png)
 
-**Data can be either numbers or text (categories)**. Any text or special characters (like \@, €, \*, \^, \>, \<, +, (), " ", . ) inside of a numeric column converts the whole variable into text. Words like "unknown" or "missing" are the most common examples of text inside of numeric columns. **If the value is missing, it's better to leave the cell empty**. By the way, ironically, missing values can sometimes cause the most damage, so it's really important to ...
+**Data can be either numbers or text (categories)**. Any text or special characters (like \@, €, \*, \^, \>, \<, +, (), " ", . etc.) inside of a numeric column converts the whole variable into text. Words like "unknown" or "missing" are the most common examples of text inside of numeric columns. **If the value is missing, it's better to leave the cell empty**. By the way, ironically, missing values can sometimes cause the most damage, so it's really important to ...
 
 ### 5. Understand what a missing value really is
 
 ![](missing_data.png)
 
-The **real missing value** represents a measurement or observation that should have been made, but wasn't. One of the non-intentional mistakes is to put *zeros* (0) into cells with missing values. Think about measuring blood pressure of a cat for example. If cat's owner doesn't bring the cat to the clinic at Monday, the blood pressure record **should remain empty**. However, if we put zero instead of a missing value on Monday, that would mean that blood pressure of our cat WAS measured and it WAS zero - so our Monday cat was either dead or a zombie. An example of a real zero is if you measured virus load of that cat on Tuesday, but did not find any virus. In this case a zero means that our cat is absolutely healthy and it's important to record that 0! So, **a zero conveys a lot of information, while a** **missing value conveys NO information and should therefore remain empty**.
+The **real missing value** represents a measurement or observation that should have been made, but wasn't. One of the non-intentional mistakes is to put *zeros* (0) into cells with missing values. Think about measuring blood pressure of a cat for example. If cat's owner doesn't bring the cat to the clinic at Monday, the blood pressure record **should remain empty**. However, if we put zero instead of a missing value on Monday, that would mean that blood pressure of our cat WAS measured and it WAS zero - so our Monday cat was either dead or a zombie. An example of a real zero is if you measured virus load of that cat on Tuesday, but did not find any virus. In this case a zero means that our cat is absolutely healthy and it's important to record that 0! So, **a zero conveys a lot of information, while a** **missing value conveys NO information and should therefore remain empty**. But the most complicated form of messy data occurs when (see the picture above)...
 
 ### 6. Variables are stored in both rows and columns.
 
-The most complicated form of messy data occurs when variables are stored in both rows and columns. For example, days of the week is our "day" variable which we would like to have in order to study blood pressure of cats over time, so we'd need to put the days into a single column. Then, if we want to estimate an average for Monday we can't do that, because Monday contains two different values, blood pressure and virus load. Thus we need to split the column "test" into two different columns and just move the values. In this tidy data values inside of every columns belong together. Finally, let me quickly show you a few more...
-
 ![](tidied_up_data.png)
+
+For example, days of the week is our "day" variable which we would like to have in order to study blood pressure of cats over time, so we'd need to put the days into a single column. Then, if we want to estimate an average for Monday we can't do that, because Monday contains two different values, blood pressure and virus load. Thus we need to split the column "test" into two different columns and just move the values. In this tidy data values inside of every columns belong together. Finally, let me quickly show you a few more...
 
 ### 7. Examples of messyness and the checklist to follow in order to keep the data tidy
 
