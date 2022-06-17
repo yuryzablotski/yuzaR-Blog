@@ -1053,10 +1053,6 @@ figure img.external {
   margin-top: 1.5em;
 }
 
-.figure img {
-  width: 100%;
-}
-
 .figure .caption {
   color: rgba(0, 0, 0, 0.6);
   font-size: 12px;
@@ -1922,7 +1918,7 @@ function init_distill() {
                 x += elem.offsetLeft;
                 y += elem.offsetTop;
             }
-    
+
             return { left: x, top: y };
         }
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
@@ -2054,7 +2050,7 @@ function init_common() {
   // get rid of index.html references in header
   if (window.location.protocol !== "file:") {
     $('.distill-site-header a[href]').each(function(i,val) {
-      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
     });
   }
 
@@ -2454,7 +2450,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <div class="nav-right">
 <a href="../../about.html">ABOUT</a>
 <a href="../../index.html">POSTS</a>
-<a href="https://github.com/yuryzablotski">
+<a href="https://github.com/yuryzablotski/yuzaR-Blog">
 <i class="fa fa-github" aria-hidden="true"></i>
 </a>
 <a href="https://twitter.com/yuzaR___">
@@ -2463,9 +2459,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <a href="https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA">
 <i class="fa fa-youtube-square" aria-hidden="true"></i>
 </a>
-<a href="../../index.xml">
-<i class="fa fa-rss" aria-hidden="true"></i>
-</a>
+<a href="https://koji.to/yuzaR">LEAVE A TIP</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>

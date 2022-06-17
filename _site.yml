@@ -23,13 +23,13 @@ navbar:
     #     - text: "(in progress) Visualisation"
     #       href: welcome.html
     - icon: fa fa-github
-      href: https://github.com/yuryzablotski
+      href: https://github.com/yuryzablotski/yuzaR-Blog
     - icon: fa fa-twitter
       href: https://twitter.com/yuzaR___
     - icon: fa-youtube-square
       href: https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA
-    - icon: fa fa-rss
-      href: index.xml
+    - text: "LEAVE A TIP" 
+      href: https://koji.to/yuzaR
     # text: "R-bloggers"
     # href: https://www.r-bloggers.com/
     # - icon: fa fa-linkedin

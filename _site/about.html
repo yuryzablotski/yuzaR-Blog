@@ -1033,10 +1033,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     margin-top: 1.5em;
   }
 
-  .figure img {
-    width: 100%;
-  }
-
   .figure .caption {
     color: rgba(0, 0, 0, 0.6);
     font-size: 12px;
@@ -1902,7 +1898,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
                   x += elem.offsetLeft;
                   y += elem.offsetTop;
               }
-      
+
               return { left: x, top: y };
           }
           // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
@@ -2034,7 +2030,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
       });
     }
 
@@ -2431,7 +2427,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="nav-right">
 <a href="about.html">ABOUT</a>
 <a href="index.html">POSTS</a>
-<a href="https://github.com/yuryzablotski">
+<a href="https://github.com/yuryzablotski/yuzaR-Blog">
 <i class="fa fa-github" aria-hidden="true"></i>
 </a>
 <a href="https://twitter.com/yuzaR___">
@@ -2440,9 +2436,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <a href="https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA">
 <i class="fa fa-youtube-square" aria-hidden="true"></i>
 </a>
-<a href="index.xml">
-<i class="fa fa-rss" aria-hidden="true"></i>
-</a>
+<a href="https://koji.to/yuzaR">LEAVE A TIP</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
