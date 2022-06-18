@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
 
 
-## This post as a video (will be added soon)
+## This post as a video
 
 I recommend to watch a video first, because I highlight things I talk about. It's less then 14 minutes long.
 
