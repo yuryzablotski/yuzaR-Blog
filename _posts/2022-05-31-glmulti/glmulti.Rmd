@@ -36,10 +36,10 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 
 ## This post as a video (will be added soon)
 
-I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+I recommend to watch a video first, because I highlight things I talk about. It's less then 14 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("Im293ClFen4")
 ```
 
 
@@ -51,7 +51,7 @@ The goal of ANY model is to explain a dependent variable by several independent 
 
 ## Stepwise variable selection approach
 
-One of the most common solutions for finding **THE BEST** model is **a stepwise variable selection.** But it's not the best solution out there, and here is why. Stepwise selection applies two main techniques: forwards and backwards selection. <!-- Forwards selection starts with an empty model, adds one predictor, compares two models, one with and another without this predictor, takes the best model of the two, adds another predictor etc... Backwards selection starts with the most complicated model, which includes all predictors and interactions, and reduces the number of terms one by one.  --> But there are two problems with it. First, **forwards and backwards approaches would often not converge to the same model**, like in our example. And secondly, even if they converge to the same model, this model might not be the optimal one (gray circle on the picture below). These problems occur simply because stepwise selection doesn't look at **all possible models at the same time**. They just remove or add terms one by one, compare two models, take the best model of the two, remove or add another term etc.. 
+One of the most common solutions for finding **THE BEST** model is **a stepwise variable selection.** But it's not the best solution out there, and here is why. Stepwise selection applies two main techniques: forwards and backwards selection. Forwards selection starts with an empty model, adds one predictor, compares two models, one with and another without this predictor, takes the best model of the two, adds another predictor etc... Backwards selection starts with the most complicated model, which includes all predictors and interactions, and reduces the number of terms one by one. But there are two problems with it. First, **forwards and backwards approaches would often not converge to the same model**, like in our example. And secondly, even if they converge to the same model, this model might not be the optimal one (gray circle on the picture below). These problems occur simply because stepwise selection doesn't look at **all possible models at the same time**. They just remove or add terms one by one, compare two models, take the best model of the two, remove or add another term etc.. 
 
 ![](stepwise_problem.png)
 
@@ -119,7 +119,7 @@ In contrast, {glmulti} R package builds **all possible models with all possible 
 
 This picture originates from [here](https://www.igi-global.com/gateway/chapter/235052)
 
-<!-- But that's not all, overfitting produces another problem. Each sample has its own unique quirks. Consequently, overfitted model that fits the random quirks of one sample is unlikely to fit the random quirks of another sample. That makes overfitted model less generalizable outside the original dataset, and therefore less useful. -->
+But that's not all, overfitting produces another problem. Each sample has its own unique quirks. Consequently, overfitted model that fits the random quirks of one sample is unlikely to fit the random quirks of another sample. That makes overfitted model less generalizable outside the original dataset, and therefore less useful.
 
 
 That's why we need to create **all possible models**, instead of using stepwise selection, and we need to compare models using **Information Criteria**, instead of $R^2$. And while "Brute force" approach is great, the number of models to be considered can easily become exorbitant. However, there are several possibilities to reduce the number of models and to decrease calculation time. Let's get into the Code and see how to do that.
@@ -202,8 +202,6 @@ glmulti(wage ~ jobclass + education + age + health + health_ins + maritl + regio
 
 ### 2. Use genetic algorithm
 
-<!-- For instance, for 5 numeric predictors with interactions in "mtcars" dataset  the exhaustive screening (method = "h") takes ca. 105 seconds. Genetic algorithm (method = "g"), however, is twice as quick, with only 40-60 seconds.  -->
-
 Particularly, having 6 numeric predictors with interactions, the "brute force" approach needs almost 3 hours, while genetic algorithm runs only 40-80 seconds and produces almost identical results (with sometimes slightly worse IC value). 
 
 ```{r eval = F}
@@ -262,13 +260,13 @@ test_g <- glmulti(mpg ~ hp + drat + wt + qsec + gear,
 So, if genetic algorithm is sooo cool, why not use genetic algorithm all the time? Well, interestingly enough, with categorical predictors, having a lot of categories, genetic algorithms may perform slower as compared to the exhaustive one. For instance, our Wage-model, which has lots of categorical predictors took only 19 second with the exhaustive screening, while needed 117 seconds till genetic algorithm converged, so, almost 6 times longer. Moreover, genetic algorithm might have convergence problem and might run indefinitely long, without you having any idea of WHEN, or IF it ever stops. And lastly, exhaustive method almost always delivers better IC values. That's why I'd recommend to **produce all possible models (aka. using exhaustive screening, aka. applying "brute force" approach) whenever possible** and only use genetic algorithm for a high number of numeric predictors.
 
 
-<!-- ### 3. Specify "marginality" and "exclude" arguments (optional) -->
+### 3. Specify "marginality" and "exclude" arguments (optional) -->
 
-<!-- - **marginality = TRUE**, argument considers only marginal models. That would reduce the number of model from 2604485 to 2350602. I did not really understand what the martinality exactly does, that is why I just prefer to leave it out -->
+- **marginality = TRUE**, argument considers only marginal models. That would reduce the number of model from 2604485 to 2350602. I did not really understand what the martinality exactly does, that is why I just prefer to leave it out.
 
-<!-- - Argument **exclude** excludes (main effects or interactions) from the candidate models, e.g. c("mass:height") ... it somehow did not work in my code and I could not find out why. -->
+- Argument **exclude** excludes (main effects or interactions) from the candidate models, e.g. c("mass:height") ... it somehow did not work in my code and I could not find out why. I hope it will work on your machine!
 
-<!-- - using multiple cores while computing might help -->
+- using multiple cores while computing might help.
 
 ## What the hell is THE BEST model then ???
 
