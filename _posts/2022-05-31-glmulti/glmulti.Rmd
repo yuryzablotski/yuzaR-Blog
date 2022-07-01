@@ -1,7 +1,7 @@
 ---
 title: "R package reviews {glmulti} find the best model!"
 description: |
-  “All models are wrong, some are useful” - said a statistician George Box. And he was right. Thus, in this post we'll find the set of very useful models from the set of all possible models and will be able to choose THE MOST USEFUL model which adressed all our questions.
+  “All models are wrong, some are useful” - said a statistician George Box. And he was right. Thus, in this post we'll find the set of very useful models from the set of all possible models and will be able to choose THE MOST USEFUL model which addressed all our questions.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/

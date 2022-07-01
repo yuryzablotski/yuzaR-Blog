@@ -7,7 +7,837 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 17 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R package reviews {report} How To Report Results!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-06-18-report</link>
+      <description>
+
+
+&lt;h1 id="this-post-as-a-video-will-be-added-soon"&gt;This post as a video
+(will be added soon)&lt;/h1&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s less then … minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="why-do-we-need-report"&gt;Why do we need {report}?&lt;/h1&gt;
+&lt;p&gt;The result of a statistical test are often hardly digestible. So,
+what we really want is the small but condense peace of text about what
+our result are and what they mean. And that’s what the {report} package
+gives you.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-06-18-report/report_workflow.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Here is a preliminary list of objects you can report now, in Julne,
+2022. However, the package constantly improves and will only get better
+over time:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Correlations, t-tests, Wilcoxon tests, paired &amp;amp; unpaired
+(htest)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;ANOVAs one-way, two-way etc. (aov, anova, aovlist, …)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Bayes factors (from bayestestR)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;… (more tests to come)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Regression models (glm, lm, …)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mixed-effects models (glmer, lmer, glmmTMB, …)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Bayesian models (stanreg, brms…)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Structural Equation Models (SEM) (from lavaan)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;… (more models to come)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Model comparison (from performance())&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;System and packages (sessionInfo)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Dataframes and vectors&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;… (more features to come)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="reporting-statistical-tests"&gt;1. Reporting Statistical Tests&lt;/h1&gt;
+&lt;p&gt;Load all needed packages at once, to avoid interruptions.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ISLR)        # provides &amp;quot;Wage&amp;quot; dataset
+library(report)      # to report results
+library(sjPlot)      # visualizes model results
+library(flextable)   # for beautiful tables
+library(tidyverse)   # provides a lot of useful stuff !!! 
+library(ggstatsplot) # to visualize test results&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="welch-t-test"&gt;Welch t-test&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(wage ~ jobclass, data = Wage)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Welch Two Sample t-test
+
+data:  wage by jobclass
+t = -11.489, df = 2714.9, p-value &amp;lt; 2.2e-16
+alternative hypothesis: true difference in means between group 1. Industrial and group 2. Information is not equal to 0
+95 percent confidence interval:
+ -20.21940 -14.32378
+sample estimates:
+ mean in group 1. Industrial mean in group 2. Information 
+                    103.3211                     120.5927 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The usual output of a t-test is … &lt;strong&gt;not really
+appealing&lt;/strong&gt; … to say the least. And if we’d try to write down the
+results, we might end up reporting only a p-value. However, if we add
+only one word to this code, we’ll get &lt;strong&gt;SOO MUCH
+MORE&lt;/strong&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(wage ~ jobclass, data = Wage) %&amp;gt;% 
+  report()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Cohen’s (1988)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Welch Two Sample t-test testing the difference of wage by
+jobclass (mean in group 1. Industrial = 103.32, mean in group 2.
+Information = 120.59) suggests that the effect is negative,
+statistically significant, and small (difference = -17.27, 95% CI
+[-20.22, -14.32], t(2714.87) = -11.49, p &amp;lt; .001; Cohen’s d = -0.44,
+95% CI [-0.52, -0.36])&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;First of all, we’ll get a &lt;strong&gt;digestible&lt;/strong&gt; peace of
+&lt;strong&gt;text, suitable for&lt;/strong&gt; any &lt;strong&gt;publication
+instantly&lt;/strong&gt;, with &lt;strong&gt;all important statistics, brackets and
+special characters&lt;/strong&gt;. If you think it’s not a big deal, try to
+rewrite it at least once without a single mistake 😉&lt;/li&gt;
+&lt;li&gt;Secondly, it gives us the &lt;strong&gt;difference&lt;/strong&gt; between groups
+with 95% Confidence Intervals, while the test only provides the
+confidence intervals of … probably difference, but not &lt;strong&gt;the
+difference itself - the very thing we are interested in&lt;/strong&gt;!&lt;/li&gt;
+&lt;li&gt;On top of that, &lt;code&gt;report()&lt;/code&gt; function provides a humanly
+&lt;strong&gt;readable p-value&lt;/strong&gt; of under 0.001, instead of the strange
+scientific notation, nobody really likes and only a few understand.&lt;/li&gt;
+&lt;li&gt;And finally, it not only &lt;strong&gt;calculates the effect size with 95%
+Confidence Intervals&lt;/strong&gt; for us, which a classic test doesn’t do,
+but also &lt;strong&gt;interprets&lt;/strong&gt; it and even &lt;strong&gt;provides a
+reference&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="students-two-sample-t-test"&gt;Student’s Two Sample t-test&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;t.test(iris$Sepal.Width, iris$Sepal.Length, var.equal = TRUE) %&amp;gt;%
+  report()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Cohen’s (1988)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Two Sample t-test testing the difference between iris&lt;span
+class="math inline"&gt;\(Sepal.Width and iris\)&lt;/span&gt;Sepal.Length (mean of
+x = 3.06, mean of y = 5.84) suggests that the effect is negative,
+statistically significant, and large (difference = -2.79, 95% CI [-2.94,
+-2.64], t(298) = -36.46, p &amp;lt; .001; Cohen’s d = -4.21, 95% CI [-4.61,
+-3.80])&lt;/p&gt;
+&lt;h2 id="paired-two-sample-t-test"&gt;Paired Two Sample t-test&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(t.test(iris$Sepal.Width, iris$Sepal.Length, paired = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Cohen’s (1988)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Paired t-test testing the difference between iris&lt;span
+class="math inline"&gt;\(Sepal.Width and iris\)&lt;/span&gt;Sepal.Length (mean of
+the differences = -2.79) suggests that the effect is negative,
+statistically significant, and large (difference = -2.79, 95% CI [-2.94,
+-2.63], t(149) = -34.82, p &amp;lt; .001; Cohen’s d = -2.84, 95% CI [-3.66,
+-2.49])&lt;/p&gt;
+&lt;h2 id="wilcoxon-rank-sum-test-aka-mann-whitney-test"&gt;Wilcoxon rank sum
+test (aka Mann-Whitney test)&lt;/h2&gt;
+&lt;p&gt;Reporting results of nonparametric tests, for example Wilcoxon test,
+is even more useful! Because the &lt;code&gt;report()&lt;/code&gt; function
+correctly says: “The Wilcoxon rank sum test is testing &lt;strong&gt;the
+difference in ranks&lt;/strong&gt;…”, while even some scientific papers
+mistakenly say that Wilcoxon test is testing &lt;strong&gt;the difference in
+medians&lt;/strong&gt;, which is just wrong, medians are only used to better
+describe not-normally distributed data, but medians are not used to
+compare groups. If fact the difference in ranks can be significant even
+when medians are identical. Here again, &lt;code&gt;report()&lt;/code&gt; function
+applies a &lt;strong&gt;rank biserial correlation coefficient&lt;/strong&gt; as a
+&lt;strong&gt;suitable effect size for Wilcoxon rank sum test&lt;/strong&gt; with a
+reference. As you can see, {report} package not only produces more
+results in a suitable for publication form, but also &lt;strong&gt;ensures a
+correct interpretation of results&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-06-18-report/equal_dedians.png" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;wilc_test &amp;lt;- wilcox.test(Wage$wage ~ Wage$jobclass) 
+report(wilc_test)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Funder’s (2019)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Wilcoxon rank sum test with continuity correction testing the
+difference in ranks between Wage&lt;span class="math inline"&gt;\(wage and
+Wage\)&lt;/span&gt;jobclass suggests that the effect is negative,
+statistically significant, and medium (W = 8.53e+05, p &amp;lt; .001; r
+(rank biserial) = -0.24, 95% CI [-0.28, -0.20])&lt;/p&gt;
+&lt;p&gt;By the way, we can easily integrate &lt;strong&gt;parts of the
+results&lt;/strong&gt; into the text of our manuscript, if we prepare our
+manuscript in RStudio. For instance if we use
+&lt;code&gt;report_statistics()&lt;/code&gt; function in the middle of the text,
+only numbers from our test will be incorporated into the text. The
+&lt;code&gt;report_effectsize()&lt;/code&gt; function would only report the effect
+size. Here is how it looks like inside of RStudio and in the
+manuscript:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-06-18-report/code_inside_of_text.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Workers in the IT-Industry earn significantly more (W = 8.53e+05, p
+&amp;lt; .001; r (rank biserial) = -0.24, 95% CI [-0.28, -0.20]) as compared
+to workers in Industrial jobs. This difference is medium (r (rank
+biserial) = -0.24, 95% CI [-0.28, -0.20]) large and can not be
+ignored.&lt;/p&gt;
+&lt;h2 id="paired-wilcoxon-signed-rank-test"&gt;Paired Wilcoxon signed rank
+test&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(wilcox.test(iris$Sepal.Width, iris$Sepal.Length, paired = TRUE))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Funder’s (2019)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Wilcoxon signed rank test with continuity correction testing the
+difference in ranks between iris&lt;span class="math inline"&gt;\(Sepal.Width
+and iris\)&lt;/span&gt;Sepal.Length suggests that the effect is negative,
+statistically significant, and very large (W = 0.00, p &amp;lt; .001; r
+(rank biserial) = -1.00, 95% CI [-1.00, -1.00])&lt;/p&gt;
+&lt;h2 id="pearsons-correlation"&gt;Pearson’s correlation&lt;/h2&gt;
+&lt;p&gt;Similarly we can easily report the results of either parametric
+Pearson or non-parametric Spearman or Kendall correlations. Besides,
+&lt;code&gt;report_table()&lt;/code&gt; function allows you to display your result
+as a table instead of text (see Kendall’s correlation below).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;cor.test(mtcars$mpg, mtcars$wt) %&amp;gt;% 
+  report()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Funder’s (2019)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Pearson’s product-moment correlation between mtcars&lt;span
+class="math inline"&gt;\(mpg and mtcars\)&lt;/span&gt;wt is negative,
+statistically significant, and very large (r = -0.87, 95% CI [-0.93,
+-0.74], t(30) = -9.56, p &amp;lt; .001)&lt;/p&gt;
+&lt;h2 id="spearmans-rank-correlation"&gt;Spearman’s rank correlation&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;cor.test(mtcars$mpg, mtcars$wt, method = &amp;quot;spearman&amp;quot;) %&amp;gt;% 
+  report()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Effect sizes were labelled following Funder’s (2019)
+recommendations.&lt;/p&gt;
+&lt;p&gt;The Spearman’s rank correlation rho between mtcars&lt;span
+class="math inline"&gt;\(mpg and mtcars\)&lt;/span&gt;wt is negative,
+statistically significant, and very large (rho = -0.89, S = 10292.32, p
+&amp;lt; .001)&lt;/p&gt;
+&lt;h2 id="kendalls-rank-correlation-as-a-table"&gt;Kendall’s rank correlation
+(as a table)&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;cor.test(mtcars$mpg, mtcars$wt, method = &amp;quot;kendall&amp;quot;) %&amp;gt;% 
+  report_table()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Parameter1 | Parameter2 |   tau |     z |      p |                         Method | Alternative
+-----------------------------------------------------------------------------------------------
+mtcars$mpg |  mtcars$wt | -0.73 | -5.80 | &amp;lt; .001 | Kendall&amp;#39;s rank correlation tau |   two.sided&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="reporting-anovas"&gt;Reporting ANOVAs&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;aov(wt ~ am + mpg, data = mtcars) %&amp;gt;% 
+  report()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The ANOVA (formula: wt ~ am + mpg) suggests that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The main effect of am is statistically significant and large (F(1,
+29) = 69.21, p &amp;lt; .001; Eta2 (partial) = 0.70, 95% CI [0.54,
+1.00])&lt;/li&gt;
+&lt;li&gt;The main effect of mpg is statistically significant and large (F(1,
+29) = 46.12, p &amp;lt; .001; Eta2 (partial) = 0.61, 95% CI [0.42,
+1.00])&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Effect sizes were labelled following Field’s (2013)
+recommendations.&lt;/p&gt;
+&lt;h1 id="reporting-regression-models"&gt;2. Reporting Regression Models&lt;/h1&gt;
+&lt;h2 id="reporting-general-linear-models"&gt;Reporting (General) Linear
+Models&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;model &amp;lt;- lm(mpg ~ am + hp, data = mtcars)
+
+summary(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Call:
+lm(formula = mpg ~ am + hp, data = mtcars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.3843 -2.2642  0.1366  1.6968  5.8657 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&amp;gt;|t|)    
+(Intercept) 26.584914   1.425094  18.655  &amp;lt; 2e-16 ***
+am           5.277085   1.079541   4.888 3.46e-05 ***
+hp          -0.058888   0.007857  -7.495 2.92e-08 ***
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+
+Residual standard error: 2.909 on 29 degrees of freedom
+Multiple R-squared:  0.782, Adjusted R-squared:  0.767 
+F-statistic: 52.02 on 2 and 29 DF,  p-value: 2.55e-10&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But enough about tests, let’s see how {report} package handles
+models. First of all, the usual summary of a model provides some useful
+information but the output is again, not very friendly to the human eye,
+and it is not clear how to describe it. I bet 10 researchers would
+report these results in 10 slightly different ways. In contrast {report}
+package provides a standardized way to report model-results, and again
+delivers &lt;strong&gt;soo much more then the classic
+&lt;code&gt;summary()&lt;/code&gt;&lt;/strong&gt; function. Particularly,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;it describes what kind of model we used, while the
+&lt;code&gt;summary()&lt;/code&gt; does not&lt;/li&gt;
+&lt;li&gt;it interprets the &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; and &lt;span
+class="math inline"&gt;\(adj.R^2\)&lt;/span&gt;, while the &lt;code&gt;summary()&lt;/code&gt;
+does not&lt;/li&gt;
+&lt;li&gt;it uncovers what is behind the &lt;em&gt;mysterious&lt;/em&gt; (Intercept),
+while the &lt;code&gt;summary()&lt;/code&gt; assumes that you already know it&lt;/li&gt;
+&lt;li&gt;and finally, &lt;code&gt;report()&lt;/code&gt; functions describes parameters
+“am” and “hp” by providing the slope with &lt;strong&gt;useful! 95% Confidence
+Intervals&lt;/strong&gt;, while the &lt;code&gt;summary()&lt;/code&gt; gives you
+&lt;strong&gt;not really useful Standard Error of the Mean&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(model) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We fitted a linear model (estimated using OLS) to predict mpg with am
+and hp (formula: mpg ~ am + hp). The model explains a statistically
+significant and substantial proportion of variance (R2 = 0.78, F(2, 29)
+= 52.02, p &amp;lt; .001, adj. R2 = 0.77). The model’s intercept,
+corresponding to am = 0 and hp = 0, is at 26.58 (95% CI [23.67, 29.50],
+t(29) = 18.65, p &amp;lt; .001). Within this model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The effect of am is statistically significant and positive (beta =
+5.28, 95% CI [3.07, 7.48], t(29) = 4.89, p &amp;lt; .001; Std. beta = 0.44,
+95% CI [0.25, 0.62])&lt;/li&gt;
+&lt;li&gt;The effect of hp is statistically significant and negative (beta =
+-0.06, 95% CI [-0.07, -0.04], t(29) = -7.50, p &amp;lt; .001; Std. beta =
+-0.67, 95% CI [-0.85, -0.49])&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs) and
+p-values were computed using the Wald approximation.&lt;/p&gt;
+&lt;p&gt;In fact, if used for models, the &lt;code&gt;report()&lt;/code&gt; function gives
+you more than you might want to use. That is why you can apply a
+&lt;strong&gt;&lt;code&gt;summary()&lt;/code&gt; command ON TOP OF THE REPORT&lt;/strong&gt; 🤣
+in order to report only essential information.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(model) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We fitted a linear model to predict mpg with am and hp. The model’s
+explanatory power is substantial (R2 = 0.78, adj. R2 = 0.77). The
+model’s intercept is at 26.58 (95% CI [23.67, 29.50]). Within this
+model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The effect of am is statistically significant and positive (beta =
+5.28, 95% CI [3.07, 7.48], t(29) = 4.89, p &amp;lt; .001, Std. beta =
+0.44)&lt;/li&gt;
+&lt;li&gt;The effect of hp is statistically significant and negative (beta =
+-0.06, 95% CI [-0.07, -0.04], t(29) = -7.50, p &amp;lt; .001, Std. beta =
+-0.67)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Similarly to test results, you can display model results as a table
+with the &lt;code&gt;report_table()&lt;/code&gt; command, or use different parts of
+the report inside of your text with:
+&lt;code&gt;report_model(), report_performance(), report_parameters(), report_statistics()&lt;/code&gt;
+or &lt;code&gt;report_effectsize()&lt;/code&gt; functions:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_table(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Parameter   | Coefficient |         95% CI | t(29) |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
+-----------------------------------------------------------------------------------------------------
+(Intercept) |       26.58 | [23.67, 29.50] | 18.65 | &amp;lt; .001 |  -2.32e-17 |    [-0.17,  0.17] |       
+am          |        5.28 | [ 3.07,  7.48] |  4.89 | &amp;lt; .001 |       0.44 |    [ 0.25,  0.62] |       
+hp          |       -0.06 | [-0.07, -0.04] | -7.50 | &amp;lt; .001 |      -0.67 |    [-0.85, -0.49] |       
+            |             |                |       |        |            |                   |       
+AIC         |             |                |       |        |            |                   | 164.01
+BIC         |             |                |       |        |            |                   | 169.87
+R2          |             |                |       |        |            |                   |   0.78
+R2 (adj.)   |             |                |       |        |            |                   |   0.77
+Sigma       |             |                |       |        |            |                   |   2.91&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_model(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;linear model (estimated using OLS) to predict mpg with am and hp
+(formula: mpg ~ am + hp)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_performance(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model explains a statistically significant and substantial
+proportion of variance (R2 = 0.78, F(2, 29) = 52.02, p &amp;lt; .001, adj.
+R2 = 0.77)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_parameters(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The intercept is statistically significant and positive (beta =
+26.58, 95% CI [23.67, 29.50], t(29) = 18.65, p &amp;lt; .001; Std. beta =
+-2.32e-17, 95% CI [-0.17, 0.17]), The effect of am is statistically
+significant and positive (beta = 5.28, 95% CI [3.07, 7.48], t(29) =
+4.89, p &amp;lt; .001; Std. beta = 0.44, 95% CI [0.25, 0.62]), The effect of
+hp is statistically significant and negative (beta = -0.06, 95% CI
+[-0.07, -0.04], t(29) = -7.50, p &amp;lt; .001; Std. beta = -0.67, 95% CI
+[-0.85, -0.49])&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_statistics(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;beta = 26.58, 95% CI [23.67, 29.50], t(29) = 18.65, p &amp;lt; .001; Std.
+beta = -2.32e-17, 95% CI [-0.17, 0.17], beta = 5.28, 95% CI [3.07,
+7.48], t(29) = 4.89, p &amp;lt; .001; Std. beta = 0.44, 95% CI [0.25, 0.62],
+beta = -0.06, 95% CI [-0.07, -0.04], t(29) = -7.50, p &amp;lt; .001; Std.
+beta = -0.67, 95% CI [-0.85, -0.49]&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_effectsize(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;very small (Std. beta = -2.32e-17, 95% CI [-0.17, 0.17]), small (Std.
+beta = 0.44, 95% CI [0.25, 0.62]), medium (Std. beta = -0.67, 95% CI
+[-0.85, -0.49])&lt;/p&gt;
+&lt;h2 id="logistic-regression"&gt;Logistic regression&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- glm(am ~ mpg, mtcars, family = binomial) 
+report(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We fitted a logistic model (estimated using ML) to predict am with
+mpg (formula: am ~ mpg). The model’s explanatory power is substantial
+(Tjur’s R2 = 0.37). The model’s intercept, corresponding to mpg = 0, is
+at -6.60 (95% CI [-12.33, -2.77], p = 0.005). Within this model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The effect of mpg is statistically significant and positive (beta =
+0.31, 95% CI [0.12, 0.59], p = 0.008; Std. beta = 1.85, 95% CI [0.74,
+3.54])&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs) and
+p-values were computed using&lt;/p&gt;
+&lt;h2 id="mixed-effects-multilevel-models"&gt;Mixed-effects / multilevel
+models&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(lme4)
+
+mixed_model &amp;lt;- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;summary(mixed_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Linear mixed model fit by REML [&amp;#39;lmerMod&amp;#39;]
+Formula: Reaction ~ Days + (Days | Subject)
+   Data: sleepstudy
+
+REML criterion at convergence: 1743.6
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.9536 -0.4634  0.0231  0.4634  5.1793 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ Subject  (Intercept) 612.10   24.741       
+          Days         35.07    5.922   0.07
+ Residual             654.94   25.592       
+Number of obs: 180, groups:  Subject, 18
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)  251.405      6.825  36.838
+Days          10.467      1.546   6.771
+
+Correlation of Fixed Effects:
+     (Intr)
+Days -0.138&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The {report} package can report &lt;strong&gt;logistic
+regressions&lt;/strong&gt;, but this is not really surprising. Surprising is
+however, that it can also easily handle &lt;strong&gt;Linear Mixed-Effects
+models&lt;/strong&gt;, whose popularity and usage is currently exploding. The
+function explicitly describes random effects and interprets the
+explanatory power of the model with two coefficients of determination,
+conditional &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; for the whole model
+(including random effects) and the marginal &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt; for only fixed effects, or only
+predictors without random effects.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(mixed_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We fitted a linear mixed model (estimated using REML and nloptwrap
+optimizer) to predict Reaction with Days (formula: Reaction ~ Days). The
+model included Days and Subject as random effects (formula: ~Days |
+Subject). The model’s total explanatory power is substantial
+(conditional R2 = 0.80) and the part related to the fixed effects alone
+(marginal R2) is of 0.28. The model’s intercept, corresponding to Days =
+0, is at 251.41 (95% CI [237.94, 264.87], t(174) = 36.84, p &amp;lt; .001).
+Within this model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The effect of Days is statistically significant and positive (beta =
+10.47, 95% CI [7.42, 13.52], t(174) = 6.77, p &amp;lt; .001; Std. beta =
+0.54, 95% CI [0.38, 0.69])&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs) and
+p-values were computed using&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_random(mixed_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model included Days and Subject as random effects (formula: ~Days
+| Subject)&lt;/p&gt;
+&lt;h2
+id="reporting-bayesian-models-and-bayesian-mixed-effects-models"&gt;Reporting
+Bayesian Models and Bayesian Mixed-Effects models&lt;/h2&gt;
+&lt;p&gt;Bayesian models can also be reported using the new &lt;strong&gt;Sequential
+Effect eXistence and sIgnificance Testing&lt;/strong&gt; framework, or
+abbreviated - &lt;strong&gt;SEXIT&lt;/strong&gt; 😁 (I swear I did not made it
+up).&lt;/p&gt;
+&lt;p&gt;This report describes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;how Markov Chain Monte Carlo was computed,&lt;/li&gt;
+&lt;li&gt;which primers were used&lt;/li&gt;
+&lt;li&gt;it calculates the coefficient of determination &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt; and interprets the performance of the
+model&lt;/li&gt;
+&lt;li&gt;conducts Bayesian probabilistic hypothesis testing via
+&lt;strong&gt;SEXIT&lt;/strong&gt; 😁&lt;/li&gt;
+&lt;li&gt;and provides references for reported metrics, so that you can learn
+more if something is not completely clear&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The full report for Bayesian models is huge though, but here you also
+can use parts of the report effortlessly. Just choose what you want to
+include into your text with one of the following functions:
+&lt;code&gt;report_priors(), report_model(), report_performance(), report_parameters(), report_statistics()&lt;/code&gt;
+or &lt;code&gt;report_effectsize()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(rstanarm)
+
+bayes_model &amp;lt;- stan_glm(mpg ~ qsec + wt, data = mtcars, refresh = 0)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We fitted a Bayesian linear model (estimated using MCMC sampling with
+4 chains of 2000 iterations and a warmup of 1000) to predict mpg with
+qsec and wt (formula: mpg ~ qsec + wt). Priors over parameters were set
+as normal (mean = 0.00, SD = 8.43) and normal (mean = 0.00, SD = 15.40)
+distributions. The model’s explanatory power is substantial (R2 = 0.81,
+95% CI [0.71, 0.89], adj. R2 = 0.79). The model’s intercept,
+corresponding to qsec = 0 and wt = 0, is at 19.69 (95% CI [9.13,
+30.75]). Within this model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The effect of qsec (Median = 0.93, 95% CI [0.38, 1.46]) has a 99.90%
+probability of being positive (&amp;gt; 0), 98.65% of being significant
+(&amp;gt; 0.30), and 0.18% of being large (&amp;gt; 1.81). The estimation
+successfully converged (Rhat = 1.001) and the indices are reliable (ESS
+= 4314)&lt;/li&gt;
+&lt;li&gt;The effect of wt (Median = -5.06, 95% CI [-6.04, -4.05]) has a
+100.00% probability of being negative (&amp;lt; 0), 100.00% of being
+significant (&amp;lt; -0.30), and 100.00% of being large (&amp;lt; -1.81). The
+estimation successfully converged (Rhat = 1.000) and the indices are
+reliable (ESS = 3935)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Following the Sequential Effect eXistence and sIgnificance Testing
+(SEXIT) framework, we report the median of the posterior distribution
+and its 95% CI (Highest Density Interval), along the probability of
+direction (pd), the probability of significance and the probability of
+being large. The thresholds beyond which the effect is considered as
+significant (i.e., non-negligible) and large are |0.30| and |1.81|
+(corresponding respectively to 0.05 and 0.30 of the outcome’s SD).
+Convergence and stability of the Bayesian sampling has been assessed
+using R-hat, which should be below 1.01 (Vehtari et al., 2019), and
+Effective Sample Size (ESS), which should be greater than 1000 (Burkner,
+2017).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_priors(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Priors over parameters were set as normal (mean = 0.00, SD = 8.43)
+and normal (mean = 0.00, SD = 15.40) distributions&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_model(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Bayesian linear model (estimated using MCMC sampling with 4 chains of
+2000 iterations and a warmup of 1000) to predict mpg with qsec and wt
+(formula: mpg ~ qsec + wt). Priors over parameters were set as normal
+(mean = 0.00, SD = 8.43) and normal (mean = 0.00, SD = 15.40)
+distributions&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_performance(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model’s explanatory power is substantial (R2 = 0.81, 95% CI
+[0.71, 0.89], adj. R2 = 0.79)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_parameters(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The intercept (Median = 19.69, 95% CI [9.13, 30.75]) has a 100.00%
+probability of being positive (&amp;gt; 0), 99.98% of being significant
+(&amp;gt; 0.30), and 99.98% of being large (&amp;gt; 1.81). The estimation
+successfully converged (Rhat = 1.001) and the indices are reliable (ESS
+= 3815), The effect of qsec (Median = 0.93, 95% CI [0.38, 1.46]) has a
+99.90% probability of being positive (&amp;gt; 0), 98.65% of being
+significant (&amp;gt; 0.30), and 0.18% of being large (&amp;gt; 1.81). The
+estimation successfully converged (Rhat = 1.001) and the indices are
+reliable (ESS = 4314), The effect of wt (Median = -5.06, 95% CI [-6.04,
+-4.05]) has a 100.00% probability of being negative (&amp;lt; 0), 100.00% of
+being significant (&amp;lt; -0.30), and 100.00% of being large (&amp;lt; -1.81).
+The estimation successfully converged (Rhat = 1.000) and the indices are
+reliable (ESS = 3935)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_statistics(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Median = 19.69, 95% CI [9.13, 30.75], pd = 100%, 0% in ROPE; Std.
+beta = 1.92e-03, 95% CI [-0.15, 0.16]; Rhat = 1.00, ESS = 3815.22,
+Median = 0.93, 95% CI [0.38, 1.46], pd = 99.90%, 9.24% in ROPE; Std.
+beta = 0.27, 95% CI [0.12, 0.43]; Rhat = 1.00, ESS = 4314.28, Median =
+-5.06, 95% CI [-6.04, -4.05], pd = 100%, 0% in ROPE; Std. beta = -0.82,
+95% CI [-0.98, -0.65]; Rhat = 1.00, ESS = 3934.85&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_effectsize(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;very small (Std. beta = 2.85e-03, 95% CI [-0.16, 0.15]), small (Std.
+beta = 0.28, 95% CI [0.12, 0.43]), large (Std. beta = -0.82, 95% CI
+[-0.98, -0.66])&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_table(bayes_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Parameter   | Median |         95% CI |     pd | % in ROPE |  Rhat |     ESS |                   Prior | Std. Median | Std_Median 95% CI |    Fit
+-------------------------------------------------------------------------------------------------------------------------------------------------
+(Intercept) |  19.69 | [ 9.13, 30.75] |   100% |        0% | 1.001 | 3815.00 | Normal (20.09 +- 15.07) |    6.55e-04 |    [-0.16,  0.16] |       
+qsec        |   0.93 | [ 0.38,  1.46] | 99.90% |     9.24% | 1.001 | 4314.00 |   Normal (0.00 +- 8.43) |        0.28 |    [ 0.11,  0.44] |       
+wt          |  -5.06 | [-6.04, -4.05] |   100% |        0% | 1.000 | 3935.00 |  Normal (0.00 +- 15.40) |       -0.82 |    [-0.98, -0.66] |       
+            |        |                |        |           |       |         |                         |             |                   |       
+ELPD        |        |                |        |           |       |         |                         |             |                   | -79.09
+LOOIC       |        |                |        |           |       |         |                         |             |                   | 158.18
+WAIC        |        |                |        |           |       |         |                         |             |                   | 157.84
+R2          |        |                |        |           |       |         |                         |             |                   |   0.81
+R2 (adj.)   |        |                |        |           |       |         |                         |             |                   |   0.79
+Sigma       |        |                |        |           |       |         |                         |             |                   |   2.66&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="exotic-and-not-supported-models"&gt;Exotic and not-supported models
+😨 ???&lt;/h2&gt;
+&lt;p&gt;Despite the large number of models supported, at the time of making
+this video (June 2022), {report} package doesn’t support all the models
+in the world. But it evolves very quick. For instance when you found
+similar “Error message” to the one you see on the screen, go to this
+link and let the authors know, what kind of models you want {report}
+package to be able to handle.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;d &amp;lt;- foreign::read.dta(&amp;quot;https://stats.idre.ucla.edu/stat/data/hsbdemo.dta&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error in download.file(file, tmp, quiet = TRUE, mode = &amp;quot;wb&amp;quot;): cannot open URL &amp;#39;https://stats.idre.ucla.edu/stat/data/hsbdemo.dta&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- nnet::multinom(prog ~ ses + write, d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Error in is.data.frame(data): object &amp;#39;d&amp;#39; not found&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;We fitted a logistic model (estimated using ML) to predict am with mpg (formula: am ~ mpg). The model&amp;#39;s explanatory power is substantial (Tjur&amp;#39;s R2 = 0.37). The model&amp;#39;s intercept, corresponding to mpg = 0, is at -6.60 (95% CI [-12.33, -2.77], p = 0.005). Within this model:
+
+  - The effect of mpg is statistically significant and positive (beta = 0.31, 95% CI [0.12, 0.59], p = 0.008; Std. beta = 1.85, 95% CI [0.74, 3.54])
+
+Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using &lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="reporting-data"&gt;3. Reporting Data&lt;/h1&gt;
+&lt;h2 id="as-text"&gt;As text&lt;/h2&gt;
+&lt;p&gt;Now, you can also quickly describe your data by simply using {report}
+function on your dataset. It provides the most common descriptive
+statistics for every variable, doesn’t matter numeric or
+categorical.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(iris)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The data contains 150 observations of the following 5 variables:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sepal.Length: n = 150, Mean = 5.84, SD = 0.83, Median = 5.80, MAD =
+1.04, range: [4.30, 7.90], Skewness = 0.31, Kurtosis = -0.55, 0%
+missing&lt;/li&gt;
+&lt;li&gt;Sepal.Width: n = 150, Mean = 3.06, SD = 0.44, Median = 3.00, MAD =
+0.44, range: [2, 4.40], Skewness = 0.32, Kurtosis = 0.23, 0%
+missing&lt;/li&gt;
+&lt;li&gt;Petal.Length: n = 150, Mean = 3.76, SD = 1.77, Median = 4.35, MAD =
+1.85, range: [1, 6.90], Skewness = -0.27, Kurtosis = -1.40, 0%
+missing&lt;/li&gt;
+&lt;li&gt;Petal.Width: n = 150, Mean = 1.20, SD = 0.76, Median = 1.30, MAD =
+1.04, range: [0.10, 2.50], Skewness = -0.10, Kurtosis = -1.34, 0%
+missing&lt;/li&gt;
+&lt;li&gt;Species: 3 levels, namely setosa (n = 50, 33.33%), versicolor (n =
+50, 33.33%) and virginica (n = 50, 33.33%)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Besides, {Report} package works perfectly with famous {tidyverse}
+packages, like {dplyr}. Thus, the data can be easily grouped by any
+categorical variable, e.g. Species, and the descriptive stats for every
+level of the grouping variable will be returned:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;iris %&amp;gt;%
+  select(-starts_with(&amp;quot;Sepal&amp;quot;)) %&amp;gt;%
+  group_by(Species) %&amp;gt;%
+  report() &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;The data contains 150 observations, grouped by Species, of the following 3 variables:
+
+- setosa (n = 50):
+  - Petal.Length: n = 50, Mean = 1.46, SD = 0.17, Median = 1.50, MAD = 0.15, range: [1, 1.90], Skewness = 0.11, Kurtosis = 1.02, 0 missing
+  - Petal.Width: n = 50, Mean = 0.25, SD = 0.11, Median = 0.20, MAD = 0.00, range: [0.10, 0.60], Skewness = 1.25, Kurtosis = 1.72, 0 missing
+
+- versicolor (n = 50):
+  - Petal.Length: n = 50, Mean = 4.26, SD = 0.47, Median = 4.35, MAD = 0.52, range: [3, 5.10], Skewness = -0.61, Kurtosis = 0.05, 0 missing
+  - Petal.Width: n = 50, Mean = 1.33, SD = 0.20, Median = 1.30, MAD = 0.22, range: [1, 1.80], Skewness = -0.03, Kurtosis = -0.41, 0 missing
+
+- virginica (n = 50):
+  - Petal.Length: n = 50, Mean = 5.55, SD = 0.55, Median = 5.55, MAD = 0.67, range: [4.50, 6.90], Skewness = 0.55, Kurtosis = -0.15, 0 missing
+  - Petal.Width: n = 50, Mean = 2.03, SD = 0.27, Median = 2.00, MAD = 0.30, range: [1.40, 2.50], Skewness = -0.13, Kurtosis = -0.60, 0 missing&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="as-table"&gt;As table&lt;/h2&gt;
+&lt;p&gt;Want the same as a huge or a minimalistic table? No, problems! Use
+&lt;code&gt;report_table()&lt;/code&gt; or &lt;code&gt;report_sample()&lt;/code&gt;
+functions.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;iris %&amp;gt;%
+  group_by(Species) %&amp;gt;%
+  report_table()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Group      |     Variable | n_Obs | Mean |   SD | Median |  MAD |  Min |  Max | Skewness | Kurtosis | n_Missing
+---------------------------------------------------------------------------------------------------------------
+versicolor | Sepal.Length |    50 | 5.94 | 0.52 |   5.90 | 0.52 | 4.90 | 7.00 |     0.11 |    -0.53 |         0
+versicolor |  Sepal.Width |    50 | 2.77 | 0.31 |   2.80 | 0.30 | 2.00 | 3.40 |    -0.36 |    -0.37 |         0
+versicolor | Petal.Length |    50 | 4.26 | 0.47 |   4.35 | 0.52 | 3.00 | 5.10 |    -0.61 |     0.05 |         0
+versicolor |  Petal.Width |    50 | 1.33 | 0.20 |   1.30 | 0.22 | 1.00 | 1.80 |    -0.03 |    -0.41 |         0
+virginica  | Sepal.Length |    50 | 6.59 | 0.64 |   6.50 | 0.59 | 4.90 | 7.90 |     0.12 |     0.03 |         0
+virginica  |  Sepal.Width |    50 | 2.97 | 0.32 |   3.00 | 0.30 | 2.20 | 3.80 |     0.37 |     0.71 |         0
+virginica  | Petal.Length |    50 | 5.55 | 0.55 |   5.55 | 0.67 | 4.50 | 6.90 |     0.55 |    -0.15 |         0
+virginica  |  Petal.Width |    50 | 2.03 | 0.27 |   2.00 | 0.30 | 1.40 | 2.50 |    -0.13 |    -0.60 |         0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_sample(iris, group_by = &amp;quot;Species&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Descriptive Statistics
+
+Variable               | setosa (n=50) | versicolor (n=50) | virginica (n=50) | Total (n=150)
+---------------------------------------------------------------------------------------------
+Mean Sepal.Length (SD) |   5.01 (0.35) |       5.94 (0.52) |      6.59 (0.64) |   5.84 (0.83)
+Mean Sepal.Width (SD)  |   3.43 (0.38) |       2.77 (0.31) |      2.97 (0.32) |   3.06 (0.44)
+Mean Petal.Length (SD) |   1.46 (0.17) |       4.26 (0.47) |      5.55 (0.55) |   3.76 (1.77)
+Mean Petal.Width (SD)  |   0.25 (0.11) |       1.33 (0.20) |      2.03 (0.27) |   1.20 (0.76)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="reporting-r-environment-packages-system"&gt;4. Reporting R
+environment, packages, system&lt;/h1&gt;
+&lt;p&gt;And finally, using only one command:
+&lt;code&gt;report(sessionInfo())&lt;/code&gt; you first report the Statistical
+software you used for data analysis, secondly, you list ALL packages you
+used and lastly you cite all packages you used automatically without any
+typing mistakes! How cool is that? And if you want to know how to find
+THE BEST MODEL which you then can report, check out {glmulti}
+package!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(sessionInfo())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Analyses were conducted using the R Statistical language (version
+4.1.3; R Core Team, 2022) on macOS Big Sur/Monterey 10.16, using the
+packages flextable (version 0.7.0; David Gohel, 2022), Rcpp (version
+1.0.8.3; Dirk Eddelbuettel and Romain Francois, 2011), Matrix (version
+1.4.1; Douglas Bates, Martin Maechler and Mikael Jagan, 2022), lme4
+(version 1.1.29; Douglas Bates et al., 2015), ISLR (version 1.4; Gareth
+James et al., 2021), rstanarm (version 2.21.3; Goodrich B et al., 2022),
+ggplot2 (version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data
+Analysis. Springer-Verlag New York, 2016.), stringr (version 1.4.0;
+Hadley Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021),
+tidyr (version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022),
+readr (version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan,
+2022), dplyr (version 1.0.9; Hadley Wickham et al., 2022), tibble
+(version 3.1.7; Kirill Müller and Hadley Wickham, 2022), purrr (version
+0.3.4; Lionel Henry and Hadley Wickham, 2020), sjPlot (version 2.8.10;
+Lüdecke D, 2021), report (version 0.5.1; Makowski et al., 2020),
+ggstatsplot (version 0.9.3; Patil, 2021) and tidyverse (version
+1.3.1.9000; Wickham et al., 2019).&lt;/p&gt;
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;David Gohel (2022). flextable: Functions for Tabular Reporting. R
+package version 0.7.0. &lt;a
+href="https://CRAN.R-project.org/package=flextable"
+class="uri"&gt;https://CRAN.R-project.org/package=flextable&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dirk Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and
+C++ Integration. Journal of Statistical Software, 40(8), 1-18, &lt;a
+href="doi:10.18637/jss.v040.i08"
+class="uri"&gt;doi:10.18637/jss.v040.i08&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Douglas Bates, Martin Maechler and Mikael Jagan (2022). Matrix:
+Sparse and Dense Matrix Classes and Methods. R package version 1.4-1. &lt;a
+href="https://CRAN.R-project.org/package=Matrix"
+class="uri"&gt;https://CRAN.R-project.org/package=Matrix&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015).
+Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical
+Software, 67(1), 1-48. &lt;a href="doi:10.18637/jss.v067.i01"
+class="uri"&gt;doi:10.18637/jss.v067.i01&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Gareth James, Daniela Witten, Trevor Hastie and Rob Tibshirani
+(2021). ISLR: Data for an Introduction to Statistical Learning with
+Applications in R. R package version 1.4. &lt;a
+href="https://CRAN.R-project.org/package=ISLR"
+class="uri"&gt;https://CRAN.R-project.org/package=ISLR&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Goodrich B, Gabry J, Ali I &amp;amp; Brilleman S. (2022). rstanarm:
+Bayesian applied regression modeling via Stan. R package version 2.21.3
+&lt;a href="https://mc-stan.org/rstanarm"
+class="uri"&gt;https://mc-stan.org/rstanarm&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.&lt;/li&gt;
+&lt;li&gt;Hadley Wickham (2019). stringr: Simple, Consistent Wrappers for
+Common String Operations. R package version 1.4.0. &lt;a
+href="https://CRAN.R-project.org/package=stringr"
+class="uri"&gt;https://CRAN.R-project.org/package=stringr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hadley Wickham (2021). forcats: Tools for Working with Categorical
+Variables (Factors). R package version 0.5.1. &lt;a
+href="https://CRAN.R-project.org/package=forcats"
+class="uri"&gt;https://CRAN.R-project.org/package=forcats&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hadley Wickham and Maximilian Girlich (2022). tidyr: Tidy Messy
+Data. R package version 1.2.0. &lt;a
+href="https://CRAN.R-project.org/package=tidyr"
+class="uri"&gt;https://CRAN.R-project.org/package=tidyr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hadley Wickham, Jim Hester and Jennifer Bryan (2022). readr: Read
+Rectangular Text Data. R package version 2.1.2. &lt;a
+href="https://CRAN.R-project.org/package=readr"
+class="uri"&gt;https://CRAN.R-project.org/package=readr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Hadley Wickham, Romain François, Lionel Henry and Kirill Müller
+(2022). dplyr: A Grammar of Data Manipulation. R package version 1.0.9.
+&lt;a href="https://CRAN.R-project.org/package=dplyr"
+class="uri"&gt;https://CRAN.R-project.org/package=dplyr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Kirill Müller and Hadley Wickham (2022). tibble: Simple Data Frames.
+R package version 3.1.7. &lt;a
+href="https://CRAN.R-project.org/package=tibble"
+class="uri"&gt;https://CRAN.R-project.org/package=tibble&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Lionel Henry and Hadley Wickham (2020). purrr: Functional
+Programming Tools. R package version 0.3.4. &lt;a
+href="https://CRAN.R-project.org/package=purrr"
+class="uri"&gt;https://CRAN.R-project.org/package=purrr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Lüdecke D (2021). &lt;em&gt;sjPlot: Data Visualization for Statistics in
+SocialScience&lt;/em&gt;. R package version 2.8.10, &amp;lt;URL:&lt;a
+href="https://CRAN.R-project.org/package=sjPlot"
+class="uri"&gt;https://CRAN.R-project.org/package=sjPlot&lt;/a&gt;&amp;gt;.&lt;/li&gt;
+&lt;li&gt;Makowski, D., Ben-Shachar, M.S., Patil, I. &amp;amp; Lüdecke, D. (2020).
+Automated Results Reporting as a Practical Tool to Improve
+Reproducibility and Methodological Best Practices Adoption. CRAN.
+Available from &lt;a href="https://github.com/easystats/report"
+class="uri"&gt;https://github.com/easystats/report&lt;/a&gt;. doi: .&lt;/li&gt;
+&lt;li&gt;Patil, I. (2021). Visualizations with statistical details: The
+‘ggstatsplot’ approach. Journal of Open Source Software, 6(61), 3167, &lt;a
+href="doi:10.21105/joss.03167"
+class="uri"&gt;doi:10.21105/joss.03167&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;R Core Team (2022). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+&lt;a href="https://www.R-project.org/"
+class="uri"&gt;https://www.R-project.org/&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Wickham et al., (2019). Welcome to the tidyverse. Journal of Open
+Source Software, 4(43), 1686, &lt;a
+href="https://doi.org/10.21105/joss.01686"
+class="uri"&gt;https://doi.org/10.21105/joss.01686&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can also use parts of &lt;code&gt;sessionInfo()&lt;/code&gt;, but why would
+you? 🤓&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_system()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Analyses were conducted using the R Statistical language (version
+4.1.3; R Core Team, 2022) on macOS Big Sur/Monterey 10.16&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report_packages()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;flextable (version 0.7.0; David Gohel, 2022), Rcpp (version 1.0.8.3;
+Dirk Eddelbuettel and Romain Francois, 2011), Matrix (version 1.4.1;
+Douglas Bates, Martin Maechler and Mikael Jagan, 2022), lme4 (version
+1.1.29; Douglas Bates et al., 2015), ISLR (version 1.4; Gareth James et
+al., 2021), rstanarm (version 2.21.3; Goodrich B et al., 2022), ggplot2
+(version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.), stringr (version 1.4.0; Hadley
+Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021), tidyr
+(version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022), readr
+(version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan, 2022),
+dplyr (version 1.0.9; Hadley Wickham et al., 2022), tibble (version
+3.1.7; Kirill Müller and Hadley Wickham, 2022), purrr (version 0.3.4;
+Lionel Henry and Hadley Wickham, 2020), sjPlot (version 2.8.10; Lüdecke
+D, 2021), report (version 0.5.1; Makowski et al., 2020), ggstatsplot
+(version 0.9.3; Patil, 2021), R (version 4.1.3; R Core Team, 2022),
+tidyverse (version 1.3.1.9000; Wickham et al., 2019)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;cite_packages()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;David Gohel (2022). flextable: Functions for Tabular Reporting. R
+package version 0.7.0. &lt;a
+href="https://CRAN.R-project.org/package=flextable"
+class="uri"&gt;https://CRAN.R-project.org/package=flextable&lt;/a&gt;, Dirk
+Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and C++
+Integration. Journal of Statistical Software, 40(8), 1-18, &lt;a
+href="doi:10.18637/jss.v040.i08"
+class="uri"&gt;doi:10.18637/jss.v040.i08&lt;/a&gt;., Douglas Bates, Martin
+Maechler and Mikael Jagan (2022). Matrix: Sparse and Dense Matrix
+Classes and Methods. R package version 1.4-1. &lt;a
+href="https://CRAN.R-project.org/package=Matrix"
+class="uri"&gt;https://CRAN.R-project.org/package=Matrix&lt;/a&gt;, Douglas
+Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear
+Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1),
+1-48. &lt;a href="doi:10.18637/jss.v067.i01"
+class="uri"&gt;doi:10.18637/jss.v067.i01&lt;/a&gt;., Gareth James, Daniela
+Witten, Trevor Hastie and Rob Tibshirani (2021). ISLR: Data for an
+Introduction to Statistical Learning with Applications in R. R package
+version 1.4. &lt;a href="https://CRAN.R-project.org/package=ISLR"
+class="uri"&gt;https://CRAN.R-project.org/package=ISLR&lt;/a&gt;, Goodrich B,
+Gabry J, Ali I &amp;amp; Brilleman S. (2022). rstanarm: Bayesian applied
+regression modeling via Stan. R package version 2.21.3 &lt;a
+href="https://mc-stan.org/rstanarm"
+class="uri"&gt;https://mc-stan.org/rstanarm&lt;/a&gt;., H. Wickham. ggplot2:
+Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.,
+Hadley Wickham (2019). stringr: Simple, Consistent Wrappers for Common
+String Operations. R package version 1.4.0. &lt;a
+href="https://CRAN.R-project.org/package=stringr"
+class="uri"&gt;https://CRAN.R-project.org/package=stringr&lt;/a&gt;, Hadley
+Wickham (2021). forcats: Tools for Working with Categorical Variables
+(Factors). R package version 0.5.1. &lt;a
+href="https://CRAN.R-project.org/package=forcats"
+class="uri"&gt;https://CRAN.R-project.org/package=forcats&lt;/a&gt;, Hadley
+Wickham and Maximilian Girlich (2022). tidyr: Tidy Messy Data. R package
+version 1.2.0. &lt;a href="https://CRAN.R-project.org/package=tidyr"
+class="uri"&gt;https://CRAN.R-project.org/package=tidyr&lt;/a&gt;, Hadley
+Wickham, Jim Hester and Jennifer Bryan (2022). readr: Read Rectangular
+Text Data. R package version 2.1.2. &lt;a
+href="https://CRAN.R-project.org/package=readr"
+class="uri"&gt;https://CRAN.R-project.org/package=readr&lt;/a&gt;, Hadley
+Wickham, Romain François, Lionel Henry and Kirill Müller (2022). dplyr:
+A Grammar of Data Manipulation. R package version 1.0.9. &lt;a
+href="https://CRAN.R-project.org/package=dplyr"
+class="uri"&gt;https://CRAN.R-project.org/package=dplyr&lt;/a&gt;, Kirill Müller
+and Hadley Wickham (2022). tibble: Simple Data Frames. R package version
+3.1.7. &lt;a href="https://CRAN.R-project.org/package=tibble"
+class="uri"&gt;https://CRAN.R-project.org/package=tibble&lt;/a&gt;, Lionel Henry
+and Hadley Wickham (2020). purrr: Functional Programming Tools. R
+package version 0.3.4. &lt;a
+href="https://CRAN.R-project.org/package=purrr"
+class="uri"&gt;https://CRAN.R-project.org/package=purrr&lt;/a&gt;, Lüdecke D
+(2021). &lt;em&gt;sjPlot: Data Visualization for Statistics in
+SocialScience&lt;/em&gt;. R package version 2.8.10, &amp;lt;URL:&lt;a
+href="https://CRAN.R-project.org/package=sjPlot"
+class="uri"&gt;https://CRAN.R-project.org/package=sjPlot&lt;/a&gt;&amp;gt;.,
+Makowski, D., Ben-Shachar, M.S., Patil, I. &amp;amp; Lüdecke, D. (2020).
+Automated Results Reporting as a Practical Tool to Improve
+Reproducibility and Methodological Best Practices Adoption. CRAN.
+Available from &lt;a href="https://github.com/easystats/report"
+class="uri"&gt;https://github.com/easystats/report&lt;/a&gt;. doi: ., Patil, I.
+(2021). Visualizations with statistical details: The ‘ggstatsplot’
+approach. Journal of Open Source Software, 6(61), 3167, &lt;a
+href="doi:10.21105/joss.03167" class="uri"&gt;doi:10.21105/joss.03167&lt;/a&gt;,
+R Core Team (2022). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+&lt;a href="https://www.R-project.org/"
+class="uri"&gt;https://www.R-project.org/&lt;/a&gt;., Wickham et al., (2019).
+Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686,
+&lt;a href="https://doi.org/10.21105/joss.01686"
+class="uri"&gt;https://doi.org/10.21105/joss.01686&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="further-readings-and-references"&gt;Further readings and
+references&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://easystats.github.io/report/index.html"
+class="uri"&gt;https://easystats.github.io/report/index.html&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;All functions from {report} package: &lt;a
+href="https://easystats.github.io/report/reference/index.html"
+class="uri"&gt;https://easystats.github.io/report/reference/index.html&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>f3e65c0dc4b8595156a58f45ad4de652</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>R package reviews</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-06-18-report</guid>
+      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-06-18-report/thumbnail_report.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>R package reviews {glmulti} find the best model!</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -346,23 +1176,24 @@ compare_performance(optimal_model_glmulti_exhaustive, optimal_model_glmulti_gene
 
 Name                             | Model |     AIC | AIC weights |     BIC | BIC weights |    R2 |  RMSE | Sigma
 ----------------------------------------------------------------------------------------------------------------
-optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
-optimal_model_glmulti_genetic    |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
-optimal_model_backward           |   glm | 135.927 |       0.215 | 157.913 |       0.002 | 0.954 | 1.266 | 1.689
-optimal_model_forward            |   glm | 144.919 |       0.002 | 155.179 |       0.006 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.447 | 146.460 |       0.968 | 0.932 | 1.547 | 1.750
+optimal_model_glmulti_genetic    |   glm | 135.502 |       0.304 | 154.557 |       0.017 | 0.949 | 1.339 | 1.694
+optimal_model_backward           |   glm | 135.927 |       0.246 | 157.913 |       0.003 | 0.954 | 1.266 | 1.689
+optimal_model_forward            |   glm | 144.919 |       0.003 | 155.179 |       0.012 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fd23adea2e0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fe1dd322d20&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fd238e0bd60&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + hp + wt + qsec + gear + drat:hp + wt:hp + wt:drat + 
+    qsec:hp + qsec:wt + gear:hp + gear:wt
+&amp;lt;environment: 0x7fe1db843a40&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7fd22fbf4030&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fe1bce2a398&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7fd22fbf4030&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fe1bce2a398&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -409,7 +1240,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filef9472fd3cf16_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -458,7 +1289,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filef9472fd3cf16_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -467,7 +1298,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="c47a0723-8744-43e8-ba11-3f02cf842fa9"&gt;&lt;style&gt;
+&lt;template id="fe48bce8-b88e-4b6b-aeaf-1c3f46fa5346"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -501,12 +1332,12 @@ can easily display them:&lt;/p&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-080aa3b6{}.cl-080541c8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-08055212{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0805521c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-080586ce{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-080586d8{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-080586e2{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-080586ec{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-080586ed{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-080586f6{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-080586f7{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-08058700{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0805870a{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-080aa3b6'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-08058700"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586f7"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-0805870a"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-080586d8"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586ce"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586e2"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-080586d8"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586ce"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586e2"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-080586d8"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586ce"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586e2"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-080586d8"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586ce"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586e2"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-080586d8"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586ce"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586e2"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-080586ec"&gt;&lt;p class="cl-08055212"&gt;&lt;span class="cl-080541c8"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586ed"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-080586f6"&gt;&lt;p class="cl-0805521c"&gt;&lt;span class="cl-080541c8"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="b4257f88-33e8-4cd5-bcc7-11b82db8c44e"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-f6eb83dc{}.cl-f6e2a5f0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-f6e2c8f0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f6e2c8fa{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f6e30eaa{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ebe{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ebf{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ec0{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ec8{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ec9{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ed2{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30edc{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30edd{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-f6eb83dc'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30edc"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ed2"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30edd"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ec0"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ec8"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ec9"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="c18ae924-87a0-4472-bccb-f5bab1f6aa0a"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("b4257f88-33e8-4cd5-bcc7-11b82db8c44e");
-var template = document.getElementById("c47a0723-8744-43e8-ba11-3f02cf842fa9");
+var dest = document.getElementById("c18ae924-87a0-4472-bccb-f5bab1f6aa0a");
+var template = document.getElementById("fe48bce8-b88e-4b6b-aeaf-1c3f46fa5346");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -546,7 +1377,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filef9472fd3cf16_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -583,7 +1414,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filef9472fd3cf16_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;
@@ -631,7 +1462,7 @@ improve this tutorial.&lt;/p&gt;
       <category>R package reviews</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti</guid>
-      <pubDate>Fri, 17 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 18 Jun 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti/thumbnail_glmulti.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
