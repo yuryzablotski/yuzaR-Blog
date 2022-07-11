@@ -1,7 +1,7 @@
 ---
-title: "R package reviews {report} How To Report Results!"
+title: "R package reviews {report} How To Report Statistical Results!"
 description: |
-  If you ever wandered how to correctly describe the results of statistical tests and models, this video is for you. In a few minutes you'll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let's start with a simple t-test.
+  If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you'll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let's start with a simple t-test.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -34,12 +34,12 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
 
 
-# This post as a video (will be added soon)
+# This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+I recommend to watch a video first, because I highlight things I talk about. It's less then 8 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("iMh9tPsuiik")
 ```
 
 
@@ -408,7 +408,7 @@ report_table(bayes_model)
 
 ## Exotic and not-supported models 😨 ???
 
-Despite the large number of models supported, at the time of making this video (June 2022), {report} package doesn't support all the models in the world. But it evolves very quick. For instance when you found similar "Error message" to the one you see on the screen, go to this link and let the authors know, what kind of models you want {report} package to be able to handle.
+Despite the large number of models supported, at the time of making this blog (June 2022), {report} package doesn't support all the models in the world. But it evolves very quick. For instance when you found similar "Error message" to the one you see on the screen, go to this link and let the authors know, what kind of models you want {report} package to be able to handle.
 
 ```{r, error=TRUE}
 d <- foreign::read.dta("https://stats.idre.ucla.edu/stat/data/hsbdemo.dta")

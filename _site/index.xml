@@ -7,21 +7,20 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 30 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Jul 2022 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>R package reviews {report} How To Report Results!</title>
+      <title>R package reviews {report} How To Report Statistical Results!</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2022-06-18-report</link>
       <description>
 
 
-&lt;h1 id="this-post-as-a-video-will-be-added-soon"&gt;This post as a video
-(will be added soon)&lt;/h1&gt;
+&lt;h1 id="this-post-as-a-video"&gt;This post as a video&lt;/h1&gt;
 &lt;p&gt;I recommend to watch a video first, because I highlight things I talk
-about. It’s less then … minutes long.&lt;/p&gt;
+about. It’s less then 8 minutes long.&lt;/p&gt;
 &lt;div class="vembedr"&gt;
 &lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;iframe src="https://www.youtube.com/embed/iMh9tPsuiik" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h1 id="why-do-we-need-report"&gt;Why do we need {report}?&lt;/h1&gt;
@@ -450,20 +449,20 @@ bayes_model &amp;lt;- stan_glm(mpg ~ qsec + wt, data = mtcars, refresh = 0)&lt;/
 qsec and wt (formula: mpg ~ qsec + wt). Priors over parameters were set
 as normal (mean = 0.00, SD = 8.43) and normal (mean = 0.00, SD = 15.40)
 distributions. The model’s explanatory power is substantial (R2 = 0.81,
-95% CI [0.71, 0.89], adj. R2 = 0.79). The model’s intercept,
-corresponding to qsec = 0 and wt = 0, is at 19.69 (95% CI [9.13,
-30.75]). Within this model:&lt;/p&gt;
+95% CI [0.70, 0.90], adj. R2 = 0.79). The model’s intercept,
+corresponding to qsec = 0 and wt = 0, is at 19.59 (95% CI [8.67,
+31.05]). Within this model:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;The effect of qsec (Median = 0.93, 95% CI [0.38, 1.46]) has a 99.90%
-probability of being positive (&amp;gt; 0), 98.65% of being significant
-(&amp;gt; 0.30), and 0.18% of being large (&amp;gt; 1.81). The estimation
-successfully converged (Rhat = 1.001) and the indices are reliable (ESS
-= 4314)&lt;/li&gt;
-&lt;li&gt;The effect of wt (Median = -5.06, 95% CI [-6.04, -4.05]) has a
+&lt;li&gt;The effect of qsec (Median = 0.93, 95% CI [0.37, 1.48]) has a 99.90%
+probability of being positive (&amp;gt; 0), 98.55% of being significant
+(&amp;gt; 0.30), and 0.25% of being large (&amp;gt; 1.81). The estimation
+successfully converged (Rhat = 1.000) and the indices are reliable (ESS
+= 4179)&lt;/li&gt;
+&lt;li&gt;The effect of wt (Median = -5.04, 95% CI [-6.04, -3.99]) has a
 100.00% probability of being negative (&amp;lt; 0), 100.00% of being
 significant (&amp;lt; -0.30), and 100.00% of being large (&amp;lt; -1.81). The
-estimation successfully converged (Rhat = 1.000) and the indices are
-reliable (ESS = 3935)&lt;/li&gt;
+estimation successfully converged (Rhat = 1.001) and the indices are
+reliable (ESS = 3643)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Following the Sequential Effect eXistence and sIgnificance Testing
 (SEXIT) framework, we report the median of the posterior distribution
@@ -487,63 +486,65 @@ and normal (mean = 0.00, SD = 15.40) distributions&lt;/p&gt;
 distributions&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_performance(bayes_model)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The model’s explanatory power is substantial (R2 = 0.81, 95% CI
-[0.71, 0.89], adj. R2 = 0.79)&lt;/p&gt;
+[0.70, 0.90], adj. R2 = 0.79)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_parameters(bayes_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The intercept (Median = 19.69, 95% CI [9.13, 30.75]) has a 100.00%
-probability of being positive (&amp;gt; 0), 99.98% of being significant
-(&amp;gt; 0.30), and 99.98% of being large (&amp;gt; 1.81). The estimation
-successfully converged (Rhat = 1.001) and the indices are reliable (ESS
-= 3815), The effect of qsec (Median = 0.93, 95% CI [0.38, 1.46]) has a
-99.90% probability of being positive (&amp;gt; 0), 98.65% of being
-significant (&amp;gt; 0.30), and 0.18% of being large (&amp;gt; 1.81). The
-estimation successfully converged (Rhat = 1.001) and the indices are
-reliable (ESS = 4314), The effect of wt (Median = -5.06, 95% CI [-6.04,
--4.05]) has a 100.00% probability of being negative (&amp;lt; 0), 100.00% of
+&lt;p&gt;The intercept (Median = 19.59, 95% CI [8.67, 31.05]) has a 99.92%
+probability of being positive (&amp;gt; 0), 99.92% of being significant
+(&amp;gt; 0.30), and 99.83% of being large (&amp;gt; 1.81). The estimation
+successfully converged (Rhat = 1.000) and the indices are reliable (ESS
+= 3964), The effect of qsec (Median = 0.93, 95% CI [0.37, 1.48]) has a
+99.90% probability of being positive (&amp;gt; 0), 98.55% of being
+significant (&amp;gt; 0.30), and 0.25% of being large (&amp;gt; 1.81). The
+estimation successfully converged (Rhat = 1.000) and the indices are
+reliable (ESS = 4179), The effect of wt (Median = -5.04, 95% CI [-6.04,
+-3.99]) has a 100.00% probability of being negative (&amp;lt; 0), 100.00% of
 being significant (&amp;lt; -0.30), and 100.00% of being large (&amp;lt; -1.81).
-The estimation successfully converged (Rhat = 1.000) and the indices are
-reliable (ESS = 3935)&lt;/p&gt;
+The estimation successfully converged (Rhat = 1.001) and the indices are
+reliable (ESS = 3643)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_statistics(bayes_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Median = 19.69, 95% CI [9.13, 30.75], pd = 100%, 0% in ROPE; Std.
-beta = 1.92e-03, 95% CI [-0.15, 0.16]; Rhat = 1.00, ESS = 3815.22,
-Median = 0.93, 95% CI [0.38, 1.46], pd = 99.90%, 9.24% in ROPE; Std.
-beta = 0.27, 95% CI [0.12, 0.43]; Rhat = 1.00, ESS = 4314.28, Median =
--5.06, 95% CI [-6.04, -4.05], pd = 100%, 0% in ROPE; Std. beta = -0.82,
-95% CI [-0.98, -0.65]; Rhat = 1.00, ESS = 3934.85&lt;/p&gt;
+&lt;p&gt;Median = 19.59, 95% CI [8.67, 31.05], pd = 99.92%, 0% in ROPE; Std.
+beta = 1.22e-03, 95% CI [-0.16, 0.16]; Rhat = 1.00, ESS = 3964.00,
+Median = 0.93, 95% CI [0.37, 1.48], pd = 99.90%, 10.26% in ROPE; Std.
+beta = 0.28, 95% CI [0.11, 0.45]; Rhat = 1.00, ESS = 4178.73, Median =
+-5.04, 95% CI [-6.04, -3.99], pd = 100%, 0% in ROPE; Std. beta = -0.82,
+95% CI [-0.98, -0.66]; Rhat = 1.00, ESS = 3643.13&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_effectsize(bayes_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;very small (Std. beta = 2.85e-03, 95% CI [-0.16, 0.15]), small (Std.
-beta = 0.28, 95% CI [0.12, 0.43]), large (Std. beta = -0.82, 95% CI
+&lt;p&gt;very small (Std. beta = -7.75e-04, 95% CI [-0.16, 0.16]), small (Std.
+beta = 0.27, 95% CI [0.11, 0.45]), large (Std. beta = -0.82, 95% CI
 [-0.98, -0.66])&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_table(bayes_model)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Parameter   | Median |         95% CI |     pd | % in ROPE |  Rhat |     ESS |                   Prior | Std. Median | Std_Median 95% CI |    Fit
 -------------------------------------------------------------------------------------------------------------------------------------------------
-(Intercept) |  19.69 | [ 9.13, 30.75] |   100% |        0% | 1.001 | 3815.00 | Normal (20.09 +- 15.07) |    6.55e-04 |    [-0.16,  0.16] |       
-qsec        |   0.93 | [ 0.38,  1.46] | 99.90% |     9.24% | 1.001 | 4314.00 |   Normal (0.00 +- 8.43) |        0.28 |    [ 0.11,  0.44] |       
-wt          |  -5.06 | [-6.04, -4.05] |   100% |        0% | 1.000 | 3935.00 |  Normal (0.00 +- 15.40) |       -0.82 |    [-0.98, -0.66] |       
+(Intercept) |  19.59 | [ 8.67, 31.05] | 99.92% |        0% | 1.000 | 3964.00 | Normal (20.09 +- 15.07) |   -1.23e-03 |    [-0.17,  0.16] |       
+qsec        |   0.93 | [ 0.37,  1.48] | 99.90% |    10.26% | 1.000 | 4179.00 |   Normal (0.00 +- 8.43) |        0.27 |    [ 0.12,  0.43] |       
+wt          |  -5.04 | [-6.04, -3.99] |   100% |        0% | 1.001 | 3643.00 |  Normal (0.00 +- 15.40) |       -0.82 |    [-0.98, -0.65] |       
             |        |                |        |           |       |         |                         |             |                   |       
-ELPD        |        |                |        |           |       |         |                         |             |                   | -79.09
-LOOIC       |        |                |        |           |       |         |                         |             |                   | 158.18
-WAIC        |        |                |        |           |       |         |                         |             |                   | 157.84
+ELPD        |        |                |        |           |       |         |                         |             |                   | -79.02
+LOOIC       |        |                |        |           |       |         |                         |             |                   | 158.04
+WAIC        |        |                |        |           |       |         |                         |             |                   | 157.78
 R2          |        |                |        |           |       |         |                         |             |                   |   0.81
 R2 (adj.)   |        |                |        |           |       |         |                         |             |                   |   0.79
-Sigma       |        |                |        |           |       |         |                         |             |                   |   2.66&lt;/code&gt;&lt;/pre&gt;
+Sigma       |        |                |        |           |       |         |                         |             |                   |   2.64&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="exotic-and-not-supported-models"&gt;Exotic and not-supported models
 😨 ???&lt;/h2&gt;
 &lt;p&gt;Despite the large number of models supported, at the time of making
-this video (June 2022), {report} package doesn’t support all the models
+this blog (June 2022), {report} package doesn’t support all the models
 in the world. But it evolves very quick. For instance when you found
 similar “Error message” to the one you see on the screen, go to this
 link and let the authors know, what kind of models you want {report}
 package to be able to handle.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;d &amp;lt;- foreign::read.dta(&amp;quot;https://stats.idre.ucla.edu/stat/data/hsbdemo.dta&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Error in download.file(file, tmp, quiet = TRUE, mode = &amp;quot;wb&amp;quot;): cannot open URL &amp;#39;https://stats.idre.ucla.edu/stat/data/hsbdemo.dta&amp;#39;&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- nnet::multinom(prog ~ ses + write, d)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Error in is.data.frame(data): object &amp;#39;d&amp;#39; not found&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;d &amp;lt;- foreign::read.dta(&amp;quot;https://stats.idre.ucla.edu/stat/data/hsbdemo.dta&amp;quot;)
+
+m &amp;lt;- nnet::multinom(prog ~ ses + write, d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# weights:  15 (8 variable)
+initial  value 219.722458 
+iter  10 value 179.985215
+final  value 179.981726 
+converged&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;We fitted a logistic model (estimated using ML) to predict am with mpg (formula: am ~ mpg). The model&amp;#39;s explanatory power is substantial (Tjur&amp;#39;s R2 = 0.37). The model&amp;#39;s intercept, corresponding to mpg = 0, is at -6.60 (95% CI [-12.33, -2.77], p = 0.005). Within this model:
+&lt;pre&gt;&lt;code&gt;Error in report.default(m): Oops, objects of class [multinom, nnet] are not supported (yet) by report() :(
 
-  - The effect of mpg is statistically significant and positive (beta = 0.31, 95% CI [0.12, 0.59], p = 0.008; Std. beta = 1.85, 95% CI [0.74, 3.54])
-
-Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using &lt;/code&gt;&lt;/pre&gt;
+Want to help? Check out https://easystats.github.io/report/articles/new_models.html&lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id="reporting-data"&gt;3. Reporting Data&lt;/h1&gt;
 &lt;h2 id="as-text"&gt;As text&lt;/h2&gt;
 &lt;p&gt;Now, you can also quickly describe your data by simply using {report}
@@ -835,7 +836,7 @@ improve this tutorial.&lt;/p&gt;
       <category>R package reviews</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-06-18-report</guid>
-      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-06-18-report/thumbnail_report.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -1176,24 +1177,23 @@ compare_performance(optimal_model_glmulti_exhaustive, optimal_model_glmulti_gene
 
 Name                             | Model |     AIC | AIC weights |     BIC | BIC weights |    R2 |  RMSE | Sigma
 ----------------------------------------------------------------------------------------------------------------
-optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.447 | 146.460 |       0.968 | 0.932 | 1.547 | 1.750
-optimal_model_glmulti_genetic    |   glm | 135.502 |       0.304 | 154.557 |       0.017 | 0.949 | 1.339 | 1.694
-optimal_model_backward           |   glm | 135.927 |       0.246 | 157.913 |       0.003 | 0.954 | 1.266 | 1.689
-optimal_model_forward            |   glm | 144.919 |       0.003 | 155.179 |       0.012 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
+optimal_model_glmulti_genetic    |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
+optimal_model_backward           |   glm | 135.927 |       0.215 | 157.913 |       0.002 | 0.954 | 1.266 | 1.689
+optimal_model_forward            |   glm | 144.919 |       0.002 | 155.179 |       0.006 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fe1dd322d20&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fafbe688568&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mpg ~ 1 + hp + wt + qsec + gear + drat:hp + wt:hp + wt:drat + 
-    qsec:hp + qsec:wt + gear:hp + gear:wt
-&amp;lt;environment: 0x7fe1db843a40&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
+&amp;lt;environment: 0x7fafbc8424d0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7fe1bce2a398&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fb00892df10&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7fe1bce2a398&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fb00892df10&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -1240,7 +1240,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -1289,7 +1289,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -1298,7 +1298,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="fe48bce8-b88e-4b6b-aeaf-1c3f46fa5346"&gt;&lt;style&gt;
+&lt;template id="e26e37f8-8c3a-4e3c-8c51-1c39e9771f29"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1332,12 +1332,12 @@ can easily display them:&lt;/p&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-f6eb83dc{}.cl-f6e2a5f0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-f6e2c8f0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f6e2c8fa{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f6e30eaa{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ebe{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ebf{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ec0{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ec8{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ec9{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30ed2{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30edc{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f6e30edd{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-f6eb83dc'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30edc"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ed2"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30edd"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ebe"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30eaa"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ebf"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-f6e30ec0"&gt;&lt;p class="cl-f6e2c8f0"&gt;&lt;span class="cl-f6e2a5f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ec8"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-f6e30ec9"&gt;&lt;p class="cl-f6e2c8fa"&gt;&lt;span class="cl-f6e2a5f0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="c18ae924-87a0-4472-bccb-f5bab1f6aa0a"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-eee2d51a{}.cl-eedbeca0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-eedc0c08{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-eedc0c12{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-eedc4c04{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c18{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c19{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c22{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c23{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c2c{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c36{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c37{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c40{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-eee2d51a'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c37"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c36"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c40"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c22"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c23"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c2c"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="971481dd-10fb-4b46-9aad-5026f8edad93"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("c18ae924-87a0-4472-bccb-f5bab1f6aa0a");
-var template = document.getElementById("fe48bce8-b88e-4b6b-aeaf-1c3f46fa5346");
+var dest = document.getElementById("971481dd-10fb-4b46-9aad-5026f8edad93");
+var template = document.getElementById("e26e37f8-8c3a-4e3c-8c51-1c39e9771f29");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1377,7 +1377,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -1414,7 +1414,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec1f15eaf097c_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;
