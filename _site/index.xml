@@ -7,7 +7,1204 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 10 Jul 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R package reviews {sjPlot} How to Easily Visualize Data And Model Results</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-08-01-sjplot</link>
+      <description>
+
+
+&lt;h1 id="this-post-as-a-video-in-progress"&gt;This post as a video (in
+progress)&lt;/h1&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s less then 9 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="all-the-functions-youll-learn-from-this-article"&gt;All the
+functions you’ll learn from this article&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;view_df()&lt;/code&gt;, &lt;code&gt;plot_frq()&lt;/code&gt;,
+&lt;code&gt;save_plot()&lt;/code&gt;, &lt;code&gt;plot_grpfrq()&lt;/code&gt;,
+&lt;code&gt;plot_grid()&lt;/code&gt;, &lt;code&gt;plot_xtab()&lt;/code&gt;,
+&lt;code&gt;tab_xtab()&lt;/code&gt;, &lt;code&gt;plot_gpt()&lt;/code&gt;,
+&lt;code&gt;plot_likert()&lt;/code&gt;, &lt;code&gt;plot_model()&lt;/code&gt;,
+&lt;code&gt;tab_model()&lt;/code&gt;, &lt;code&gt;plot_models()&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id="load-all-packages-at-once-to-avoid-interruptions"&gt;Load all
+packages at once to avoid interruptions&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)   # for everything useful in R ;) 
+library(ISLR)        # for &amp;quot;Wage&amp;quot; dataset about salaries
+library(sjPlot)      # for easy visualization
+library(likert)      # for &amp;quot;pisaitems&amp;quot; dataset with likert data
+library(lme4)        # for mixed-effects models
+library(lmerTest)    # for p-values in mixed-effects models&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="plot-data"&gt;Plot data&lt;/h1&gt;
+&lt;h2 id="view-dataframe-with-view_df"&gt;View dataframe with
+&lt;code&gt;view_df&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;View data-frame (&lt;code&gt;view_df&lt;/code&gt;) function with only 4
+arguments, (1) your data, (2) show frequencies, (3) show percentages and
+(4) show missing values, displays a range of numeric variables and the
+counts + percentages of missing values and categorical variables, giving
+you a nice big picture of your data.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;view_df(Wage, show.frq = T, show.prc = T, show.na = T)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;caption&gt;
+Data frame: Wage
+&lt;/caption&gt;
+&lt;tr&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+ID
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Name
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Label
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+missings
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Values
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Value Labels
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Freq.
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+%
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+1
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+year
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"&gt;
+&lt;em&gt;range: 2003-2009&lt;/em&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+2
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+age
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"&gt;
+&lt;em&gt;range: 18-80&lt;/em&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+3
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+maritl
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Never Married&lt;br&gt;2. Married&lt;br&gt;3. Widowed&lt;br&gt;4. Divorced&lt;br&gt;5.
+Separated
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+648&lt;br&gt;2074&lt;br&gt;19&lt;br&gt;204&lt;br&gt;55
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+21.60&lt;br&gt;69.13&lt;br&gt;0.63&lt;br&gt;6.80&lt;br&gt;1.83
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+4
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+race
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;White&lt;br&gt;2. Black&lt;br&gt;3. Asian&lt;br&gt;4. Other
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+2480&lt;br&gt;293&lt;br&gt;190&lt;br&gt;37
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+82.67&lt;br&gt;9.77&lt;br&gt;6.33&lt;br&gt;1.23
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+5
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+education
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&amp;lt; HS Grad&lt;br&gt;2. HS Grad&lt;br&gt;3. Some College&lt;br&gt;4. College
+Grad&lt;br&gt;5. Advanced Degree
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+268&lt;br&gt;971&lt;br&gt;650&lt;br&gt;685&lt;br&gt;426
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+8.93&lt;br&gt;32.37&lt;br&gt;21.67&lt;br&gt;22.83&lt;br&gt;14.20
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+6
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+region
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;New England&lt;br&gt;2. Middle Atlantic&lt;br&gt;3. East North Central&lt;br&gt;4.
+West North Central&lt;br&gt;5. South Atlantic&lt;br&gt;6. East South Central&lt;br&gt;7.
+West South Central&lt;br&gt;8. Mountain&lt;br&gt;9. Pacific
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0&lt;br&gt;3000&lt;br&gt;0&lt;br&gt;0&lt;br&gt;0&lt;br&gt;0&lt;br&gt;0&lt;br&gt;0&lt;br&gt;0
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0.00&lt;br&gt;100.00&lt;br&gt;0.00&lt;br&gt;0.00&lt;br&gt;0.00&lt;br&gt;0.00&lt;br&gt;0.00&lt;br&gt;0.00&lt;br&gt;0.00
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+7
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+jobclass
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Industrial&lt;br&gt;2. Information
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+1544&lt;br&gt;1456
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+51.47&lt;br&gt;48.53
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+8
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+health
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&amp;lt;=Good&lt;br&gt;2. &amp;gt;=Very Good
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+858&lt;br&gt;2142
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+28.60&lt;br&gt;71.40
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+9
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+health_ins
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Yes&lt;br&gt;2. No
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+2083&lt;br&gt;917
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+69.43&lt;br&gt;30.57
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+10
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+logwage
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"&gt;
+&lt;em&gt;range: 3.0-5.8&lt;/em&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+11
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+wage
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+0 (0.00%)
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"&gt;
+&lt;em&gt;range: 20.1-318.3&lt;/em&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/table&gt;
+&lt;h2 id="plot-frequencies-with-plot_frq-plot_grpfrq-and-plot_grid"&gt;Plot
+frequencies with &lt;code&gt;plot_frq&lt;/code&gt;, &lt;code&gt;plot_grpfrq&lt;/code&gt; and
+&lt;code&gt;plot_grid&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;However, we often want to see an actual picture, for example, display
+frequencies and percentages of categorical variables on a bar plot. For
+that {sjPlot} package provides a convenient plot-frequencies
+(&lt;code&gt;plot_frq&lt;/code&gt;) function, which does just that. For instance,
+plotting &lt;em&gt;education&lt;/em&gt; shows that around 9% of people in our data
+did not finish a high school, while around 14% have a PhD.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
+  plot_frq(education)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Since {sjPlot} package works with tidyverse 🥳, we can easily group
+the data by any other categorical variable, let’s take &lt;em&gt;race&lt;/em&gt;,
+and get frequencies and percentages for every group.
+&lt;code&gt;plot_grid()&lt;/code&gt; function puts several subplots in a single plot
+and even names the subplots. For instance, a subplot &lt;em&gt;C&lt;/em&gt; shows
+that most of Afro-Americans in our dataset ARE highly educated. And of
+coarse you can save this publication-ready plot with … surprise
+surpriiise … &lt;code&gt;save_plot&lt;/code&gt; command.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;p &amp;lt;- Wage %&amp;gt;% 
+  group_by(race) %&amp;gt;% 
+  plot_frq(education) %&amp;gt;%
+    plot_grid()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-5-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;save_plot(filename = &amp;quot;race_vs_education.jpg&amp;quot;, fig = p, width = 30, height = 19)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;quartz_off_screen 
+                2 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;While seeing counts and percentages of separate groups is cool, we
+sometimes want to put groups directly near each other. And that’s
+exactly what plot-grouped-frequencies (&lt;code&gt;plot_grpfrq&lt;/code&gt;)
+function does. For instance, it clearly shows that most of the people
+with lower &lt;em&gt;education&lt;/em&gt; degrees work in &lt;em&gt;factories&lt;/em&gt;, while
+folks with higher &lt;em&gt;education&lt;/em&gt; degrees work with
+&lt;em&gt;information&lt;/em&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_grpfrq(
+  var.cnt = Wage$education, 
+  var.grp = Wage$jobclass)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="plot-or-display-cross-pivot-tables"&gt;Plot or display cross
+(pivot) tables&lt;/h2&gt;
+&lt;p&gt;This IS already useful, however, &lt;code&gt;plot_xtab&lt;/code&gt; function goes
+one step further and displays percentages of &lt;em&gt;jobclasses&lt;/em&gt; inside
+of every &lt;em&gt;educational&lt;/em&gt; degree as &lt;strong&gt;stacked-bars&lt;/strong&gt;,
+where counts are identical to the previous plot, but every
+&lt;em&gt;educational&lt;/em&gt; category as one 100 percent. Such display only
+reinforces our hypothesis that highly educated folks usually work in the
+IT and shows a clear association between &lt;em&gt;jobclass&lt;/em&gt; and
+&lt;em&gt;education&lt;/em&gt;. As if that were not enough, &lt;code&gt;plot_xtab&lt;/code&gt;
+even tests this hypothesis with the &lt;strong&gt;Chi-Squared test of
+association&lt;/strong&gt; and displays a significant p-value and a large
+effect size.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# as stacked proportional bars
+plot_xtab(
+  x   = Wage$education, 
+  grp = Wage$jobclass, 
+  margin  = &amp;quot;row&amp;quot;, 
+  bar.pos = &amp;quot;stack&amp;quot;,
+  show.summary = TRUE,
+  coord.flip   = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;So, &lt;code&gt;plot_xtab&lt;/code&gt; essentially visualizes &lt;strong&gt;cross
+tables&lt;/strong&gt;, also known as &lt;strong&gt;pivot tables&lt;/strong&gt;. And if for
+some reason you want an actual table with the results of a statistical
+test, you can use &lt;code&gt;tab_xtab&lt;/code&gt; function instead.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tab_xtab(
+  var.row = Wage$education, 
+  var.col = Wage$jobclass, 
+  show.row.prc = T)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top:double; text-align:center; font-style:italic; font-weight:normal; border-bottom:1px solid;" rowspan="2"&gt;
+education
+&lt;/th&gt;
+&lt;th style="border-top:double; text-align:center; font-style:italic; font-weight:normal;" colspan="2"&gt;
+jobclass
+&lt;/th&gt;
+&lt;th style="border-top:double; text-align:center; font-style:italic; font-weight:normal; font-weight:bolder; font-style:italic; border-bottom:1px solid; " rowspan="2"&gt;
+Total
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="border-bottom:1px solid; text-align:center; padding:0.2cm;"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Industrial
+&lt;/td&gt;
+&lt;td style="border-bottom:1px solid; text-align:center; padding:0.2cm;"&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;Information
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm;  text-align:left; vertical-align:middle;"&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&amp;lt; HS Grad
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;190&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;70.9 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;78&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;29.1 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;  "&gt;
+&lt;span style="color:black;"&gt;268&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;100 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm;  text-align:left; vertical-align:middle;"&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;HS Grad
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;636&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;65.5 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;335&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;34.5 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;  "&gt;
+&lt;span style="color:black;"&gt;971&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;100 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm;  text-align:left; vertical-align:middle;"&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;Some College
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;342&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;52.6 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;308&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;47.4 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;  "&gt;
+&lt;span style="color:black;"&gt;650&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;100 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm;  text-align:left; vertical-align:middle;"&gt;
+&lt;ol start="4" style="list-style-type: decimal"&gt;
+&lt;li&gt;College Grad
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;274&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;40 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;411&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;60 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;  "&gt;
+&lt;span style="color:black;"&gt;685&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;100 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm;  text-align:left; vertical-align:middle;"&gt;
+&lt;ol start="5" style="list-style-type: decimal"&gt;
+&lt;li&gt;Advanced Degree
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;102&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;23.9 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center; "&gt;
+&lt;span style="color:black;"&gt;324&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;76.1 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;  "&gt;
+&lt;span style="color:black;"&gt;426&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;100 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm;  border-bottom:double; font-weight:bolder; font-style:italic; text-align:left; vertical-align:middle;"&gt;
+Total
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;   border-bottom:double;"&gt;
+&lt;span style="color:black;"&gt;1544&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;51.5 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;   border-bottom:double;"&gt;
+&lt;span style="color:black;"&gt;1456&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;48.5 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:center;   border-bottom:double;"&gt;
+&lt;span style="color:black;"&gt;3000&lt;/span&gt;&lt;br&gt;&lt;span
+style="color:#333399;"&gt;100 %&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;td style="text-align:right; font-size:0.9em; font-style:italic; padding:0.2cm;" colspan="4"&gt;
+χ&lt;sup&gt;2&lt;/sup&gt;=282.643 · df=4 · Cramer’s V=0.307 · p=0.000
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;(not part of the video) By the way, we can decide what kind of
+percentages are calculated, rows or columns or even single cells,
+whether we want to stack the bars and many more. It will automatically
+conduct Fisher’s test of association if samples are small (&amp;lt;5).&lt;/p&gt;
+&lt;h2
+id="not-in-the-video-plot-grouped-proportional-tables-i-am-not-sure-its-very-intuitive"&gt;(not
+in the video) Plot grouped proportional tables (I am not sure it’s very
+intuitive)&lt;/h2&gt;
+&lt;p&gt;The p-values are based on chisq.test of x and y for each grp.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
+  plot_gpt(x = health_ins, y = jobclass, grp = education) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="plot-histograms-of-salaries-and-display-averages-sd"&gt;Plot
+histograms of salaries and display averages + SD&lt;/h2&gt;
+&lt;p&gt;But enough about counting, since our dataset is about salaries, let’s
+figure our who earns more, industrial or information workers? Plot
+frequencies function, which we used for counting, can also easily answer
+this question if we give it a (1) &lt;code&gt;wage&lt;/code&gt; variable, (2) tell
+it to plot a &lt;code&gt;histogram&lt;/code&gt;, (3) to show an average with
+standard deviation and (4) to display a normal curve to see whether our
+salaries are normally distributed. This visualization reveals that
+industrial workers get 103 thousand dollars on average, while IT crowd
+gets 17 thousand more.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
+  group_by(jobclass) %&amp;gt;% 
+  plot_frq(wage, type = &amp;quot;histogram&amp;quot;, show.mean = TRUE, normal.curve = TRUE) %&amp;gt;% 
+  plot_grid()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="plot-likert-scales-as-centered-stacked-bars"&gt;Plot likert scales
+as centered stacked bars&lt;/h2&gt;
+&lt;p&gt;The last thing I’d like to share with you before we visualize models,
+is a visualization of likert scale data. If you have same scales or
+categories across different variables, &lt;code&gt;plot_likert&lt;/code&gt; function
+nicely compares percentages of scales or categories across those
+variables.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;data(pisaitems)
+
+d &amp;lt;- pisaitems %&amp;gt;% 
+  dplyr::select(starts_with(&amp;quot;ST25Q&amp;quot;))
+
+view_df(d, show.frq = T, show.prc = T)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;caption&gt;
+Data frame: d
+&lt;/caption&gt;
+&lt;tr&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+ID
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Name
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Label
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Values
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Value Labels
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Freq.
+&lt;/th&gt;
+&lt;th style="border-bottom:double; font-style:italic; font-weight:normal; padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+%
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+1
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+ST25Q01
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Never or almost never&lt;br&gt;A few times a year&lt;br&gt;About once a
+month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+6682&lt;br&gt;13143&lt;br&gt;13995&lt;br&gt;20353&lt;br&gt;11436
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+10.18&lt;br&gt;20.03&lt;br&gt;21.33&lt;br&gt;31.02&lt;br&gt;17.43
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+2
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+ST25Q02
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+Never or almost never&lt;br&gt;A few times a year&lt;br&gt;About once a
+month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+24019&lt;br&gt;16789&lt;br&gt;10317&lt;br&gt;9489&lt;br&gt;4751
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+36.75&lt;br&gt;25.68&lt;br&gt;15.78&lt;br&gt;14.52&lt;br&gt;7.27
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+3
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+ST25Q03
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Never or almost never&lt;br&gt;A few times a year&lt;br&gt;About once a
+month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+11131&lt;br&gt;16164&lt;br&gt;12818&lt;br&gt;14569&lt;br&gt;10658
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+17.04&lt;br&gt;24.74&lt;br&gt;19.62&lt;br&gt;22.30&lt;br&gt;16.31
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+4
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+ST25Q04
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+Never or almost never&lt;br&gt;A few times a year&lt;br&gt;About once a
+month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+20145&lt;br&gt;19961&lt;br&gt;12768&lt;br&gt;8797&lt;br&gt;3622
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"&gt;
+30.85&lt;br&gt;30.57&lt;br&gt;19.55&lt;br&gt;13.47&lt;br&gt;5.55
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+5
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+ST25Q05
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+Never or almost never&lt;br&gt;A few times a year&lt;br&gt;About once a
+month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+12317&lt;br&gt;12141&lt;br&gt;10314&lt;br&gt;15645&lt;br&gt;15165
+&lt;/td&gt;
+&lt;td style="padding:0.2cm; text-align:left; vertical-align:top;"&gt;
+18.78&lt;br&gt;18.51&lt;br&gt;15.73&lt;br&gt;23.86&lt;br&gt;23.12
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_likert(d) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="plot-model-results"&gt;Plot model results&lt;/h1&gt;
+&lt;p&gt;Visualizing data is quite, but let’s get to the really cool
+visualization stuff!&lt;/p&gt;
+&lt;h2 id="plot-predictions"&gt;Plot predictions&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;plot_model&lt;/code&gt; function is the actual reason I love {sjPlot}
+package. &lt;strong&gt;I literally use it everyday!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example if I want to know how education influences salary, I’ll
+plot predictions from a simple linear model. Plotting prediction
+immediately tells me the story. Namely, people who did not even finish a
+high school, have the lowest salary compared to any other education
+level. Moreover, we can see that increasing education level means
+increasing salaries. &lt;strong&gt;So, education matters!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(wage ~ education, data = Wage)
+plot_model(m, type = &amp;quot;pred&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$education&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="plot-coefficients"&gt;Plot coefficients&lt;/h2&gt;
+&lt;p&gt;The only thing we can’t see from this plot is whether this increase
+is significant or not. We could use a well known &lt;code&gt;summary&lt;/code&gt;
+table for that, but the output, although useful, is not really pleasing
+to the human eye and is not suitable for publication.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;summary(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Call:
+lm(formula = wage ~ education, data = Wage)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-112.31  -19.94   -3.09   15.33  222.56 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&amp;gt;|t|)    
+(Intercept)                   84.104      2.231  37.695  &amp;lt; 2e-16 ***
+education2. HS Grad           11.679      2.520   4.634 3.74e-06 ***
+education3. Some College      23.651      2.652   8.920  &amp;lt; 2e-16 ***
+education4. College Grad      40.323      2.632  15.322  &amp;lt; 2e-16 ***
+education5. Advanced Degree   66.813      2.848  23.462  &amp;lt; 2e-16 ***
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+
+Residual standard error: 36.53 on 2995 degrees of freedom
+Multiple R-squared:  0.2348,    Adjusted R-squared:  0.2338 
+F-statistic: 229.8 on 4 and 2995 DF,  p-value: &amp;lt; 2.2e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Luckily for us, &lt;code&gt;plot_model()&lt;/code&gt; with the argument
+&lt;code&gt;show.values = TRUE&lt;/code&gt; transforms a boring summary table into
+this informative picture, which shows the increase in &lt;em&gt;salary&lt;/em&gt; in
+thousands of dollars as compared to no &lt;em&gt;education&lt;/em&gt; (Intercept,
+not shown) with 95% confidence intervals and significance stars which
+indicate that those increases in &lt;em&gt;salary&lt;/em&gt; are significant.&lt;/p&gt;
+&lt;p&gt;(not in the video) Where vertical 0 indicates no effect (x-axis
+position 1 for most glm’s and position 0 for most linear models)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_model(m, show.values = TRUE, width = 0.1)+
+  ylab(&amp;quot;Increase in salary as compared to no education&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;plot_model1.jpg&amp;quot;, device = jpeg, plot = last_plot(), width = 5, height = 4)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="table-with-coeffitients-95-cis-p-values-more"&gt;Table with
+coeffitients, 95% CIs, p-values &amp;amp; more&lt;/h2&gt;
+&lt;p&gt;However, sometimes we still need to report the summary table, but we
+need to make it look better. And that’s where &lt;code&gt;tab_model&lt;/code&gt;
+command comes into play. Within &lt;code&gt;tab_model&lt;/code&gt; we can show the
+reference level, hide the intercept and change the style of
+p-values.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tab_model(m, 
+          show.reflvl = T, 
+          show.intercept = F, 
+          p.style = &amp;quot;numeric_stars&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;
+ 
+&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;
+wage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;
+Predictors
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+Estimates
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+CI
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+p
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&amp;lt; HS Grad
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;em&gt;Reference&lt;/em&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;HS Grad
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+11.68 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+6.74 – 16.62
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;Some College
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+23.65 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+18.45 – 28.85
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="4" style="list-style-type: decimal"&gt;
+&lt;li&gt;College Grad
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+40.32 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+35.16 – 45.48
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="5" style="list-style-type: decimal"&gt;
+&lt;li&gt;Advanced Degree
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+66.81 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+61.23 – 72.40
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;
+Observations
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;
+3000
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;
+R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;
+0.235 / 0.234
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan="4" style="font-style:italic; border-top:double black; text-align:right;"&gt;
+&lt;ul&gt;
+&lt;li&gt;p&amp;lt;0.05   ** p&amp;lt;0.01   *** p&amp;lt;0.001
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/table&gt;
+&lt;h2 id="plot-fancy-models"&gt;Plot fancy models 😉💪🤓&lt;/h2&gt;
+&lt;p&gt;But the most amazing thing about &lt;code&gt;plot_model&lt;/code&gt; and
+&lt;code&gt;tab_model&lt;/code&gt; functions is that they work with almost any type
+of model you can imagine! I successfully used it for mixed-effects
+models, Bayesian models or negative-binomial models, to name a few. And
+the authors of the package constantly improve the functionality, so
+that, at the moment you read this blog-post, {sjPlot} package is most
+likely improved.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-08-01-sjplot/sjPlot.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Here is an example of how ease we can visualize a very fancy model,
+namely a &lt;strong&gt;generalized linear mixed-effects regression for
+negative-binomial distribution of age with 3 way interaction term and a
+random effect of education&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m.nb &amp;lt;- glmer.nb(age ~ wage * jobclass * health + (1|education), data = Wage)
+
+plot_model(m.nb, type = &amp;quot;int&amp;quot;)[[4]]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;plot_model2.jpg&amp;quot;, device = jpeg, plot = last_plot(), width = 5, height = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This interactions show that industrial workers with a very good
+health earn 50 thousand dollars already at the age of 31, while IT crowd
+gets the same salary ca. 8 years later, however at the age of 45 the IT
+crowd catches on and even starts to slowly overtake the factory workers,
+and finally, while IT folks get to the salary of 300 thousand dollars
+already at the age of 50, factory workers might reach this kind of
+wealth only at the end of their carrier, at around 63 years old. And the
+non-overlapping confidence intervals indicate that such difference in
+salaries is significant.&lt;/p&gt;
+&lt;p&gt;Besides, you can easily change the appearance of your results by
+changing the default order of predictors and even choose particular
+values from the numeric predictor. For instance, let’s take three salary
+values 50, 150 &amp;amp; 300 as we just talked about them and display our
+results in a different way.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_model(m.nb, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;health&amp;quot;, &amp;quot;jobclass&amp;quot;, &amp;quot;wage [50, 150, 300]&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-18-1.png" width="1056" /&gt;&lt;/p&gt;
+&lt;p&gt;Moreover, &lt;code&gt;type&lt;/code&gt; argument allows to create various plot
+types. For example, we can easily visualize random effects if we want
+to.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_model(m.nb, 
+           type  = &amp;quot;re&amp;quot;, 
+           width = .5, 
+           show.values = T) + ylim(0.9,1.1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="plot-multiple-models"&gt;Plot multiple models&lt;/h2&gt;
+&lt;p&gt;It only gets better from now. If we want to explore several dependent
+variables with the same predictors, we can use &lt;code&gt;plot_models&lt;/code&gt;
+function to plot several models at once. In the first code example we’ll
+use already familiar argument - &lt;code&gt;show.values&lt;/code&gt; - and a new one
+- &lt;code&gt;grid&lt;/code&gt; - which plots models in separate fields to avoid
+congestion and overload of information on the picture.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# fit two models
+fit1 &amp;lt;- lm(age ~ education + jobclass + health_ins, data = Wage)
+fit2 &amp;lt;- lm(wage ~ education + jobclass + health_ins, data = Wage)
+
+# plot multiple models
+plot_models(fit1, fit2, show.values = T, grid = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;In the second example we avoid clutter by simply not using
+&lt;code&gt;show.values&lt;/code&gt;, since we can kind of read them from the
+x-axes, and we’ll use &lt;code&gt;p.shape = TRUE&lt;/code&gt; argument instead, in
+order to display p-values as shapes instead of significance stars.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_models(fit1, fit2, p.shape = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file9a8f3e18756a_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="more-than-one-model"&gt;More than one model&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;tab_model&lt;/code&gt; can also easily display multiple models. Here,
+&lt;code&gt;collapse.ci = TRUE&lt;/code&gt; argument conveniently puts confidence
+intervals below the estimates, so that we can report several models near
+each other.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tab_model(fit1, fit2, 
+          collapse.ci = TRUE, 
+          p.style     = &amp;quot;numeric_stars&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;
+ 
+&lt;/th&gt;
+&lt;th colspan="2" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;
+age
+&lt;/th&gt;
+&lt;th colspan="2" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;
+wage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;
+Predictors
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+Estimates
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+p
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+Estimates
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+p
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+(Intercept)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+43.15 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(41.68 – 44.63)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+93.72 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(89.14 – 98.31)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+education [2. HS Grad]
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+-0.21 &lt;sup&gt;&lt;/sup&gt;&lt;br&gt;(-1.75 – 1.34)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+0.794
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+8.15 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(3.34 – 12.95)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+education [3. Some&lt;br&gt;College]
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+-2.01 &lt;sup&gt;*&lt;/sup&gt;&lt;br&gt;(-3.65 – -0.37)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;0.016&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+17.89 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(12.79 – 22.99)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+education [4. College&lt;br&gt;Grad]
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+-0.48 &lt;sup&gt;&lt;/sup&gt;&lt;br&gt;(-2.13 – 1.17)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+0.568
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+33.03 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(27.91 – 38.15)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+education [5. Advanced&lt;br&gt;Degree]
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+1.35 &lt;sup&gt;&lt;/sup&gt;&lt;br&gt;(-0.45 – 3.16)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+0.142
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+57.90 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(52.28 – 63.52)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+jobclass [2. Information]
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+1.42 &lt;sup&gt;**&lt;/sup&gt;&lt;br&gt;(0.56 – 2.28)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+3.67 &lt;sup&gt;**&lt;/sup&gt;&lt;br&gt;(1.00 – 6.35)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;0.007&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+health ins [2. No]
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+-3.29 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(-4.20 – -2.39)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+-19.89 &lt;sup&gt;***&lt;/sup&gt;&lt;br&gt;(-22.72 – -17.07)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;
+Observations
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="2"&gt;
+3000
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="2"&gt;
+3000
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;
+R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2"&gt;
+0.033 / 0.031
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2"&gt;
+0.284 / 0.283
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan="5" style="font-style:italic; border-top:double black; text-align:right;"&gt;
+&lt;ul&gt;
+&lt;li&gt;p&amp;lt;0.05   ** p&amp;lt;0.01   *** p&amp;lt;0.001
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/table&gt;
+&lt;h1 id="whats-next"&gt;What’s next&lt;/h1&gt;
+&lt;p&gt;By the way, if you want to visualize and test &lt;strong&gt;ALL the
+assumptions of ANY model with a SINGLE function&lt;/strong&gt;, check out this
+video about another amazing package created by the same author - &lt;a
+href="https://github.com/strengejacke"&gt;Daniel Lüdecke&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="further-readings-and-references"&gt;Further readings and
+references&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://strengejacke.github.io/sjPlot/"
+class="uri"&gt;https://strengejacke.github.io/sjPlot/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a
+href="https://cran.r-project.org/web/packages/sjPlot/index.html"
+class="uri"&gt;https://cran.r-project.org/web/packages/sjPlot/index.html&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>084e31b0d01e136a5b84f497228763ce</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>R package reviews</category>
+      <category>visualization</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-08-01-sjplot</guid>
+      <pubDate>Wed, 10 Aug 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-08-01-sjplot/thumbnail_sjPlot.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>R package reviews {report} How To Report Statistical Results!</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -361,7 +1558,8 @@ models&lt;/h2&gt;
 
 mixed_model &amp;lt;- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;summary(mixed_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Linear mixed model fit by REML [&amp;#39;lmerMod&amp;#39;]
+&lt;pre&gt;&lt;code&gt;Linear mixed model fit by REML. t-tests use Satterthwaite&amp;#39;s method [
+lmerModLmerTest]
 Formula: Reaction ~ Days + (Days | Subject)
    Data: sleepstudy
 
@@ -379,9 +1577,11 @@ Random effects:
 Number of obs: 180, groups:  Subject, 18
 
 Fixed effects:
-            Estimate Std. Error t value
-(Intercept)  251.405      6.825  36.838
-Days          10.467      1.546   6.771
+            Estimate Std. Error      df t value Pr(&amp;gt;|t|)    
+(Intercept)  251.405      6.825  17.000  36.838  &amp;lt; 2e-16 ***
+Days          10.467      1.546  17.000   6.771 3.26e-06 ***
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
 
 Correlation of Fixed Effects:
      (Intr)
@@ -450,19 +1650,19 @@ qsec and wt (formula: mpg ~ qsec + wt). Priors over parameters were set
 as normal (mean = 0.00, SD = 8.43) and normal (mean = 0.00, SD = 15.40)
 distributions. The model’s explanatory power is substantial (R2 = 0.81,
 95% CI [0.70, 0.90], adj. R2 = 0.79). The model’s intercept,
-corresponding to qsec = 0 and wt = 0, is at 19.59 (95% CI [8.67,
-31.05]). Within this model:&lt;/p&gt;
+corresponding to qsec = 0 and wt = 0, is at 19.89 (95% CI [9.13,
+30.88]). Within this model:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;The effect of qsec (Median = 0.93, 95% CI [0.37, 1.48]) has a 99.90%
-probability of being positive (&amp;gt; 0), 98.55% of being significant
-(&amp;gt; 0.30), and 0.25% of being large (&amp;gt; 1.81). The estimation
+&lt;li&gt;The effect of qsec (Median = 0.92, 95% CI [0.37, 1.47]) has a 99.90%
+probability of being positive (&amp;gt; 0), 98.72% of being significant
+(&amp;gt; 0.30), and 0.10% of being large (&amp;gt; 1.81). The estimation
 successfully converged (Rhat = 1.000) and the indices are reliable (ESS
-= 4179)&lt;/li&gt;
-&lt;li&gt;The effect of wt (Median = -5.04, 95% CI [-6.04, -3.99]) has a
+= 3811)&lt;/li&gt;
+&lt;li&gt;The effect of wt (Median = -5.06, 95% CI [-6.06, -4.08]) has a
 100.00% probability of being negative (&amp;lt; 0), 100.00% of being
 significant (&amp;lt; -0.30), and 100.00% of being large (&amp;lt; -1.81). The
 estimation successfully converged (Rhat = 1.001) and the indices are
-reliable (ESS = 3643)&lt;/li&gt;
+reliable (ESS = 3750)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Following the Sequential Effect eXistence and sIgnificance Testing
 (SEXIT) framework, we report the median of the posterior distribution
@@ -488,43 +1688,43 @@ distributions&lt;/p&gt;
 &lt;p&gt;The model’s explanatory power is substantial (R2 = 0.81, 95% CI
 [0.70, 0.90], adj. R2 = 0.79)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_parameters(bayes_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The intercept (Median = 19.59, 95% CI [8.67, 31.05]) has a 99.92%
-probability of being positive (&amp;gt; 0), 99.92% of being significant
-(&amp;gt; 0.30), and 99.83% of being large (&amp;gt; 1.81). The estimation
+&lt;p&gt;The intercept (Median = 19.89, 95% CI [9.13, 30.88]) has a 99.98%
+probability of being positive (&amp;gt; 0), 99.98% of being significant
+(&amp;gt; 0.30), and 99.95% of being large (&amp;gt; 1.81). The estimation
 successfully converged (Rhat = 1.000) and the indices are reliable (ESS
-= 3964), The effect of qsec (Median = 0.93, 95% CI [0.37, 1.48]) has a
-99.90% probability of being positive (&amp;gt; 0), 98.55% of being
-significant (&amp;gt; 0.30), and 0.25% of being large (&amp;gt; 1.81). The
+= 3588), The effect of qsec (Median = 0.92, 95% CI [0.37, 1.47]) has a
+99.90% probability of being positive (&amp;gt; 0), 98.72% of being
+significant (&amp;gt; 0.30), and 0.10% of being large (&amp;gt; 1.81). The
 estimation successfully converged (Rhat = 1.000) and the indices are
-reliable (ESS = 4179), The effect of wt (Median = -5.04, 95% CI [-6.04,
--3.99]) has a 100.00% probability of being negative (&amp;lt; 0), 100.00% of
+reliable (ESS = 3811), The effect of wt (Median = -5.06, 95% CI [-6.06,
+-4.08]) has a 100.00% probability of being negative (&amp;lt; 0), 100.00% of
 being significant (&amp;lt; -0.30), and 100.00% of being large (&amp;lt; -1.81).
 The estimation successfully converged (Rhat = 1.001) and the indices are
-reliable (ESS = 3643)&lt;/p&gt;
+reliable (ESS = 3750)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_statistics(bayes_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Median = 19.59, 95% CI [8.67, 31.05], pd = 99.92%, 0% in ROPE; Std.
-beta = 1.22e-03, 95% CI [-0.16, 0.16]; Rhat = 1.00, ESS = 3964.00,
-Median = 0.93, 95% CI [0.37, 1.48], pd = 99.90%, 10.26% in ROPE; Std.
-beta = 0.28, 95% CI [0.11, 0.45]; Rhat = 1.00, ESS = 4178.73, Median =
--5.04, 95% CI [-6.04, -3.99], pd = 100%, 0% in ROPE; Std. beta = -0.82,
-95% CI [-0.98, -0.66]; Rhat = 1.00, ESS = 3643.13&lt;/p&gt;
+&lt;p&gt;Median = 19.89, 95% CI [9.13, 30.88], pd = 99.98%, 0% in ROPE; Std.
+beta = 1.46e-03, 95% CI [-0.16, 0.16]; Rhat = 1.00, ESS = 3587.92,
+Median = 0.92, 95% CI [0.37, 1.47], pd = 99.90%, 9.92% in ROPE; Std.
+beta = 0.27, 95% CI [0.11, 0.44]; Rhat = 1.00, ESS = 3811.19, Median =
+-5.06, 95% CI [-6.06, -4.08], pd = 100%, 0% in ROPE; Std. beta = -0.82,
+95% CI [-0.98, -0.65]; Rhat = 1.00, ESS = 3749.98&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_effectsize(bayes_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;very small (Std. beta = -7.75e-04, 95% CI [-0.16, 0.16]), small (Std.
-beta = 0.27, 95% CI [0.11, 0.45]), large (Std. beta = -0.82, 95% CI
-[-0.98, -0.66])&lt;/p&gt;
+&lt;p&gt;very small (Std. beta = -2.59e-03, 95% CI [-0.16, 0.16]), small (Std.
+beta = 0.28, 95% CI [0.11, 0.43]), large (Std. beta = -0.82, 95% CI
+[-0.98, -0.65])&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_table(bayes_model)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Parameter   | Median |         95% CI |     pd | % in ROPE |  Rhat |     ESS |                   Prior | Std. Median | Std_Median 95% CI |    Fit
 -------------------------------------------------------------------------------------------------------------------------------------------------
-(Intercept) |  19.59 | [ 8.67, 31.05] | 99.92% |        0% | 1.000 | 3964.00 | Normal (20.09 +- 15.07) |   -1.23e-03 |    [-0.17,  0.16] |       
-qsec        |   0.93 | [ 0.37,  1.48] | 99.90% |    10.26% | 1.000 | 4179.00 |   Normal (0.00 +- 8.43) |        0.27 |    [ 0.12,  0.43] |       
-wt          |  -5.04 | [-6.04, -3.99] |   100% |        0% | 1.001 | 3643.00 |  Normal (0.00 +- 15.40) |       -0.82 |    [-0.98, -0.65] |       
+(Intercept) |  19.89 | [ 9.13, 30.88] | 99.98% |        0% | 1.000 | 3588.00 | Normal (20.09 +- 15.07) |   -1.90e-04 |    [-0.16,  0.15] |       
+qsec        |   0.92 | [ 0.37,  1.47] | 99.90% |     9.92% | 1.000 | 3811.00 |   Normal (0.00 +- 8.43) |        0.27 |    [ 0.11,  0.44] |       
+wt          |  -5.06 | [-6.06, -4.08] |   100% |        0% | 1.001 | 3750.00 |  Normal (0.00 +- 15.40) |       -0.82 |    [-0.98, -0.65] |       
             |        |                |        |           |       |         |                         |             |                   |       
-ELPD        |        |                |        |           |       |         |                         |             |                   | -79.02
-LOOIC       |        |                |        |           |       |         |                         |             |                   | 158.04
-WAIC        |        |                |        |           |       |         |                         |             |                   | 157.78
+ELPD        |        |                |        |           |       |         |                         |             |                   | -79.06
+LOOIC       |        |                |        |           |       |         |                         |             |                   | 158.11
+WAIC        |        |                |        |           |       |         |                         |             |                   | 157.80
 R2          |        |                |        |           |       |         |                         |             |                   |   0.81
 R2 (adj.)   |        |                |        |           |       |         |                         |             |                   |   0.79
-Sigma       |        |                |        |           |       |         |                         |             |                   |   2.64&lt;/code&gt;&lt;/pre&gt;
+Sigma       |        |                |        |           |       |         |                         |             |                   |   2.65&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="exotic-and-not-supported-models"&gt;Exotic and not-supported models
 😨 ???&lt;/h2&gt;
 &lt;p&gt;Despite the large number of models supported, at the time of making
@@ -628,26 +1828,33 @@ package!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report(sessionInfo())&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Analyses were conducted using the R Statistical language (version
 4.1.3; R Core Team, 2022) on macOS Big Sur/Monterey 10.16, using the
-packages flextable (version 0.7.0; David Gohel, 2022), Rcpp (version
-1.0.8.3; Dirk Eddelbuettel and Romain Francois, 2011), Matrix (version
-1.4.1; Douglas Bates, Martin Maechler and Mikael Jagan, 2022), lme4
-(version 1.1.29; Douglas Bates et al., 2015), ISLR (version 1.4; Gareth
-James et al., 2021), rstanarm (version 2.21.3; Goodrich B et al., 2022),
-ggplot2 (version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data
-Analysis. Springer-Verlag New York, 2016.), stringr (version 1.4.0;
-Hadley Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021),
-tidyr (version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022),
-readr (version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan,
-2022), dplyr (version 1.0.9; Hadley Wickham et al., 2022), tibble
-(version 3.1.7; Kirill Müller and Hadley Wickham, 2022), purrr (version
-0.3.4; Lionel Henry and Hadley Wickham, 2020), sjPlot (version 2.8.10;
-Lüdecke D, 2021), report (version 0.5.1; Makowski et al., 2020),
-ggstatsplot (version 0.9.3; Patil, 2021) and tidyverse (version
-1.3.1.9000; Wickham et al., 2019).&lt;/p&gt;
+packages xtable (version 1.8.4; David Dahl et al., 2019), flextable
+(version 0.7.2; David Gohel, 2022), Rcpp (version 1.0.9; Dirk
+Eddelbuettel and Romain Francois, 2011), Matrix (version 1.4.1; Douglas
+Bates, Martin Maechler and Mikael Jagan, 2022), lme4 (version 1.1.30;
+Douglas Bates et al., 2015), ISLR (version 1.4; Gareth James et al.,
+2021), rstanarm (version 2.21.3; Goodrich B et al., 2022), ggplot2
+(version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.), stringr (version 1.4.0; Hadley
+Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021), tidyr
+(version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022), readr
+(version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan, 2022),
+dplyr (version 1.0.9; Hadley Wickham et al., 2022), likert (version
+1.3.5; Jason Bryer and Kimberly Speerschneider, 2016), tibble (version
+3.1.8; Kirill Müller and Hadley Wickham, 2022), lmerTest (version 3.1.3;
+Kuznetsova A et al., 2017), purrr (version 0.3.4; Lionel Henry and
+Hadley Wickham, 2020), sjPlot (version 2.8.10; Lüdecke D, 2021), report
+(version 0.5.1; Makowski et al., 2020), ggstatsplot (version 0.9.3;
+Patil, 2021) and tidyverse (version 1.3.2; Wickham H et al., 2019).&lt;/p&gt;
 &lt;h2 id="references"&gt;References&lt;/h2&gt;
 &lt;ul&gt;
+&lt;li&gt;David B. Dahl, David Scott, Charles Roosen, Arni Magnusson and
+Jonathan Swinton (2019). xtable: Export Tables to LaTeX or HTML. R
+package version 1.8-4. &lt;a
+href="https://CRAN.R-project.org/package=xtable"
+class="uri"&gt;https://CRAN.R-project.org/package=xtable&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;David Gohel (2022). flextable: Functions for Tabular Reporting. R
-package version 0.7.0. &lt;a
+package version 0.7.2. &lt;a
 href="https://CRAN.R-project.org/package=flextable"
 class="uri"&gt;https://CRAN.R-project.org/package=flextable&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Dirk Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and
@@ -693,10 +1900,20 @@ class="uri"&gt;https://CRAN.R-project.org/package=readr&lt;/a&gt;&lt;/li&gt;
 (2022). dplyr: A Grammar of Data Manipulation. R package version 1.0.9.
 &lt;a href="https://CRAN.R-project.org/package=dplyr"
 class="uri"&gt;https://CRAN.R-project.org/package=dplyr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Jason Bryer and Kimberly Speerschneider (2016). likert: Analysis and
+Visualization Likert Items. R package version 1.3.5. &lt;a
+href="https://CRAN.R-project.org/package=likert"
+class="uri"&gt;https://CRAN.R-project.org/package=likert&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Kirill Müller and Hadley Wickham (2022). tibble: Simple Data Frames.
-R package version 3.1.7. &lt;a
+R package version 3.1.8. &lt;a
 href="https://CRAN.R-project.org/package=tibble"
 class="uri"&gt;https://CRAN.R-project.org/package=tibble&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Kuznetsova A, Brockhoff PB, Christensen RHB (2017). “lmerTest
+Package:Tests in Linear Mixed Effects Models.” &lt;em&gt;Journal of
+StatisticalSoftware&lt;/em&gt;, &lt;em&gt;82&lt;/em&gt;(13), 1-26. doi:
+10.18637/jss.v082.i13 (URL:&lt;a
+href="https://doi.org/10.18637/jss.v082.i13"
+class="uri"&gt;https://doi.org/10.18637/jss.v082.i13&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Lionel Henry and Hadley Wickham (2020). purrr: Functional
 Programming Tools. R package version 0.3.4. &lt;a
 href="https://CRAN.R-project.org/package=purrr"
@@ -718,10 +1935,15 @@ class="uri"&gt;doi:10.21105/joss.03167&lt;/a&gt;&lt;/li&gt;
 computing. R Foundation for Statistical Computing, Vienna, Austria. URL
 &lt;a href="https://www.R-project.org/"
 class="uri"&gt;https://www.R-project.org/&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Wickham et al., (2019). Welcome to the tidyverse. Journal of Open
-Source Software, 4(43), 1686, &lt;a
+&lt;li&gt;Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François
+R,Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller
+E,Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V,
+TakahashiK, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to
+thetidyverse.” &lt;em&gt;Journal of Open Source Software&lt;/em&gt;, &lt;em&gt;4&lt;/em&gt;(43),
+1686. &lt;a href="doi:10.21105/joss.01686"
+class="uri"&gt;doi:10.21105/joss.01686&lt;/a&gt; (URL: &lt;a
 href="https://doi.org/10.21105/joss.01686"
-class="uri"&gt;https://doi.org/10.21105/joss.01686&lt;/a&gt;&lt;/li&gt;
+class="uri"&gt;https://doi.org/10.21105/joss.01686&lt;/a&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;You can also use parts of &lt;code&gt;sessionInfo()&lt;/code&gt;, but why would
 you? 🤓&lt;/p&gt;
@@ -729,26 +1951,33 @@ you? 🤓&lt;/p&gt;
 &lt;p&gt;Analyses were conducted using the R Statistical language (version
 4.1.3; R Core Team, 2022) on macOS Big Sur/Monterey 10.16&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;report_packages()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;flextable (version 0.7.0; David Gohel, 2022), Rcpp (version 1.0.8.3;
-Dirk Eddelbuettel and Romain Francois, 2011), Matrix (version 1.4.1;
-Douglas Bates, Martin Maechler and Mikael Jagan, 2022), lme4 (version
-1.1.29; Douglas Bates et al., 2015), ISLR (version 1.4; Gareth James et
-al., 2021), rstanarm (version 2.21.3; Goodrich B et al., 2022), ggplot2
-(version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data Analysis.
-Springer-Verlag New York, 2016.), stringr (version 1.4.0; Hadley
-Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021), tidyr
-(version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022), readr
-(version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan, 2022),
-dplyr (version 1.0.9; Hadley Wickham et al., 2022), tibble (version
-3.1.7; Kirill Müller and Hadley Wickham, 2022), purrr (version 0.3.4;
-Lionel Henry and Hadley Wickham, 2020), sjPlot (version 2.8.10; Lüdecke
-D, 2021), report (version 0.5.1; Makowski et al., 2020), ggstatsplot
-(version 0.9.3; Patil, 2021), R (version 4.1.3; R Core Team, 2022),
-tidyverse (version 1.3.1.9000; Wickham et al., 2019)&lt;/p&gt;
+&lt;p&gt;xtable (version 1.8.4; David Dahl et al., 2019), flextable (version
+0.7.2; David Gohel, 2022), Rcpp (version 1.0.9; Dirk Eddelbuettel and
+Romain Francois, 2011), Matrix (version 1.4.1; Douglas Bates, Martin
+Maechler and Mikael Jagan, 2022), lme4 (version 1.1.30; Douglas Bates et
+al., 2015), ISLR (version 1.4; Gareth James et al., 2021), rstanarm
+(version 2.21.3; Goodrich B et al., 2022), ggplot2 (version 3.3.6;
+Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag
+New York, 2016.), stringr (version 1.4.0; Hadley Wickham, 2019), forcats
+(version 0.5.1; Hadley Wickham, 2021), tidyr (version 1.2.0; Hadley
+Wickham and Maximilian Girlich, 2022), readr (version 2.1.2; Hadley
+Wickham, Jim Hester and Jennifer Bryan, 2022), dplyr (version 1.0.9;
+Hadley Wickham et al., 2022), likert (version 1.3.5; Jason Bryer and
+Kimberly Speerschneider, 2016), tibble (version 3.1.8; Kirill Müller and
+Hadley Wickham, 2022), lmerTest (version 3.1.3; Kuznetsova A et al.,
+2017), purrr (version 0.3.4; Lionel Henry and Hadley Wickham, 2020),
+sjPlot (version 2.8.10; Lüdecke D, 2021), report (version 0.5.1;
+Makowski et al., 2020), ggstatsplot (version 0.9.3; Patil, 2021), R
+(version 4.1.3; R Core Team, 2022), tidyverse (version 1.3.2; Wickham H
+et al., 2019)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;cite_packages()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;David Gohel (2022). flextable: Functions for Tabular Reporting. R
-package version 0.7.0. &lt;a
-href="https://CRAN.R-project.org/package=flextable"
+&lt;p&gt;David B. Dahl, David Scott, Charles Roosen, Arni Magnusson and
+Jonathan Swinton (2019). xtable: Export Tables to LaTeX or HTML. R
+package version 1.8-4. &lt;a
+href="https://CRAN.R-project.org/package=xtable"
+class="uri"&gt;https://CRAN.R-project.org/package=xtable&lt;/a&gt;, David Gohel
+(2022). flextable: Functions for Tabular Reporting. R package version
+0.7.2. &lt;a href="https://CRAN.R-project.org/package=flextable"
 class="uri"&gt;https://CRAN.R-project.org/package=flextable&lt;/a&gt;, Dirk
 Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and C++
 Integration. Journal of Statistical Software, 40(8), 1-18, &lt;a
@@ -789,10 +2018,19 @@ class="uri"&gt;https://CRAN.R-project.org/package=readr&lt;/a&gt;, Hadley
 Wickham, Romain François, Lionel Henry and Kirill Müller (2022). dplyr:
 A Grammar of Data Manipulation. R package version 1.0.9. &lt;a
 href="https://CRAN.R-project.org/package=dplyr"
-class="uri"&gt;https://CRAN.R-project.org/package=dplyr&lt;/a&gt;, Kirill Müller
+class="uri"&gt;https://CRAN.R-project.org/package=dplyr&lt;/a&gt;, Jason Bryer
+and Kimberly Speerschneider (2016). likert: Analysis and Visualization
+Likert Items. R package version 1.3.5. &lt;a
+href="https://CRAN.R-project.org/package=likert"
+class="uri"&gt;https://CRAN.R-project.org/package=likert&lt;/a&gt;, Kirill Müller
 and Hadley Wickham (2022). tibble: Simple Data Frames. R package version
-3.1.7. &lt;a href="https://CRAN.R-project.org/package=tibble"
-class="uri"&gt;https://CRAN.R-project.org/package=tibble&lt;/a&gt;, Lionel Henry
+3.1.8. &lt;a href="https://CRAN.R-project.org/package=tibble"
+class="uri"&gt;https://CRAN.R-project.org/package=tibble&lt;/a&gt;, Kuznetsova A,
+Brockhoff PB, Christensen RHB (2017). “lmerTest Package:Tests in Linear
+Mixed Effects Models.” &lt;em&gt;Journal of StatisticalSoftware&lt;/em&gt;,
+&lt;em&gt;82&lt;/em&gt;(13), 1-26. doi: 10.18637/jss.v082.i13 (URL:&lt;a
+href="https://doi.org/10.18637/jss.v082.i13"
+class="uri"&gt;https://doi.org/10.18637/jss.v082.i13&lt;/a&gt;)., Lionel Henry
 and Hadley Wickham (2020). purrr: Functional Programming Tools. R
 package version 0.3.4. &lt;a
 href="https://CRAN.R-project.org/package=purrr"
@@ -812,10 +2050,15 @@ href="doi:10.21105/joss.03167" class="uri"&gt;doi:10.21105/joss.03167&lt;/a&gt;,
 R Core Team (2022). R: A language and environment for statistical
 computing. R Foundation for Statistical Computing, Vienna, Austria. URL
 &lt;a href="https://www.R-project.org/"
-class="uri"&gt;https://www.R-project.org/&lt;/a&gt;., Wickham et al., (2019).
-Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686,
-&lt;a href="https://doi.org/10.21105/joss.01686"
-class="uri"&gt;https://doi.org/10.21105/joss.01686&lt;/a&gt;&lt;/p&gt;
+class="uri"&gt;https://www.R-project.org/&lt;/a&gt;., Wickham H, Averick M, Bryan
+J, Chang W, McGowan LD, François R,Grolemund G, Hayes A, Henry L, Hester
+J, Kuhn M, Pedersen TL, Miller E,Bache SM, Müller K, Ooms J, Robinson D,
+Seidel DP, Spinu V, TakahashiK, Vaughan D, Wilke C, Woo K, Yutani H
+(2019). “Welcome to thetidyverse.” &lt;em&gt;Journal of Open Source
+Software&lt;/em&gt;, &lt;em&gt;4&lt;/em&gt;(43), 1686. &lt;a href="doi:10.21105/joss.01686"
+class="uri"&gt;doi:10.21105/joss.01686&lt;/a&gt; (URL: &lt;a
+href="https://doi.org/10.21105/joss.01686"
+class="uri"&gt;https://doi.org/10.21105/joss.01686&lt;/a&gt;).&lt;/p&gt;
 &lt;h2 id="further-readings-and-references"&gt;Further readings and
 references&lt;/h2&gt;
 &lt;ul&gt;
@@ -836,7 +2079,7 @@ improve this tutorial.&lt;/p&gt;
       <category>R package reviews</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-06-18-report</guid>
-      <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 11 Jul 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-06-18-report/thumbnail_report.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -1177,23 +2420,24 @@ compare_performance(optimal_model_glmulti_exhaustive, optimal_model_glmulti_gene
 
 Name                             | Model |     AIC | AIC weights |     BIC | BIC weights |    R2 |  RMSE | Sigma
 ----------------------------------------------------------------------------------------------------------------
-optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
-optimal_model_glmulti_genetic    |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
-optimal_model_backward           |   glm | 135.927 |       0.215 | 157.913 |       0.002 | 0.954 | 1.266 | 1.689
-optimal_model_forward            |   glm | 144.919 |       0.002 | 155.179 |       0.006 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.447 | 146.460 |       0.968 | 0.932 | 1.547 | 1.750
+optimal_model_glmulti_genetic    |   glm | 135.502 |       0.304 | 154.557 |       0.017 | 0.949 | 1.339 | 1.694
+optimal_model_backward           |   glm | 135.927 |       0.246 | 157.913 |       0.003 | 0.954 | 1.266 | 1.689
+optimal_model_forward            |   glm | 144.919 |       0.003 | 155.179 |       0.012 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fafbe688568&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f802fc384a0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fafbc8424d0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + hp + wt + qsec + gear + drat:hp + wt:hp + wt:drat + 
+    qsec:hp + qsec:wt + gear:hp + gear:wt
+&amp;lt;environment: 0x7f80b9447b38&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7fb00892df10&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f809e168b90&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7fb00892df10&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f809e168b90&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -1240,7 +2484,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file9a8f21d1d8d_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -1289,7 +2533,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file9a8f21d1d8d_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -1298,7 +2542,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="e26e37f8-8c3a-4e3c-8c51-1c39e9771f29"&gt;&lt;style&gt;
+&lt;template id="a596f89b-a7d3-4ba3-a9a8-4372492200f2"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -1332,12 +2576,12 @@ can easily display them:&lt;/p&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-eee2d51a{}.cl-eedbeca0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-eedc0c08{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-eedc0c12{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-eedc4c04{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c18{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c19{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c22{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c23{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c2c{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c36{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c37{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-eedc4c40{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-eee2d51a'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c37"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c36"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c40"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c18"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c04"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c19"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-eedc4c22"&gt;&lt;p class="cl-eedc0c08"&gt;&lt;span class="cl-eedbeca0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c23"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-eedc4c2c"&gt;&lt;p class="cl-eedc0c12"&gt;&lt;span class="cl-eedbeca0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="971481dd-10fb-4b46-9aad-5026f8edad93"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-2aa97958{}.cl-2aa28eae{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2aa2a70e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2aa2a718{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2aa2e2aa{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2b4{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2be{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2bf{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2c8{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2c9{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2ca{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2d2{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2aa2e2d3{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-2aa97958'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2d2"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2ca"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2d3"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2b4"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2aa"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2be"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2b4"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2aa"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2be"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2b4"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2aa"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2be"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2b4"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2aa"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2be"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2b4"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2aa"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2be"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-2aa2e2bf"&gt;&lt;p class="cl-2aa2a70e"&gt;&lt;span class="cl-2aa28eae"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2c8"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-2aa2e2c9"&gt;&lt;p class="cl-2aa2a718"&gt;&lt;span class="cl-2aa28eae"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="37652d60-90e3-451c-a989-c2d03c747475"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("971481dd-10fb-4b46-9aad-5026f8edad93");
-var template = document.getElementById("e26e37f8-8c3a-4e3c-8c51-1c39e9771f29");
+var dest = document.getElementById("37652d60-90e3-451c-a989-c2d03c747475");
+var template = document.getElementById("a596f89b-a7d3-4ba3-a9a8-4372492200f2");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -1377,7 +2621,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file9a8f21d1d8d_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -1414,7 +2658,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file954a2ccea02_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file9a8f21d1d8d_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;

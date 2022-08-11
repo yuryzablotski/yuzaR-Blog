@@ -1,0 +1,16 @@
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+ISLR
+sjPlot
+Matrix
+lme4
+lmerTest
+xtable
+likert

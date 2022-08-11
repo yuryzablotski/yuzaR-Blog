@@ -1,0 +1,320 @@
+---
+title: "R package reviews {sjPlot} How to Easily Visualize Data And Model Results"
+description: |
+  One picture is worth a thousand words. That's why visualizing data and model results is a crutial skill for any data scientist. {sjPlot} package became my favorite tool for visualization. That's why I want to share with you some simple but very effective commands which will make you more productive today. So, let's visualize Wage dataset, visualize bunch of models and see what people earn and what factors determine the salary.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - R package reviews
+  - visualization
+  - models
+preview: thumbnail_sjPlot.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+
+# This post as a video (in progress)
+
+I recommend to watch a video first, because I highlight things I talk about. It's less then 9 minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+# All the functions you'll learn from this article
+
+`view_df()`, `plot_frq()`, `save_plot()`, `plot_grpfrq()`, `plot_grid()`, `plot_xtab()`, `tab_xtab()`, `plot_gpt()`, `plot_likert()`, `plot_model()`, `tab_model()`, `plot_models()`
+
+
+# Load all packages at once to avoid interruptions
+
+```{r}
+library(tidyverse)   # for everything useful in R ;) 
+library(ISLR)        # for "Wage" dataset about salaries
+library(sjPlot)      # for easy visualization
+library(likert)      # for "pisaitems" dataset with likert data
+library(lme4)        # for mixed-effects models
+library(lmerTest)    # for p-values in mixed-effects models
+```
+
+
+
+# Plot data
+
+## View dataframe with `view_df` 
+
+View data-frame (`view_df`) function with only 4 arguments, (1) your data, (2) show frequencies, (3) show percentages and (4) show missing values, displays a range of numeric variables and the counts + percentages of missing values and categorical variables, giving you a nice big picture of your data.
+
+```{r}
+view_df(Wage, show.frq = T, show.prc = T, show.na = T)
+```
+
+
+## Plot frequencies with `plot_frq`, `plot_grpfrq` and `plot_grid`
+
+However, we often want to see an actual picture, for example, display frequencies and percentages of categorical variables on a bar plot. For that {sjPlot} package provides a convenient plot-frequencies (`plot_frq`) function, which does just that. For instance, plotting *education* shows that around 9% of people in our data did not finish a high school, while around 14% have a PhD.
+
+```{r}
+Wage %>% 
+  plot_frq(education)
+```
+
+
+Since {sjPlot} package works with tidyverse 🥳, we can easily group the data by any other categorical variable, let's take *race*, and get frequencies and percentages for every group. `plot_grid()` function puts several subplots in a single plot and even names the subplots. For instance, a subplot *C* shows that most of Afro-Americans in our dataset ARE highly educated. And of coarse you can save this publication-ready plot with ... surprise surpriiise ... `save_plot` command.
+
+
+```{r fig.width=14, fig.height=9}
+p <- Wage %>% 
+  group_by(race) %>% 
+  plot_frq(education) %>%
+    plot_grid()
+```
+
+
+```{r fig.width=14, fig.height=9, message=F, warning=F}
+save_plot(filename = "race_vs_education.jpg", fig = p, width = 30, height = 19)
+```
+
+
+While seeing counts and percentages of separate groups is cool, we sometimes want to put groups directly near each other. And that's exactly what plot-grouped-frequencies (`plot_grpfrq`) function does. For instance, it clearly shows that most of the people with lower *education* degrees work in *factories*, while folks with higher *education* degrees work with *information*.
+
+```{r}
+plot_grpfrq(
+  var.cnt = Wage$education, 
+  var.grp = Wage$jobclass)
+```
+
+## Plot or display cross (pivot) tables
+
+This IS already useful, however, `plot_xtab` function goes one step further and displays percentages of *jobclasses* inside of every *educational* degree as **stacked-bars**, where counts are identical to the previous plot, but every *educational* category as one 100 percent. Such display only reinforces our hypothesis that highly educated folks usually work in the IT and shows a clear association between *jobclass* and *education*. As if that were not enough, `plot_xtab` even tests this hypothesis with the **Chi-Squared test of association** and displays a significant p-value and a large effect size.
+
+
+```{r}
+# as stacked proportional bars
+plot_xtab(
+  x   = Wage$education, 
+  grp = Wage$jobclass, 
+  margin  = "row", 
+  bar.pos = "stack",
+  show.summary = TRUE,
+  coord.flip   = TRUE)
+```
+
+So, `plot_xtab` essentially visualizes **cross tables**, also known as **pivot tables**. And if for some reason you want an actual table with the results of a statistical test, you can use `tab_xtab` function instead. 
+
+
+```{r}
+tab_xtab(
+  var.row = Wage$education, 
+  var.col = Wage$jobclass, 
+  show.row.prc = T)
+```
+
+
+(not part of the video) By the way, we can decide what kind of percentages are calculated, rows or columns or even single cells, whether we want to stack the bars and many more. It will automatically conduct Fisher's test of association if samples are small (<5).
+
+## (not in the video) Plot grouped proportional tables (I am not sure it's very intuitive)
+
+The p-values are based on chisq.test of x and y for each grp.
+
+
+```{r}
+Wage %>% 
+  plot_gpt(x = health_ins, y = jobclass, grp = education) 
+```
+
+## Plot histograms of salaries and display averages + SD
+
+But enough about counting, since our dataset is about salaries, let's figure our who earns more, industrial or information workers? Plot frequencies function, which we used for counting, can also easily answer this question if we give it a (1) `wage` variable, (2) tell it to plot a `histogram`, (3) to show an average with standard deviation and (4) to display a normal curve to see whether our salaries are normally distributed. This visualization reveals that industrial workers get 103 thousand dollars on average, while IT crowd gets 17 thousand more. 
+
+```{r fig.height=7}
+Wage %>% 
+  group_by(jobclass) %>% 
+  plot_frq(wage, type = "histogram", show.mean = TRUE, normal.curve = TRUE) %>% 
+  plot_grid()
+```
+
+
+
+## Plot likert scales as centered stacked bars
+
+The last thing I'd like to share with you before we visualize models, is a visualization of likert scale data. If you have same scales or categories across different variables, `plot_likert` function nicely compares percentages of scales or categories across those variables.
+
+
+```{r}
+data(pisaitems)
+
+d <- pisaitems %>% 
+  dplyr::select(starts_with("ST25Q"))
+
+view_df(d, show.frq = T, show.prc = T)
+ 
+plot_likert(d) 
+```
+
+
+
+# Plot model results
+
+Visualizing data is quite, but let's get to the really cool visualization stuff!
+
+## Plot predictions
+
+`plot_model` function is the actual reason I love {sjPlot} package. **I literally use it everyday!**
+
+For example if I want to know how education influences salary, I'll plot predictions from a simple linear model. Plotting prediction immediately tells me the story. Namely, people who did not even finish a high school, have the lowest salary compared to any other education level. Moreover, we can see that increasing education level means increasing salaries. **So, education matters!**
+
+```{r}
+m <- lm(wage ~ education, data = Wage)
+plot_model(m, type = "pred")
+```
+
+
+
+## Plot coefficients
+
+The only thing we can't see from this plot is whether this increase is significant or not. We could use a well known `summary` table for that, but the output, although useful, is not really pleasing to the human eye and is not suitable for publication.
+
+```{r}
+summary(m)
+```
+
+Luckily for us, `plot_model()` with the argument `show.values = TRUE` transforms a boring summary table into this informative picture, which shows the increase in *salary* in thousands of dollars as compared to no *education* (Intercept, not shown) with 95% confidence intervals and significance stars which indicate that those increases in *salary* are significant. 
+
+(not in the video) Where vertical 0 indicates no effect (x-axis position 1 for most glm’s and position 0 for most linear models)
+
+```{r}
+plot_model(m, show.values = TRUE, width = 0.1)+
+  ylab("Increase in salary as compared to no education")
+
+ggsave("plot_model1.jpg", device = jpeg, plot = last_plot(), width = 5, height = 4)
+```
+
+
+
+## Table with coeffitients, 95% CIs, p-values & more
+
+However, sometimes we still need to report the summary table, but we need to make it look better. And that's where `tab_model` command comes into play. Within `tab_model` we can show the reference level, hide the intercept and change the style of p-values.
+
+```{r}
+tab_model(m, 
+          show.reflvl = T, 
+          show.intercept = F, 
+          p.style = "numeric_stars")
+```
+
+
+## Plot fancy models 😉💪🤓
+
+But the most amazing thing about `plot_model` and `tab_model` functions is that they work with almost any type of model you can imagine! I successfully used it for mixed-effects models, Bayesian models or negative-binomial models, to name a few. And the authors of the package constantly improve the functionality, so that, at the moment you read this blog-post, {sjPlot} package is most likely improved.
+
+![](sjPlot.png)
+
+Here is an example of how ease we can visualize a very fancy model, namely a **generalized linear mixed-effects regression for negative-binomial distribution of age with 3 way interaction term and a random effect of education**. 
+
+```{r cache=TRUE}
+m.nb <- glmer.nb(age ~ wage * jobclass * health + (1|education), data = Wage)
+
+plot_model(m.nb, type = "int")[[4]]
+
+ggsave("plot_model2.jpg", device = jpeg, plot = last_plot(), width = 5, height = 3)
+```
+
+This interactions show that industrial workers with a very good health earn 50 thousand dollars already at the age of 31, while IT crowd gets the same salary ca. 8 years later, however at the age of 45 the IT crowd catches on and even starts to slowly overtake the factory workers, and finally, while IT folks get to the salary of 300 thousand dollars already at the age of 50, factory workers might reach this kind of wealth only at the end of their carrier, at around 63 years old. And the non-overlapping confidence intervals indicate that such difference in salaries is significant.
+
+Besides, you can easily change the appearance of your results by changing the default order of predictors and even choose particular values from the numeric predictor. For instance, let's take three salary values 50, 150 & 300 as we just talked about them and display our results in a different way.
+
+```{r cache=TRUE, fig.width=11}
+plot_model(m.nb, type = "pred", terms = c("health", "jobclass", "wage [50, 150, 300]"))
+```
+
+Moreover, `type` argument allows to create various plot types. For example, we can easily visualize random effects if we want to.
+
+```{r cache=TRUE}
+plot_model(m.nb, 
+           type  = "re", 
+           width = .5, 
+           show.values = T) + ylim(0.9,1.1)
+```
+
+
+
+
+## Plot multiple models
+
+It only gets better from now. If we want to explore several dependent variables with the same predictors, we can use `plot_models` function to plot several models at once. In the first code example we'll use already familiar argument - `show.values` - and a new one - `grid` - which plots models in separate fields to avoid congestion and overload of information on the picture.
+
+
+
+```{r}
+# fit two models
+fit1 <- lm(age ~ education + jobclass + health_ins, data = Wage)
+fit2 <- lm(wage ~ education + jobclass + health_ins, data = Wage)
+
+# plot multiple models
+plot_models(fit1, fit2, show.values = T, grid = TRUE)
+```
+
+In the second example we avoid clutter by simply not using `show.values`, since we can kind of read them from the x-axes, and we'll use `p.shape = TRUE` argument instead, in order to display p-values as shapes instead of significance stars.
+
+```{r}
+plot_models(fit1, fit2, p.shape = TRUE)
+```
+
+
+
+
+
+## More than one model
+
+`tab_model` can also easily display multiple models. Here, `collapse.ci = TRUE` argument conveniently puts confidence intervals below the estimates, so that we can report several models near each other.
+
+```{r}
+tab_model(fit1, fit2, 
+          collapse.ci = TRUE, 
+          p.style     = "numeric_stars")
+```
+
+
+# What's next
+
+By the way, if you want to visualize and test **ALL the assumptions of ANY model with a SINGLE function**, check out this video about another amazing package created by the same author - [Daniel Lüdecke](https://github.com/strengejacke).
+
+## Further readings and references
+
+- https://strengejacke.github.io/sjPlot/
+
+- https://cran.r-project.org/web/packages/sjPlot/index.html
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
