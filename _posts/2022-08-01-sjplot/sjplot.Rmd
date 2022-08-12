@@ -35,12 +35,12 @@ theme_set(theme_bw())
 ```
 
 
-# This post as a video (in progress)
+# This post as a video
 
 I recommend to watch a video first, because I highlight things I talk about. It's less then 9 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("r3uKkmU4VQE")
 ```
 
 # All the functions you'll learn from this article
