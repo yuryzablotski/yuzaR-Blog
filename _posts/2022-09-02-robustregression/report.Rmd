@@ -1,0 +1,506 @@
+---
+title: "R package reviews {report} How To Report Statistical Results!"
+description: |
+  If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you'll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let's start with a simple t-test.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - R package reviews
+  - models
+preview: thumbnail_report.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's less then 8 minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("iMh9tPsuiik")
+```
+
+
+# Why do we need {report}?
+
+The result of a statistical test are often hardly digestible. So, what we really want is the small but condense peace of text about what our result are and what they mean. And that's what the {report} package gives you. 
+
+![](report_workflow.png)
+
+
+Here is a preliminary list of objects you can report now, in Julne, 2022. However, the package constantly improves and will only get better over time:
+
+- Correlations, t-tests, Wilcoxon tests, paired & unpaired (htest)
+- ANOVAs one-way, two-way etc. (aov, anova, aovlist, ...)
+- Bayes factors (from bayestestR)
+- ... (more tests to come)
+
+- Regression models (glm, lm, ...)
+- Mixed-effects models (glmer, lmer, glmmTMB, ...)
+- Bayesian models (stanreg, brms...)
+- Structural Equation Models (SEM) (from lavaan)
+- ... (more models to come)
+
+- Model comparison (from performance())
+- System and packages (sessionInfo)
+- Dataframes and vectors
+- ... (more features to come)
+
+# 1. Reporting Statistical Tests
+
+Load all needed packages at once, to avoid interruptions.
+
+```{r}
+library(ISLR)        # provides "Wage" dataset
+library(report)      # to report results
+library(sjPlot)      # visualizes model results
+library(flextable)   # for beautiful tables
+library(tidyverse)   # provides a lot of useful stuff !!! 
+library(ggstatsplot) # to visualize test results
+```
+
+
+## Welch t-test
+
+```{r}
+t.test(wage ~ jobclass, data = Wage)
+```
+
+The usual output of a t-test is ... **not really appealing** ... to say the least. And if we'd try to write down the results, we might end up reporting only a p-value. However, if we add only one word to this code, we'll get **SOO MUCH MORE**:
+
+```{r eval=FALSE}
+t.test(wage ~ jobclass, data = Wage) %>% 
+  report()
+```
+
+`r report( t.test(wage ~ jobclass, data = Wage) )`
+
+1. First of all, we'll get a **digestible** peace of **text, suitable for** any **publication instantly**, with **all important statistics, brackets and special characters**. If you think it's not a big deal, try to rewrite it at least once without a single mistake 😉 
+2. Secondly, it gives us the **difference** between groups with 95% Confidence Intervals, while the test only provides the confidence intervals of ... probably difference, but not **the difference itself - the very thing we are interested in**! 
+3. On top of that, `report()` function provides a humanly **readable p-value** of under 0.001, instead of the strange scientific notation, nobody really likes and only a few understand. 
+4. And finally, it not only **calculates the effect size with 95% Confidence Intervals** for us, which a classic test doesn't do, but also **interprets** it and even **provides a reference**. 
+
+
+## Student's Two Sample t-test
+
+
+```{r eval = F}
+t.test(iris$Sepal.Width, iris$Sepal.Length, var.equal = TRUE) %>%
+  report()
+```
+
+`r report(t.test(iris$Sepal.Width, iris$Sepal.Length, var.equal = TRUE))`
+
+## Paired Two Sample t-test
+
+```{r eval = F}
+report(t.test(iris$Sepal.Width, iris$Sepal.Length, paired = TRUE))
+```
+
+`r report(t.test(iris$Sepal.Width, iris$Sepal.Length, paired = TRUE))`
+
+## Wilcoxon rank sum test (aka Mann-Whitney test)
+
+Reporting results of nonparametric tests, for example Wilcoxon test, is even more useful! Because the `report()` function correctly says: "The Wilcoxon rank sum test is testing **the difference in ranks**...", while even some scientific papers mistakenly say that Wilcoxon test is testing **the difference in medians**, which is just wrong, medians are only used to better describe not-normally distributed data, but medians are not used to compare groups. If fact the difference in ranks can be significant even when medians are identical. Here again, `report()` function applies a **rank biserial correlation coefficient** as a **suitable effect size for Wilcoxon rank sum test** with a reference. As you can see, {report} package not only produces more results in a suitable for publication form, but also **ensures a correct interpretation of results**. 
+
+![](equal_dedians.png)
+
+
+
+
+```{r include=FALSE}
+wilc_test <- wilcox.test(Wage$wage ~ Wage$jobclass) 
+```
+
+
+```{r eval=FALSE}
+wilc_test <- wilcox.test(Wage$wage ~ Wage$jobclass) 
+report(wilc_test)
+```
+
+`r wilcox.test(Wage$wage ~ Wage$jobclass) %>% report()`
+
+By the way, we can easily integrate **parts of the results** into the text of our manuscript, if we prepare our manuscript in RStudio. For instance if we use `report_statistics()` function in the middle of the text, only numbers from our test will be incorporated into the text. The `report_effectsize()` function would only report the effect size. Here is how it looks like inside of RStudio and in the manuscript: 
+
+![](code_inside_of_text.png)
+
+Workers in the IT-Industry earn significantly more (`r report_statistics(wilc_test)`) as compared to workers in Industrial jobs. This difference is `r report_effectsize(wilc_test)` large and can not be ignored.
+
+
+
+## Paired Wilcoxon signed rank test
+
+```{r eval=FALSE}
+report(wilcox.test(iris$Sepal.Width, iris$Sepal.Length, paired = TRUE))
+```
+
+`r wilcox.test(iris$Sepal.Width, iris$Sepal.Length, paired = T) %>% report()`
+
+
+## Pearson's correlation
+
+Similarly we can easily report the results of either parametric Pearson or non-parametric Spearman or Kendall correlations. Besides, `report_table()` function allows you to display your result as a table instead of text (see Kendall's correlation below).
+
+```{r eval=F}
+cor.test(mtcars$mpg, mtcars$wt) %>% 
+  report()
+```
+
+`r report(cor.test(mtcars$mpg, mtcars$wt))`
+
+
+## Spearman's rank correlation
+
+```{r eval=F}
+cor.test(mtcars$mpg, mtcars$wt, method = "spearman") %>% 
+  report()
+```
+
+`r report(cor.test(mtcars$mpg, mtcars$wt, method = "spearman"))`
+
+## Kendall's rank correlation (as a table)
+
+```{r}
+cor.test(mtcars$mpg, mtcars$wt, method = "kendall") %>% 
+  report_table()
+```
+
+
+
+
+
+
+
+
+
+
+## Reporting ANOVAs
+
+
+```{r eval=FALSE}
+aov(wt ~ am + mpg, data = mtcars) %>% 
+  report()
+```
+`r model <- aov(wt ~ am + mpg, data = mtcars); report(model)`
+
+
+# 2. Reporting Regression Models
+
+## Reporting (General) Linear Models
+
+```{r}
+model <- lm(mpg ~ am + hp, data = mtcars)
+
+summary(model)
+```
+
+But enough about tests, let's see how {report} package handles models. First of all, the usual summary of a model provides some useful information but the output is again, not very friendly to the human eye, and it is not clear how to describe it. I bet 10 researchers would report these results in 10 slightly different ways. In contrast {report} package provides a standardized way to report model-results, and again delivers **soo much more then  the classic `summary()`** function. Particularly, 
+
+- it describes what kind of model we used, while the `summary()` does not
+- it interprets the $R^2$ and $adj.R^2$, while the `summary()` does not
+- it uncovers what is behind the *mysterious* (Intercept), while the `summary()` assumes that you already know it
+- and finally, `report()` functions describes parameters "am" and "hp" by providing the slope with **useful! 95% Confidence Intervals**, while the `summary()` gives you **not really useful Standard Error of the Mean**
+
+
+```{r eval=FALSE}
+report(model) 
+```
+
+"r report(model)"
+
+In fact, if used for models, the `report()` function gives you more than you might want to use. That is why you can apply a **`summary()` command ON TOP OF THE REPORT** 🤣 in order to report only essential information.
+
+```{r eval=FALSE}
+report(model) %>% summary()
+```
+
+`r report(model) %>% summary()`
+
+Similarly to test results, you can display model results as a table with the `report_table()` command, or use different parts of the report inside of your text with: `report_model(), report_performance(), report_parameters(), report_statistics()` or `report_effectsize()` functions:
+
+```{r}
+report_table(model)
+```
+
+```{r eval=FALSE}
+report_model(model)
+```
+
+`r report_model(model)`
+
+```{r eval=FALSE}
+report_performance(model)
+```
+
+`r report_performance(model)`
+
+```{r eval=FALSE}
+report_parameters(model)
+```
+
+`r report_parameters(model)`
+
+```{r eval=FALSE}
+report_statistics(model)
+```
+
+`r report_statistics(model)`
+
+```{r eval=FALSE}
+report_effectsize(model)
+```
+
+`r report_effectsize(model)`
+
+
+
+## Logistic regression
+
+```{r include=FALSE}
+m <- glm(am ~ mpg, mtcars, family = binomial) 
+```
+
+```{r eval=FALSE}
+m <- glm(am ~ mpg, mtcars, family = binomial) 
+report(m)
+```
+
+`r report(m)`
+
+
+## Mixed-effects / multilevel models
+
+```{r include=FALSE}
+library(lme4)
+mixed_model <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+```
+
+
+
+```{r eval=FALSE}
+library(lme4)
+
+mixed_model <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+```
+
+
+```{r}
+summary(mixed_model)
+```
+
+
+The {report} package can report **logistic regressions**, but this is not really surprising. Surprising is however, that it can also easily handle **Linear Mixed-Effects models**, whose popularity and usage is currently exploding. The function explicitly describes random effects and interprets the explanatory power of the model with two coefficients of determination, conditional $R^2$ for the whole model (including random effects) and the marginal $R^2$ for only fixed effects, or only predictors without random effects.
+
+
+```{r eval=FALSE}
+report(mixed_model)
+```
+
+`r report(mixed_model)`
+
+```{r eval=FALSE}
+report_random(mixed_model)
+```
+
+`r report_random(mixed_model)`
+
+## Reporting Bayesian Models and Bayesian Mixed-Effects models
+
+Bayesian models can also be reported using the new **Sequential Effect eXistence and sIgnificance Testing** framework, or abbreviated - **SEXIT** 😁 (I swear I did not made it up). 
+
+This report describes:
+
+- how Markov Chain Monte Carlo was computed, 
+- which primers were used
+- it calculates the coefficient of determination $R^2$ and interprets the performance of the model
+- conducts Bayesian probabilistic hypothesis testing via **SEXIT** 😁
+- and provides references for reported metrics, so that you can learn more if something is not completely clear 
+
+The full report for Bayesian models is huge though, but here you also can use parts of the report effortlessly. Just choose what you want to include into your text with one of the following functions: `report_priors(), report_model(), report_performance(), report_parameters(), report_statistics()` or `report_effectsize()`.
+
+```{r include=FALSE}
+library(rstanarm)
+
+bayes_model <- stan_glm(mpg ~ qsec + wt, data = mtcars, refresh = 0)
+```
+
+```{r eval=FALSE}
+library(rstanarm)
+
+bayes_model <- stan_glm(mpg ~ qsec + wt, data = mtcars, refresh = 0)
+```
+
+
+```{r eval=FALSE}
+report(bayes_model)
+```
+
+`r report(bayes_model)`
+
+
+```{r eval=FALSE}
+report_priors(bayes_model)
+```
+
+`r report_priors(bayes_model)`
+
+
+```{r eval=FALSE}
+report_model(bayes_model)
+```
+
+`r report_model(bayes_model)`
+
+
+```{r eval=FALSE}
+report_performance(bayes_model)
+```
+
+`r report_performance(bayes_model)`
+
+```{r eval=FALSE}
+report_parameters(bayes_model)
+```
+
+`r report_parameters(bayes_model)`
+
+```{r eval=FALSE}
+report_statistics(bayes_model)
+```
+
+`r report_statistics(bayes_model)`
+
+```{r eval=FALSE}
+report_effectsize(bayes_model)
+```
+
+`r report_effectsize(bayes_model)`
+
+```{r}
+report_table(bayes_model)
+```
+
+
+
+
+
+## Exotic and not-supported models 😨 ???
+
+Despite the large number of models supported, at the time of making this blog (June 2022), {report} package doesn't support all the models in the world. But it evolves very quick. For instance when you found similar "Error message" to the one you see on the screen, go to this link and let the authors know, what kind of models you want {report} package to be able to handle.
+
+```{r, error=TRUE}
+d <- foreign::read.dta("https://stats.idre.ucla.edu/stat/data/hsbdemo.dta")
+
+m <- nnet::multinom(prog ~ ses + write, d)
+
+report(m)
+```
+
+
+# 3. Reporting Data
+
+## As text
+
+Now, you can also quickly describe your data by simply using {report} function on your dataset. It provides the most common descriptive statistics for every variable, doesn't matter numeric or categorical. 
+
+```{r eval=FALSE}
+report(iris)
+```
+
+`r report(iris)`
+
+Besides, {Report} package works perfectly with famous {tidyverse} packages, like {dplyr}. Thus, the data can be easily grouped by any categorical variable, e.g. Species, and the descriptive stats for every level of the grouping variable will be returned:
+
+```{r}
+iris %>%
+  select(-starts_with("Sepal")) %>%
+  group_by(Species) %>%
+  report() 
+```
+
+## As table
+
+Want the same as a huge or a minimalistic table? No, problems! Use `report_table()` or `report_sample()` functions.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  report_table()
+```
+
+
+
+```{r}
+report_sample(iris, group_by = "Species")
+```
+
+
+
+# 4. Reporting R environment, packages, system
+
+And finally, using only one command: `report(sessionInfo())` you first report the Statistical software you used for data analysis, secondly, you list ALL packages you used and lastly you cite all packages you used automatically without any typing mistakes! How cool is that? And if you want to know how to find THE BEST MODEL which you then can report, check out {glmulti} package!
+
+
+```{r eval=FALSE}
+report(sessionInfo())
+```
+
+`r report(sessionInfo())`
+
+You can also use parts of `sessionInfo()`, but why would you? 🤓
+
+```{r eval=FALSE}
+report_system()
+```
+
+`r report_system()`
+
+```{r eval=FALSE}
+report_packages()
+```
+
+`r report_packages()`
+
+```{r eval=FALSE}
+cite_packages()
+```
+
+`r cite_packages()`
+
+
+## Further readings and references
+
+- https://easystats.github.io/report/index.html
+
+- All functions from {report} package: https://easystats.github.io/report/reference/index.html
+
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+

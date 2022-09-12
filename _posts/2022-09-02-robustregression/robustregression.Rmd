@@ -1,0 +1,163 @@
+---
+title: "R demo | Robust Regression (don't depend on influential data!)"
+description: |
+  Linear regression can be very sensitive to unusual data, like outliers, high leverage observations or a combination of both. A robust regression suppose to provide a solution for that. So, let's build both an ordinary and a robust regressions, compare them to find out whether outliers are a serious problem and see whether robust model performs better then usual linear model.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+  - models
+preview: thumbnail_robust.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's less then 5 minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+```{r echo=FALSE}
+library(carData)
+cm <- lm(prestige ~ income + education, data = Duncan)
+library(olsrr)
+ols_plot_resid_lev(cm)
+```
+
+
+
+# Make sure you have unusual data
+
+For the sake of simplicity let's take only 5 observations with one obvious outlier.
+
+First of all, how do we know that we have influential observations? Well, plotting the raw data sometimes helps, but if you have a lot of data and many predictors, **the best way to find unusual data is** to conduct a linear regression and to run **residuals diagnostics**. `ols_plot_resid_lev()` function from {olsrr} package displays all contaminations of data on a single plot. In our case it finds observation 4 to be an obvious outlier.
+
+```{r}
+# 1. create data
+library(tidyverse)
+d <- tibble(
+  predictor = c(  1,   2,   3,  4,   5),
+  outcome   = c(0.8, 2.3, 2.8,  0, 5.3)
+)
+
+plot(d)
+
+# 2. run ordinary least squares regression
+m <- lm(outcome ~ predictor, data= d)
+
+# 3.make residual diagnostics
+library(olsrr)
+ols_plot_resid_lev(m)
+```
+
+
+# Perform robust regression
+
+Now, we'll use `lmrob()` function form {robustbase} package to conduct the robust regression and have a look at the `summary()` and residuals plot of the model, because they explain how robust regression actually works.
+
+```{r}
+# 4. conduct robust regression
+library(robustbase)
+rm <- lmrob(outcome ~ predictor, data = d)
+
+summary(rm)
+
+library(sjPlot)
+plot_residuals(m)
+```
+
+# How and why does robust regression works?
+
+Namely, a robust regression gives different **robustness weights**, from 0 to 1, to every observation based on it's residual. Where a residual is simply the differences between observed and predicted values of data. So, the smaller the residual, the larger the weight. For example, observations 1 and 3 have the smallest residuals and therefore the highest weight, which means - they have the strongest influence on our model. And while all observations with a non-zero residual get down-weighted at least a little, our outlier gets down-weighting the most ... to ... actually zero, so that our outlier has zero influence on our model, which in fact makes our model ROBUST.
+
+The assignment of weight happens by **Iteratively ReWeighting Least Squares (IRWLS)**, thus we have to make sure, robust regression algorithm converged. In our case, the model converged in only a few iterations.
+
+But why don't we just remove outliers and run a normal linear model, right? Well, in most of the cases it's a bad idea, because we'll loose information. For example in our case of 5 observations, we'd loose 20% of data. In contrast, robust regression still squizzes some knowledge out of unusual data, but lowers their weight which does not let unusual data to influence our regression to much. Now lets ...
+
+# Compare both models and choose the best
+
+First, `plot_model()` command from {sjPlot} package easily visualizes predictions of both models.
+
+The ordinary linear model shows no trend. However, the absence of a trend may only be caused by the outlier N°4, which drags the line down and widens the confidence intervals, making us less confident in our results. In contrast, a robust regression ignores the outlier and shows a clear trend with a narrow confidence intervals. 
+
+```{r eval=FALSE, figures-side, fig.show="hold", out.width="50%"}
+# 5. visualize both models
+plot_model(m,  type = "pred", show.data = T)
+plot_model(rm, type = "pred", show.data = T)
+```
+
+Moreover, `tab_model()` command from {sjPlot} package shows that a robust model has much higher coefficient of determination $R^2$, which means that robust model fits the data much better then the ordinary model. And finally, we can see that the results can be dramatically different. Namely, a slope is significant in a robust regression, while not significant in the ordinary linear model, indicating that ordinary model (1) was soo heavily biased by the outlier, (2) that it produced a wrong result, (3) which made me miss an important discovery (4) and never win a Nobel Price ;) 
+
+
+```{r echo=FALSE, figures-side2, fig.show="hold", out.width="50%", message=FALSE, warning=FALSE}
+# 5. visualize both models
+plot_model(m,  type = "pred", show.data = T)
+plot_model(rm, type = "pred", show.data = T)
+```
+
+```{r, figures-side3, fig.show="hold", out.width="50%"}
+# 6. compare coefficients and goodness of fit of both models
+tab_model(m)
+tab_model(rm)
+```
+
+So, having robust regression in your statistical toolbox will already step up your data-science game, but robust regression does not save you from violations of other model assumptions, which you definitely need to check, otherwise you might again get a completely wrong result. Fortunately, there is only **one function** which **checks and visualizes all the assumptions of any model at once** which you can learn more about from [this video](https://youtu.be/EPIxQ5i5oxs).
+
+
+# Works also in a complicated model
+
+```{r}
+library(carData)
+cm <- lm(prestige ~ income * education, data = Duncan)
+ols_plot_resid_lev(cm)
+crm <- lmrob(prestige ~ income * education, data = Duncan)
+
+library(performance)
+compare_performance(cm, crm, rank = T)
+```
+
+
+# There are further packages for robust regression, but...
+
+MASS::rlm() does not provide $R^2$ while robust::lmRob() does not provide info on outliers and has a smaller $R^2$. There are also other options to conduct a non-parametric regression, like least trimmed squares, quantile regression or bootstrapped regression. But, while all of them have merits, I personally decided to always use robustbase::lmrob() if I have unsual data.
+
+```{r figures-side4, fig.show="hold", out.width="50%"}
+rm2 <- MASS::rlm(outcome ~ predictor, data= d)
+rm3 <- robust::lmRob(outcome ~ predictor, data= d)
+
+plot_model(rm2, type = "pred", show.data = T)
+plot_model(rm3, type = "pred", show.data = T)
+```
+
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+

@@ -1,0 +1,293 @@
+---
+title: "nonparametric bootstrapping regressions (in progress)"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+  - models
+#preview: thumbnail_sjPlot.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+## Why should we nonparametrically bootstrap regressions?
+
+- bootstrapping does not require distributional assumptions (such as normally distributed errors or equal variances among groups)
+
+- the bootstrap provides more accurate inferences, like standard errors, confidence intervals and hypothesis tests for most statistics [^1] 
+
+- it works better for small samples as it allows to see how much variation there would have been
+
+- bootstrapping is essentially equal to the OLS models and could be used along with traditional methods to check the stability of the models.
+
+## What is - a bootstrap?
+
+The term ‘bootstrapping,’ due to Efron (1979), is an allusion to the expression ‘pulling oneself up by one’s bootstraps’. For data it simply means - resampling. It is **necessary to resample with replacement, because we would otherwise simply reproduce the original sample**.
+
+Since you are watching this video, I assume you already know how bootstrap works, so here I just say why it's useful for regression and show how to do it in R. 
+
+## Make sure you need to bootstrap models
+
+Since I just said, that **bootstrap works better with small samples** and **produces better confidence intervals**, lets (1) take a very small dataset, (2) produce model coefficients & 95% CIs with the **bootstrap** method which **does not rely on assumptions** and (3) compare them to the coefficients of a usual linear model which totally relies on assumptions.
+
+For that we'll use a "Wage" dataset from the "Introduction to Statistical Learning with R" package and sample only 100 random lines from it. The `set.seed(123)` command will make sure you and I get the same 100 lines. 
+
+```{r}
+library(tidymodels)
+
+set.seed(123)
+set.seed(9999)
+salary <- ISLR::Wage %>%
+  sample_n(100)
+```
+
+And if you think that one 100 lines is not a small sample, let's split it into 5 education categories and visualize the distribution. 
+
+```{r}
+ggstatsplot::ggbetweenstats(data = salary, x = education, y = wage)
+```
+
+Waw, 
+
+- first of all, the very first education group has only 8 observations, while group 5 have only 13, so we do actually have small samples
+
+- secondly, we immediately see, that variances differ among groups, where first three groups have smaller variances then the last two. But is this difference significant? Well, a Levene's test for homogeneity of variance across groups shows that it is.
+
+```{r}
+car::leveneTest(wage~education, salary)
+```
+- and lastly, the violin plots show that the distribution of at least 3 groups might be skewed, or not-normal. But again, is such not-normality significant? Well, the Shapiro-Wilk normality test confirms that.
+
+```{r}
+salary %>% group_by(education) %>% dlookr::normality(wage)
+```
+Now we have the situation where we have small samples and two of the assumptions are not satisfied. That is why, parametric methods, such as ANOVA you see on this plot, or a usual linear regression will not produce good results. But whould bootstrapping result be better? Let's find out!
+
+## How to compute bootstrapped regression
+
+There are only 4 steps to conduct and visualize bootstrapped regression.
+
+### 1. Bootstrap the data with resampling
+
+First, we bootstrap the data, which simply means we take 1000 samples from our 100 data rows. Every of those 1000 samples is of the same size as the original data set, namely 100 rows, but is made using replacement, which results into multiple replicates of some of the original rows of the data. The assessment set contains the rows of the original data that were not included in the bootstrap sample.
+
+```{r}
+set.seed(123)
+# 1000 samples are OK, but with 2000-10000 you are save!
+boot_data <- bootstraps(salary, times = 10000) 
+boot_data
+boot_data$splits[[1]]
+```
+
+### 2. Produce 1000 models
+
+Then we fit a linear *model* to every *split* using the first `map()` function and tidy up model coefficients with the second `map()` function. Let's use "0 +" in the model formula to remove the Intercept, because we are interested in estimates of the salary and not the slope of change from that Intercept.
+
+```{r}
+boot_models <- boot_data %>% 
+  mutate(model = map(splits, ~lm(wage ~ 0 + education, data = .)), 
+         coefs = map(model, tidy) ) # optional "conf.int = TRUE"
+
+boot_models
+```
+
+### 3. Plot estimates distribution of 1000 estimates
+
+```{r}
+boot_coefs <- boot_models %>%
+  unnest(coefs) %>% 
+  select(-splits, -id, -model)
+
+boot_coefs
+```
+
+And if we `unnest()` the coefficients and remove some unnecessary columns, well see 5 estimates for every of our 1000 models, even including p-values ;). That gives us 1000 estimates for every of the 5 educational groups which we can immediately visualize as a distribution.
+
+```{r}
+boot_coefs %>%
+  ggplot(aes(x = estimate)) +
+  geom_histogram() +
+  facet_wrap(~term, scales = "free")+
+  theme_test()
+```
+And the coolest thing about this distribution is that we can easily get not only 95% Confidence Intervals, but any intervals we want. For example let's find out where are 50% of possible salaries for every group.
+
+```{r}
+boot_meds <- boot_coefs %>% 
+  group_by(term) %>% 
+  # term here is useless, but you'll need for >1 predictor
+  summarise(
+    med_est   = median(estimate),
+    conf.low  = quantile(estimate, 0.025),
+    conf.high = quantile(estimate, 0.975),
+    conf.25   = quantile(estimate, 0.25 ),
+    conf.75   = quantile(estimate, 0.75 ))
+
+boot_meds
+```
+
+Anyway, let's visualize the distribution as a density curve now and add the median as our central line plus 50% and 95% confidence intervals. Beautiful, isn't it? Here we can clearly see that people who did not finish a high school, have a 50% change to earn ca. 95 thousand dollars, while folks who finished advanced degree would have 50% chance to earn around 150 thousands. Waw.
+
+```{r}
+boot_coefs %>%
+  ggplot(aes(x = estimate)) +
+  geom_density() +
+  geom_vline(data = boot_meds, aes(xintercept = med_est))+
+  geom_rect(aes(x = med_est, xmin = conf.low, xmax = conf.high, ymin = 0, ymax = Inf), data = boot_meds, alpha = 0.1, fill = "green") +
+  geom_rect(aes(x = med_est, xmin = conf.25, xmax = conf.75, ymin = 0, ymax = Inf), data = boot_meds, alpha = 0.3, fill = "green") +
+  facet_wrap(~term, scales = "free")+
+  theme_test()
+```
+But what blew my mind even more the first time I learned to bootstrap regression estimates, is that I can even get a distribution of p-values :) which I somehow intuitively trust more, then a single p-value from a linear model. For that we just (1) remodel all 1000 models with the Intercept, (2) unnest coefficients again and (3) get median p-values for every group.
+
+```{r}
+boot_models <- boot_data %>% 
+  mutate(model = map(splits, ~lm(wage ~ education, data = .)), 
+         coefs = map(model, tidy) ) # optional "conf.int = TRUE"
+
+boot_coefs <- boot_models %>%
+  unnest(coefs) %>% 
+  select(-splits, -id, -model)
+
+boot_meds <- boot_coefs %>% 
+  group_by(term) %>% 
+  summarise(
+    med_p.val = median(p.value)   
+    )
+
+boot_meds
+
+boot_coefs %>% 
+    group_by(term) %>% 
+    summarise(
+        med_p.val = mean(p.value)   
+    )
+```
+
+
+
+### 4. Get and visualize predictions
+
+If we want not the slopes of education group, but a real number for a salary, we can use the augment command to produce 1000 predictions and then calculate a median and 95% CIs from our predictions. 
+
+```{r}
+# 6 get predictions
+boot_aug <- 
+  boot_models %>% 
+  mutate(augmented = map(model, augment)) %>% 
+  unnest(augmented) %>% 
+  select(-splits, -model)
+
+# get median estimates, median 95% CIs and median p-values
+nonpar_med_boot_preds <- boot_aug %>% 
+  group_by(education) %>% 
+  summarise(
+    predicted = median(.fitted ),
+    conf.low  = quantile(.fitted, 0.025),
+    conf.high = quantile(.fitted, 0.975)) %>% 
+  mutate(model = "bootstrapped") %>% 
+  select(model, everything())
+```
+
+## Compare to the ordinary linear regression
+
+Here is the moment we've been waiting vor. If we bring the predictions of a linear model into similar form, we can plot the predictions with confidene intervals side by side.
+
+```{r}
+# get mean estimates from the classic model
+m <- lm(wage ~ education, salary)
+par_avg_preds <- ggeffects::ggeffect(m, terms = "education") %>% 
+  tibble() %>% 
+  mutate(model = "linear") %>% 
+  select(model, education = x, predicted, conf.low, conf.high)
+
+# get estimates from a robust regression
+rm <- MASS::rlm(wage ~ education, salary)
+rob_avg_preds <- ggeffects::ggeffect(rm, terms = "education") %>% 
+  tibble() %>% 
+  mutate(model = "robust") %>% 
+  select(model, education = x, predicted, conf.low, conf.high)
+
+library(robustbase)
+rm2 <- lmrob(wage ~ education, salary)
+rob_avg_preds2 <- ggeffects::ggeffect(rm2, terms = "education") %>% 
+  tibble() %>% 
+  mutate(model = "robust2") %>% 
+  select(model, education = x, predicted, conf.low, conf.high)
+
+# compare_performance(m, rm, rm2)
+
+# combine three datasets
+preds <- rbind(nonpar_med_boot_preds, par_avg_preds, rob_avg_preds, rob_avg_preds2)
+```
+
+Interestingly, the center of the bootstrap distribution is identical to the mean of the sample. It means that the bootstrap is not used to get better parameter estimates because the bootstrap distributions are centered around statisticsˆθcalculated from the data(e.g., a regression slopeˆβ) rather than the unknown population values (e.g.,μorβ). Drawing thousands of bootstrap observations from the original data isnot like drawing observations from the underlying population, it does not create new data
+
+
+
+This is a major advantage of the bootstrap.It allows statistical inferences such as confidenceintervals to be calculated even for statistics forwhich there are no easy formulas. It offers hope ofreforming statistical practice—away from simple butnon-robust estimators like a sample mean or least-squares regression, in favor of robust alternatives.
+
+
+```{r fig.width=7, fig.height=7}
+# 7 plot row data and predicted CIs from both models
+ggplot() +
+  geom_jitter(data = salary, aes(education, wage), width = .2, alpha = 0.2, size = 2)+
+  geom_pointrange(data = preds, aes(x=education, y=predicted, 
+                                    ymin=conf.low, ymax=conf.high, color = model),  
+                  position=position_dodge(width=.6), size = 1) + 
+  theme_test()
+```
+
+## Problems
+
+So, is bootstrap method perfect? Of coarse no. While bootstrap provide a better understanding of a variance in a sample, if you have an outlier by simply a mistake, this outlier will be given more weight then you might wont to. In this case you would need a robust regression, and if you wanna became a more complete data scientist in the next five minuts, you only need to watch [this video](in progress).  
+
+There are three serious obstacles to increased use of the bootstrap:
+
+- treating dependent data as if they were independent
+
+- Although the empirical bootstrap works well in theory, in practice it might lead to a bad result especially in
+the presence of influential observations (some Xi very far away from the others).
+
+
+- The time and effort involved in a bootstrap calculation are usually small compared
+with the totality of a research investigation—and are a small price to pay for accurate and
+realistic inference.
+
+- intensive computation
+
+- This completes our research: we may conclude, that the bootstrapping approach returns essentially the same results but in a statistically different fashion. 
+
+## Further readings and references
+
+
+[^1]: Tim Hesterberg (2015), What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum, The American Statistician 69(4) 371-386, DOI: 10.1080/00031305.2015.1089789
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
