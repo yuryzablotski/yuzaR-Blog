@@ -7,7 +7,485 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 11 Sep 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Sep 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R demo| Many Models with Nested (Grouped) Data Easily</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-09-12-manymodels</link>
+      <description>
+
+
+&lt;h1 id="this-post-as-a-video"&gt;This post as a video&lt;/h1&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s less then … minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="why-do-we-need-many-models"&gt;Why do we need many models?&lt;/h1&gt;
+&lt;p&gt;Have a close look at this linear model. It tells you that &lt;strong&gt;the
+only thing&lt;/strong&gt; you need to do in order to earn significantly more
+money - is to get older. But why does one group of people earn so much
+more, than the others? And is a single model able to catch that
+groups?&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggpubr) # for stat_cor() function
+ggplot(Wage, aes(age, wage))+
+  geom_point(alpha = 0.2)+
+  geom_smooth(method = lm)+
+  stat_cor()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;one_model.jpg&amp;quot;, plot = last_plot())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Well, when look at education of these 3000 people, we’ll see that
+most of the richest people have an advanced degree, while most of the
+poorest people have just a high school or below. And if we create 5
+models instead of one, we’ll see &lt;strong&gt;a much more useful
+story&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(age, wage))+
+    geom_point(alpha = 0.7, aes(color = education))+
+    geom_smooth(method = lm)+
+    stat_cor()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;one_model_data.jpg&amp;quot;, plot = last_plot())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For instance, the increase of salary with age is much higher when you
+have at least some college degree as compared to no education. So that
+at the end of life we’ll end up with an impressive salary of 150
+thousand dollars, while without any education we’ll never cross 100
+thousand mark. So, it seems like education matters, and the slope
+clearly tells us that! However, despite the fact that the slope of the
+advanced degree is much smaller, which &lt;strong&gt;could&lt;/strong&gt; suggest
+that education is not worth the effort, the intercept tells a different
+story. Namely, that folks who invested into education upfront start
+their life with the same salary, “some-college” guys reach only at the
+end of their life.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(age, wage))+
+  geom_point(alpha = 0.2)+
+  geom_smooth(method = lm)+
+  facet_grid(. ~ education)+
+  stat_cor()+
+  stat_regline_equation(label.y = 240)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;five_models.jpg&amp;quot;, plot = last_plot(), width = 8.1, height = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, you see how much more useful 5 models are compared to one! But
+what about 10 model, for example when we group our data for health
+insurance? What about 20 models when we account for different
+jobclasses? The more models you create, the more useful insights you’ll
+get! Then what about 1000 models? … ok, ok, we don’t have to exaggerate.
+Let’s stick to only 10 models and learn how to easily compute them and
+get all useful information, like slopes, measures of fit and p-values,
+out of them.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = age, y = wage, color = health_ins)) +
+   geom_point(alpha = 0.1, shape = 1) +
+   geom_smooth(method = &amp;quot;lm&amp;quot;) +
+   facet_grid(. ~ education, scales = &amp;quot;free&amp;quot;)+
+    stat_cor()+
+  theme(legend.position = &amp;quot;none&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;10_models.jpg&amp;quot;, plot = last_plot(), width = 8.5, height = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(age, wage, color = health_ins))+
+    geom_point(alpha = 0.1)+
+    geom_smooth(method = lm)+
+    facet_grid(jobclass ~ education)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;20_models.jpg&amp;quot;, plot = last_plot(), width = 8.1, height = 5)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="nested-grouped-data"&gt;Nested (grouped) data&lt;/h1&gt;
+&lt;p&gt;The Wage data you have seen on the plot is part of the ISLR package.
+If we have a glimpse at it, we’ll see categorical variables “education”
+and “health insurance”. A simple cross table reveals how many
+observations we’ll have in every of our 10 models.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse) # for everything good in R ;)
+library(ISLR)      # for Wage dataset
+
+Wage %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Rows: 3,000
+Columns: 11
+$ year       &amp;lt;int&amp;gt; 2006, 2004, 2003, 2003, 2005, 2008, 2009, 2008, 2…
+$ age        &amp;lt;int&amp;gt; 18, 24, 45, 43, 50, 54, 44, 30, 41, 52, 45, 34, 3…
+$ maritl     &amp;lt;fct&amp;gt; 1. Never Married, 1. Never Married, 2. Married, 2…
+$ race       &amp;lt;fct&amp;gt; 1. White, 1. White, 1. White, 3. Asian, 1. White,…
+$ education  &amp;lt;fct&amp;gt; 1. &amp;lt; HS Grad, 4. College Grad, 3. Some College, 4…
+$ region     &amp;lt;fct&amp;gt; 2. Middle Atlantic, 2. Middle Atlantic, 2. Middle…
+$ jobclass   &amp;lt;fct&amp;gt; 1. Industrial, 2. Information, 1. Industrial, 2. …
+$ health     &amp;lt;fct&amp;gt; 1. &amp;lt;=Good, 2. &amp;gt;=Very Good, 1. &amp;lt;=Good, 2. &amp;gt;=Very G…
+$ health_ins &amp;lt;fct&amp;gt; 2. No, 2. No, 1. Yes, 1. Yes, 1. Yes, 1. Yes, 1. …
+$ logwage    &amp;lt;dbl&amp;gt; 4.318063, 4.255273, 4.875061, 5.041393, 4.318063,…
+$ wage       &amp;lt;dbl&amp;gt; 75.04315, 70.47602, 130.98218, 154.68529, 75.0431…&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;table(Wage$education, Wage$health_ins)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;                    
+                     1. Yes 2. No
+  1. &amp;lt; HS Grad          124   144
+  2. HS Grad            612   359
+  3. Some College       467   183
+  4. College Grad       529   156
+  5. Advanced Degree    351    75&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But before we can model, we need to split our data into 10 groups
+using “group_by()” function and then lock these 10 groups into 10
+different data-sets using “nest()” function.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_data &amp;lt;- Wage %&amp;gt;% 
+  group_by(education, health_ins) %&amp;gt;% 
+  nest() 
+
+nested_data&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 10 × 3
+# Groups:   education, health_ins [10]
+   education          health_ins data              
+   &amp;lt;fct&amp;gt;              &amp;lt;fct&amp;gt;      &amp;lt;list&amp;gt;            
+ 1 1. &amp;lt; HS Grad       2. No      &amp;lt;tibble [144 × 9]&amp;gt;
+ 2 4. College Grad    2. No      &amp;lt;tibble [156 × 9]&amp;gt;
+ 3 3. Some College    1. Yes     &amp;lt;tibble [467 × 9]&amp;gt;
+ 4 4. College Grad    1. Yes     &amp;lt;tibble [529 × 9]&amp;gt;
+ 5 2. HS Grad         1. Yes     &amp;lt;tibble [612 × 9]&amp;gt;
+ 6 2. HS Grad         2. No      &amp;lt;tibble [359 × 9]&amp;gt;
+ 7 5. Advanced Degree 2. No      &amp;lt;tibble [75 × 9]&amp;gt; 
+ 8 5. Advanced Degree 1. Yes     &amp;lt;tibble [351 × 9]&amp;gt;
+ 9 3. Some College    2. No      &amp;lt;tibble [183 × 9]&amp;gt;
+10 1. &amp;lt; HS Grad       1. Yes     &amp;lt;tibble [124 × 9]&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In a &lt;strong&gt;nested data frame&lt;/strong&gt; each row is a
+meta-observation (∞ 😂) where categorical variables “education and
+health insurance” define our 10 groups, while the list-column of 10
+data-sets could be seen as 10 lockers which contain individual
+observations belonging only to a particular combination of education and
+health insurance. In the first case, 144 people have no education (“1.
+&amp;lt; HS Grad”) and no health-insurance (“2. No”). And if you think, that
+a list-column of data-sets is a crazy idea, wait a second, and you’ll
+see how useful it is.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_data$data[[1]] %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Rows: 144
+Columns: 9
+$ year     &amp;lt;int&amp;gt; 2006, 2003, 2004, 2006, 2008, 2003, 2009, 2007, 200…
+$ age      &amp;lt;int&amp;gt; 18, 27, 43, 25, 44, 24, 53, 41, 43, 35, 27, 25, 38,…
+$ maritl   &amp;lt;fct&amp;gt; 1. Never Married, 2. Married, 1. Never Married, 1. …
+$ race     &amp;lt;fct&amp;gt; 1. White, 1. White, 1. White, 1. White, 1. White, 1…
+$ region   &amp;lt;fct&amp;gt; 2. Middle Atlantic, 2. Middle Atlantic, 2. Middle A…
+$ jobclass &amp;lt;fct&amp;gt; 1. Industrial, 1. Industrial, 1. Industrial, 1. Ind…
+$ health   &amp;lt;fct&amp;gt; 1. &amp;lt;=Good, 2. &amp;gt;=Very Good, 1. &amp;lt;=Good, 2. &amp;gt;=Very Goo…
+$ logwage  &amp;lt;dbl&amp;gt; 4.318063, 4.193125, 3.812913, 4.193125, 4.477121, 3…
+$ wage     &amp;lt;dbl&amp;gt; 75.04315, 66.22941, 45.28217, 66.22941, 87.98103, 5…&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="how-does-this-work-amd-why-it-is-so-useful"&gt;How does this work
+amd why it is so useful?&lt;/h1&gt;
+&lt;p&gt;Imagine you’d need to write a code for 10 different models. That is
+not only a lot of work, but is also prone to mistakes. Moreover, you’d
+need to store and organize 10 different model objects somehow, because
+they contain information you need. And while it kind of works for 10
+models, what if you really need 1000 or more?&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m1 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;1. &amp;lt; HS Grad&amp;quot;, health_ins == &amp;quot;2. No&amp;quot;))
+m2 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;4. College Grad&amp;quot;, health_ins == &amp;quot;2. No&amp;quot;))
+m3 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;3. Some College&amp;quot;, health_ins == &amp;quot;1. Yes&amp;quot;))
+m4 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;4. College Grad&amp;quot;, health_ins == &amp;quot;1. Yes&amp;quot;))
+m5 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;2. HS Grad&amp;quot;, health_ins == &amp;quot;1. Yes&amp;quot;))
+m6 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;2. HS Grad&amp;quot;, health_ins == &amp;quot;2. No&amp;quot;))
+m7 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;5. Advanced Degree&amp;quot;, health_ins == &amp;quot;2. No&amp;quot;))
+m8 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;5. Advanced Degree&amp;quot;, health_ins == &amp;quot;1. Yes&amp;quot;))
+m9 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;3. Some College&amp;quot;, health_ins == &amp;quot;2. No&amp;quot;))
+m10 &amp;lt;- lm(wage ~ age, 
+         data = Wage %&amp;gt;% filter(education == &amp;quot;1. &amp;lt; HS Grad&amp;quot;, health_ins == &amp;quot;1. Yes&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="map-function-rocks"&gt;&lt;code&gt;map()&lt;/code&gt; function rocks!&lt;/h2&gt;
+&lt;p&gt;Well, &lt;code&gt;map()&lt;/code&gt; function from {purrr} package provides a
+much better way! Because it applies a function of your choice to each
+element of a list. For example, if we want to multiply every element of
+our list by 10, we “map()” over every element of this list, where every
+element is represented by the DOT - “.”&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;data &amp;lt;- list(1, 2, 3)
+
+map(data, ~ . * 10) %&amp;gt;% 
+  t()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;     [,1] [,2] [,3]
+[1,] 10   20   30  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Similarly, we can “map()” over every meta-observation (∞ 😂) of our
+nested data-frame and apply a linear regression to every of the 10
+data-frames which are stored in the list-column we called “data”.
+Moreover, rather than leaving the list of models as a free-floating
+objects (flies flying around trash, or free floating things in space),
+it’s much better to store all our models in the next list-column, let’s
+call this list-column “models”. On top of that let’s now “map()” over
+our models in order to extract the coefficients with 95% CIs, model
+quality indicators and even predictions and store them all in separate
+list-columns.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(broom)   # for tidy(), glance() &amp;amp; augment() functions
+nested_models &amp;lt;- nested_data %&amp;gt;%
+  mutate(models  = map(data, ~ lm(wage ~ age, data = .)), 
+         coefs   = map(models, tidy, conf.int = TRUE),
+         quality = map(models, glance),
+         preds   = map(models, augment)) 
+
+nested_models&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 10 × 7
+# Groups:   education, health_ins [10]
+   education        healt…¹ data     models coefs    quality  preds   
+   &amp;lt;fct&amp;gt;            &amp;lt;fct&amp;gt;   &amp;lt;list&amp;gt;   &amp;lt;list&amp;gt; &amp;lt;list&amp;gt;   &amp;lt;list&amp;gt;   &amp;lt;list&amp;gt;  
+ 1 1. &amp;lt; HS Grad     2. No   &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 2 4. College Grad  2. No   &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 3 3. Some College  1. Yes  &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 4 4. College Grad  1. Yes  &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 5 2. HS Grad       1. Yes  &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 6 2. HS Grad       2. No   &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 7 5. Advanced Deg… 2. No   &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 8 5. Advanced Deg… 1. Yes  &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+ 9 3. Some College  2. No   &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+10 1. &amp;lt; HS Grad     1. Yes  &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;
+# … with abbreviated variable name ¹​health_ins&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, with a &lt;strong&gt;minimum of code&lt;/strong&gt;, where it is difficult
+to make any mistake, we have created a &lt;strong&gt;small and clean nested
+data-frame&lt;/strong&gt; with &lt;strong&gt;5 list-columns&lt;/strong&gt;, where
+&lt;strong&gt;all the related objects are stored together&lt;/strong&gt;.
+Hallelujah! ;) Such nested data-frame could be seen as a well organized
+cabinet with 50 lockers containing &lt;strong&gt;all important information we
+need&lt;/strong&gt;, which is &lt;strong&gt;easily accessible anytime we
+want&lt;/strong&gt;. For example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;we can have a look at the first model or it’s coeffitients,&lt;/li&gt;
+&lt;li&gt;we can check all assumptions of the second model at once using
+check_model() function from the {performance} package, which I already
+reviewed on this channel,&lt;/li&gt;
+&lt;li&gt;we can look at the model quality of, let’s say, a model N°4 or&lt;/li&gt;
+&lt;li&gt;we can plot predictions of a model N°9 using plot_model() function
+from another amazing package {sjPlot} I also have an extra video
+about&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_models$models[[1]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Call:
+lm(formula = wage ~ age, data = .)
+
+Coefficients:
+(Intercept)          age  
+    69.8032       0.1572  &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_models$coefs[[1]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &amp;lt;chr&amp;gt;          &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+1 (Intercept)   69.8       5.36      13.0  5.00e-26   59.2      80.4  
+2 age            0.157     0.131      1.20 2.30e- 1   -0.101     0.415&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_models$models[[2]] %&amp;gt;% performance::check_model()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-14-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_models$quality[[4]] %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Rows: 1
+Columns: 12
+$ r.squared     &amp;lt;dbl&amp;gt; 0.01700412
+$ adj.r.squared &amp;lt;dbl&amp;gt; 0.01513886
+$ sigma         &amp;lt;dbl&amp;gt; 40.33913
+$ statistic     &amp;lt;dbl&amp;gt; 9.116186
+$ p.value       &amp;lt;dbl&amp;gt; 0.002656313
+$ df            &amp;lt;dbl&amp;gt; 1
+$ logLik        &amp;lt;dbl&amp;gt; -2705.5
+$ AIC           &amp;lt;dbl&amp;gt; 5417
+$ BIC           &amp;lt;dbl&amp;gt; 5429.813
+$ deviance      &amp;lt;dbl&amp;gt; 857558.2
+$ df.residual   &amp;lt;int&amp;gt; 527
+$ nobs          &amp;lt;int&amp;gt; 529&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_models$models[[9]] %&amp;gt;% sjPlot::plot_model(type =  &amp;quot;pred&amp;quot;, show.data = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$age&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="unnest-results"&gt;Unnest results&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;map(nested_models$models, sjPlot::plot_model, type = &amp;quot;pred&amp;quot;, show.data = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And despite the fact, that we could easily plot all 10 models by
+“mapping” through the whole list of models, it is sometimes better to
+simply “unnest()” the list-column back into a regular data frame. This
+is useful, when we want to put all the results below each other to see
+the big picture, be able to sort, compare or plot all 10 models
+simultaneously.&lt;/p&gt;
+&lt;h2 id="unnest-coefficients"&gt;Unnest coefficients&lt;/h2&gt;
+&lt;p&gt;For example, we can unnest() the coefficients and see all 10 models
+below each other.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(flextable) # for a good looking table
+nested_models %&amp;gt;%
+  unnest(coefs) %&amp;gt;% 
+  select(-data, -models, -quality, -preds) %&amp;gt;% 
+  mutate_if(is.numeric, ~ round(., 2)) %&amp;gt;% 
+  regulartable() %&amp;gt;% 
+  autofit()&lt;/code&gt;&lt;/pre&gt;
+&lt;template id="b096e127-6d9a-4bdc-a56f-83e5112c80a9"&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-87e90e92{}.cl-87e158c8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-87e167aa{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-87e167b4{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-87e1c876{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c880{width:62.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c88a{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c88b{width:60.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c894{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c895{width:61.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c896{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c89e{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c89f{width:65.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8a0{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8a8{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8a9{width:60.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8aa{width:62.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8b2{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8b3{width:61.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8b4{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8bc{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8bd{width:65.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8c6{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8c7{width:65.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8c8{width:61.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8c9{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8d0{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8d1{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8da{width:60.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8db{width:62.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8e4{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8e5{width:65.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8e6{width:61.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8ee{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8ef{width:62.1pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8f0{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8f8{width:60.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c8f9{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c902{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c903{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c904{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c905{width:61.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c90c{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c916{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c917{width:65.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c918{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c919{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c920{width:62.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c92a{width:60.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c92b{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c92c{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c934{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c935{width:61.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c93e{width:65.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c93f{width:60.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c940{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c941{width:62.1pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-87e1c948{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-87e90e92'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c940"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;education&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c934"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;health_ins&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c948"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;term&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c941"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;estimate&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c935"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;std.error&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c92b"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c92c"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;p.value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c93f"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;conf.low&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c93e"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;conf.high&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c89e"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. &amp;lt; HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c896"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c894"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c880"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;69.80&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c895"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;5.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c876"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;13.03&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88a"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88b"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;59.21&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c89f"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;80.39&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8b4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. &amp;lt; HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8bc"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8b2"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8aa"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8b3"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.13&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a0"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.20&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.23&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;-0.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8bd"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;4. College Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;91.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;10.48&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;8.76&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;71.13&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;112.55&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;4. College Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.27&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.15&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.25&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;-0.20&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.74&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;3. Some College&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;86.14&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;4.93&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;17.48&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;76.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;95.83&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;3. Some College&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.63&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;5.57&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.41&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.85&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;4. College Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;109.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;7.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;14.83&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;94.61&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;123.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;4. College Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.17&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;3.02&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.18&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.83&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c89e"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c896"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c894"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c880"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;90.59&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c895"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;4.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c876"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;20.25&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88a"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88b"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;81.80&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c89f"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;99.37&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8b4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8bc"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8b2"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8aa"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.27&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8b3"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a0"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;2.74&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.08&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8bd"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.46&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c89e"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c896"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c894"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c880"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;66.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c895"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;4.49&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c876"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;14.86&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88a"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88b"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;57.92&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c89f"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;75.58&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8b4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8bc"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8b2"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8aa"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8b3"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a0"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;4.12&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8a9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8bd"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.67&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8c6"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;5. Advanced Degree&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8db"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;97.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;25.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;3.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d1"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8da"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;45.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c7"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;148.70&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8c6"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;5. Advanced Degree&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8db"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.73&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.38&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d1"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.17&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8da"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;-0.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c7"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.80&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8c6"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;5. Advanced Degree&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8db"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;131.15&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;13.02&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;10.08&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d1"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8da"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;105.55&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c7"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;156.75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8c6"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;5. Advanced Degree&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e4"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8db"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.54&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.88&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8d1"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8da"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;-0.03&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8c7"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.10&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;3. Some College&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;44.84&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;8.74&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;5.13&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;27.59&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;62.08&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c8ee"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;3. Some College&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f0"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c902"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8ef"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e6"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.22&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f9"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;6.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c903"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8f8"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.90&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c8e5"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;1.77&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c89e"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. &amp;lt; HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c896"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c894"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;(Intercept)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c880"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;78.74&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c895"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;6.91&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c876"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;11.39&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88a"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c88b"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;65.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c89f"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;92.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-87e1c90c"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. &amp;lt; HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c916"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c919"&gt;&lt;p class="cl-87e167aa"&gt;&lt;span class="cl-87e158c8"&gt;age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c920"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c905"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.15&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c904"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;2.22&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c918"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.03&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c92a"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-87e1c917"&gt;&lt;p class="cl-87e167b4"&gt;&lt;span class="cl-87e158c8"&gt;0.62&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="cf4b20fa-1d1c-457b-a56a-7104ae13c9e5"&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById("cf4b20fa-1d1c-457b-a56a-7104ae13c9e5");
+var template = document.getElementById("b096e127-6d9a-4bdc-a56f-83e5112c80a9");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;h2 id="unnest-model-quality"&gt;Unnest model quality&lt;/h2&gt;
+&lt;p&gt;We could:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;unnest() list-column “quality” to extract some model quality
+indicators,&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;easily remove some unnecessary columns and&lt;/li&gt;
+&lt;li&gt;sort the data-frame for “r.squared” in order to rank the goodness of
+fit of our model and see models that don’t fit well first.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The worst model appears to be for College Graduates with no health
+insurance … how could they?&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;nested_models %&amp;gt;% 
+  unnest(quality) %&amp;gt;% 
+  select(-data, -models, -coefs, -df, -df.residual, -deviance, -preds) %&amp;gt;%
+  arrange(adj.r.squared) %&amp;gt;% 
+  mutate_if(is.numeric, ~ round(., 2)) %&amp;gt;% 
+  regulartable() %&amp;gt;% 
+  autofit()&lt;/code&gt;&lt;/pre&gt;
+&lt;template id="66b81ca6-c398-4773-ba23-f45f61b25415"&gt;&lt;style&gt;
+.tabwid table{
+  border-spacing:0px !important;
+  border-collapse:collapse;
+  line-height:1;
+  margin-left:auto;
+  margin-right:auto;
+  border-width: 0;
+  display: table;
+  margin-top: 1.275em;
+  margin-bottom: 1.275em;
+  border-color: transparent;
+}
+.tabwid_left table{
+  margin-left:0;
+}
+.tabwid_right table{
+  margin-right:0;
+}
+.tabwid td {
+    padding: 0;
+}
+.tabwid a {
+  text-decoration: none;
+}
+.tabwid thead {
+    background-color: transparent;
+}
+.tabwid tfoot {
+    background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-881687be{}.cl-880eced4{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-880edd98{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-880edda2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-880f2aa0{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2aaa{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ab4{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ab5{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2abe{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2abf{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ac8{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ac9{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2aca{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ad2{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2adc{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2add{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ade{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ae6{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ae7{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ae8{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2af0{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2af1{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2af2{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2afa{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2afb{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2afc{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b04{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b05{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b06{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b0e{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b0f{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b18{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b19{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b1a{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b22{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b23{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b24{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b2c{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b2d{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b2e{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b36{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b37{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b38{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b40{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b41{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b42{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b4a{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b4b{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b54{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b55{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b56{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b5e{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b5f{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b68{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b69{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b6a{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b72{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b73{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b7c{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b7d{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b7e{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b86{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b87{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b90{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b91{width:84.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b9a{width:44.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b9b{width:63.4pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2b9c{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ba4{width:67pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2ba5{width:70.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2bae{width:49.9pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2baf{width:120.8pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2bb0{width:57.2pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-880f2bb8{width:56pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-881687be'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2baf"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;education&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ba5"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;health_ins&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ba4"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;r.squared&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b91"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;adj.r.squared&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2bae"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;sigma&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2bb0"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;statistic&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2bb8"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;p.value&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b9c"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;logLik&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b9b"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;AIC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b9b"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;BIC&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b9a"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;nobs&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2abe"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;4. College Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ab5"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aca"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2abf"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ac9"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;35.77&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aa0"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ad2"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.25&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ab4"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-778.39&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aaa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,562.77&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aaa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,571.92&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ac8"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;156&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2b06"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. &amp;lt; HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b04"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2afc"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b0f"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b0e"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;20.14&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b1a"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1.45&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b18"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.23&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2afb"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-635.69&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b05"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,277.38&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b05"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,286.29&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b19"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;144&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2b37"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;5. Advanced Degree&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b40"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b24"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b2e"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b38"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;53.33&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b36"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;3.53&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b22"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b2c"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-1,892.83&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b23"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;3,791.66&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b23"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;3,803.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b2d"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;351&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2b5e"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b4b"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b42"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b56"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b41"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;27.56&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b68"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;7.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b5f"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b55"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-2,897.11&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b4a"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;5,800.22&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b4a"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;5,813.47&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b54"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;612&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2b37"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;5. Advanced Degree&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b40"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b24"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.03&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b2e"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.01&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b38"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;51.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b36"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1.89&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b22"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.17&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b2c"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-401.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b23"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;808.08&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b23"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;815.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b2d"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;75&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2abe"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;4. College Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ab5"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aca"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.02&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2abf"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.02&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ac9"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;40.34&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aa0"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;9.12&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ad2"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ab4"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-2,705.50&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aaa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;5,417.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aaa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;5,429.81&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ac8"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;529&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2b73"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. &amp;lt; HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b6a"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b69"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b7d"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.03&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b72"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;18.90&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b87"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;4.92&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b86"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.03&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b7c"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-539.42&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b90"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,084.83&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b90"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,093.30&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b7e"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;124&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2b06"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. HS Grad&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b04"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2afc"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.05&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b0f"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b0e"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;25.78&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b1a"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;17.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b18"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2afb"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-1,674.98&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b05"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;3,355.96&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b05"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;3,367.61&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2b19"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;359&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2abe"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;3. Some College&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ab5"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;1. Yes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aca"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2abf"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.06&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ac9"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;26.99&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aa0"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;31.02&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ad2"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ab4"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-2,200.62&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aaa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;4,407.24&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2aaa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;4,419.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ac8"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;467&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-880f2adc"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;3. Some College&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ae8"&gt;&lt;p class="cl-880edd98"&gt;&lt;span class="cl-880eced4"&gt;2. No&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2add"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.17&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ade"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2af2"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;36.04&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2af0"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;36.51&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ae7"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;0.00&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2afa"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;-914.66&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ae6"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,835.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2ae6"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;1,844.94&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-880f2af1"&gt;&lt;p class="cl-880edda2"&gt;&lt;span class="cl-880eced4"&gt;183&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="c2375046-3902-469e-b2fe-19623e99d5bd"&gt;&lt;/div&gt;
+&lt;script&gt;
+var dest = document.getElementById("c2375046-3902-469e-b2fe-19623e99d5bd");
+var template = document.getElementById("66b81ca6-c398-4773-ba23-f45f61b25415");
+var caption = template.content.querySelector("caption");
+if(caption) {
+  caption.style.cssText = "display:block;text-align:center;";
+  var newcapt = document.createElement("p");
+  newcapt.appendChild(caption)
+  dest.parentNode.insertBefore(newcapt, dest.previousSibling);
+}
+var fantome = dest.attachShadow({mode: 'open'});
+var templateContent = template.content;
+fantome.appendChild(templateContent);
+&lt;/script&gt;
+
+&lt;h2 id="unnest-predictions"&gt;Unnest predictions&lt;/h2&gt;
+&lt;p&gt;And lastly,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;we could easily unnest() our predictions in a separate data-frame,
+then&lt;/li&gt;
+&lt;li&gt;plot() original data and linear models which are already build into
+the classic ggplot() commands, by intentionally living same blue color
+for different insurances and making them a little bigger, and
+finally&lt;/li&gt;
+&lt;li&gt;plot &lt;strong&gt;our predictions on top of them with different
+colors&lt;/strong&gt; in order to see whether our predictions worked well, and
+voilà, our predictions perfectly fitted the blue lines!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;unnested_preds &amp;lt;- 
+  nested_models %&amp;gt;% 
+  unnest(preds)
+
+unnested_preds &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 3,000 × 14
+# Groups:   education, health_ins [10]
+   education    health…¹ data     models coefs    quality   wage   age
+   &amp;lt;fct&amp;gt;        &amp;lt;fct&amp;gt;    &amp;lt;list&amp;gt;   &amp;lt;list&amp;gt; &amp;lt;list&amp;gt;   &amp;lt;list&amp;gt;   &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;
+ 1 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  75.0    18
+ 2 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  66.2    27
+ 3 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  45.3    43
+ 4 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  66.2    25
+ 5 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  88.0    44
+ 6 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  51.5    24
+ 7 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  68.1    53
+ 8 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  88.0    41
+ 9 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  86.7    43
+10 1. &amp;lt; HS Grad 2. No    &amp;lt;tibble&amp;gt; &amp;lt;lm&amp;gt;   &amp;lt;tibble&amp;gt; &amp;lt;tibble&amp;gt;  59.1    35
+# … with 2,990 more rows, 6 more variables: .fitted &amp;lt;dbl&amp;gt;,
+#   .resid &amp;lt;dbl&amp;gt;, .hat &amp;lt;dbl&amp;gt;, .sigma &amp;lt;dbl&amp;gt;, .cooksd &amp;lt;dbl&amp;gt;,
+#   .std.resid &amp;lt;dbl&amp;gt;, and abbreviated variable name ¹​health_ins
+# ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = age, y = wage, group = health_ins)) +
+   geom_point(aes(color = health_ins), alpha = 0.2, shape = 1) +
+   geom_smooth(method = &amp;quot;lm&amp;quot;, size = 2) +
+   facet_grid(. ~ education, scales = &amp;quot;free&amp;quot;) +
+   geom_line(data = unnested_preds, aes(y = .fitted, age, color = health_ins)) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filef815de7cd48_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;This beautiful picture is worth a thousand words, but if you need
+words and want to learn how to easily and correctly report statistical
+results with text, you need to watch &lt;a
+href="https://youtu.be/iMh9tPsuiik"&gt;this video&lt;/a&gt;!&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>774a85639298d58926c6733091306a27</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-09-12-manymodels</guid>
+      <pubDate>Tue, 20 Sep 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-09-12-manymodels/thumbnail_many_models.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>R demo | Robust Regression (don't depend on influential data!)</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -23,7 +501,7 @@ about. It’s less then 5 minutes long.&lt;/p&gt;
 &lt;iframe src="https://www.youtube.com/embed/M_7MOkAm9WU" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="make-sure-you-have-unusual-data"&gt;Make sure you have unusual
 data&lt;/h1&gt;
 &lt;p&gt;For the sake of simplicity let’s take only 5 observations with one
@@ -43,14 +521,14 @@ d &amp;lt;- tibble(
 )
 
 plot(d)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 2. run ordinary least squares regression
 m &amp;lt;- lm(outcome ~ predictor, data= d)
 
 # 3.make residual diagnostics
 library(olsrr)
 ols_plot_resid_lev(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="perform-robust-regression"&gt;Perform robust regression&lt;/h1&gt;
 &lt;p&gt;Now, we’ll use &lt;code&gt;lmrob()&lt;/code&gt; function form {robustbase}
 package to conduct the robust regression and have a look at the
@@ -105,7 +583,7 @@ compute.outlier.stats
 seed : int(0) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(sjPlot)
 plot_residuals(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="how-and-why-does-robust-regression-works"&gt;How and why does
 robust regression works?&lt;/h1&gt;
 &lt;p&gt;Namely, a robust regression gives different &lt;strong&gt;robustness
@@ -152,7 +630,7 @@ which made me miss an important discovery (4) and never win a Nobel
 Price ;)&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="file1ff426313f6c_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="filef8116744ff5_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 6. compare coefficients and goodness of fit of both models
 tab_model(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;table style="border-collapse:collapse; border:none;"&gt;
@@ -305,7 +783,7 @@ model&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(carData)
 cm &amp;lt;- lm(prestige ~ income * education, data = Duncan)
 ols_plot_resid_lev(cm)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;crm &amp;lt;- lmrob(prestige ~ income * education, data = Duncan)
 
 library(performance)
@@ -332,7 +810,7 @@ plot_model(rm2, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(rm3, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff426313f6c_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="file1ff426313f6c_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef8116744ff5_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="filef8116744ff5_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -344,7 +822,7 @@ improve this tutorial.&lt;/p&gt;
       <category>visualization</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-09-02-robustregression</guid>
-      <pubDate>Sun, 11 Sep 2022 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-09-02-robustregression/thumbnail_robust.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -695,7 +1173,7 @@ plotting &lt;em&gt;education&lt;/em&gt; shows that around 9% of people in our da
 did not finish a high school, while around 14% have a PhD.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
   plot_frq(education)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Since {sjPlot} package works with tidyverse 🥳, we can easily group
 the data by any other categorical variable, let’s take &lt;em&gt;race&lt;/em&gt;,
 and get frequencies and percentages for every group.
@@ -708,7 +1186,7 @@ surpriiise … &lt;code&gt;save_plot&lt;/code&gt; command.&lt;/p&gt;
   group_by(race) %&amp;gt;% 
   plot_frq(education) %&amp;gt;%
     plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-5-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-5-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;save_plot(filename = &amp;quot;race_vs_education.jpg&amp;quot;, fig = p, width = 30, height = 19)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;quartz_off_screen 
                 2 &lt;/code&gt;&lt;/pre&gt;
@@ -722,7 +1200,7 @@ folks with higher &lt;em&gt;education&lt;/em&gt; degrees work with
 &lt;pre class="r"&gt;&lt;code&gt;plot_grpfrq(
   var.cnt = Wage$education, 
   var.grp = Wage$jobclass)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-or-display-cross-pivot-tables"&gt;Plot or display cross
 (pivot) tables&lt;/h2&gt;
 &lt;p&gt;This IS already useful, however, &lt;code&gt;plot_xtab&lt;/code&gt; function goes
@@ -744,7 +1222,7 @@ plot_xtab(
   bar.pos = &amp;quot;stack&amp;quot;,
   show.summary = TRUE,
   coord.flip   = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;So, &lt;code&gt;plot_xtab&lt;/code&gt; essentially visualizes &lt;strong&gt;cross
 tables&lt;/strong&gt;, also known as &lt;strong&gt;pivot tables&lt;/strong&gt;. And if for
 some reason you want an actual table with the results of a statistical
@@ -905,7 +1383,7 @@ intuitive)&lt;/h2&gt;
 &lt;p&gt;The p-values are based on chisq.test of x and y for each grp.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
   plot_gpt(x = health_ins, y = jobclass, grp = education) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-histograms-of-salaries-and-display-averages-sd"&gt;Plot
 histograms of salaries and display averages + SD&lt;/h2&gt;
 &lt;p&gt;But enough about counting, since our dataset is about salaries, let’s
@@ -921,7 +1399,7 @@ gets 17 thousand more.&lt;/p&gt;
   group_by(jobclass) %&amp;gt;% 
   plot_frq(wage, type = &amp;quot;histogram&amp;quot;, show.mean = TRUE, normal.curve = TRUE) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-likert-scales-as-centered-stacked-bars"&gt;Plot likert scales
 as centered stacked bars&lt;/h2&gt;
 &lt;p&gt;The last thing I’d like to share with you before we visualize models,
@@ -1074,7 +1552,7 @@ month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_likert(d) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="plot-model-results"&gt;Plot model results&lt;/h1&gt;
 &lt;p&gt;Visualizing data is quite, but let’s get to the really cool
 visualization stuff!&lt;/p&gt;
@@ -1090,7 +1568,7 @@ increasing salaries. &lt;strong&gt;So, education matters!&lt;/strong&gt;&lt;/p&g
 &lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(wage ~ education, data = Wage)
 plot_model(m, type = &amp;quot;pred&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$education&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-coefficients"&gt;Plot coefficients&lt;/h2&gt;
 &lt;p&gt;The only thing we can’t see from this plot is whether this increase
 is significant or not. We could use a well known &lt;code&gt;summary&lt;/code&gt;
@@ -1128,7 +1606,7 @@ indicate that those increases in &lt;em&gt;salary&lt;/em&gt; are significant.&lt
 position 1 for most glm’s and position 0 for most linear models)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m, show.values = TRUE, width = 0.1)+
   ylab(&amp;quot;Increase in salary as compared to no education&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;plot_model1.jpg&amp;quot;, device = jpeg, plot = last_plot(), width = 5, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="table-with-coeffitients-95-cis-p-values-more"&gt;Table with
 coeffitients, 95% CIs, p-values &amp;amp; more&lt;/h2&gt;
@@ -1282,7 +1760,7 @@ random effect of education&lt;/strong&gt;.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;m.nb &amp;lt;- glmer.nb(age ~ wage * jobclass * health + (1|education), data = Wage)
 
 plot_model(m.nb, type = &amp;quot;int&amp;quot;)[[4]]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;plot_model2.jpg&amp;quot;, device = jpeg, plot = last_plot(), width = 5, height = 3)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;This interactions show that industrial workers with a very good
 health earn 50 thousand dollars already at the age of 31, while IT crowd
@@ -1299,7 +1777,7 @@ values from the numeric predictor. For instance, let’s take three salary
 values 50, 150 &amp;amp; 300 as we just talked about them and display our
 results in a different way.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m.nb, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;health&amp;quot;, &amp;quot;jobclass&amp;quot;, &amp;quot;wage [50, 150, 300]&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-18-1.png" width="1056" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-18-1.png" width="1056" /&gt;&lt;/p&gt;
 &lt;p&gt;Moreover, &lt;code&gt;type&lt;/code&gt; argument allows to create various plot
 types. For example, we can easily visualize random effects if we want
 to.&lt;/p&gt;
@@ -1307,7 +1785,7 @@ to.&lt;/p&gt;
            type  = &amp;quot;re&amp;quot;, 
            width = .5, 
            show.values = T) + ylim(0.9,1.1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-multiple-models"&gt;Plot multiple models&lt;/h2&gt;
 &lt;p&gt;It only gets better from now. If we want to explore several dependent
 variables with the same predictors, we can use &lt;code&gt;plot_models&lt;/code&gt;
@@ -1321,13 +1799,13 @@ fit2 &amp;lt;- lm(wage ~ education + jobclass + health_ins, data = Wage)
 
 # plot multiple models
 plot_models(fit1, fit2, show.values = T, grid = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;In the second example we avoid clutter by simply not using
 &lt;code&gt;show.values&lt;/code&gt;, since we can kind of read them from the
 x-axes, and we’ll use &lt;code&gt;p.shape = TRUE&lt;/code&gt; argument instead, in
 order to display p-values as shapes instead of significance stars.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_models(fit1, fit2, p.shape = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff43b5cd4e6_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef815e499f6_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="more-than-one-model"&gt;More than one model&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;tab_model&lt;/code&gt; can also easily display multiple models. Here,
 &lt;code&gt;collapse.ci = TRUE&lt;/code&gt; argument conveniently puts confidence
@@ -1894,23 +2372,23 @@ compare_performance(optimal_model_glmulti_exhaustive, optimal_model_glmulti_gene
 
 Name                             | Model |     AIC | AIC weights |     BIC | BIC weights |    R2 |  RMSE | Sigma
 ----------------------------------------------------------------------------------------------------------------
-optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
-optimal_model_glmulti_genetic    |   glm | 134.734 |       0.391 | 146.460 |       0.496 | 0.932 | 1.547 | 1.750
-optimal_model_backward           |   glm | 135.927 |       0.215 | 157.913 |       0.002 | 0.954 | 1.266 | 1.689
-optimal_model_forward            |   glm | 144.919 |       0.002 | 155.179 |       0.006 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+optimal_model_glmulti_exhaustive |   glm | 134.734 |       0.518 | 146.460 |       0.836 | 0.932 | 1.547 | 1.750
+optimal_model_glmulti_genetic    |   glm | 136.703 |       0.194 | 149.894 |       0.150 | 0.932 | 1.546 | 1.785
+optimal_model_backward           |   glm | 135.927 |       0.285 | 157.913 |       0.003 | 0.954 | 1.266 | 1.689
+optimal_model_forward            |   glm | 144.919 |       0.003 | 155.179 |       0.011 | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7f88eb9b3ba0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc42db936b8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7f8958e5b9c8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + hp + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
+&amp;lt;environment: 0x7fc41ff30c18&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7f88ebd92d18&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc44b43eb58&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7f88ebd92d18&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc44b43eb58&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -1957,7 +2435,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff453887552_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef812dc6495b_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -2006,7 +2484,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff453887552_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef812dc6495b_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -2015,7 +2493,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="79b8c3f6-c59f-409f-987f-0a80036d968b"&gt;&lt;style&gt;
+&lt;template id="27c69ae5-7e4c-4235-bfbd-d84820f1cbe3"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -2049,12 +2527,12 @@ can easily display them:&lt;/p&gt;
 .tabwid table tr {
 background-color: transparent;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-4cd15d7c{}.cl-4cc9904c{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4cc9af1e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4cc9af32{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4cc9f398{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3a2{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3ac{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3ad{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3b6{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3b7{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3c0{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3c1{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4cc9f3c2{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-4cd15d7c'&gt;
-&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3c1"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3c0"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3c2"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3a2"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f398"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3ac"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3a2"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f398"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3ac"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3a2"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f398"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3ac"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3a2"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f398"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3ac"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3a2"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f398"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3ac"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-4cc9f3ad"&gt;&lt;p class="cl-4cc9af1e"&gt;&lt;span class="cl-4cc9904c"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3b6"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-4cc9f3b7"&gt;&lt;p class="cl-4cc9af32"&gt;&lt;span class="cl-4cc9904c"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="f68bf2f9-189b-43af-a998-a99e321d0fdc"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-d29ed96c{}.cl-d29a3ba0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d29a4a28{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d29a4a32{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d29a7476{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a7480{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a7481{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a7482{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a748a{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a748b{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a748c{width:69.5pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a7494{width:865.7pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d29a7495{width:78.6pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-d29ed96c'&gt;
+&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7494"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a748c"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7495"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7480"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7476"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7481"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7480"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7476"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7481"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7480"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7476"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7481"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7480"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7476"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7481"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7480"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7476"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a7481"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-d29a7482"&gt;&lt;p class="cl-d29a4a28"&gt;&lt;span class="cl-d29a3ba0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a748a"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-d29a748b"&gt;&lt;p class="cl-d29a4a32"&gt;&lt;span class="cl-d29a3ba0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="c52d30bb-37a0-43d8-9283-7dc1f3a22576"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("f68bf2f9-189b-43af-a998-a99e321d0fdc");
-var template = document.getElementById("79b8c3f6-c59f-409f-987f-0a80036d968b");
+var dest = document.getElementById("c52d30bb-37a0-43d8-9283-7dc1f3a22576");
+var template = document.getElementById("27c69ae5-7e4c-4235-bfbd-d84820f1cbe3");
 var caption = template.content.querySelector("caption");
 if(caption) {
   caption.style.cssText = "display:block;text-align:center;";
@@ -2094,7 +2572,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff453887552_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef812dc6495b_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -2131,7 +2609,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1ff453887552_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filef812dc6495b_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;

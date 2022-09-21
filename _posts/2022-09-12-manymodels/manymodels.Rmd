@@ -1,0 +1,316 @@
+---
+title: "R demo| Many Models with Nested (Grouped) Data Easily"
+description: |
+  It's just effective!
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+  - models
+preview: thumbnail_many_models.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+эdraft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+library(tidyverse)
+library(ISLR)
+theme_set(theme_test())
+```
+
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+# Why do we need many models?
+
+Have a close look at this linear model. It tells you that **the only thing** you need to do in order to earn significantly more money - is to get older. But why does one group of people earn so much more, than the others? And is a single model able to catch that groups?
+
+```{r}
+library(ggpubr) # for stat_cor() function
+ggplot(Wage, aes(age, wage))+
+  geom_point(alpha = 0.2)+
+  geom_smooth(method = lm)+
+  stat_cor()
+
+ggsave("one_model.jpg", plot = last_plot())
+```
+
+Well, when look at education of these 3000 people, we'll see that most of the richest people have an advanced degree, while most of the poorest people have just a high school or below. And if we create 5 models instead of one, we'll see **a much more useful story**. 
+
+```{r}
+ggplot(Wage, aes(age, wage))+
+    geom_point(alpha = 0.7, aes(color = education))+
+    geom_smooth(method = lm)+
+    stat_cor()
+
+ggsave("one_model_data.jpg", plot = last_plot())
+```
+
+For instance, the increase of salary with age is much higher when you have at least some college degree as compared to no education. So that at the end of life we'll end up with an impressive salary of 150 thousand dollars, while without any education we'll never cross 100 thousand mark. So, it seems like education matters, and the slope clearly tells us that! However, despite the fact that the slope of the advanced degree is much smaller, which **could** suggest that education is not worth the effort, the intercept tells a different story. Namely, that folks who invested into education upfront start their life with the same salary, "some-college" guys reach only at the end of their life.
+
+
+```{r}
+ggplot(Wage, aes(age, wage))+
+  geom_point(alpha = 0.2)+
+  geom_smooth(method = lm)+
+  facet_grid(. ~ education)+
+  stat_cor()+
+  stat_regline_equation(label.y = 240)
+
+ggsave("five_models.jpg", plot = last_plot(), width = 8.1, height = 3)
+```
+
+
+So, you see how much more useful 5 models are compared to one! But what about 10 model, for example when we group our data for health insurance? What about 20 models when we account for different jobclasses? The more models you create, the more useful insights you'll get! Then what about 1000 models? ... ok, ok, we don't have to exaggerate. Let's stick to only 10 models and learn how to easily compute them and get all useful information, like slopes, measures of fit and p-values, out of them.
+
+
+```{r}
+ggplot(Wage, aes(x = age, y = wage, color = health_ins)) +
+   geom_point(alpha = 0.1, shape = 1) +
+   geom_smooth(method = "lm") +
+   facet_grid(. ~ education, scales = "free")+
+    stat_cor()+
+  theme(legend.position = "none")
+
+ggsave("10_models.jpg", plot = last_plot(), width = 8.5, height = 3)
+```
+
+
+```{r}
+ggplot(Wage, aes(age, wage, color = health_ins))+
+    geom_point(alpha = 0.1)+
+    geom_smooth(method = lm)+
+    facet_grid(jobclass ~ education)
+
+ggsave("20_models.jpg", plot = last_plot(), width = 8.1, height = 5)
+```
+
+
+# Nested (grouped) data
+
+The Wage data you have seen on the plot is part of the ISLR package. If we have a glimpse at it, we'll see categorical variables "education" and "health insurance". A simple cross table reveals how many observations we'll have in every of our 10 models.
+
+```{r}
+library(tidyverse) # for everything good in R ;)
+library(ISLR)      # for Wage dataset
+
+Wage %>% glimpse()
+
+table(Wage$education, Wage$health_ins)
+```
+
+But before we can model, we need to split our data into 10 groups using "group_by()" function and then lock these 10 groups into 10 different data-sets using "nest()" function.
+
+```{r}
+nested_data <- Wage %>% 
+  group_by(education, health_ins) %>% 
+  nest() 
+
+nested_data
+```
+
+In a **nested data frame** each row is a meta-observation (∞ 😂) where categorical variables "education and health insurance" define our 10 groups, while the list-column of 10 data-sets could be seen as 10 lockers which contain individual observations belonging only to a particular combination of education and health insurance. In the first case, 144 people have no education ("1. < HS Grad") and no health-insurance ("2. No"). And if you think, that a list-column of data-sets is a crazy idea, wait a second, and you'll see how useful it is.
+
+```{r}
+nested_data$data[[1]] %>% glimpse()
+```
+
+
+# How does this work amd why it is so useful?
+
+Imagine you'd need to write a code for 10 different models. That is not only a lot of work, but is also prone to mistakes. Moreover, you'd need to store and organize 10 different model objects somehow, because they contain information you need. And while it kind of works for 10 models, what if you really need 1000 or more? 
+
+```{r eval = F}
+m1 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "1. < HS Grad", health_ins == "2. No"))
+m2 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "4. College Grad", health_ins == "2. No"))
+m3 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "3. Some College", health_ins == "1. Yes"))
+m4 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "4. College Grad", health_ins == "1. Yes"))
+m5 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "2. HS Grad", health_ins == "1. Yes"))
+m6 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "2. HS Grad", health_ins == "2. No"))
+m7 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "5. Advanced Degree", health_ins == "2. No"))
+m8 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "5. Advanced Degree", health_ins == "1. Yes"))
+m9 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "3. Some College", health_ins == "2. No"))
+m10 <- lm(wage ~ age, 
+         data = Wage %>% filter(education == "1. < HS Grad", health_ins == "1. Yes"))
+```
+
+
+## `map()` function rocks!
+
+Well, `map()` function from {purrr} package provides a much better way! Because it applies a function of your choice to each element of a list. For example, if we want to multiply every element of our list by 10, we "map()" over every element of this list, where every element is represented by the DOT - "." 
+
+```{r}
+data <- list(1, 2, 3)
+
+map(data, ~ . * 10) %>% 
+  t()
+```
+
+Similarly, we can "map()" over every meta-observation (∞ 😂) of our nested data-frame and apply a linear regression to every of the 10 data-frames which are stored in the list-column we called "data". Moreover, rather than leaving the list of models as a free-floating objects (flies flying around trash, or free floating things in space), it’s much better to store all our models in the next list-column, let's call this list-column "models". On top of that let's now "map()" over our models in order to extract the coefficients with 95% CIs, model quality indicators and even predictions and store them all in separate list-columns. 
+
+```{r}
+library(broom)   # for tidy(), glance() & augment() functions
+nested_models <- nested_data %>%
+  mutate(models  = map(data, ~ lm(wage ~ age, data = .)), 
+         coefs   = map(models, tidy, conf.int = TRUE),
+         quality = map(models, glance),
+         preds   = map(models, augment)) 
+
+nested_models
+```
+
+Now, with a **minimum of code**, where it is difficult to make any mistake, we have created a **small and clean nested data-frame** with **5 list-columns**, where **all the related objects are stored together**. Hallelujah! ;) Such nested data-frame could be seen as a well organized cabinet with 50 lockers containing **all important information we need**, which is **easily accessible anytime we want**. For example:
+
+- we can have a look at the first model or it's coeffitients,
+- we can check all assumptions of the second model at once using check_model() function from the {performance} package, which I already reviewed on this channel, 
+- we can look at the model quality of, let's say, a model N°4 or
+- we can plot predictions of a model N°9 using plot_model() function from another amazing package {sjPlot} I also have an extra video about
+
+```{r}
+nested_models$models[[1]]
+
+nested_models$coefs[[1]]
+```
+
+```{r fig.width=9, fig.height=11}
+nested_models$models[[2]] %>% performance::check_model()
+```
+
+```{r}
+nested_models$quality[[4]] %>% glimpse()
+```
+
+
+```{r}
+nested_models$models[[9]] %>% sjPlot::plot_model(type =  "pred", show.data = TRUE)
+```
+
+
+
+
+# Unnest results
+
+```{r fig.show="hold", out.width="25%", eval=FALSE}
+map(nested_models$models, sjPlot::plot_model, type = "pred", show.data = TRUE)
+```
+
+And despite the fact, that we could easily plot all 10 models by "mapping" through the whole list of models, it is sometimes better to simply "unnest()" the list-column back into a regular data frame. This is useful, when we want to put all the results below each other to see the big picture, be able to sort, compare or plot all 10 models simultaneously. 
+
+## Unnest coefficients
+
+For example, we can unnest() the coefficients and see all 10 models below each other.
+
+```{r, layout="l-screen-inset"}
+library(flextable) # for a good looking table
+nested_models %>%
+  unnest(coefs) %>% 
+  select(-data, -models, -quality, -preds) %>% 
+  mutate_if(is.numeric, ~ round(., 2)) %>% 
+  regulartable() %>% 
+  autofit()
+```
+
+## Unnest model quality
+
+We could: 
+
+- unnest() list-column "quality" to extract some model quality indicators,  
+- easily remove some unnecessary columns and
+- sort the data-frame for "r.squared" in order to rank the goodness of fit of our model and see models that don’t fit well first. 
+
+The worst model appears to be for College Graduates with no health insurance ... how could they?
+
+```{r, layout="l-screen-inset"}
+nested_models %>% 
+  unnest(quality) %>% 
+  select(-data, -models, -coefs, -df, -df.residual, -deviance, -preds) %>%
+  arrange(adj.r.squared) %>% 
+  mutate_if(is.numeric, ~ round(., 2)) %>% 
+  regulartable() %>% 
+  autofit()
+```
+
+
+## Unnest predictions
+
+And lastly, 
+
+- we could easily unnest() our predictions in a separate data-frame, then 
+- plot() original data and linear models which are already build into the classic ggplot() commands, by intentionally living same blue color for different insurances and making them a little bigger, and finally
+- plot **our predictions on top of them with different colors** in order to see whether our predictions worked well, and voilà, our predictions perfectly fitted the blue lines! 
+
+```{r, layout="l-screen-inset"}
+unnested_preds <- 
+  nested_models %>% 
+  unnest(preds)
+
+unnested_preds 
+```
+
+
+```{r}
+ggplot(Wage, aes(x = age, y = wage, group = health_ins)) +
+   geom_point(aes(color = health_ins), alpha = 0.2, shape = 1) +
+   geom_smooth(method = "lm", size = 2) +
+   facet_grid(. ~ education, scales = "free") +
+   geom_line(data = unnested_preds, aes(y = .fitted, age, color = health_ins)) 
+```
+
+
+
+This beautiful picture is worth a thousand words, but if you need words and want to learn how to easily and correctly report statistical results with text, you need to watch [this video](https://youtu.be/iMh9tPsuiik)!
+
+
+
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+
+
+
+
+
+
+
+

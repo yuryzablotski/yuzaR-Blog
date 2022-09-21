@@ -66,6 +66,7 @@ salary <- ISLR::Wage %>%
 And if you think that one 100 lines is not a small sample, let's split it into 5 education categories and visualize the distribution. 
 
 ```{r}
+library(ggstatsplot) # I made many videos about amazing ggstatsplot 📦
 ggstatsplot::ggbetweenstats(data = salary, x = education, y = wage)
 ```
 
