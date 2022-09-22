@@ -72,7 +72,7 @@ ggsave("one_model_data.jpg", plot = last_plot())
 For instance, the increase of salary with age is much higher when you have at least some college degree as compared to no education. So that at the end of life we'll end up with an impressive salary of 150 thousand dollars, while without any education we'll never cross 100 thousand mark. So, it seems like education matters, and the slope clearly tells us that! However, despite the fact that the slope of the advanced degree is much smaller, which **could** suggest that education is not worth the effort, the intercept tells a different story. Namely, that folks who invested into education upfront start their life with the same salary, "some-college" guys reach only at the end of their life.
 
 
-```{r}
+```{r fig.width=10}
 ggplot(Wage, aes(age, wage))+
   geom_point(alpha = 0.2)+
   geom_smooth(method = lm)+
@@ -87,7 +87,7 @@ ggsave("five_models.jpg", plot = last_plot(), width = 8.1, height = 3)
 So, you see how much more useful 5 models are compared to one! But what about 10 model, for example when we group our data for health insurance? What about 20 models when we account for different jobclasses? The more models you create, the more useful insights you'll get! Then what about 1000 models? ... ok, ok, we don't have to exaggerate. Let's stick to only 10 models and learn how to easily compute them and get all useful information, like slopes, measures of fit and p-values, out of them.
 
 
-```{r}
+```{r fig.width=10}
 ggplot(Wage, aes(x = age, y = wage, color = health_ins)) +
    geom_point(alpha = 0.1, shape = 1) +
    geom_smooth(method = "lm") +
