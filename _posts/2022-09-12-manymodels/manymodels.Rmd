@@ -1,7 +1,7 @@
 ---
 title: "R demo| Many Models with Nested (Grouped) Data Easily"
 description: |
-  It's just effective!
+  In this blog-post, we'll learn how to produce grouped / nested models, with an amazing "map()" function from {purrr} package in R. We'll use linear models in this example for the sake of simplicity, but you can apply any model you want (robust, logistic, poisson etc.). We'll see, how to effectively store and use the information from multiple models. And while in this blog-post we'll produce "only" 10 models, you can produce any number of models you want.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -24,7 +24,7 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-эdraft: true
+#draft: true
 ---
 
 
@@ -38,10 +38,10 @@ theme_set(theme_test())
 
 # This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 7 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("tQ8dC0oLTnA")
 ```
 
 # Why do we need many models?
