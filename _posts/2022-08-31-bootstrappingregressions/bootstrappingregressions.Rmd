@@ -1,5 +1,5 @@
 ---
-title: "4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary"
+title: "4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary (in progress)"
 description: |
   If the assumptions of parametric models can be satisfied, it's better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.
 author:
