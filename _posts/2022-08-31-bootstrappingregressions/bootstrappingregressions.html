@@ -88,38 +88,38 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>nonparametric bootstrapping regressions (in progress)</title>
+  <title>4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary</title>
 
-  <meta property="description" itemprop="description" content="A short description of the post."/>
+  <meta property="description" itemprop="description" content="If the assumptions of parametric models can be satisfied, it&#39;s better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we&#39;ll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated."/>
 
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2022-09-17"/>
-  <meta property="article:created" itemprop="dateCreated" content="2022-09-17"/>
+  <meta property="article:published" itemprop="datePublished" content="2022-09-28"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-09-28"/>
   <meta name="article:author" content="Yury Zablotski"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="nonparametric bootstrapping regressions (in progress)"/>
+  <meta property="og:title" content="4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="A short description of the post."/>
+  <meta property="og:description" content="If the assumptions of parametric models can be satisfied, it&#39;s better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we&#39;ll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated."/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="nonparametric bootstrapping regressions (in progress)"/>
-  <meta property="twitter:description" content="A short description of the post."/>
+  <meta property="twitter:title" content="4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary"/>
+  <meta property="twitter:description" content="If the assumptions of parametric models can be satisfied, it&#39;s better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we&#39;ll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated."/>
 
   <!--/radix_placeholder_meta_tags-->
   
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","output","bibliography","biblio-style","link-citations","linkcolor","draft"]}},"value":[{"type":"character","attributes":{},"value":["nonparametric bootstrapping regressions (in progress)"]},{"type":"character","attributes":{},"value":["A short description of the post.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["September 17, 2022"]},{"type":"character","attributes":{},"value":["videos","statistics","visualization","models"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","categories","output","bibliography","biblio-style","link-citations","linkcolor","draft"]}},"value":[{"type":"character","attributes":{},"value":["4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary"]},{"type":"character","attributes":{},"value":["If the assumptions of parametric models can be satisfied, it's better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["September 28, 2022"]},{"type":"character","attributes":{},"value":["videos","statistics","visualization","models"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"logical","attributes":{},"value":[true]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["bootstrappingregressions_files/anchor-4.2.2/anchor.min.js","bootstrappingregressions_files/bowser-1.9.3/bowser.min.js","bootstrappingregressions_files/distill-2.2.21/template.v2.js","bootstrappingregressions_files/figure-html5/unnamed-chunk-1-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-1-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-1-3.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-10-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-12-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-14-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-2-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-3-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-3-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-4-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-4-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-5-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-8-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-9-1.png","bootstrappingregressions_files/header-attrs-2.14/header-attrs.js","bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.js","bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.min.js","bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.min.map","bootstrappingregressions_files/popper-2.6.0/popper.min.js","bootstrappingregressions_files/tippy-6.2.7/tippy-bundle.umd.min.js","bootstrappingregressions_files/tippy-6.2.7/tippy-light-border.css","bootstrappingregressions_files/tippy-6.2.7/tippy.css","bootstrappingregressions_files/tippy-6.2.7/tippy.umd.min.js","bootstrappingregressions_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["bootstrappingregressions_files/anchor-4.2.2/anchor.min.js","bootstrappingregressions_files/bowser-1.9.3/bowser.min.js","bootstrappingregressions_files/distill-2.2.21/template.v2.js","bootstrappingregressions_files/figure-html5/unnamed-chunk-1-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-1-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-1-3.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-10-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-11-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-12-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-13-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-14-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-14-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-14-3.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-15-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-16-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-17-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-2-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-2-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-2-3.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-3-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-3-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-4-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-4-2.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-5-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-8-1.png","bootstrappingregressions_files/figure-html5/unnamed-chunk-9-1.png","bootstrappingregressions_files/header-attrs-2.14/header-attrs.js","bootstrappingregressions_files/header-attrs-2.16/header-attrs.js","bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.js","bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.min.js","bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.min.map","bootstrappingregressions_files/popper-2.6.0/popper.min.js","bootstrappingregressions_files/tippy-6.2.7/tippy-bundle.umd.min.js","bootstrappingregressions_files/tippy-6.2.7/tippy-light-border.css","bootstrappingregressions_files/tippy-6.2.7/tippy.css","bootstrappingregressions_files/tippy-6.2.7/tippy.umd.min.js","bootstrappingregressions_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -190,6 +190,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1262,15 +1263,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
-          var fn = $(this).children()[0]
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
           $(this).html(fn.shadowRoot.querySelector("sup"))
           $(this).id = fn.id
           fn.remove()
         }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          return "<p>" + $('#ref-' + ref).html() + "</p>";
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -1469,7 +1476,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="bootstrappingregressions_files/header-attrs-2.14/header-attrs.js"></script>
+  <script src="bootstrappingregressions_files/header-attrs-2.16/header-attrs.js"></script>
   <script src="bootstrappingregressions_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="bootstrappingregressions_files/popper-2.6.0/popper.min.js"></script>
   <link href="bootstrappingregressions_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1490,7 +1497,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"nonparametric bootstrapping regressions (in progress)","description":"A short description of the post.","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-09-17T00:00:00.000+02:00","citationText":"Zablotski, 2022"}
+{"title":"4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary","description":"If the assumptions of parametric models can be satisfied, it's better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-09-28T00:00:00.000+02:00","citationText":"Zablotski, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1500,7 +1507,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>nonparametric bootstrapping regressions (in progress)</h1>
+<h1>4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary</h1>
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt-tag">videos</div>
@@ -1509,14 +1516,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="dt-tag">models</div>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>A short description of the post.</p></p>
+<p><p>If the assumptions of parametric models can be satisfied, it’s better to use parametric models. However, there are many assumptions and they are rarely all satisfied. So, data trasformation or using non-parametric methods are the solutions. In this post we’ll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.</p></p>
 </div>
 
 <div class="d-byline">
-  Yury Zablotski <a href="https://yuzar-blog.netlify.app/"
-class="uri">https://yuzar-blog.netlify.app/</a> 
+  Yury Zablotski <a href="https://yuzar-blog.netlify.app/" class="uri">https://yuzar-blog.netlify.app/</a> 
   
-<br/>September 17, 2022
+<br/>September 28, 2022
 </div>
 
 <div class="d-article">
@@ -1524,176 +1530,120 @@ class="uri">https://yuzar-blog.netlify.app/</a>
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#why-should-we-nonparametrically-bootstrap-regressions"
-id="toc-why-should-we-nonparametrically-bootstrap-regressions">Why
-should we nonparametrically bootstrap regressions?</a></li>
-<li><a href="#what-is---a-bootstrap" id="toc-what-is---a-bootstrap">What
-is - a bootstrap?</a></li>
-<li><a href="#make-sure-you-need-to-bootstrap-models"
-id="toc-make-sure-you-need-to-bootstrap-models">Make sure you need to
-bootstrap models</a></li>
-<li><a href="#how-to-compute-bootstrapped-regression"
-id="toc-how-to-compute-bootstrapped-regression">How to compute
-bootstrapped regression</a>
+<li><a href="#why-should-we-nonparametrically-bootstrap-regressions" id="toc-why-should-we-nonparametrically-bootstrap-regressions">Why should we nonparametrically bootstrap regressions?</a></li>
+<li><a href="#what-is---a-bootstrap" id="toc-what-is---a-bootstrap">What is - a bootstrap?</a></li>
+<li><a href="#steps-to-compute-bootstrapped-regression" id="toc-steps-to-compute-bootstrapped-regression">4 steps to compute bootstrapped regression</a>
 <ul>
-<li><a href="#bootstrap-the-data-with-resampling"
-id="toc-bootstrap-the-data-with-resampling">1. Bootstrap the data with
-resampling</a></li>
-<li><a href="#produce-1000-models" id="toc-produce-1000-models">2.
-Produce 1000 models</a></li>
-<li><a href="#plot-estimates-distribution-of-1000-estimates"
-id="toc-plot-estimates-distribution-of-1000-estimates">3. Plot estimates
-distribution of 1000 estimates</a></li>
-<li><a href="#get-and-visualize-predictions"
-id="toc-get-and-visualize-predictions">4. Get and visualize
-predictions</a></li>
+<li><a href="#bootstrap-the-data-with-resampling" id="toc-bootstrap-the-data-with-resampling">1. Bootstrap the data with resampling</a></li>
+<li><a href="#produce-1000-models" id="toc-produce-1000-models">2. Produce 1000 models</a></li>
+<li><a href="#plot-estimates-distribution-of-1000-estimates" id="toc-plot-estimates-distribution-of-1000-estimates">3. Plot estimates distribution of 1000 estimates</a></li>
+<li><a href="#get-and-visualize-predictions" id="toc-get-and-visualize-predictions">4. Get and visualize predictions</a></li>
 </ul></li>
-<li><a href="#compare-to-the-ordinary-linear-regression"
-id="toc-compare-to-the-ordinary-linear-regression">Compare to the
-ordinary linear regression</a></li>
+<li><a href="#bootstrapping-numeric-predictors" id="toc-bootstrapping-numeric-predictors">Bootstrapping numeric predictors</a></li>
 <li><a href="#problems" id="toc-problems">Problems</a></li>
-<li><a href="#further-readings-and-references"
-id="toc-further-readings-and-references">Further readings and
-references</a></li>
+<li><a href="#further-readings-and-references" id="toc-further-readings-and-references">Further readings and references</a></li>
 </ul>
 </nav>
 </div>
-<h2 id="why-should-we-nonparametrically-bootstrap-regressions">Why
-should we nonparametrically bootstrap regressions?</h2>
-<ul>
-<li><p>bootstrapping does not require distributional assumptions (such
-as normally distributed errors or equal variances among groups)</p></li>
-<li><p>the bootstrap provides more accurate inferences, like standard
-errors, confidence intervals and hypothesis tests for most statistics <a
-href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a></p></li>
-<li><p>it works better for small samples as it allows to see how much
-variation there would have been</p></li>
-<li><p>bootstrapping is essentially equal to the OLS models and could be
-used along with traditional methods to check the stability of the
-models.</p></li>
-</ul>
-<h2 id="what-is---a-bootstrap">What is - a bootstrap?</h2>
-<p>The term ‘bootstrapping,’ due to Efron (1979), is an allusion to the
-expression ‘pulling oneself up by one’s bootstraps’. For data it simply
-means - resampling. It is <strong>necessary to resample with
-replacement, because we would otherwise simply reproduce the original
-sample</strong>.</p>
-<p>Since you are watching this video, I assume you already know how
-bootstrap works, so here I just say why it’s useful for regression and
-show how to do it in R.</p>
-<h2 id="make-sure-you-need-to-bootstrap-models">Make sure you need to
-bootstrap models</h2>
-<p>Since I just said, that <strong>bootstrap works better with small
-samples</strong> and <strong>produces better confidence
-intervals</strong>, lets (1) take a very small dataset, (2) produce
-model coefficients &amp; 95% CIs with the <strong>bootstrap</strong>
-method which <strong>does not rely on assumptions</strong> and (3)
-compare them to the coefficients of a usual linear model which totally
-relies on assumptions.</p>
-<p>For that we’ll use a “Wage” dataset from the “Introduction to
-Statistical Learning with R” package and sample only 100 random lines
-from it. The <code>set.seed(123)</code> command will make sure you and I
-get the same 100 lines.</p>
+<p>If we want to compare salaries of people with different education, we could create a simple linear model and plot the results. But we can not trust these results, without checking the assumptions of our model, because if assumptions are violated, the results might be wrong. However, the problem with assumptions is that there are too many, and most of the time we can’t satisfy them all.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidymodels.tidymodels.org'>tidymodels</a></span><span class='op'>)</span>   <span class='co'># for everything good in R ;)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.statlearning.com'>ISLR</a></span><span class='op'>)</span>         <span class='co'># for "Wage" dataset</span></span>
 <span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>9999</span><span class='op'>)</span></span>
-<span><span class='va'>salary</span> <span class='op'>&lt;-</span> <span class='fu'>ISLR</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/ISLR/man/Wage.html'>Wage</a></span> <span class='op'>%&gt;%</span></span>
-<span>  <span class='fu'>sample_n</span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>9999</span><span class='op'>)</span>        <span class='co'># makes sure we get the same 100 lines</span></span>
+<span><span class='va'>salary</span> <span class='op'>&lt;-</span> <span class='va'>Wage</span> <span class='op'>%&gt;%</span></span>
+<span>  <span class='fu'>sample_n</span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span>      <span class='co'># I have a video on "sjPlot" 📦</span></span>
+<span><span class='fu'>theme_set</span><span class='op'>(</span><span class='fu'>theme_test</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"pred"</span>, show.data <span class='op'>=</span> <span class='cn'>TRUE</span>, jitter <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code>$education</code></pre>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-1-1.png" width="624" /></p>
 </div>
-<p>And if you think that one 100 lines is not a small sample, let’s
-split it into 5 education categories and visualize the distribution.</p>
+<p>For instance, our model has not-normally distributed residuals, the variances between groups differ and we have heteroskedasticity. So, we can’t trust our results, without fixing them, but when we start fixing assumptions, we might (1) lose data (if we remove some influential points), (2) reduce interpretability (when we log-transform data) or screw up other assumptions even more, because data manipulation constantly changes the <strong>parameters</strong> of our - <strong>parametric</strong> model. And here is where <strong>non-parametric bootstrap</strong> comes into play.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://indrajeetpatil.github.io/ggstatsplot/'>ggstatsplot</a></span><span class='op'>)</span> <span class='co'># I made many videos about amazing ggstatsplot 📦</span></span>
-<span><span class='fu'>ggstatsplot</span><span class='fu'>::</span><span class='fu'><a href='https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html'>ggbetweenstats</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>salary</span>, x <span class='op'>=</span> <span class='va'>education</span>, y <span class='op'>=</span> <span class='va'>wage</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/performance/'>performance</a></span><span class='op'>)</span> <span class='co'># I have a video on "performance" 📦 </span></span>
+<span></span>
+<span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_normality.html'>check_normality</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>          <span class='co'># Shapiro-Wilk normality test</span></span></code></pre>
 </div>
-<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
+<pre><code>Warning: Non-normality of residuals detected (p &lt; .001).</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_normality.html'>check_normality</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<p>Waw,</p>
-<ul>
-<li><p>first of all, the very first education group has only 8
-observations, while group 5 have only 13, so we do actually have small
-samples</p></li>
-<li><p>secondly, we immediately see, that variances differ among groups,
-where first three groups have smaller variances then the last two. But
-is this difference significant? Well, a Levene’s test for homogeneity of
-variance across groups shows that it is.</p></li>
-</ul>
+<img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-2-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_homogeneity.html'>check_homogeneity</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>        <span class='co'># Bartlett test </span></span></code></pre>
+</div>
+<pre><code>Warning: Variances differ between groups (Bartlett Test, p = 0.000).</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_homogeneity.html'>check_homogeneity</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-2-2.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_heteroscedasticity.html'>check_heteroscedasticity</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='co'># Breusch-Pagan test</span></span></code></pre>
+</div>
+<pre><code>Warning: Heteroscedasticity (non-constant error variance) detected (p &lt; .001).</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_heteroscedasticity.html'>check_heteroscedasticity</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-2-3.png" width="624" /></p>
+</div>
+<h2 id="why-should-we-nonparametrically-bootstrap-regressions">Why should we nonparametrically bootstrap regressions?</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>car</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/car/man/leveneTest.html'>leveneTest</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>~</span><span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://easystats.github.io/performance/reference/check_model.html'>check_model</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code>Levene&#39;s Test for Homogeneity of Variance (center = median)
-      Df F value   Pr(&gt;F)   
-group  4  4.1021 0.004132 **
-      95                    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
 </div>
-<ul>
-<li>and lastly, the violin plots show that the distribution of at least
-3 groups might be skewed, or not-normal. But again, is such
-not-normality significant? Well, the Shapiro-Wilk normality test
-confirms that.</li>
-</ul>
+<p>The 4 reasons a bootstrapped model is better then usual linear model, is that bootstrapping:</p>
+<ol type="1">
+<li><p>does not have any distributional assumptions (such as normally distributed residuals or equal variances among groups)</p></li>
+<li><p>bootstrapped models provide more accurate inferences, e.g. confidence intervals <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, which we’ll soon prove on two examples, one with categorical and one with numeric predictors</p></li>
+<li><p>it works better for small samples and finally</p></li>
+<li><p>it describes variation in the data much better than traditional linear models</p></li>
+</ol>
+<p>Therefore, having bootstrapped models in your tool-box will definitely make you a better data-scientist! So …</p>
+<h2 id="what-is---a-bootstrap">What is - a bootstrap?</h2>
+<p>In order to better understand how bootstrap models work, we need to understand what the bootstrap actually is. A bootstrapp is the little loop on the back of a boot to help you pool it on. And the phrase “pulling oneself up by one’s bootstraps” means to succeed without any external help. For data it simply means - resampling.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>salary</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>dlookr</span><span class='fu'>::</span><span class='fu'><a href='https://choonghyunryu.github.io/dlookr/reference/normality.data.frame.html'>normality</a></span><span class='op'>(</span><span class='va'>wage</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://indrajeetpatil.github.io/ggstatsplot/'>ggstatsplot</a></span><span class='op'>)</span> <span class='co'># I made many videos on "ggstatsplot" 📦</span></span>
+<span><span class='fu'><a href='https://indrajeetpatil.github.io/ggstatsplot/reference/ggbetweenstats.html'>ggbetweenstats</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>salary</span>, x <span class='op'>=</span> <span class='va'>education</span>, y <span class='op'>=</span> <span class='va'>wage</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 5 × 5
-  variable education          statistic  p_value sample
-  &lt;chr&gt;    &lt;fct&gt;                  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
-1 wage     1. &lt; HS Grad           0.946 0.667         8
-2 wage     2. HS Grad             0.961 0.285        32
-3 wage     3. Some College        0.884 0.00852      25
-4 wage     4. College Grad        0.805 0.000594     22
-5 wage     5. Advanced Degree     0.868 0.0491       13</code></pre>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
-<p>Now we have the situation where we have small samples and two of the
-assumptions are not satisfied. That is why, parametric methods, such as
-ANOVA you see on this plot, or a usual linear regression will not
-produce good results. But whould bootstrapping result be better? Let’s
-find out!</p>
-<h2 id="how-to-compute-bootstrapped-regression">How to compute
-bootstrapped regression</h2>
-<p>There are only 4 steps to conduct and visualize bootstrapped
-regression.</p>
-<h3 id="bootstrap-the-data-with-resampling">1. Bootstrap the data with
-resampling</h3>
-<p>First, we bootstrap the data, which simply means we take 1000 samples
-from our 100 data rows. Every of those 1000 samples is of the same size
-as the original data set, namely 100 rows, but is made using
-replacement, which results into multiple replicates of some of the
-original rows of the data. The assessment set contains the rows of the
-original data that were not included in the bootstrap sample.</p>
+<p>So, lets (1) take a very small dataset, (2) produce model coefficients &amp; 95% CIs with the <strong>bootstrap</strong> method which <strong>does not rely on assumptions</strong> and (3) compare them to the coefficients of a <strong>usual linear model</strong> which totally <strong>relies on assumptions</strong>, in order to find out whether bootstrapping result is indeed better!</p>
+<h2 id="steps-to-compute-bootstrapped-regression">4 steps to compute bootstrapped regression</h2>
+<p>There are only 4 steps to conduct and visualize bootstrapped regression.</p>
+<h3 id="bootstrap-the-data-with-resampling">1. Bootstrap the data with resampling</h3>
+<p>First, we bootstrap the data, which simply means we take 1000 samples from our 100 data rows. Every of those 1000 samples is of the same size as the original data set, namely 100 rows, but is made using <strong>replacements</strong>, which results into multiple replicates of some of the original rows of the data. <strong>Replacements are necessary, because we would otherwise simply reproduce the original sample</strong>. (The assessment set contains the rows of the original data that were not included in the bootstrap sample.) In order to distinguish bootstrapped samples from the original sample let’s call our bootstrapped samples - splits.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
 <span><span class='co'># 1000 samples are OK, but with 2000-10000 you are save!</span></span>
-<span><span class='va'>boot_data</span> <span class='op'>&lt;-</span> <span class='fu'>bootstraps</span><span class='op'>(</span><span class='va'>salary</span>, times <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span> </span>
+<span><span class='va'>boot_data</span> <span class='op'>&lt;-</span> <span class='fu'>bootstraps</span><span class='op'>(</span><span class='va'>salary</span>, times <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span> </span>
 <span><span class='va'>boot_data</span></span></code></pre>
 </div>
 <pre><code># Bootstrap sampling 
-# A tibble: 10,000 × 2
-   splits           id            
-   &lt;list&gt;           &lt;chr&gt;         
- 1 &lt;split [100/41]&gt; Bootstrap00001
- 2 &lt;split [100/38]&gt; Bootstrap00002
- 3 &lt;split [100/42]&gt; Bootstrap00003
- 4 &lt;split [100/40]&gt; Bootstrap00004
- 5 &lt;split [100/30]&gt; Bootstrap00005
- 6 &lt;split [100/30]&gt; Bootstrap00006
- 7 &lt;split [100/36]&gt; Bootstrap00007
- 8 &lt;split [100/35]&gt; Bootstrap00008
- 9 &lt;split [100/32]&gt; Bootstrap00009
-10 &lt;split [100/36]&gt; Bootstrap00010
-# … with 9,990 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# A tibble: 1,000 × 2
+   splits           id           
+   &lt;list&gt;           &lt;chr&gt;        
+ 1 &lt;split [100/41]&gt; Bootstrap0001
+ 2 &lt;split [100/38]&gt; Bootstrap0002
+ 3 &lt;split [100/42]&gt; Bootstrap0003
+ 4 &lt;split [100/40]&gt; Bootstrap0004
+ 5 &lt;split [100/30]&gt; Bootstrap0005
+ 6 &lt;split [100/30]&gt; Bootstrap0006
+ 7 &lt;split [100/36]&gt; Bootstrap0007
+ 8 &lt;split [100/35]&gt; Bootstrap0008
+ 9 &lt;split [100/32]&gt; Bootstrap0009
+10 &lt;split [100/36]&gt; Bootstrap0010
+# … with 990 more rows</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_data</span><span class='op'>$</span><span class='va'>splits</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span></code></pre>
 </div>
@@ -1701,11 +1651,7 @@ original data that were not included in the bootstrap sample.</p>
 &lt;100/41/100&gt;</code></pre>
 </div>
 <h3 id="produce-1000-models">2. Produce 1000 models</h3>
-<p>Then we fit a linear <em>model</em> to every <em>split</em> using the
-first <code>map()</code> function and tidy up model coefficients with
-the second <code>map()</code> function. Let’s use “0 +” in the model
-formula to remove the Intercept, because we are interested in estimates
-of the salary and not the slope of change from that Intercept.</p>
+<p>Then we <strong>fit a linear model</strong> to every <strong>split</strong> using the first <code>map()</code> function and tidy up model coefficients with the second <code>map()</code> function. Let’s use “0 +” in the model formula to remove the Intercept, because we are interested in estimates of the salary and not the slope of change from that Intercept.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_models</span> <span class='op'>&lt;-</span> <span class='va'>boot_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
@@ -1715,53 +1661,46 @@ of the salary and not the slope of change from that Intercept.</p>
 <span><span class='va'>boot_models</span></span></code></pre>
 </div>
 <pre><code># Bootstrap sampling 
-# A tibble: 10,000 × 4
-   splits           id             model  coefs           
-   &lt;list&gt;           &lt;chr&gt;          &lt;list&gt; &lt;list&gt;          
- 1 &lt;split [100/41]&gt; Bootstrap00001 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 2 &lt;split [100/38]&gt; Bootstrap00002 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 3 &lt;split [100/42]&gt; Bootstrap00003 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 4 &lt;split [100/40]&gt; Bootstrap00004 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 5 &lt;split [100/30]&gt; Bootstrap00005 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 6 &lt;split [100/30]&gt; Bootstrap00006 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 7 &lt;split [100/36]&gt; Bootstrap00007 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 8 &lt;split [100/35]&gt; Bootstrap00008 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
- 9 &lt;split [100/32]&gt; Bootstrap00009 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
-10 &lt;split [100/36]&gt; Bootstrap00010 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
-# … with 9,990 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# A tibble: 1,000 × 4
+   splits           id            model  coefs           
+   &lt;list&gt;           &lt;chr&gt;         &lt;list&gt; &lt;list&gt;          
+ 1 &lt;split [100/41]&gt; Bootstrap0001 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 2 &lt;split [100/38]&gt; Bootstrap0002 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 3 &lt;split [100/42]&gt; Bootstrap0003 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 4 &lt;split [100/40]&gt; Bootstrap0004 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 5 &lt;split [100/30]&gt; Bootstrap0005 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 6 &lt;split [100/30]&gt; Bootstrap0006 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 7 &lt;split [100/36]&gt; Bootstrap0007 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 8 &lt;split [100/35]&gt; Bootstrap0008 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+ 9 &lt;split [100/32]&gt; Bootstrap0009 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+10 &lt;split [100/36]&gt; Bootstrap0010 &lt;lm&gt;   &lt;tibble [5 × 5]&gt;
+# … with 990 more rows</code></pre>
 </div>
-<h3 id="plot-estimates-distribution-of-1000-estimates">3. Plot estimates
-distribution of 1000 estimates</h3>
+<h3 id="plot-estimates-distribution-of-1000-estimates">3. Plot estimates distribution of 1000 estimates</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_coefs</span> <span class='op'>&lt;-</span> <span class='va'>boot_models</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span>  <span class='fu'>unnest</span><span class='op'>(</span><span class='va'>coefs</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>splits</span>, <span class='op'>-</span><span class='va'>id</span>, <span class='op'>-</span><span class='va'>model</span><span class='op'>)</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>estimate</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>boot_coefs</span></span></code></pre>
 </div>
-<pre><code># A tibble: 49,999 × 5
-   term                        estimate std.error statistic  p.value
-   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
- 1 education1. &lt; HS Grad           85.5     14.6       5.84 7.34e- 8
- 2 education2. HS Grad             87.3      8.46     10.3  3.36e-17
- 3 education3. Some College       107.       7.69     13.9  1.43e-24
- 4 education4. College Grad       127.       8.46     15.0  9.04e-27
- 5 education5. Advanced Degree    174.      10.7      16.3  2.75e-29
- 6 education1. &lt; HS Grad           85.0     16.9       5.02 2.40e- 6
- 7 education2. HS Grad             95.1      6.91     13.8  2.39e-24
- 8 education3. Some College       109.       8.13     13.4  1.10e-23
- 9 education4. College Grad       150.       9.27     16.2  4.20e-29
-10 education5. Advanced Degree    149.      12.0      12.5  9.92e-22
-# … with 49,989 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre><code># A tibble: 5,000 × 2
+   term                        estimate
+   &lt;chr&gt;                          &lt;dbl&gt;
+ 1 education1. &lt; HS Grad           85.5
+ 2 education2. HS Grad             87.3
+ 3 education3. Some College       107. 
+ 4 education4. College Grad       127. 
+ 5 education5. Advanced Degree    174. 
+ 6 education1. &lt; HS Grad           85.0
+ 7 education2. HS Grad             95.1
+ 8 education3. Some College       109. 
+ 9 education4. College Grad       150. 
+10 education5. Advanced Degree    149. 
+# … with 4,990 more rows</code></pre>
 </div>
-<p>And if we <code>unnest()</code> the coefficients and remove some
-unnecessary columns, well see 5 estimates for every of our 1000 models,
-even including p-values ;). That gives us 1000 estimates for every of
-the 5 educational groups which we can immediately visualize as a
-distribution.</p>
+<p>Now, we not only have 1000 models, which are nested in the column “model”, but also the results of those models which are laready nested in the column “coefficients”. And if we <code>unnest()</code> the coefficients, we’ll see 5 estimates for every of our 1000 models. It’s like we have done 1000 experiments, which we can immediately visualize as a distribution.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
@@ -1770,12 +1709,17 @@ distribution.</p>
 <span>  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>term</span>, scales <span class='op'>=</span> <span class='st'>"free"</span><span class='op'>)</span><span class='op'>+</span></span>
 <span>  <span class='fu'>theme_test</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-8-1.png" width="864" /></p>
 </div>
-<p>And the coolest thing about this distribution is that we can easily
-get not only 95% Confidence Intervals, but any intervals we want. For
-example let’s find out where are 50% of possible salaries for every
-group.</p>
+<p>First of all, the distribution seems normal, which is amazing ;). But the coolest thing about this distribution is that we can easily get not only classic 95% Confidence Intervals, <strong>but any intervals we want</strong>. Which is kind of hard to get out of the ordinary model and are less trusted then Bayesian methods. Thus, we have a fifth - bonus 🥳 - advantage of the bootstrapped model.</p>
+<p>For example:</p>
+<ul>
+<li>let’s find out where are 50% of possible salaries for every group,</li>
+<li>visualize the distribution as a density curve instead of histogram,</li>
+<li>add the median as our central line,</li>
+<li>plus 50% and 95% confidence intervals.</li>
+</ul>
+<p>Beautiful, isn’t it? Here we can clearly see that people who did not finish a high school, have a 50% change to earn around 95 thousand dollars, while folks who finished advanced degree would have 50% chance to earn around 150 thousands. Waw!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_meds</span> <span class='op'>&lt;-</span> <span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
@@ -1793,95 +1737,79 @@ group.</p>
 <pre><code># A tibble: 5 × 6
   term                        med_est conf.low conf.…¹ conf.25 conf.75
   &lt;chr&gt;                         &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-1 education1. &lt; HS Grad          91.5     75.0    109.    85.8    97.3
-2 education2. HS Grad            94.4     86.1    103.    91.5    97.3
-3 education3. Some College      106.      99.3    114.   104.    109. 
-4 education4. College Grad      134.     110.     163.   125.    143. 
-5 education5. Advanced Degree   152.     120.     190.   141.    164. 
+1 education1. &lt; HS Grad          91.4     75.9    108.    85.8    97.3
+2 education2. HS Grad            94.4     86.9    103.    91.5    97.3
+3 education3. Some College      106.      99.5    114.   104.    109. 
+4 education4. College Grad      134.     110.     165.   126.    143. 
+5 education5. Advanced Degree   153.     119.     191.   140.    164. 
 # … with abbreviated variable name ¹​conf.high</code></pre>
-</div>
-<p>Anyway, let’s visualize the distribution as a density curve now and
-add the median as our central line plus 50% and 95% confidence
-intervals. Beautiful, isn’t it? Here we can clearly see that people who
-did not finish a high school, have a 50% change to earn ca. 95 thousand
-dollars, while folks who finished advanced degree would have 50% chance
-to earn around 150 thousands. Waw.</p>
-<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>estimate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'>geom_density</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'>geom_vline</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>boot_meds</span>, <span class='fu'>aes</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='va'>med_est</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span></span>
 <span>  <span class='fu'>geom_rect</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>med_est</span>, xmin <span class='op'>=</span> <span class='va'>conf.low</span>, xmax <span class='op'>=</span> <span class='va'>conf.high</span>, ymin <span class='op'>=</span> <span class='fl'>0</span>, ymax <span class='op'>=</span> <span class='cn'>Inf</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>boot_meds</span>, alpha <span class='op'>=</span> <span class='fl'>0.1</span>, fill <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>geom_rect</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>med_est</span>, xmin <span class='op'>=</span> <span class='va'>conf.25</span>, xmax <span class='op'>=</span> <span class='va'>conf.75</span>, ymin <span class='op'>=</span> <span class='fl'>0</span>, ymax <span class='op'>=</span> <span class='cn'>Inf</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>boot_meds</span>, alpha <span class='op'>=</span> <span class='fl'>0.3</span>, fill <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_density</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_vline</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>boot_meds</span>, <span class='fu'>aes</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='va'>med_est</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span></span>
 <span>  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>term</span>, scales <span class='op'>=</span> <span class='st'>"free"</span><span class='op'>)</span><span class='op'>+</span></span>
 <span>  <span class='fu'>theme_test</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-10-1.png" width="624" /></p>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-9-1.png" width="864" /></p>
 </div>
-<p>But what blew my mind even more the first time I learned to bootstrap
-regression estimates, is that I can even get a distribution of p-values
-:) which I somehow intuitively trust more, then a single p-value from a
-linear model. For that we just (1) remodel all 1000 models with the
-Intercept, (2) unnest coefficients again and (3) get median p-values for
-every group.</p>
+<p>But what blew my mind even more the first time I learned to bootstrap regression estimates, is that I can even get a distribution of p-values :). For that we just (1) remodel 1000 … ahhh, what a hell, let’s remodel 10.000 models with the Intercept, (2) unnest coefficients again, (3) get median p-values (not average p-values!!!) for every group and (4) compare them to p.values from the ordinary models.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_models</span> <span class='op'>&lt;-</span> <span class='va'>boot_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_models</span> <span class='op'>&lt;-</span> <span class='fu'>bootstraps</span><span class='op'>(</span><span class='va'>salary</span>, times <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>splits</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, data <span class='op'>=</span> <span class='va'>.</span><span class='op'>)</span><span class='op'>)</span>, </span>
 <span>         coefs <span class='op'>=</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>tidy</span><span class='op'>)</span> <span class='op'>)</span> <span class='co'># optional "conf.int = TRUE"</span></span>
 <span></span>
 <span><span class='va'>boot_coefs</span> <span class='op'>&lt;-</span> <span class='va'>boot_models</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
 <span>  <span class='fu'>unnest</span><span class='op'>(</span><span class='va'>coefs</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>splits</span>, <span class='op'>-</span><span class='va'>id</span>, <span class='op'>-</span><span class='va'>model</span><span class='op'>)</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>p.value</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>boot_meds</span> <span class='op'>&lt;-</span> <span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>summarise</span><span class='op'>(</span></span>
-<span>    med_p.val <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>p.value</span><span class='op'>)</span>   </span>
-<span>    <span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>boot_meds</span></span></code></pre>
+<span><span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>p.value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_histogram</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>term</span>, scales <span class='op'>=</span> <span class='st'>"free"</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'>theme_test</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 5 × 2
-  term                            med_p.val
-  &lt;chr&gt;                               &lt;dbl&gt;
-1 (Intercept)                 0.00000000871
-2 education2. HS Grad         0.686        
-3 education3. Some College    0.374        
-4 education4. College Grad    0.0152       
-5 education5. Advanced Degree 0.00170      </code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>    <span class='fu'>summarise</span><span class='op'>(</span></span>
-<span>        med_p.val <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>p.value</span><span class='op'>)</span>   </span>
-<span>    <span class='op'>)</span></span></code></pre>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-10-1.png" width="864" /></p>
 </div>
-<pre><code># A tibble: 5 × 2
-  term                        med_p.val
-  &lt;chr&gt;                           &lt;dbl&gt;
-1 (Intercept)                  0.000255
-2 education2. HS Grad          0.653   
-3 education3. Some College     0.418   
-4 education4. College Grad     0.0622  
-5 education5. Advanced Degree  0.0237  </code></pre>
-</div>
-<h3 id="get-and-visualize-predictions">4. Get and visualize
-predictions</h3>
-<p>If we want not the slopes of education group, but a real number for a
-salary, we can use the augment command to produce 1000 predictions and
-then calculate a median and 95% CIs from our predictions.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># 6 get predictions</span></span>
-<span><span class='va'>boot_aug</span> <span class='op'>&lt;-</span> </span>
-<span>  <span class='va'>boot_models</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_coefs</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>term</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>summarise</span><span class='op'>(</span></span>
+<span>    med_boot_p.value  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>p.value</span><span class='op'>)</span></span>
+<span>    <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>left_join</span><span class='op'>(</span><span class='fu'>tidy</span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'>select</span><span class='op'>(</span><span class='va'>term</span>, <span class='va'>p.value</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>mutate_if</span><span class='op'>(</span><span class='va'>is.numeric</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 5 × 3
+  term                        med_boot_p.value p.value
+  &lt;chr&gt;                                  &lt;dbl&gt;   &lt;dbl&gt;
+1 (Intercept)                           0       0     
+2 education2. HS Grad                   0.686   0.862 
+3 education3. Some College              0.374   0.384 
+4 education4. College Grad              0.0153  0.0145
+5 education5. Advanced Degree           0.0017  0.0015</code></pre>
+</div>
+<p>And the results are … only slightly different. However, I intuitively trust the bootstrapped p.values more, because they were produced in a statistically different fashion I know - we did not violate any assumptions.</p>
+<h3 id="get-and-visualize-predictions">4. Get and visualize predictions</h3>
+<p>Finally, here is the moment we’ve been waiting for:</p>
+<ul>
+<li>let’s use the augment command to produce predictions for every of our 1000 models,</li>
+<li>then calculate a median and 95% CIs from our predictions and</li>
+<li>compare them to the predictions made by the ordinary parametric linear regression:</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># get predictions</span></span>
+<span><span class='va'>boot_aug</span> <span class='op'>&lt;-</span> <span class='va'>boot_models</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>mutate</span><span class='op'>(</span>augmented <span class='op'>=</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>augment</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>unnest</span><span class='op'>(</span><span class='va'>augmented</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>splits</span>, <span class='op'>-</span><span class='va'>model</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'># get median estimates, median 95% CIs and median p-values</span></span>
+<span><span class='co'># get median estimates, median 95% CIs</span></span>
 <span><span class='va'>nonpar_med_boot_preds</span> <span class='op'>&lt;-</span> <span class='va'>boot_aug</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>education</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>summarise</span><span class='op'>(</span></span>
@@ -1889,60 +1817,19 @@ then calculate a median and 95% CIs from our predictions.</p>
 <span>    conf.low  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>.fitted</span>, <span class='fl'>0.025</span><span class='op'>)</span>,</span>
 <span>    conf.high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>.fitted</span>, <span class='fl'>0.975</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='st'>"bootstrapped"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>model</span>, <span class='fu'>everything</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<h2 id="compare-to-the-ordinary-linear-regression">Compare to the
-ordinary linear regression</h2>
-<p>Here is the moment we’ve been waiting vor. If we bring the
-predictions of a linear model into similar form, we can plot the
-predictions with confidene intervals side by side.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># get mean estimates from the classic model</span></span>
-<span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span></span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>model</span>, <span class='fu'>everything</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># get mean estimates from the classic model</span></span>
+<span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span>  <span class='co'># just a reminder</span></span>
 <span><span class='va'>par_avg_preds</span> <span class='op'>&lt;-</span> <span class='fu'>ggeffects</span><span class='fu'>::</span><span class='fu'><a href='https://strengejacke.github.io/ggeffects/reference/ggpredict.html'>ggeffect</a></span><span class='op'>(</span><span class='va'>m</span>, terms <span class='op'>=</span> <span class='st'>"education"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='st'>"linear"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
 <span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>model</span>, education <span class='op'>=</span> <span class='va'>x</span>, <span class='va'>predicted</span>, <span class='va'>conf.low</span>, <span class='va'>conf.high</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='co'># get estimates from a robust regression</span></span>
-<span><span class='va'>rm</span> <span class='op'>&lt;-</span> <span class='fu'>MASS</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MASS/man/rlm.html'>rlm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span></span>
-<span><span class='va'>rob_avg_preds</span> <span class='op'>&lt;-</span> <span class='fu'>ggeffects</span><span class='fu'>::</span><span class='fu'><a href='https://strengejacke.github.io/ggeffects/reference/ggpredict.html'>ggeffect</a></span><span class='op'>(</span><span class='va'>rm</span>, terms <span class='op'>=</span> <span class='st'>"education"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='st'>"robust"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>model</span>, education <span class='op'>=</span> <span class='va'>x</span>, <span class='va'>predicted</span>, <span class='va'>conf.low</span>, <span class='va'>conf.high</span><span class='op'>)</span></span>
+<span><span class='co'># combine two datasets</span></span>
+<span><span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>nonpar_med_boot_preds</span>, <span class='va'>par_avg_preds</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://robustbase.R-forge.R-project.org/'>robustbase</a></span><span class='op'>)</span></span>
-<span><span class='va'>rm2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/robustbase/man/lmrob.html'>lmrob</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span></span>
-<span><span class='va'>rob_avg_preds2</span> <span class='op'>&lt;-</span> <span class='fu'>ggeffects</span><span class='fu'>::</span><span class='fu'><a href='https://strengejacke.github.io/ggeffects/reference/ggpredict.html'>ggeffect</a></span><span class='op'>(</span><span class='va'>rm2</span>, terms <span class='op'>=</span> <span class='st'>"education"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='st'>"robust2"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
-<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>model</span>, education <span class='op'>=</span> <span class='va'>x</span>, <span class='va'>predicted</span>, <span class='va'>conf.low</span>, <span class='va'>conf.high</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'># compare_performance(m, rm, rm2)</span></span>
-<span></span>
-<span><span class='co'># combine three datasets</span></span>
-<span><span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>nonpar_med_boot_preds</span>, <span class='va'>par_avg_preds</span>, <span class='va'>rob_avg_preds</span>, <span class='va'>rob_avg_preds2</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<p>Interestingly, the center of the bootstrap distribution is identical
-to the mean of the sample. It means that the bootstrap is not used to
-get better parameter estimates because the bootstrap distributions are
-centered around statisticsˆθcalculated from the data(e.g., a regression
-slopeˆβ) rather than the unknown population values (e.g.,μorβ). Drawing
-thousands of bootstrap observations from the original data isnot like
-drawing observations from the underlying population, it does not create
-new data</p>
-<p>This is a major advantage of the bootstrap.It allows statistical
-inferences such as confidenceintervals to be calculated even for
-statistics forwhich there are no easy formulas. It offers hope
-ofreforming statistical practice—away from simple butnon-robust
-estimators like a sample mean or least-squares regression, in favor of
-robust alternatives.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># 7 plot row data and predicted CIs from both models</span></span>
+<span><span class='co'># plot row data and predicted CIs from both models</span></span>
 <span><span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'>geom_jitter</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>salary</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>education</span>, <span class='va'>wage</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>.2</span>, alpha <span class='op'>=</span> <span class='fl'>0.2</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>+</span></span>
 <span>  <span class='fu'>geom_pointrange</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>preds</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>education</span>, y<span class='op'>=</span><span class='va'>predicted</span>, </span>
@@ -1950,49 +1837,192 @@ robust alternatives.</p>
 <span>                  position<span class='op'>=</span><span class='fu'>position_dodge</span><span class='op'>(</span>width<span class='op'>=</span><span class='fl'>.6</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'>theme_test</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-12-1.png" width="624" /></p>
 </div>
-<h2 id="problems">Problems</h2>
-<p>So, is bootstrap method perfect? Of coarse no. While bootstrap
-provide a better understanding of a variance in a sample, if you have an
-outlier by simply a mistake, this outlier will be given more weight then
-you might wont to. In this case you would need a robust regression, and
-if you wanna became a more complete data scientist in the next five
-minuts, you only need to watch <a href="in%20progress">this
-video</a>.</p>
-<p>There are three serious obstacles to increased use of the
-bootstrap:</p>
+<p>Interestingly, the center of the bootstrap distribution is identical to the mean of the sample, because the bootstrap distributions are centered around statistics calculated from the data (e.g., a regression slope). However, the bootstrapped confidence intervals are slimmer where the variance is low and wider, where the variance is big. So, as mentioned in the beginning, <strong>bootstrapped result describe the variation in the data better and produce therefore more accurate and realistic inferences without violating any assumptions and especially for small samples.</strong></p>
+<h2 id="bootstrapping-numeric-predictors">Bootstrapping numeric predictors</h2>
+<p>Bootstrapping with numeric predictors works in the same way, and it’s an good way to repeat all we learned so far, namely:</p>
 <ul>
-<li><p>treating dependent data as if they were independent</p></li>
-<li><p>Although the empirical bootstrap works well in theory, in
-practice it might lead to a bad result especially in the presence of
-influential observations (some Xi very far away from the
-others).</p></li>
-<li><p>The time and effort involved in a bootstrap calculation are
-usually small compared with the totality of a research investigation—and
-are a small price to pay for accurate and realistic inference.</p></li>
-<li><p>intensive computation</p></li>
-<li><p>This completes our research: we may conclude, that the
-bootstrapping approach returns essentially the same results but in a
-statistically different fashion.</p></li>
+<li>we use already created 1000 resamples of the data,</li>
+<li>but <code>map()</code> over it to fit new 1000 models, with the numeric predictor “age”</li>
+<li>then <code>map()</code> over every model and use <code>augment()</code> function to extract fitted data for every model in an new nested column, with 100 fitted values for every model, because every resample in boot_data has 100 observations.</li>
+<li>1000 models with 100 fitted values each result in 100.000 fitted values, which we see when we unnest them for plotting, and will be visualized as 1000 lines on the plot</li>
 </ul>
-<h2 id="further-readings-and-references">Further readings and
-references</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># bootstrap new regressions and unnest all fits</span></span>
+<span><span class='va'>boot_models</span> <span class='op'>&lt;-</span> <span class='va'>boot_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>model     <span class='op'>=</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>splits</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>age</span>, data <span class='op'>=</span> <span class='va'>.</span><span class='op'>)</span><span class='op'>)</span>, </span>
+<span>         augmented <span class='op'>=</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>augment</span><span class='op'>)</span> <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>boot_models</span></span></code></pre>
+</div>
+<pre><code># Bootstrap sampling 
+# A tibble: 1,000 × 4
+   splits           id            model  augmented         
+   &lt;list&gt;           &lt;chr&gt;         &lt;list&gt; &lt;list&gt;            
+ 1 &lt;split [100/41]&gt; Bootstrap0001 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 2 &lt;split [100/38]&gt; Bootstrap0002 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 3 &lt;split [100/42]&gt; Bootstrap0003 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 4 &lt;split [100/40]&gt; Bootstrap0004 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 5 &lt;split [100/30]&gt; Bootstrap0005 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 6 &lt;split [100/30]&gt; Bootstrap0006 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 7 &lt;split [100/36]&gt; Bootstrap0007 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 8 &lt;split [100/35]&gt; Bootstrap0008 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+ 9 &lt;split [100/32]&gt; Bootstrap0009 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+10 &lt;split [100/36]&gt; Bootstrap0010 &lt;lm&gt;   &lt;tibble [100 × 9]&gt;
+# … with 990 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>boot_aug</span> <span class='op'>&lt;-</span> <span class='va'>boot_models</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>unnest</span><span class='op'>(</span><span class='va'>augmented</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>splits</span>, <span class='op'>-</span><span class='va'>model</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>boot_aug</span></span></code></pre>
+</div>
+<pre><code># A tibble: 100,000 × 10
+   id         .rown…¹  wage   age .fitted .resid   .hat .sigma .cooksd
+   &lt;chr&gt;      &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Bootstrap… 31       61.2    25    95.7 -34.5  0.0256   47.7 7.09e-3
+ 2 Bootstrap… 79      112.     48   126.  -14.6  0.0149   47.8 7.20e-4
+ 3 Bootstrap… 51      110.     40   116.   -5.83 0.0100   47.8 7.66e-5
+ 4 Bootstrap… 14       79.9    52   132.  -51.8  0.0207   47.5 1.28e-2
+ 5 Bootstrap… 67       82.7    40   116.  -33.0  0.0100   47.7 2.45e-3
+ 6 Bootstrap… 42       95.2    30   102.   -7.12 0.0168   47.8 1.95e-4
+ 7 Bootstrap… 50       99.7    25    95.7   3.99 0.0256   47.8 9.47e-5
+ 8 Bootstrap… 43       70.5    24    94.4 -23.9  0.0278   47.8 3.70e-3
+ 9 Bootstrap… 14.1     79.9    52   132.  -51.8  0.0207   47.5 1.28e-2
+10 Bootstrap… 25      121.     47   125.   -3.55 0.0138   47.8 3.94e-5
+# … with 99,990 more rows, 1 more variable: .std.resid &lt;dbl&gt;, and
+#   abbreviated variable name ¹​.rownames</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>boot_aug</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, y <span class='op'>=</span> <span class='va'>wage</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>.fitted</span>, group <span class='op'>=</span> <span class='va'>id</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"grey"</span>,  size <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span> </span></code></pre>
+</div>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<ul>
+<li>we then create new age data, from 22 to 71 years old, to evaluate predictions</li>
+<li>use <code>map()</code> to predict salaries for the new age data by every model</li>
+<li>and then summarize all 1000 predictions by median and calculate 95 and 50% confidence intervals (CIs),</li>
+<li>and plot them on top our our 1000 fitted models</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># get new data for predictions</span></span>
+<span><span class='va'>new</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>age <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>22</span>, by <span class='op'>=</span> <span class='fl'>3</span>, <span class='fl'>71</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>new</span></span></code></pre>
+</div>
+<pre><code>   age
+1   22
+2   25
+3   28
+4   31
+5   34
+6   37
+7   40
+8   43
+9   46
+10  49
+11  52
+12  55
+13  58
+14  61
+15  64
+16  67
+17  70</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>few_preds</span> <span class='op'>&lt;-</span> <span class='va'>boot_models</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>few_preds <span class='op'>=</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>predict</span>, <span class='va'>new</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>unnest</span><span class='op'>(</span><span class='va'>few_preds</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>splits</span>, <span class='op'>-</span><span class='va'>model</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>age <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>22</span>, by <span class='op'>=</span> <span class='fl'>3</span>, <span class='fl'>71</span><span class='op'>)</span> , <span class='fl'>1000</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>age</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>summarise</span><span class='op'>(</span>wage   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>few_preds</span><span class='op'>)</span>,</span>
+<span>            LCL_50 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>few_preds</span>, <span class='fl'>0.25</span><span class='op'>)</span>,</span>
+<span>            UCL_50 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>few_preds</span>, <span class='fl'>0.775</span><span class='op'>)</span>,</span>
+<span>            LCL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>few_preds</span>, <span class='fl'>0.025</span><span class='op'>)</span>,</span>
+<span>            UCL    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/quantile.html'>quantile</a></span><span class='op'>(</span><span class='va'>few_preds</span>, <span class='fl'>0.975</span><span class='op'>)</span>,</span>
+<span>  <span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>few_preds</span></span></code></pre>
+</div>
+<pre><code># A tibble: 17 × 6
+     age  wage LCL_50 UCL_50   LCL   UCL
+   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1    22  95.3   92.1   99.0  86.5  105.
+ 2    25  98.1   95.5  101.   90.5  107.
+ 3    28 101.    98.8  104.   94.3  109.
+ 4    31 104.   102.   107.   97.9  111.
+ 5    34 107.   105.   110.  101.   114.
+ 6    37 110.   107.   113.  103.   118.
+ 7    40 113.   110.   116.  105.   122.
+ 8    43 116.   112.   119.  107.   127.
+ 9    46 119.   115.   123.  108.   131.
+10    49 121.   117.   126.  110.   136.
+11    52 124.   119.   130.  111.   140.
+12    55 127.   122.   133.  113.   145.
+13    58 130.   124.   137.  114.   150.
+14    61 133.   126.   140.  115.   155.
+15    64 136.   128.   144.  116.   159.
+16    67 139.   130.   148.  118.   165.
+17    70 141.   133.   152.  119.   169.</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>boot_aug</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, y <span class='op'>=</span> <span class='va'>wage</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>.fitted</span>, group <span class='op'>=</span> <span class='va'>id</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"grey"</span>,  size <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_errorbar</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>few_preds</span>, <span class='fu'>aes</span><span class='op'>(</span>ymin <span class='op'>=</span> <span class='va'>LCL</span>, ymax <span class='op'>=</span> <span class='va'>UCL</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'>geom_errorbar</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>few_preds</span>, <span class='fu'>aes</span><span class='op'>(</span>ymin <span class='op'>=</span> <span class='va'>LCL_50</span>, ymax <span class='op'>=</span> <span class='va'>UCL_50</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+</div>
+<ul>
+<li>plot the original 100 data points in green and</li>
+<li>plot the results of an ordinary linear regression in blue with their 95% CIs in red and finally</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>boot_aug</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, y <span class='op'>=</span> <span class='va'>wage</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_point</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>salary</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>age</span>, <span class='va'>wage</span><span class='op'>)</span>, colour <span class='op'>=</span> <span class='st'>"green"</span>, shape <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_line</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>.fitted</span>, group <span class='op'>=</span> <span class='va'>id</span><span class='op'>)</span>, </span>
+<span>            col <span class='op'>=</span> <span class='st'>"grey"</span>,  size <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_errorbar</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>few_preds</span>, <span class='fu'>aes</span><span class='op'>(</span>ymin <span class='op'>=</span> <span class='va'>LCL</span>, ymax <span class='op'>=</span> <span class='va'>UCL</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'>geom_errorbar</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>few_preds</span>, <span class='fu'>aes</span><span class='op'>(</span>ymin <span class='op'>=</span> <span class='va'>LCL_50</span>, ymax <span class='op'>=</span> <span class='va'>UCL_50</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span><span class='fu'>geom_smooth</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, y <span class='op'>=</span> <span class='va'>wage</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>salary</span>, method <span class='op'>=</span> <span class='st'>"lm"</span>,</span>
+<span>              colour <span class='op'>=</span> <span class='st'>"blue"</span>, fill <span class='op'>=</span> <span class='st'>"red"</span>, alpha <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-15-1.png" width="624" /></p>
+</div>
+<p>As we can see again, low variance in salaries in the beginning of professional life is described with narrower CIs by the bootstrapped predictions as compared to the ordinary linear regression, while larger variance in salaries after age of 45 is described by the bootstrapped predictions with wider CIs as compared to the ordinary linear regression. So, similarly to the categorical predictor, we see that <strong>bootstrapped result describe the variation in the data better and produce therefore more accurate and realistic inferences.</strong></p>
+<h2 id="problems">Problems</h2>
+<p>So, is bootstrap method perfect? Of coarse no! While bootstrap more accurately describes variance of a sample, for example here I really want to include the high salaries into my variance, to see what is possible to earn with this education, if you have real outliers or very influential observations in your data, they will be given more weight then you might wont to. In this case you would use a <strong>robust regression</strong>, and if you wanna became a more complete data scientist in the next five minutes, watch <a href="in%20progress">this video</a>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://robustbase.R-forge.R-project.org/'>robustbase</a></span><span class='op'>)</span></span>
+<span><span class='va'>rm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/robustbase/man/lmrob.html'>lmrob</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>education</span>, <span class='va'>salary</span><span class='op'>)</span></span>
+<span><span class='va'>rob_avg_preds</span> <span class='op'>&lt;-</span> <span class='fu'>ggeffects</span><span class='fu'>::</span><span class='fu'><a href='https://strengejacke.github.io/ggeffects/reference/ggpredict.html'>ggeffect</a></span><span class='op'>(</span><span class='va'>rm</span>, terms <span class='op'>=</span> <span class='st'>"education"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='st'>"robust2"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>select</span><span class='op'>(</span><span class='va'>model</span>, education <span class='op'>=</span> <span class='va'>x</span>, <span class='va'>predicted</span>, <span class='va'>conf.low</span>, <span class='va'>conf.high</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># combine two datasets</span></span>
+<span><span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>nonpar_med_boot_preds</span>, <span class='va'>par_avg_preds</span>, <span class='va'>rob_avg_preds</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'>geom_jitter</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>salary</span>, <span class='fu'>aes</span><span class='op'>(</span><span class='va'>education</span>, <span class='va'>wage</span><span class='op'>)</span>, width <span class='op'>=</span> <span class='fl'>.2</span>, alpha <span class='op'>=</span> <span class='fl'>0.2</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>+</span></span>
+<span>  <span class='fu'>geom_pointrange</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>preds</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>education</span>, y<span class='op'>=</span><span class='va'>predicted</span>, </span>
+<span>                                    ymin<span class='op'>=</span><span class='va'>conf.low</span>, ymax<span class='op'>=</span><span class='va'>conf.high</span>, color <span class='op'>=</span> <span class='va'>model</span><span class='op'>)</span>,  </span>
+<span>                  position<span class='op'>=</span><span class='fu'>position_dodge</span><span class='op'>(</span>width<span class='op'>=</span><span class='fl'>.6</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'>theme_test</span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="bootstrappingregressions_files/figure-html5/unnamed-chunk-16-1.png" width="624" /></p>
+</div>
+<h2 id="further-readings-and-references">Further readings and references</h2>
 <hr />
-<p>If you think, I missed something, please comment on it, and I’ll
-improve this tutorial.</p>
+<p>If you think, I missed something, please comment on it, and I’ll improve this tutorial.</p>
 <p><strong>Thank you for learning!</strong></p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<section class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
+<div class="sourceCode" id="cb15"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p>Tim Hesterberg (2015), What Teachers
-Should Know about the Bootstrap: Resampling in the Undergraduate
-Statistics Curriculum, The American Statistician 69(4) 371-386, DOI:
-10.1080/00031305.2015.1089789<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
+<li id="fn1" role="doc-endnote"><p>Tim Hesterberg (2015), What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum, The American Statistician 69(4) 371-386, DOI: 10.1080/00031305.2015.1089789<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
