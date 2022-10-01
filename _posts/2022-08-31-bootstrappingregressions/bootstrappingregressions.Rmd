@@ -1,5 +1,5 @@
 ---
-title: "4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary (in progress)"
+title: "4 Reasons Non-Parametric Bootstrapped Regression is Better then Ordinary"
 description: |
   If the assumptions of parametric models can be satisfied, parametric models are the way to go. However, there are often many assumptions and to satisfy them all is rarely possible. Data trasformation or using non-parametric methods are two solutions for that. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.
 author:
@@ -32,6 +32,16 @@ linkcolor: blue
 knitr::opts_chunk$set(echo = T)
 ```
 
+
+# This post as a video (in making)
+
+I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("")
+```
+
+## The problem with ordinary linear models
 
 If we want to compare salaries of people with different education, we could create a simple linear model and plot the results. But we can not trust these results, without checking the assumptions of our model, because if assumptions are violated, the results might be wrong. However, the problem with assumptions is that there are too many, and most of the time we can't satisfy them all. 
 
@@ -66,12 +76,13 @@ check_heteroscedasticity(m) # Breusch-Pagan test
 check_heteroscedasticity(m) %>% plot()
 ```
 
-
-## Why should we nonparametrically bootstrap regressions?
-
 ```{r fig.height=9}
 check_model(m)
 ```
+
+## Why should we nonparametrically bootstrap regressions?
+
+
 
 
 
@@ -144,8 +155,7 @@ Now, we not only have 1000 models, which are nested in the column "model", but a
 boot_coefs %>%
   ggplot(aes(x = estimate)) +
   geom_histogram() +
-  facet_wrap(~term, scales = "free")+
-  theme_test()
+  facet_wrap(~term, scales = "free")
 ```
 First of all, the distribution seems normal, or bell-shaped, which is already amazing because we use average estimates ;). But despite normal distribution, I still would prefer median estimate for every group instead of the mean. That makes our non-parametric estimates even more robust, since median is estimated by another wonderful robust technique - **quantile-regression**, which is also used when the assumptions of linear regression are not met. I find it really cool! But the coolest thing about this distribution and quantile-function is that we can easily get not only classic 95% Confidence Intervals, **but any intervals we want**. Which is kind of hard to get out of the ordinary model. Thus, we have - bonus 🥳 - advantages of the bootstrapped model. 
 
@@ -173,8 +183,7 @@ boot_coefs %>%
   geom_rect(aes(x = med_est, xmin = conf.25, xmax = conf.75, ymin = 0, ymax = Inf), data = boot_meds, alpha = 0.3, fill = "green") +
   geom_density() +
   geom_vline(data = boot_meds, aes(xintercept = med_est))+
-  facet_wrap(~term, scales = "free")+
-  theme_test()
+  facet_wrap(~term, scales = "free")
 ```
 
 But what blew my mind even more the first time I learned to bootstrap regression estimates, is that I can even get a distribution of p-values :). For that we just (1) remodel 1000 ... ahhh, what a hell, let's remodel 10.000 models with the Intercept, (2) unnest out coefficients again and (3) visualize the distribution of our 10.000 p.values. Now you see why we took median instead of mean for the estimates one moment ago. 
@@ -192,8 +201,7 @@ boot_coefs <- boot_models %>%
 boot_coefs %>%
   ggplot(aes(x = p.value)) +
   geom_histogram() +
-  facet_wrap(~term, scales = "free")+
-  theme_test()
+  facet_wrap(~term, scales = "free")
 ```
 
 And if we compare mean and median bootstrapped p.values to the p.values from the ordinary models, we'll see that median bootstrapped p.values are much closer to the the p.values of the ordinary model. And despite the fact that median p.values and ordinary p.values are only slightly different. I would still intuitively trust the bootstrapped p.values more, because they were produced in a statistically different fashion, where I know - we did not violate any assumptions.
@@ -259,8 +267,7 @@ ggplot() +
   geom_jitter(data = salary, aes(education, wage), width = .2, alpha = 0.2, size = 2)+
   geom_pointrange(data = preds, aes(x=education, y=predicted, 
                                     ymin=conf.low, ymax=conf.high, color = model),  
-                  position=position_dodge(width=.6), size = 1) + 
-  theme_test()
+                  position=position_dodge(width=.6), size = 1)
 ```
 
 <!-- Interestingly, the center of the bootstrap distribution is identical to the mean of the sample, because the bootstrap distributions are centered around statistics calculated from the data (e.g., a regression slope). However,  -->
@@ -302,14 +309,14 @@ ggplot(data = boot_aug, aes(x = age, y = wage)) +
 
 ```{r}
 # get new data for predictions
-new <- data.frame(age = seq(22, by = 3, 71))
+new <- data.frame(age = seq(21, by = 3, 72))
 new
 
 few_preds <- boot_models %>% 
   mutate(few_preds = map(model, predict, new)) %>% 
   unnest(few_preds) %>% 
   select(-splits, -model) %>% 
-  mutate(age = rep( seq(22, by = 3, 71) , 1000)) %>% 
+  mutate(age = rep( seq(21, by = 3, 72) , 1000)) %>% 
   group_by(age) %>% 
   summarise(wage   = median(few_preds),
             LCL_50 = quantile(few_preds, 0.25),
@@ -363,8 +370,7 @@ ggplot() +
   geom_jitter(data = salary, aes(education, wage), width = .2, alpha = 0.2, size = 2)+
   geom_pointrange(data = preds, aes(x=education, y=predicted, 
                                     ymin=conf.low, ymax=conf.high, color = model),  
-                  position=position_dodge(width=.6), size = 1) + 
-  theme_test()
+                  position=position_dodge(width=.6), size = 1)
 ```
 
 
