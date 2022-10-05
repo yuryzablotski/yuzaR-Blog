@@ -1,5 +1,5 @@
 ---
-title: "4 Reasons Non-Parametric Bootstrapped Regression (with tidymodels) is Better then Ordinary"
+title: "4 Reasons Non-Parametric Bootstrapped Regression (with tidymodels) is Better then Ordinary Regression"
 description: |
   If the assumptions of parametric models can be satisfied, parametric models are the way to go. However, there are often many assumptions and to satisfy them all is rarely possible. Data trasformation or using non-parametric methods are two solutions for that. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.
 author:
@@ -69,16 +69,17 @@ For instance, our model has not-normally distributed residuals, the variances be
 library(performance) # I have a video on "performance" 📦 
 
 check_normality(m)          # Shapiro-Wilk normality test
-check_normality(m) %>% plot()
+check_normality(m) %>% plot(type = "qq")
+
 check_homogeneity(m)        # Bartlett test 
 check_homogeneity(m) %>% plot()
+
 check_heteroscedasticity(m) # Breusch-Pagan test
 check_heteroscedasticity(m) %>% plot()
 ```
 
-```{r fig.height=9}
-check_model(m)
-```
+
+
 
 # Why should we nonparametrically bootstrap regressions?
 
@@ -279,7 +280,7 @@ Interestingly, the bootstrapped confidence intervals are slimmer where the varia
 
 Bootstrapping with numeric predictors works in the same way, so, let's summarise all we have learned so far, namely: 
 
-- we first creat 1000 resamples of our data,
+- we first create 1000 resamples of our data,
 - then `map()` over it to fit new 1000 models, with the numeric predictor "age"
 - we then `map()` over every model and use `augment()` function to extract fitted data for every model in an new nested column, with 100 fitted values for every model, because every resample in boot_data has 100 observations.
 - 1000 models with 100 fitted values each result in 100.000 fitted values, which we see when we unnest them for plotting, and visualize as 1000 lines on the plot
@@ -308,21 +309,21 @@ ggplot(data = boot_aug, aes(x = age, y = wage)) +
 ```
 
 - we then create **new age** data (picture of new age movement) ... ups, sorry, not that 
-**new age**, just data of age from 22 to 71 years old, and call them new in order to evaluate our predictions
+**new age**, just data of age from 20 to 75 years old, and call them new in order to evaluate our predictions
 - use `map()` function to predict salaries for the new age data by every model
 - then summarize all 1000 predictions by the median and calculate 95 and 50% confidence intervals (CIs),
 - and finally plot them on top our our 1000 fitted models
 
 ```{r}
 # get new data for predictions
-new <- data.frame(age = seq(21, by = 3, 72))
-new
+new <- data.frame(age = seq(20, by = 3, 75))
+new %>% t()
 
 few_preds <- boot_models %>% 
   mutate(few_preds = map(model, predict, new)) %>% 
   unnest(few_preds) %>% 
   select(-splits, -model) %>% 
-  mutate(age = rep( seq(21, by = 3, 72) , 1000)) %>% 
+  mutate(age = rep( seq(20, by = 3, 75) , 1000)) %>% 
   group_by(age) %>% 
   summarise(wage   = median(few_preds),
             LCL_50 = quantile(few_preds, 0.25),
@@ -352,14 +353,16 @@ ggplot(data = boot_aug, aes(x = age, y = wage)) +
   geom_errorbar(data = few_preds, aes(ymin = LCL_50, ymax = UCL_50))+
   geom_smooth(aes(x = age, y = wage), data = salary, method = "lm",
               colour = "blue", fill = "red", alpha = 0.25)
+
+
+ggsave("num_example.jpeg", plot = last_plot(), width = 7, height = 4)
 ```
 
 
 And as we can see again, 
 
 - low variance in salaries in the beginning of professional life is described with narrower CIs by the bootstrapped predictions as compared to the ordinary linear regression, while 
-- larger variance in salaries after age of 45 is described by the bootstrapped predictions with wider CIs as compared to the ordinary linear regression,
-- and even when the CIs of both models match at the end of life, lower bootstrapped median estimates reflect lower salaries better compare to the mean of the ordinary model.
+- larger variance in salaries after age of 45 is described by the bootstrapped predictions with wider CIs as compared to the ordinary linear regression
 
 Thus, similarly to the categorical predictor, we see that **bootstrapped results better describe the variation in the data and produce therefore more accurate and realistic inferences.**
 
@@ -374,7 +377,7 @@ library(robustbase)
 rm <- lmrob(wage ~ education, salary)
 rob_avg_preds <- ggeffects::ggeffect(rm, terms = "education") %>% 
   tibble() %>% 
-  mutate(model = "robust2") %>% 
+  mutate(model = "robust") %>% 
   select(model, education = x, predicted, conf.low, conf.high)
 
 # combine two datasets
@@ -385,6 +388,8 @@ ggplot() +
   geom_pointrange(data = preds, aes(x=education, y=predicted, 
                                     ymin=conf.low, ymax=conf.high, color = model),  
                   position=position_dodge(width=.6), size = 1)
+
+ggsave("rob_example.jpeg", plot = last_plot(), width = 7, height = 4)
 ```
 
 
