@@ -1,7 +1,7 @@
 ---
-title: "4 Reasons Non-Parametric Bootstrapped Regression (with tidymodels) is Better then Ordinary Regression"
+title: "4 Reasons Non-Parametric Bootstrapped Regression (with tidymodels) is Better thаn Ordinary Regression"
 description: |
-  If the assumptions of parametric models can be satisfied, parametric models are the way to go. However, there are often many assumptions and to satisfy them all is rarely possible. Data trasformation or using non-parametric methods are two solutions for that. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.
+  If the assumptions of parametric models can be satisfied, parametric models are the way to go. However, there are often many assumptions and to satisfy them all is rarely possible. Data transformation or using non-parametric methods are two solutions for that. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -11,7 +11,7 @@ categories:
   - statistics
   - visualization
   - models
-#preview: thumbnail_sjPlot.png
+preview: thumbnail_bootstrapped_regression.png
 output:
   distill::distill_article:
     self_contained: false
@@ -38,7 +38,7 @@ knitr::opts_chunk$set(echo = T)
 I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("")
+vembedr::embed_youtube("sjCxIHVGkdE") 
 ```
 
 # The problem with ordinary linear models
@@ -163,7 +163,6 @@ First of all, the distributions seem normal, or bell-shaped, which is already am
 ```{r}
 boot_meds <- boot_coefs %>% 
   group_by(term) %>% 
-  # group by term here is useless, but you'll need for >1 predictor
   summarise(
     med_est   = median(estimate),
     quantile  = quantile(estimate, 0.5  ),
