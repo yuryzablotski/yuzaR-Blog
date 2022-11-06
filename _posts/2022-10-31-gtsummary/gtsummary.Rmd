@@ -1,0 +1,136 @@
+---
+title: "R package reviews {gtsummary} Effective Table Creation!"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - models
+  - machine learning
+preview: thumbnail_bootstrapped_regression.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+# This post as a video (in making)
+
+I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+# Simple descriptive table
+
+## tbl_summary()
+
+```{r}
+library(gtsummary)
+
+sm_trial <- 
+  trial %>% 
+  select(trt, age, grade, response)
+
+sm_trial %>% 
+  select(-trt) %>% 
+  tbl_summary()
+```
+
+```{r}
+trial2 <- trial %>% select(trt, age, grade)
+trial2 %>% tbl_summary()
+```
+
+
+## include statistical tests
+
+```{r}
+trial2 %>% tbl_summary(by = trt) %>% add_p()
+
+iris %>% tbl_summary(by = Species) %>% add_p()
+```
+
+## Add function to tbl_summary
+
+- add_*()
+- modify_*()
+- bold_* () / italicize_* ()
+
+```{r}
+library(ISLR)
+
+Wage %>% 
+  select(wage,education, jobclass, health) %>% 
+  tbl_summary(by = jobclass) %>% 
+  add_p() %>% 
+  add_q(method = "BH")
+```
+```{r}
+mtcars %>% 
+  select(am, mpg, cyl) %>% 
+  tbl_summary(by = am) %>% 
+  add_difference()
+```
+
+```{r}
+mtcars %>% 
+  select(am, mpg, cyl) %>% 
+  tbl_summary(by = am) %>% 
+  add_p() %>% 
+  add_overall() %>% 
+  add_n() %>% 
+  add_stat_label()
+```
+
+## inline_text()
+
+## tbl_merge() & tbl_stack()
+
+## themes()
+
+```{r}
+theme_gtsummary_compact()
+
+library(ISLR)    # for Auto dataset
+m <- lm(mpg ~ origin * horsepower, data = Auto)
+tbl_regression(m) %>% 
+  modify_caption("Compact theme")
+```
+
+
+# Further readings and references
+
+- Here is an amazing and informative video of {gtsummary} creator - Daniel Sjoberg: https://www.youtube.com/watch?v=tANo9E1SYJE&t=2s&ab_channel=DanielSjoberg
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+
+

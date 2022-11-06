@@ -1,284 +1,138 @@
-# Mann–Whitney U Test
-
-set.seed(5)
-d <- ISLR::Wage %>% 
-  group_by(jobclass) %>% 
-  sample_n(15) %>% 
-  ungroup()
-
-# set.seed(15)
-# d <- ISLR::Wage %>% 
-#   group_by(jobclass) %>% 
-#   slice(10:35)
-
-d %>% 
-  group_by(jobclass) %>% 
-  normality(wage)
-
-ggbetweenstats(
-  data = d,
-  x    = jobclass, 
-  y    = wage, 
-  type = "nonparametric")
-
-ggbetweenstats(
-  data = d,
-  x    = jobclass, 
-  y    = wage, 
-  type = "parametric",
-  var.equal = T)
-
-
-
-d %>% 
-  mutate(rank = rank(wage)) %>%          # mutate means - create new column
-  group_by(jobclass) %>%
-  summarise(n           = n(), 
-            rank_sum    = sum(rank)) %>%
-  mutate(W = rank_sum - (n * (n + 1)) / 2) 
-
-
-
-
-
-ggwithinstats(
-  data = d,
-  x    = jobclass, 
-  y    = wage, 
-  type = "nonparametric")
-
-
-
-
-
-
-
-
-
-
-# simpsons paradox :) I can make a video about it + iris
-
-ggbetweenstats(
-  data = Simpson,
-  x    = gender, 
-  y    = gpa, 
-  type = "nonparametric"
-)
-
-grouped_ggbetweenstats(
-  data = Simpson,
-  x    = gender, 
-  y    = gpa, 
-  type = "nonparametric",
-  grouping.var = "sport"
-)
-
-
-# ------------------------------------------
-
-## two-way RM-ANOVA
-
-d2 <- selfesteem2 %>%
-  gather(key = "time", value = "score", t1, t2, t3) 
-
-library(afex)
-two_way_rma <- afex::aov_ez(
-  data   = jobsatisfaction %>% 
-    group_by(education_level) %>%  slice(1:5),
-  id     = "id", 
-  dv     = "score",  
-  within = c("education_level"))
-
-summary(two_way_rma)
-
-residuals(two_way_rma) %>% shapiro.test()
-
-# ------------------------------------------
-
-library(lme4)
-library(lmerTest)
-
-m <- lmer(score ~ time + (1|id), d,
-          control=lmerControl(
-            optimizer="Nelder_Mead",
-            optCtrl = list(maxfun = 100000),
-            check.conv.singular = .makeCC(action = "ignore",  tol = 1e-6)))
-plot_model(m, type = "pred")
-tab_model(m)
-
-
-library(modelStudio)
-library(DALEX)
-library(tidyverse)
 library(tidymodels)
+theme_set(theme_test())
+library(ISLR)       # for Auto dataset
 
+dim(Auto) 
 
+auto <- Auto %>% 
+  mutate(origin = case_when(
+    origin == 1 ~ "American", 
+    origin == 2 ~ "European", 
+    origin == 3 ~ "Japanese" ))
 
+m <- lm(mpg ~ origin, auto)
 
-# ----- fisher and pairwise fisher tests - pipe fisher tests ---- #
+library(sjPlot)   # I made a video on {sjPlot} 📦
 
-library(rstatix)
-fisher_test()
-pairwise_fisher_test()
+plot_model(m, type = "pred")
 
-# library(tidyverse)
-# diamonds %>% 
-#   group_by(color) %>%
-#   summarize(pvalue=fisher.test(matrix(c(cut, clarity), nrow =2))$p)
+library(rsample)
 
-# ------- multinom test and multinomial model  ----------- #
+set.seed(10)  # for reproducibility
+auto_split <- initial_split(auto, prop = 0.80, strata = origin)
 
-library(rstatix)
-multinom_test()
+auto_train <- training(auto_split)
+auto_test  <- testing(auto_split)
 
-# nonparametric regression fucking finally!!!
-## found it here
+library(janitor)       # I made a video on {janitor} 📦
+tabyl(auto$origin)
+tabyl(auto_test$origin)
 
-# 1. Kendall–Theil Sen Siegel nonparametric linear regression
+library(ggridges)
+ggplot(auto, aes(x = horsepower, origin)) +
+  stat_density_ridges(quantile_lines = TRUE)
 
-library(mblm) # Median-Based Linear Models
-ts = mblm(mpg ~ hp, data = mtcars)
-library(sjPlot)
-plot_model(ts, type = "pred", show.data = T)
-tab_model(ts)
+set.seed(10)   # for reproducibility
+auto_split <- initial_split(auto, prop = 0.80,
+                            strata = horsepower,
+                            breaks = 10)
 
-library(performance)
-performance(ts)
+auto_train <- training(auto_split)
+auto_test  <- testing(auto_split)
 
+ggplot()+
+  geom_density(data  = auto, aes(horsepower))+
+  geom_density(data  = auto_train, aes(horsepower), 
+               color = "green")+
+  geom_density(data  = auto_test, aes(horsepower), 
+               color = "red")
 
+# fit linear model
+lm_fit <- 
+  linear_reg() %>% 
+  set_engine('lm') %>%
+  set_mode('regression') %>% 
+  fit(mpg ~ origin * horsepower, data = auto_train)
 
+# test performance of the model
+test_results <- 
+  predict(lm_fit, new_data = auto_test) %>% 
+  bind_cols(auto_test) 
 
-# 2. Rank-based estimation regression uses estimators and 
-# inference that are robust to outliers. Is pretty shit though :) 
+ames_metrics <- metric_set(rsq) # or rmse, mae, ccc etc.
+ames_metrics(test_results, truth = mpg, estimate = .pred)
 
-library(Rfit)
-rb = rfit(mpg ~ hp, data = mtcars)
-#plot_model(rb, type = "pred", show.data = T)
-summary(rb)
+m <- lm(mpg ~ origin * horsepower, data = auto)
+library(performance)   # I made a video on {performance} 📦
+r2(m)
 
-# these both are the same! :) and they both are better then rfit.
-rb_lm <- lm(rank(mpg) ~ rank(hp), data = mtcars)
-ggscatterstats(mtcars, mpg, hp, type = "n")
+set.seed(10)
+folds <- vfold_cv(auto_train, v = 4) # 4-fold-CV
+folds$splits[[1]]
 
-library(performance)
-compare_performance(rb, rb_lm, rank = T)
+# set up a model
+lm_fit <- 
+  linear_reg() %>% 
+  set_engine('lm') %>%
+  set_mode('regression') 
 
-# 3. Quantile regression models the conditional median or other quantile. 
-#  25th , 50th, 75th or 95th percentiles, could be investigated simultaneously.
-# Quantile regression makes no assumptions about the distribution of the
-# underlying data, and is robust to outliers in the dependent variable. 
-# It does assume the dependent variable is continuous. However, there are
-# functions for other types of dependent variables in the qtools package.
-# The model assumes that the terms are linearly related. Quantile 
-# regression is sometimes considered “semiparametric”.
-library(sjPlot)
-library(quantreg)
+# create a workflow
+mpg_wf <- 
+  workflow() %>% 
+  add_model(lm_fit) %>% 
+  add_formula(mpg ~ origin * horsepower)
 
-qr = rq(mpg ~ hp, data = mtcars, tau = 0.5 )
-plot_model(qr, type = "pred", show.data = T)
-tab_model(qr)
+# fit models to folds
+trained_models <- fit_resamples(object    = mpg_wf, 
+                                resamples = folds )
 
-# qr wins 100%
-compare_performance(ts, qr, rank = T)
+# get performance metrics
+trained_models %>% 
+  collect_metrics(summarize = FALSE)
 
-library(rcompanion)
-nagelkerke(qr)
+vfold_cv(auto_train)
 
-multi_rqfit <- rq(mpg ~ wt, data = mtcars, tau = seq(0, 1, by = 0.2))
-multi_rqfit
-sumQR=summary(multi_rqfit)
-plot(sumQR)
-plot(summary(multi_rqfit), parm="wt")
+# get repeated cross-validation object
+set.seed(10)
+folds <- vfold_cv(auto_train, strata = origin, repeats = 10)
+folds
 
+# specify random forest model
+rf_spec <- 
+  rand_forest(trees = 1000) %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
 
-library(ggeffects)
+# specify workflow
+origin_wf <- 
+  workflow() %>%
+  add_model(rf_spec) %>%
+  add_formula(factor(origin) ~ mpg * horsepower)
 
-## fit Engel models (in levels) for tau = 0.1, ..., 0.9
-data("engel")
-fm <- rq(mpg ~ hp, data = mtcars, tau = 1:9/10)
-## visualizations
-plot(fm)
-plot(fm, parm = 2, mar = c(5.1, 4.1, 2.1, 2.1), main = "", xlab = "tau", 
-     ylab = "income coefficient", cex = 1, pch = 19)
+# fit models to folds
+trained_models <- fit_resamples(object    = origin_wf, 
+                                resamples = folds )
 
+trained_models %>% 
+  collect_metrics()
 
-# 4. Local regression
-localr = loess(mpg ~ hp, data = mtcars,
-                span = 0.75,        ### higher numbers for smoother fits
-                degree=2,           ### use polynomials of order 2
-                family="gaussian")  ### the default, use least squares to fit
+set.seed(1)
+boot_samp <- bootstraps(auto_train, times = 10)
 
-summary(localr)
+# specify linear model
+lm_spec <- 
+  rand_forest(trees = 1000) %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
 
-# 5. GAMS
+# workflow
+mpg_wf <- 
+  workflow() %>%
+  add_model(lm_spec) %>%
+  add_formula(factor(origin) ~ mpg * horsepower)
 
-library(mgcv)
+trained_models <- 
+  fit_resamples(object = mpg_wf, resamples = boot_samp)
 
-gam_m = gam(mpg ~ hp, data = mtcars, family=gaussian())
-
-compare_performance(ts, rb, qr, localr, gam_m, rank = T)
-compare_performance(ts, gam_m, rank = T, rank = T)
-
-# 6. robust regression
-rmodel <- robustbase::lmrob(mpg ~ hp, data = mtcars)
-
-
-compare_performance(ts, qr, gam_m, rmodel, rank = T)
-
-
-
-# --------- Meta-analysis in R -------------- #
-
-# setup
-set.seed(123)
-library(metaplus)
-#> Error in library(metaplus): there is no package called 'metaplus'
-
-
-
-# renaming to what the function expects
-df <- dplyr::rename(mag, estimate = yi, std.error = sei, term = study)
-#> Error in dplyr::rename(mag, estimate = yi, std.error = sei, term = study): object 'mag' not found
-
-# plot
-ggcoefstats(
-  x = df,
-  meta.analytic.effect = TRUE,
-  bf.message = TRUE,
-  meta.type = "parametric",
-  title = "parametric random-effects meta-analysis"
-)
-
-
-
-#################################################
-
-# R package review - radiant
-
-library(radiant)
-
-radiant()
-
-
-library(irr)
-data(video)
-
-video <- video %>%
-  pivot_longer(cols = 1:4) %>%
-  mutate(groups = case_when(
-    name %in% c("rater1", "rater2") ~ "control",
-    name %in% c("rater4") ~ "treatment"
-  ))
-
-
-ggbetweenstats(
-  data = video,
-  x    = groups,
-  y    = value,
-  type = "nonparametric")
-# 
-# ggbetweenstats(
-#   data = video %>% filter(name %in% c("rater2", "rater4")),
-#   x    = name, 
-#   y    = value, 
-#   type = "nonparametric")
+trained_models %>% 
+  collect_metrics(summarize = TRUE)
