@@ -12,6 +12,7 @@ categories:
   - models
   - machine learning
   - tidymodels
+  - R package reviews
 preview: thumbnail_rsample.png
 output:
   distill::distill_article:
