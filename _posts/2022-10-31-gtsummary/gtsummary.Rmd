@@ -36,7 +36,7 @@ library(tidyverse)
 #conflicted::conflict_prefer("compose", "flextable")
 ```
 
-# This post as a video (in making)
+# This post as a video
 
 I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
 
