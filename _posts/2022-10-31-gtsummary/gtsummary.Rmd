@@ -38,7 +38,7 @@ library(tidyverse)
 
 # This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's less then ... minutes long.
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 11 minutes long.
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("hyP3Hx_1kTM") 
