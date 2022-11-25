@@ -32,8 +32,6 @@ linkcolor: blue
 knitr::opts_chunk$set(echo = T)
 library(ggstatsplot)
 library(tidyverse)
-#tidymodels::tidymodels_prefer()
-#conflicted::conflict_prefer("compose", "flextable")
 ```
 
 # This post as a video
@@ -1153,7 +1151,7 @@ tbl_continuous(
     variable = age,
     by = trt,
     include = grade
-  )
+)
 ```
 
 ```{r}
