@@ -24,6 +24,23 @@
     "preview_height": 1080
   },
   {
+    "path": "posts/2022-11-25-gtsummary2/",
+    "title": "gtsummary2",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Yury Zablotski",
+        "url": "https://yuzar-blog.netlify.app/"
+      }
+    ],
+    "date": "2022-11-25",
+    "categories": [],
+    "contents": "\nDistill is a publication format for scientific and technical writing, native to the web.\nLearn more about using Distill at https://rstudio.github.io/distill.\n\n\n\n",
+    "preview": {},
+    "last_modified": "2022-11-25T15:28:14+01:00",
+    "input_file": "gtsummary2.knit.md"
+  },
+  {
     "path": "posts/2022-10-27-rsample/",
     "title": "R package reviews {rsample} Effective Resampling for Machine Learning!",
     "description": "Let's learn how to use three most important resampling techniques: train-test split, cross-validation and bootstrapping. We'll start with the question...",
