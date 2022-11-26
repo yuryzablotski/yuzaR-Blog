@@ -788,6 +788,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article table.gt_table td,
   d-article table.gt_table th {
     border-bottom: none;
+    font-size: 100%;
   }
 
   .html-widget {
@@ -1860,15 +1861,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
-          var fn = $(this).children()[0]
+        const citeChild = $(this).children()[0]
+        // Do not process if @xyz has been used without escaping and without bibliography activated
+        // https://github.com/rstudio/distill/issues/466
+        if (citeChild === undefined) return true
+
+        if (citeChild.nodeName == "D-FOOTNOTE") {
+          var fn = citeChild
           $(this).html(fn.shadowRoot.querySelector("sup"))
           $(this).id = fn.id
           fn.remove()
         }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
-          return "<p>" + $('#ref-' + ref).html() + "</p>";
+          // Could use CSS.escape too here, we insure backward compatibility in navigator
+          return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
         }).join("\n");
         window.tippy(this, {
           allowHTML: true,
@@ -2381,7 +2388,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2603,12 +2610,14 @@ function init_posts_list() {
 <a href="posts/2022-11-25-gtsummary2/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">
-<div class="publishedDate">Nov. 24, 2022</div>
+<div class="publishedDate">Nov. 25, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
 </div>
-<div class="thumbnail"></div>
+<div class="thumbnail">
+<img/>
+</div>
 <div class="description">
 <h2>gtsummary2</h2>
 <div class="dt-tags"></div>
@@ -2681,28 +2690,6 @@ function init_posts_list() {
 <p>Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.</p>
 </div>
 </a>
-<a href="posts/2022-09-02-robustregression/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["videos","statistics","visualization","models"]}</script>
-<div class="metadata">
-<div class="publishedDate">Sept. 28, 2022</div>
-<div class="dt-authors">
-<div class="dt-author">Yury Zablotski</div>
-</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2022-09-02-robustregression/thumbnail_robust.png"/>
-</div>
-<div class="description">
-<h2>R demo | Robust Regression (don't depend on influential data!)</h2>
-<div class="dt-tags">
-<div class="dt-tag">videos</div>
-<div class="dt-tag">statistics</div>
-<div class="dt-tag">visualization</div>
-<div class="dt-tag">models</div>
-</div>
-<p>Linear regression can be very sensitive to unusual data, like outliers, high leverage observations or a combination of both. A robust regression suppose to provide a solution for that. So, let's build both an ordinary and a robust regressions, compare them to find out whether outliers are a serious problem and see whether robust model performs better then usual linear model.</p>
-</div>
-</a>
 <a href="posts/2022-09-12-manymodels/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics","visualization","models"]}</script>
 <div class="metadata">
@@ -2723,6 +2710,28 @@ function init_posts_list() {
 <div class="dt-tag">models</div>
 </div>
 <p>In this blog-post, we'll learn how to produce grouped / nested models, with an amazing "map()" function from {purrr} package in R. We'll use linear models in this example for the sake of simplicity, but you can apply any model you want (robust, logistic, poisson etc.). We'll see, how to effectively store and use the information from multiple models. And while in this blog-post we'll produce "only" 10 models, you can produce any number of models you want.</p>
+</div>
+</a>
+<a href="posts/2022-09-02-robustregression/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["videos","statistics","visualization","models"]}</script>
+<div class="metadata">
+<div class="publishedDate">Sept. 11, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Yury Zablotski</div>
+</div>
+</div>
+<div class="thumbnail">
+<img data-src="posts/2022-09-02-robustregression/thumbnail_robust.png"/>
+</div>
+<div class="description">
+<h2>R demo | Robust Regression (don't depend on influential data!)</h2>
+<div class="dt-tags">
+<div class="dt-tag">videos</div>
+<div class="dt-tag">statistics</div>
+<div class="dt-tag">visualization</div>
+<div class="dt-tag">models</div>
+</div>
+<p>Linear regression can be very sensitive to unusual data, like outliers, high leverage observations or a combination of both. A robust regression suppose to provide a solution for that. So, let's build both an ordinary and a robust regressions, compare them to find out whether outliers are a serious problem and see whether robust model performs better then usual linear model.</p>
 </div>
 </a>
 <a href="posts/2022-08-01-sjplot/" class="post-preview">
@@ -2773,7 +2782,7 @@ function init_posts_list() {
 <a href="posts/2022-05-31-glmulti/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":["videos","statistics","machine learning","R package reviews","models"]}</script>
 <div class="metadata">
-<div class="publishedDate">June 18, 2022</div>
+<div class="publishedDate">June 9, 2022</div>
 <div class="dt-authors">
 <div class="dt-author">Yury Zablotski</div>
 </div>
@@ -3394,8 +3403,7 @@ function init_posts_list() {
 
 
 <div class="d-article">
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
