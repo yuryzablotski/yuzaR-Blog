@@ -1,0 +1,231 @@
+---
+title: "R package reviews {emmeans} squizze all the knowledge out of the models!"
+description: |
+  {emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let's demistify {emmeans} and uncover it's power!
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - models
+preview: thumbnail_gtsummary.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+Rewrite: "There are statistical effects, marginal effects, marginal means, marginal slopes, conditional effects, conditional marginal effects, marginal effects at the mean, and many other similarly-named ideas. There are also regression coefficients and estimates, which have marginal effects vibes, but may or may not actually be marginal effects depending on the complexity of the model."
+
+
+```{r}
+# Load packages
+# ---------------
+library(tidyverse)        # dplyr, ggplot2, and friends
+library(broom)            # Convert models to data frames
+library(marginaleffects)  # Marginal effects stuff
+library(emmeans)          # Marginal effects stuff
+
+# Visualization-related packages
+library(ggtext)           # Add markdown/HTML support to text in plots
+library(glue)             # Python-esque string interpolation
+library(scales)           # Functions to format numbers nicely
+library(gganimate)        # Make animated plots
+library(patchwork)        # Combine ggplots
+library(ggrepel)          # Make labels that don't overlap
+library(MetBrewer)        # Artsy color palettes
+# library(sjPlot)
+
+# Data-related packages
+library(palmerpenguins)   # Penguin data
+library(WDI)              # Get data from the World Bank's API
+library(countrycode)      # Map country codes to different systems
+library(vdemdata)         # Use data from the Varieties of Democracy
+library(gtsummary)
+# (V-Dem) project
+# Install vdemdata from GitHub, not CRAN
+# devtools::install_github("vdeminstitute/vdemdata")
+
+theme_set(theme_test())
+```
+
+
+```{r}
+# Helpful functions
+# -------------------
+# Format numbers in pretty ways
+nice_number <- label_number(style_negative = "minus", accuracy = 0.01)
+nice_p <- label_pvalue(prefix = c("p < ", "p = ", "p > "))
+
+# Point-slope formula: (y - y1) = m(x - x1)
+find_intercept <- function(x1, y1, slope) {
+  intercept <- slope * (-x1) + y1
+  return(intercept)
+}
+
+# Visualization settings
+# ------------------------
+
+# Custom ggplot theme to make pretty plots
+# Get IBM Plex Sans Condensed at https://fonts.google.com/specimen/IBM+Plex+Sans+Condensed
+theme_mfx <- function() {
+  theme_minimal(base_family = "IBM Plex Sans Condensed") +
+    theme(panel.grid.minor = element_blank(),
+          plot.background = element_rect(fill = "white", color = NA),
+          plot.title = element_text(face = "bold"),
+          axis.title = element_text(face = "bold"),
+          strip.text = element_text(face = "bold"),
+          strip.background = element_rect(fill = "grey80", color = NA),
+          legend.title = element_text(face = "bold"))
+}
+
+# Make labels use IBM Plex Sans by default
+update_geom_defaults("label", 
+                     list(family = "IBM Plex Sans Condensed"))
+update_geom_defaults(ggtext::GeomRichText, 
+                     list(family = "IBM Plex Sans Condensed"))
+update_geom_defaults("label_repel", 
+                     list(family = "IBM Plex Sans Condensed"))
+
+# Use the Johnson color palette
+clrs <- met.brewer("Johnson")
+```
+
+
+
+rewrite: "Put as simply as possible, in the world of statistics, “marginal” means “additional,” or what happens to outcome variable  when explanatory variable  changes a little."
+
+
+rewrite: Importantly, the slope shows the relationship between  and . If  increases by 1 unit,  increases by 2: when  is 1,  is 1; when  is 2,  is 3, and so on. We can call this the marginal effect, or the change in  that results from one additional .
+
+rewrte: In the calculus world, the term “marginal” isn’t used all that often. Instead they talk about derivatives. But in the end, all these marginal/derivative things are just slopes. My first exposure to the word “marginal” meaning “changes in things” wasn’t actually in the world of statistics, but in economics. My first exposure to the word “marginal” meaning “changes in things” wasn’t actually in the world of statistics, but in economics.
+
+At its core, regression modeling in statistics is all about fancy ways of finding averages and fancy ways of drawing lines. Even if you’re doing non-regression things like t-tests, those are technically still just regression behind the scenes. Statistics is all about lines, and lines have slopes, or derivatives. These slopes represent the marginal changes in an outcome. As you move an independent/explanatory variable , what happens to the dependent/outcome variable ?
+
+
+```{r}
+penguins <- penguins |> drop_na()
+
+model_slider <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+tbl_regression(model_slider)
+library(sjPlot)
+plot_model(model_slider, type = "pred")
+
+model_switch <- lm(body_mass_g ~ species, data = penguins)
+tbl_regression(model_switch)
+plot_model(model_switch, type = "pred")
+```
+
+```{r}
+model_mixer <- lm(body_mass_g ~ flipper_length_mm + bill_depth_mm + species + sex,
+                  data = penguins)
+tbl_regression(model_mixer)
+```
+
+rewrite: Interpreting these coefficients is a little different now, since we’re working with multiple moving parts. In regular stats class, you’ve probably learned to say something like “Holding all other variables constant, a 1 mm increase in flipper length is associated with a 17.5 gram increase in body mass, on average” (slider) or “Holding all other variables constant, Chinstrap penguins are 79 grams lighter than Adelie penguins, on average” (switch).
+
+rewrite: This idea of “holding everything constant” though can be tricky to wrap your head around. Imagining this model like a mixer board can help, though. Pretend that you set the bill depth slider to some value (0, the average, whatever), you flip the Chinstrap and Gentoo switches off, you flip the male switch off, and then you slide only the flipper length switch up and down. You’d be looking at **the marginal effect of flipper length for female Adelie penguins with an average (or 0 or whatever) length of bill depth.** Stop moving the flipper length slider and start moving the bill depth slider and you’ll see the marginal effect of bill depth for female Adelie penguins. Flip on the male switch and you’ll see the marginal effect of bill depth for male Adelie penguins. Flip on the Gentoo switch and you’ll see the marginal effect of bill depth for male Gentoo penguins. And so on.
+
+
+# What are marginal effects?
+
+...but we haven’t officially defined it in the statistics world yet. It’s tricky to do that, though, because there are so many synonyms and near synonyms for the idea of a statistical effect, like marginal effect, marginal mean, marginal slope, conditional effect, conditional marginal effect, and so on.
+
+- Marginal effect: the statistical effect for continuous explanatory variables; the partial derivative of a variable in a regression model; the effect of a single slider
+- Conditional effect or group contrast: the statistical effect for categorical explanatory variables; the difference in means when a condition is on vs. when it is off; the effect of a single switch
+
+# Slopes and marginal effects
+
+```{r}
+# Get data from the World Bank's API
+wdi_raw <- WDI(country = "all", 
+               indicator = c(population = "SP.POP.TOTL",
+                             gdp_percapita = "NY.GDP.PCAP.KD"), 
+               start = 2000, end = 2020, extra = TRUE)
+
+# Clean up the World Bank data
+wdi_2020 <- wdi_raw |> 
+  filter(region != "Aggregates") |> 
+  filter(year == 2020) |> 
+  mutate(log_gdp_percapita = log(gdp_percapita)) |> 
+  select(-region, -status, -year, -country, -lastupdated, -lending)
+
+# Get data from V-Dem and clean it up
+vdem_2020 <- vdem %>% 
+  select(country_name, country_text_id, year, region = e_regionpol_6C,
+         disclose_donations_ord = v2eldonate_ord, 
+         public_sector_corruption = v2x_pubcorr,
+         polyarchy = v2x_polyarchy, civil_liberties = v2x_civlib) %>% 
+  filter(year == 2020) %>% 
+  mutate(disclose_donations = disclose_donations_ord >= 3,
+         disclose_donations = ifelse(is.na(disclose_donations), FALSE, disclose_donations)) %>% 
+  # Scale these up so it's easier to talk about 1-unit changes
+  mutate(across(c(public_sector_corruption, polyarchy, civil_liberties), ~ . * 100)) |> 
+  mutate(region = factor(region, 
+                         labels = c("Eastern Europe and Central Asia",
+                                    "Latin America and the Caribbean",
+                                    "Middle East and North Africa",
+                                    "Sub-Saharan Africa",
+                                    "Western Europe and North America",
+                                    "Asia and Pacific")))
+
+# Combine World Bank and V-Dem data into a single dataset
+corruption <- vdem_2020 |> 
+  left_join(wdi_2020, by = c("country_text_id" = "iso3c")) |> 
+  drop_na(gdp_percapita)
+
+glimpse(corruption)
+```
+```{r}
+model_simple <- lm(public_sector_corruption ~ civil_liberties,
+                   data = corruption)
+
+plot_model(model_simple, type = "pred", show.data = T)
+
+tbl_regression(model_simple)
+emtrends(model_simple, 
+         var = "civil_liberties")
+```
+
+
+rewrite: The  coefficient by itself is thus enough to tell us what the effect of moving civil liberties around is—it is the marginal effect of civil liberties on public sector corruption. Slide the civil liberties index up by 1 point and public sector corruption will be −0.81 points lower, on average.
+
+
+```{r}
+model_sq <- lm(public_sector_corruption ~ civil_liberties + I(civil_liberties^2),
+               data = corruption)
+
+tbl_regression(model_sq)
+
+model_sq |> 
+  emtrends(~ civil_liberties, var = "civil_liberties",
+           at = list(civil_liberties = c(25, 55, 80)),
+           delta.var = 0.001) |> 
+  test()
+```
+
+# marginaleffects’s and emmeans’s philosophies of averaging
+
+
+
+
+
+
+

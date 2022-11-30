@@ -5,7 +5,7 @@ description: |
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
-date: "`r format(Sys.time(), '%B %d, %Y')`"
+date: "May 23, 2022"
 categories:
   - videos
   - statistics
@@ -118,7 +118,7 @@ For example, days of the week is our "day" variable which we would like to have 
     -   if control and treatment are in two tables, put them below each other and create a new variable - "group", because this is exactly what we want - compare **groups**, then...
     -   if multiple excel sheets contain similar information, for example multiple years, combine them into one table and create a variable - "years", because we often want to study something over time
 
--   a think to remember is that statistics has no good taste, thus simple is better then beautiful:
+-   a thing to remember is that statistics has no good taste, thus simple is better then beautiful:
 
     -   so, any visual effects like colors, italic or bold font etc. don't provide any information, because statistics is blind, thus if colors are important, turn them into variables
     -   if you want to show that some of the observations aren't very good (e.g. calibration error), create a new column "error" and use 1 every time you aren't sure, and 0 every time you are sure about the measurement. That would later allow to exclude these ones easily if we would want to.
