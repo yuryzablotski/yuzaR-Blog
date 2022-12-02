@@ -50,8 +50,22 @@ Statistical advantages of these methods:
 - gives more complete picture compare to just average
 - Median regression and, more generally, quantile regression are robust to extremes of the response variable. (let's start with this one)
 
+
 The main advantage of quantile regression over least-squares regression is its flexibility for modeling data
 with heterogeneous conditional distributions.
+
+Although quantile regression is most often used to model specific conditional quantiles of the response, its full potential
+lies in modeling the entire conditional distribution. By comparison, standard least squares regression models only the
+conditional mean of the response and is computationally less expensive. Quantile regression does not assume a
+particular parametric distribution for the response, nor does it assume a constant variance for the response, unlike
+least squares regression.
+
+assumes no parametric form for the conditional
+distribution of the response; it gives you information that you would not obtain directly from standard regression
+methods. Quantile regression yields valuable insights in applications such as risk management, where answers to
+important questions lie in modeling the tails of the conditional distribution. Furthermore, quantile regression is capable
+of modeling the entire conditional distribution; this is essential for applications such as ranking the performance of
+students on standardized exams.
 
  Quantile regression also provides a more complete picture of the conditional distribution of Y given X = x when both lower and upper or all quantiles are of interest, as in the
 analysis of body mass index where both lower (underweight) and upper (overweight) quantiles are closely
@@ -65,6 +79,14 @@ perform better than the median student and half perform worse. Similarly, the
 quartiles divide the population into four segments with equal proportions of the
 reference population in each segment. ...  that there are the same number of
 observations above and below the median.
+
+**The quantile level is the probability (or the proportion of the population) that is associated with a quantile.**
+
+By fitting a series of regression models for a grid of values of  in the interval (0,1), you can describe the entire
+conditional distribution of the response. The optimal grid choice depends on the data, and the more data you have,
+the more detail you can capture in the conditional distribution.
+
+![](difference_ols_qr.png)
 
 # Median regressions (only second quantile)
 
@@ -303,6 +325,8 @@ for a set of distributions.
 # Speed up the model
 
 The default is method = "br" which invokes a variant of the Barrodale and Roberts [1974] simplex algorithm described in Koenker and d’Orey [1987]. For problems with more than a few thousand observations it is worthwhile considering method = "fn" which invokes the Frisch-Newton algorithm described in Portnoy and Koenker [1997]. Rather than traversing around the exterior of the constraint set like the simplex method, the interior point approach embodied in the Frisch-Newton algo- rithm burrows from within the constraint set toward the exterior. Instead of taking steepest descent steps at each intersection of exterior edges, it takes Newton steps based on a log-barrier Lagrangian form of the objective function. Special forms of Frisch-Newton are available for problems that include linear inequality constraints and for problems with sparse design matrices. For extremely large problems with plausibly exchangeable observations method = "pfn" implements a version of the Frisch-Newton algorithm with a preprocessing step that can further speed things up considerably.
+
+# Median regression with interactions
 
 
 
