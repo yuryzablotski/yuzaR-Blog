@@ -223,9 +223,208 @@ model_sq |>
 
 # marginaleffects’s and emmeans’s philosophies of averaging
 
+We deal with the uncertainty of these marginal effects by taking averages, which is why we talk about “average marginal effects” when interpreting these effects. So far, marginaleffects::marginaleffects() and emmeans::emtrends() have given identical results. But behind the scenes, these packages take two different approaches to calculating these marginal averages. The difference is very subtle, but incredibly important.
+
+
+```{r}
+mfx_sq <- marginaleffects(model_sq)
+head(mfx_sq)
+
+mfx_sq |> 
+  group_by(term) |> 
+  summarize(avg_dydx = mean(dydx))
+
+summary(mfx_sq)
+```
+
+# Marginal effects at the mean (the default in emmeans)
+
+The emmeans package actually calculates two average things: “marginal effects at the means” (MEM), or average slopes using emtrends(), and “estimated marginal means” (EMM), or average predictions using emmeans().
+
+```{r}
+avg_civ_lib <- mean(corruption$civil_liberties)
+avg_civ_lib
+
+
+model_sq |> 
+  emtrends(~ civil_liberties, var = "civil_liberties", delta.var = 0.001)
+
+model_sq |> 
+  marginaleffects(newdata = "mean") |> 
+  summary()
+```
+The disadvantage of this approach is that no actual country has a civil_liberties score of exactly 70.16. If we had other covariates in the model, no country would have exactly the average of every variable. The marginal effect is thus calculated based on a hypothetical country that might not possibly exist in real life.
+
+
+# Marginal effects in logistic regression
+
+Disclosure laws is a binary outcome, so we’ll use logistic regression to constrain the fitted values and predictions to between 0 and 1.
+
+```{r}
+model_logit <- glm(
+  disclose_donations ~ public_sector_corruption,
+  family = binomial(link = "logit"),
+  data = corruption
+)
+
+tbl_regression(model_logit)
+```
+
+Each row contains actual observed data, so the predictions arguably reflect variation in reality. marginaleffects() helpfully converts the AME into percentage points (note that it says “Prediction type: response”), so we can interpret the value directly.
+
+
+```{r}
+model_logit |> 
+  marginaleffects() |> 
+  summary()
+```
+
+
+
+
+```{r}
+emmeans(model_logit, ~public_sector_corruption, type = "response")
+
+model_logit |> 
+  emtrends(~ public_sector_corruption, 
+           var = "public_sector_corruption", 
+           regrid = "response")
+
+```
+For fun, let’s make a super fancy logistic regression model with a quadratic term and an interaction. We’ll compare the AME and MEM for public sector corruption again. This is where either marginaleffects() or emtrends() is incredibly helpful—correctly combining all the necessary coefficients, given that corruption is both squared and interacted, and given that there are other variables to worry about, would be really hard.
+
+```{r}
+model_logit_fancy <- glm(
+  disclose_donations ~ public_sector_corruption + I(public_sector_corruption^2) + 
+    polyarchy + log_gdp_percapita + public_sector_corruption * region,
+  family = binomial(link = "logit"),
+  data = corruption
+)
+```
+
+
+```{r}
+model_logit_fancy |> 
+  marginaleffects() |> 
+  summary()
+```
+
+ich: er sagt also, dass marginaleffects package is viel besser. 
+er: We can use emtrends() to get region-specific slopes, but we’ll get different results because of the order of averaging. emmeans creates averages and then plugs them in; marginaleffects plugs all the values in and then creates averages:
+
+```{r}
+mfx_logit_fancy <- model_logit_fancy |> 
+  marginaleffects(variables = "public_sector_corruption")
+
+# Original data frame + estimated dydx for each row
+head(mfx_logit_fancy)
+
+mfx_logit_fancy |> 
+  group_by(region) |> 
+  summarize(region_ame = mean(dydx))
+```
+
+```{r}
+model_logit_fancy |> 
+  emtrends(~ public_sector_corruption + region,
+           var = "public_sector_corruption", regrid = "response")
+```
+
+We can replicate the results from emtrends() with marginaleffects() if we plug in average or representative values (more on that in the next section), since that follows the same averaging order as emmeans (i.e. plugging averages into the model)
+
+```{r}
+model_logit_fancy |> 
+  marginaleffects(variables = "public_sector_corruption",
+                  by = "region",
+                  newdata = datagrid(region = levels(corruption$region))) 
+```
+
+
+
+```{r}
+regions_to_use <- c("Western Europe and North America", 
+                    "Latin America and the Caribbean",
+                    "Middle East and North Africa")
+
+expand_grid(public_sector_corruption = c(20, 80),
+            region = regions_to_use,
+            polyarchy = mean(corruption$polyarchy),
+            log_gdp_percapita = mean(corruption$log_gdp_percapita))
+
+modelr::data_grid(corruption,
+                  public_sector_corruption = c(20, 80),
+                  region = regions_to_use,
+                  .model = model_logit_fancy) 
+
+datagrid(model = model_logit_fancy,
+         public_sector_corruption = c(20, 80),
+         region = regions_to_use)
+
+ref_grid(model_logit_fancy,
+         at = list(public_sector_corruption = c(20, 80),
+                   region = regions_to_use))
+```
+```{r}
+model_logit_fancy |> 
+  marginaleffects(variables = "public_sector_corruption",
+                  newdata = datagrid(public_sector_corruption = c(20, 80),
+                                     region = regions_to_use))
+
+model_logit_fancy |> 
+  emtrends(~ public_sector_corruption + region, var = "public_sector_corruption",
+           at = list(public_sector_corruption = c(20, 80),
+                     region = regions_to_use),
+           regrid = "response", delta.var = 0.001) 
+```
+
+
+```{r}
+model_logit_fancy |> 
+  emmeans(~ public_sector_corruption + region, var = "public_sector_corruption",
+          at = list(public_sector_corruption = c(20, 80),
+                    region = regions_to_use),
+          regrid = "response") 
+```
+
+
+```{r}
+logit_predictions <- model_logit_fancy |> 
+  emmeans(~ public_sector_corruption + region, var = "public_sector_corruption",
+          at = list(public_sector_corruption = seq(0, 90, 1)),
+          regrid = "response") |> 
+  as_tibble()
+
+ggplot(logit_predictions, aes(x = public_sector_corruption, y = prob, color = region)) +
+  geom_line(size = 1) +
+  labs(x = "Public sector corruption", y = "Predicted probability of having\na campaign finance disclosure law", color = NULL) +
+  scale_y_continuous(labels = percent_format()) +
+  scale_color_manual(values = c(clrs, "grey30")) +
+  theme(legend.position = "bottom")
+```
+
+(Alternatively, you can use marginaleffects’s built-in plot_cap() to make this plot with one line of code):
+
+
+```{r}
+plot_cap(model_logit_fancy, condition = c("public_sector_corruption", "region"))
+
+```
+
+# Categorical contrasts as statistical/marginal effects
+
+Confusingly, people sometimes also use the term “marginal effect” to talk about group averages or predicted values (I myself am guilty of this!). Technically speaking, a marginal effect is only a partial derivative, or a slope—not a predicted value or a difference in group means.
+
+
+The main takeaway from this whole post is this: If you take the average before plugging values into the model, you compute average marginal effects for a combination of covariates that might not actually exist in reality. If you take the average after plugging values into the model, each original observation reflects combinations of covariates that definitely exist in reality, so the average marginal effect reflects that reality.
+
+# conclusion
+
+To remember all these differences, here’s a table summarizing all their different approaches:
 
 
 
 
 
+# Refernces and further readings
 
+- https://www.andrewheiss.com/blog/2022/05/20/marginalia/

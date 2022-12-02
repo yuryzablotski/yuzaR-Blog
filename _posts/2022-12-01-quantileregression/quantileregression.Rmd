@@ -1,0 +1,315 @@
+---
+title: "Quantile Regression as an Alternative for Linear Regression"
+description: |
+  Quantile regression as an alternative for linear regression
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - models
+preview: thumbnail_quantile_regression.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+# Why do we need Quantile Regression?
+
+Statistical advantages of these methods:
+
+- fewer and less stringent model assumptions
+- can more easily handle heteroskedasticity of errors
+- gives more complete picture compare to just average
+- Median regression and, more generally, quantile regression are robust to extremes of the response variable. (let's start with this one)
+
+The main advantage of quantile regression over least-squares regression is its flexibility for modeling data
+with heterogeneous conditional distributions.
+
+ Quantile regression also provides a more complete picture of the conditional distribution of Y given X = x when both lower and upper or all quantiles are of interest, as in the
+analysis of body mass index where both lower (underweight) and upper (overweight) quantiles are closely
+watched health standards. 
+
+Quantile regression is particularly useful when the rate of change in
+the conditional quantile, expressed by the regression coefficients, depends on the quantile.
+
+Thus, half of students
+perform better than the median student and half perform worse. Similarly, the
+quartiles divide the population into four segments with equal proportions of the
+reference population in each segment. ...  that there are the same number of
+observations above and below the median.
+
+# Median regressions (only second quantile)
+
+```{r}
+# 1. create data
+library(tidyverse)
+d <- tibble(
+  predictor = c(  1,   2,   3,  4,   5, 6, 7),
+  outcome   = c(1.5, 2.3, 2.8,  4.1, 5.3, 0, 6.8)
+)
+
+# 2. plot normal and median regressions
+ggplot(d, aes(predictor, outcome))+
+  geom_point()+
+  geom_smooth(method = lm, se = F)+
+  geom_quantile(color = "red", quantiles = 0.5)
+```
+
+The least squares fit is strongly affected by the outlier.
+
+```{r}
+# 3. model median based quantile regression
+# How do we know QR is relly better?
+
+library(quantreg)
+mr <- rq(outcome ~ predictor, data = d, tau = .5)
+lr <- lm(outcome ~ predictor, data = d)
+
+library(olsrr)
+ols_plot_resid_lev(lr)
+
+# AIC estimates the relative amount of information
+# lost by a given model: the less information a 
+# model loses, the higher the quality of that model.
+
+AIC(lr, mr) # => the lower AIS the better
+
+# Moreover, taking a wrong regression could cost you
+# an important discovery
+
+library(sjPlot) # I made a video on this 📦
+theme_set(theme_bw())
+plot_models(lr, mr, show.values = TRUE)
+```
+
+By default, these confidence intervals are computed by the rank inversion method de- scribed in Koenker [2005], Section 3.4.5. To extract the residuals or the coefficients of the fitted relationship we can write,
+
+```{r}
+r1 <- resid(mr)
+c1 <- coef(mr)
+```
+
+
+They can then be easily used in subsequent calculations.
+
+
+
+```{r}
+# 5. model several quantiles
+
+# like a box-plot
+qm25 <- rq(outcome ~ predictor, data = d, tau = 0.25)
+qm50 <- rq(outcome ~ predictor, data = d, tau = 0.5)
+qm75 <- rq(outcome ~ predictor, data = d, tau = 0.75)
+
+plot_models(lr, qm25, qm50, qm75,
+            show.values = TRUE)
+
+AIC(lr, qm25, qm50, qm75)
+
+# 6. get model results in table form
+qm <- rq(outcome ~ predictor, data = d, 
+         tau = seq(.25, .75, by = 0.25))
+library(gtsummary) # I made a video on this 📦
+tbl_regression(qm, se="nid")
+```
+
+Thus, each of the plots has a horizontal
+quantile, or t, scale, and the vertical scale in grams indicates the covariate effect.
+The dashed line in each figure shows the ordinary least squares estimate of the
+conditional mean effect. The two dotted lines represent conventional 90 percent
+confidence intervals for the least squares estimate. The shaded gray area depicts a
+90 percent pointwise confidence band for the quantile regression estimates.
+
+
+ Engel’s (1857) analysis of the relationship between household
+food expenditure and household income.  The conditional median and mean fits are quite different in this example, a
+fact that is partially explained by the asymmetry of the conditional density and
+partially by the strong effect exerted on the least squares fit by the two unusual
+points with high income and low food expenditure. Note that one consequence of
+this nonrobustness is that the least squares fit provides a rather poor estimate of the
+conditional mean for the poorest households in the sample. Note that the dashed
+least squares line passes above all of the very low income observations.
+
+If The median curve (labeled 50%) and the
+mean curve (labeled LS) are close. This indicates that the distribution of ozone concentration is roughly
+SUGI 30 Statistics and Data Analysis
+symmetric.
+
+```{r}
+# 7. model a lot of quantiles in a real data
+data("engel")
+qm <- rq(foodexp ~ income, data = engel, 
+         tau = seq(.05, .95, by = 0.05))  # median regression
+
+ggplot(engel, aes(income, foodexp))+
+  geom_point()+
+  geom_smooth(method = lm, se = F)+
+  geom_quantile(color = "red", quantiles = 0.5)+
+    geom_quantile(color = "gray", alpha = 0.3, 
+                  quantiles = seq(.05, .95, by = 0.05))
+```
+
+The plot shows a scatterplot of the Engel data on food expenditure vs household income for a sample of 235 19th century working class Belgian households. Superimposed on the plot are the {.05,.1,.25,.75,.90,.95} quantile regression lines in gray, the median fit in solid black, and the least squares estimate of the conditional mean function as the dashed (red) line.
+
+
+At any chosen
+quantile we can ask, for example, how different are the corresponding weights of
+boys and girls, given a specification of the other conditioning variables. The second
+panel answers this question. Boys are obviously larger than girls, by about 100 grams
+according to the ordinary least squares estimates of the mean effect, but as is clear
+from the quantile regression results, the disparity is much smaller in the lower
+quantiles of the distribution and considerably larger than 100 grams in the upper
+tail of the distribution. For example, boys are about 45 grams larger at the 0.05
+quantile but are about 130 grams larger at the 0.95 quantile. The conventional least
+squares confidence interval does a poor job of representing this range of
+disparities
+
+```{r}
+summary(qm, se="nid") %>% plot()
+
+
+# like a box-plot
+lr   <- lm(foodexp ~ income, data = engel)
+qm05 <- rq(foodexp ~ income, data = engel, tau = 0.05)
+qm25 <- rq(foodexp ~ income, data = engel, tau = 0.25)
+qm50 <- rq(foodexp ~ income, data = engel, tau = 0.5)
+qm75 <- rq(foodexp ~ income, data = engel, tau = 0.75)
+qm95 <- rq(foodexp ~ income, data = engel, tau = 0.95)
+
+AIC(lr, qm05, qm25, qm50, qm75, qm95)
+
+plot_models(lr, qm05, qm25, qm50, qm75, qm95,
+            show.values = TRUE)
+
+# ?
+library(performance) # I made a video on this 📦
+compare_performance(
+  lr, qm05, qm25, qm50, qm75, qm95, 
+  rank = T)
+
+```
+
+Using an approach introduced by Khmaladze [1981], Koenker and Xiao [2002] consider general forms of such tests. The tests can be viewed as a generalization of the simple tests of equality of slopes across quantiles described in the previous section.
+
+```{r}
+KhmaladzeTest(foodexp ~ income, data = engel, 
+              tau = seq(.05, .95, by = 0.05), nullH="location",se="ker")
+```
+
+
+# Categorical variables
+
+A traditional regression analysis predicts the mean salary for a professor, given the years of service.
+
+```{r}
+library(ISLR)
+set.seed(1)
+salary <- Wage %>% 
+  group_by(jobclass) %>% 
+  sample_n(30)
+    
+l <- lm(wage ~ jobclass, data = salary)
+q <- rq(wage ~ jobclass, data = salary)
+
+plot_models(l, q, show.values = T)
+
+AIC(l, q)
+
+ggplot(salary, aes(wage))+
+  geom_density()+
+  geom_vline(xintercept = mean(salary$wage), color = "blue")+
+  geom_vline(xintercept = median(salary$wage), color = "red")+
+  facet_wrap(~jobclass)
+
+plot_model(q, type = "pred")
+tab_model(q)
+```
+
+```{r}
+q <- rq(wage ~ jobclass, data = Wage, tau = seq(.05, .95, by = 0.05))
+summary(q, se="nid") %>% plot()
+
+```
+
+
+
+# Multivariable regression
+
+```{r}
+data(airquality)
+
+l <- lm(Ozone ~ Solar.R + Wind + Temp, data = airquality)
+
+
+AIC(l, q)
+
+plot_model(l, type = "pred", show.data = T)
+plot_model(q, type = "pred", show.data = T)
+plot_models(l, q, show.values = T)
+```
+
+
+```{r}
+q <- rq(wage ~ education, data = Wage, tau = seq(.05, .95, by = 0.05))
+summary(q, se="nid") %>% plot()
+```
+In almost all of the panels of Figure 4, with the exception of education
+coefficients, the quantile regression estimates lie at some point outside the confidence intervals for the ordinary least squares regression, suggesting that the effects
+of these covariates may not be constant across the conditional distribution of the
+independent variable. Formal testing of this hypothesis is discussed in Koenker and
+Machado (1999).
+
+“going
+beyond models for the conditional mean” is going for conditional median
+
+Rewrite!: What the regression curve does is give a grand summary for the averages of
+the distributions corresponding to the set of x’s. We could go further and
+compute several different regression curves corresponding to the various
+percentage points of the distributions and thus get a more complete picture
+of the set. Ordinarily this is not done, and so regression often gives a rather
+incomplete picture. Just as the mean gives an incomplete picture of a single
+distribution, so the regression curve gives a corresponding incomplete picture
+for a set of distributions.
+
+# Speed up the model
+
+The default is method = "br" which invokes a variant of the Barrodale and Roberts [1974] simplex algorithm described in Koenker and d’Orey [1987]. For problems with more than a few thousand observations it is worthwhile considering method = "fn" which invokes the Frisch-Newton algorithm described in Portnoy and Koenker [1997]. Rather than traversing around the exterior of the constraint set like the simplex method, the interior point approach embodied in the Frisch-Newton algo- rithm burrows from within the constraint set toward the exterior. Instead of taking steepest descent steps at each intersection of exterior edges, it takes Newton steps based on a log-barrier Lagrangian form of the objective function. Special forms of Frisch-Newton are available for problems that include linear inequality constraints and for problems with sparse design matrices. For extremely large problems with plausibly exchangeable observations method = "pfn" implements a version of the Frisch-Newton algorithm with a preprocessing step that can further speed things up considerably.
+
+
+
+# conclusion
+
+
+# Refernces and further readings
+
+- http://www.econ.uiuc.edu/~roger/research/rq/QRJEP.pdf
+
