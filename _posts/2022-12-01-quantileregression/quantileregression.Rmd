@@ -1,7 +1,7 @@
 ---
-title: "Quantile Regression as an Alternative for Linear Regression"
+title: "Quantile Regression as an useful Alternative for Ordinary Linear Regression"
 description: |
-  Quantile regression as an alternative for linear regression
+  Ordinary linear regression often fails to correctly describe skewed or heteroscedastic data, totally srews up if data has outliers, and describes only the mean of the response variable. Quantile Regression promises to solve all these problems and delivers more results.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -35,305 +35,423 @@ theme_set(theme_bw())
 
 # This post as a video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
+I recommend to watch a video first, because I highlight things I talk about. It's only 14 minutes long.
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("") 
 ```
 
-# Why do we need Quantile Regression?
-
-Statistical advantages of these methods:
-
-- fewer and less stringent model assumptions
-- can more easily handle heteroskedasticity of errors
-- gives more complete picture compare to just average
-- Median regression and, more generally, quantile regression are robust to extremes of the response variable. (let's start with this one)
 
 
-The main advantage of quantile regression over least-squares regression is its flexibility for modeling data
-with heterogeneous conditional distributions.
 
-Although quantile regression is most often used to model specific conditional quantiles of the response, its full potential
-lies in modeling the entire conditional distribution. By comparison, standard least squares regression models only the
-conditional mean of the response and is computationally less expensive. Quantile regression does not assume a
-particular parametric distribution for the response, nor does it assume a constant variance for the response, unlike
-least squares regression.
+# Why do we need Quantile Regression (QR)?
 
-assumes no parametric form for the conditional
-distribution of the response; it gives you information that you would not obtain directly from standard regression
-methods. Quantile regression yields valuable insights in applications such as risk management, where answers to
-important questions lie in modeling the tails of the conditional distribution. Furthermore, quantile regression is capable
-of modeling the entire conditional distribution; this is essential for applications such as ranking the performance of
-students on standardized exams.
+Particularly, QR:
 
- Quantile regression also provides a more complete picture of the conditional distribution of Y given X = x when both lower and upper or all quantiles are of interest, as in the
-analysis of body mass index where both lower (underweight) and upper (overweight) quantiles are closely
-watched health standards. 
+- is robust to outliers and influential points
+- does not assume a constant variance (known as homoskedasticity) for the response variable or the residuals
+- does not assume normality
+- but the main advantage of QR over linear regression (LR) is that QR explores different values of the response variable, instead of only the average, and delivers therefore a more complete picture of the relationships between variables.
 
-Quantile regression is particularly useful when the rate of change in
-the conditional quantile, expressed by the regression coefficients, depends on the quantile.
+So, let's:
 
-Thus, half of students
-perform better than the median student and half perform worse. Similarly, the
-quartiles divide the population into four segments with equal proportions of the
-reference population in each segment. ...  that there are the same number of
-observations above and below the median.
+- take problematic data, 
+- build both, linear and quantile models, and see
+- whether QR can solve problems and be a truly **Useful Alternative for Ordinary Linear Regression**.
 
-**The quantile level is the probability (or the proportion of the population) that is associated with a quantile.**
+# 1. Solve outliers problem: Median Regression (only 5th quaNtile, or 2nd quaRtile)
 
-By fitting a series of regression models for a grid of values of  in the interval (0,1), you can describe the entire
-conditional distribution of the response. The optimal grid choice depends on the data, and the more data you have,
-the more detail you can capture in the conditional distribution.
-
-![](difference_ols_qr.png)
-
-# Median regressions (only second quantile)
+We'll first see how both models deal with outliers. For that we'll create a small data set with ONE obvious outlier and use `geom_smooth()` function to create a linear model and `geom_quantile()` function for  a quick quantile regression, with only 5th quantile, which makes it a **median-based regression**.
 
 ```{r}
-# 1. create data
+# create data
 library(tidyverse)
 d <- tibble(
-  predictor = c(  1,   2,   3,  4,   5, 6, 7),
+  predictor = c(  1,   2,   3,  4,   5,   6,   7),
   outcome   = c(1.5, 2.3, 2.8,  4.1, 5.3, 0, 6.8)
 )
 
-# 2. plot normal and median regressions
+# plot ordinary and median regressions
 ggplot(d, aes(predictor, outcome))+
   geom_point()+
-  geom_smooth(method = lm, se = F)+
-  geom_quantile(color = "red", quantiles = 0.5)
+  geom_smooth(method = lm, se = F,color = "red", )+
+  geom_quantile(quantiles = 0.5)
 ```
 
-The least squares fit is strongly affected by the outlier.
+This plot shows, that linear model tries to please all points and misses most of them, which results in a bad fit. In contrast, the Median Regression ignores the outlier and visually fits the rest of the data much better. But how do we know that Median Regression is indeed better? 
+
+Well, if we create an ordinary and quantile regressions, we can compare the amount of information they loose. The Akaike's Information Criterion (AIC) measures such loss of information. Namely, the lower the AIC, the better the model. Thus, a lower AIC of QR indicates a smaller loss of information from the data, as compared to LR, making QR a better model. Moreover, since the slope of LR is not significant, while the slope of QR is, using a wrong model could cost you an important discovery. So, no Nobel Price for you!
 
 ```{r}
-# 3. model median based quantile regression
-# How do we know QR is relly better?
-
+# model median (2nd quantile) regression
+lr <- lm(outcome ~ predictor, data = d)
 library(quantreg)
 mr <- rq(outcome ~ predictor, data = d, tau = .5)
-lr <- lm(outcome ~ predictor, data = d)
 
-library(olsrr)
-ols_plot_resid_lev(lr)
-
-# AIC estimates the relative amount of information
-# lost by a given model: the less information a 
-# model loses, the higher the quality of that model.
-
+# compare models
 AIC(lr, mr) # => the lower AIS the better
-
-# Moreover, taking a wrong regression could cost you
-# an important discovery
 
 library(sjPlot) # I made a video on this 📦
 theme_set(theme_bw())
-plot_models(lr, mr, show.values = TRUE)
+plot_models(lr, mr, show.values = TRUE, 
+            m.labels = c("Linear model", "Median model"), 
+            legend.title = "Model type")
 ```
 
-By default, these confidence intervals are computed by the rank inversion method de- scribed in Koenker [2005], Section 3.4.5. To extract the residuals or the coefficients of the fitted relationship we can write,
+By the way, we can use `ols_plot_resid_lev()` function from {olsrr} package and see that we indeed have an outlier. 
 
 ```{r}
-r1 <- resid(mr)
-c1 <- coef(mr)
+library(olsrr)
+ols_plot_resid_lev(lr)
 ```
+# 2. Solve heteroscedasticity
 
-
-They can then be easily used in subsequent calculations.
-
+Now let's take a real world heteroscedastic data and see whether median regression handles it better. Engel dataset from {quantreg} package explores the relationship between household food expenditure and household income. Similarly to previous example, the median and mean fits are quite different, which can be explained by the strong effect of the two unusual points with high income and low food expenditure. Probably just greedy people. 
 
 
 ```{r}
-# 5. model several quantiles
-
-# like a box-plot
-qm25 <- rq(outcome ~ predictor, data = d, tau = 0.25)
-qm50 <- rq(outcome ~ predictor, data = d, tau = 0.5)
-qm75 <- rq(outcome ~ predictor, data = d, tau = 0.75)
-
-plot_models(lr, qm25, qm50, qm75,
-            show.values = TRUE)
-
-AIC(lr, qm25, qm50, qm75)
-
-# 6. get model results in table form
-qm <- rq(outcome ~ predictor, data = d, 
-         tau = seq(.25, .75, by = 0.25))
-library(gtsummary) # I made a video on this 📦
-tbl_regression(qm, se="nid")
-```
-
-Thus, each of the plots has a horizontal
-quantile, or t, scale, and the vertical scale in grams indicates the covariate effect.
-The dashed line in each figure shows the ordinary least squares estimate of the
-conditional mean effect. The two dotted lines represent conventional 90 percent
-confidence intervals for the least squares estimate. The shaded gray area depicts a
-90 percent pointwise confidence band for the quantile regression estimates.
-
-
- Engel’s (1857) analysis of the relationship between household
-food expenditure and household income.  The conditional median and mean fits are quite different in this example, a
-fact that is partially explained by the asymmetry of the conditional density and
-partially by the strong effect exerted on the least squares fit by the two unusual
-points with high income and low food expenditure. Note that one consequence of
-this nonrobustness is that the least squares fit provides a rather poor estimate of the
-conditional mean for the poorest households in the sample. Note that the dashed
-least squares line passes above all of the very low income observations.
-
-If The median curve (labeled 50%) and the
-mean curve (labeled LS) are close. This indicates that the distribution of ozone concentration is roughly
-SUGI 30 Statistics and Data Analysis
-symmetric.
-
-```{r}
-# 7. model a lot of quantiles in a real data
-data("engel")
-qm <- rq(foodexp ~ income, data = engel, 
-         tau = seq(.05, .95, by = 0.05))  # median regression
-
+# get heteroscedastic data
+data(engel)
 ggplot(engel, aes(income, foodexp))+
   geom_point()+
-  geom_smooth(method = lm, se = F)+
-  geom_quantile(color = "red", quantiles = 0.5)+
-    geom_quantile(color = "gray", alpha = 0.3, 
+  geom_smooth(method = lm, se = F, color = "red")+
+  geom_quantile(color = "blue", quantiles = 0.5)+
+  geom_quantile(color = "gray", alpha = 0.3, 
                   quantiles = seq(.05, .95, by = 0.05))
 ```
 
-The plot shows a scatterplot of the Engel data on food expenditure vs household income for a sample of 235 19th century working class Belgian households. Superimposed on the plot are the {.05,.1,.25,.75,.90,.95} quantile regression lines in gray, the median fit in solid black, and the least squares estimate of the conditional mean function as the dashed (red) line.
-
-
-At any chosen
-quantile we can ask, for example, how different are the corresponding weights of
-boys and girls, given a specification of the other conditioning variables. The second
-panel answers this question. Boys are obviously larger than girls, by about 100 grams
-according to the ordinary least squares estimates of the mean effect, but as is clear
-from the quantile regression results, the disparity is much smaller in the lower
-quantiles of the distribution and considerably larger than 100 grams in the upper
-tail of the distribution. For example, boys are about 45 grams larger at the 0.05
-quantile but are about 130 grams larger at the 0.95 quantile. The conventional least
-squares confidence interval does a poor job of representing this range of
-disparities
+In order to better justify the use of QR, we can check heteroskedasticity via Breusch-Pagan test. Our test detects heteroscedasticity, so that we again need an alternative to linear regression. And, a lower AIC of median-based regression again shows a better fit, as compared to the mean-based regression.
 
 ```{r}
-summary(qm, se="nid") %>% plot()
-
-
-# like a box-plot
+# compare models
 lr   <- lm(foodexp ~ income, data = engel)
-qm05 <- rq(foodexp ~ income, data = engel, tau = 0.05)
-qm25 <- rq(foodexp ~ income, data = engel, tau = 0.25)
-qm50 <- rq(foodexp ~ income, data = engel, tau = 0.5)
-qm75 <- rq(foodexp ~ income, data = engel, tau = 0.75)
-qm95 <- rq(foodexp ~ income, data = engel, tau = 0.95)
 
-AIC(lr, qm05, qm25, qm50, qm75, qm95)
-
-plot_models(lr, qm05, qm25, qm50, qm75, qm95,
-            show.values = TRUE)
-
-# ?
 library(performance) # I made a video on this 📦
-compare_performance(
-  lr, qm05, qm25, qm50, qm75, qm95, 
-  rank = T)
+check_heteroscedasticity(lr)
 
-```
+qm50 <- rq(foodexp ~ income, data = engel, tau = 0.5)
 
-Using an approach introduced by Khmaladze [1981], Koenker and Xiao [2002] consider general forms of such tests. The tests can be viewed as a generalization of the simple tests of equality of slopes across quantiles described in the previous section.
-
-```{r}
-KhmaladzeTest(foodexp ~ income, data = engel, 
-              tau = seq(.05, .95, by = 0.05), nullH="location",se="ker")
+AIC(lr, qm50)
 ```
 
 
-# Categorical variables
 
-A traditional regression analysis predicts the mean salary for a professor, given the years of service.
+# 3. Solve not-normal (skewed) distribution & not-homogen variances across groups + categorical predictor
 
-```{r}
+Now let's see how both models handle not-normally distributed or skewed data, and, at the same time, see how they handle categorical predictors.
+
+```{r echo=FALSE}
+# get not-normal data
 library(ISLR)
-set.seed(1)
+set.seed(1) # for reproducibility
 salary <- Wage %>% 
   group_by(jobclass) %>% 
   sample_n(30)
-    
-l <- lm(wage ~ jobclass, data = salary)
-q <- rq(wage ~ jobclass, data = salary)
-
-plot_models(l, q, show.values = T)
-
-AIC(l, q)
 
 ggplot(salary, aes(wage))+
-  geom_density()+
-  geom_vline(xintercept = mean(salary$wage), color = "blue")+
-  geom_vline(xintercept = median(salary$wage), color = "red")+
-  facet_wrap(~jobclass)
-
-plot_model(q, type = "pred")
-tab_model(q)
+    geom_density()+
+    geom_vline(xintercept = mean(salary$wage), color = "red")+
+    geom_vline(xintercept = median(salary$wage), color = "blue")+facet_wrap(~jobclass)
 ```
+
+For that we'll use a Wage dataset from {ISLR} package and model the salary of 30 industrial and IT workers. And when we check the assumptions of linear model, we'll see, that our data has no outliers, but is not-normality distributed and variances between groups differ, so our data is again - heteroscedastic. And that's a big problem, because if SEVERAL assumption of a model fail, we CAN NOT trust the results of such model. 
 
 ```{r}
-q <- rq(wage ~ jobclass, data = Wage, tau = seq(.05, .95, by = 0.05))
-summary(q, se="nid") %>% plot()
+# get not-normal data
+library(ISLR)
+set.seed(1) # for reproducibility
+salary <- Wage %>% 
+  group_by(jobclass) %>% 
+  sample_n(30)
 
+lr <- lm(wage ~ jobclass, data = salary)
+
+check_outliers(lr)
+check_normality(lr) 
+check_homogeneity(lr)
 ```
 
+(By the way, if we don't specify any quantiles in quanlile regression, the default 5th quantile or - median regression (tau = 0.5) will be modeled.)
 
+And what are those results? Well, linear model reveals, that average annual salary of IT workers is almost 37.000\$ higher as compared to industrial workers, and such big **difference in means** is significant. While median regression shows, that IT crowd earns only 19.6 thousand dollars more and this **difference in medians** is not significant. 
 
-# Multivariable regression
-
-```{r}
-data(airquality)
-
-l <- lm(Ozone ~ Solar.R + Wind + Temp, data = airquality)
-
-
-AIC(l, q)
-
-plot_model(l, type = "pred", show.data = T)
-plot_model(q, type = "pred", show.data = T)
-plot_models(l, q, show.values = T)
-```
+The lower AIC of the median regression again shows that QR performs better then LR. So that, while in the case with outliers **LR missed an important discovery**, here **LR discovered nonsense**. 
 
 
 ```{r}
-q <- rq(wage ~ education, data = Wage, tau = seq(.05, .95, by = 0.05))
-summary(q, se="nid") %>% plot()
+# tau = .5 - or median regression is a default
+mr <- rq(wage ~ jobclass, data = salary, tau = 0.5) 
+
+plot_models(lr, mr, show.values = T, 
+            m.labels = c("Linear model", "Median model"), 
+            legend.title = "Model type")
+
+AIC(lr, mr)
 ```
-In almost all of the panels of Figure 4, with the exception of education
-coefficients, the quantile regression estimates lie at some point outside the confidence intervals for the ordinary least squares regression, suggesting that the effects
-of these covariates may not be constant across the conditional distribution of the
-independent variable. Formal testing of this hypothesis is discussed in Koenker and
-Machado (1999).
 
-“going
-beyond models for the conditional mean” is going for conditional median
+Such nonsense is often caused by small samples, and indeed, if we take all 3000 workers from Wage dataset, we'll see that both models show significantly higher salary of IT crowd as compared with factory workers. However, the median regression still shows a smaller difference and a smaller AIC tells us that QR is still a better model, which makes sense for not-normally distributed and heteroscedastic data. Now, let's finally get to the main advantage of QR. (halliluja)
 
-Rewrite!: What the regression curve does is give a grand summary for the averages of
-the distributions corresponding to the set of x’s. We could go further and
-compute several different regression curves corresponding to the various
-percentage points of the distributions and thus get a more complete picture
-of the set. Ordinarily this is not done, and so regression often gives a rather
-incomplete picture. Just as the mean gives an incomplete picture of a single
-distribution, so the regression curve gives a corresponding incomplete picture
-for a set of distributions.
+```{r}
+lr <- lm(wage ~ jobclass, data = Wage)
+mr <- rq(wage ~ jobclass, data = Wage)
 
-# Speed up the model
+plot_models(lr, mr, show.values = T, 
+            m.labels = c("Linear model", "Median model"), 
+            legend.title = "Model type")
 
-The default is method = "br" which invokes a variant of the Barrodale and Roberts [1974] simplex algorithm described in Koenker and d’Orey [1987]. For problems with more than a few thousand observations it is worthwhile considering method = "fn" which invokes the Frisch-Newton algorithm described in Portnoy and Koenker [1997]. Rather than traversing around the exterior of the constraint set like the simplex method, the interior point approach embodied in the Frisch-Newton algo- rithm burrows from within the constraint set toward the exterior. Instead of taking steepest descent steps at each intersection of exterior edges, it takes Newton steps based on a log-barrier Lagrangian form of the objective function. Special forms of Frisch-Newton are available for problems that include linear inequality constraints and for problems with sparse design matrices. For extremely large problems with plausibly exchangeable observations method = "pfn" implements a version of the Frisch-Newton algorithm with a preprocessing step that can further speed things up considerably.
-
-# Median regression with interactions
+AIC(lr, mr)
+```
 
 
+# 4. Model more then just mean or just median - model several quantiles
 
-# conclusion
+```{r}
+# model several quantiles
+library(ggridges)
+ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
+  stat_density_ridges(
+    geom = "density_ridges_gradient", calc_ecdf = TRUE,
+    quantile_lines = TRUE, quantiles = c(.1, .5, .9)
+  ) +
+  scale_fill_viridis_d(name = "Quantiles")+
+  xlab("salary")
+```
 
 
-# Refernces and further readings
+While median regression delivers better results, the median is still a single central location, similar to the mean. But since median regression is a special case of QR, which uses only a 5th quantile, and since QR can easily model other quantiles too, a QR allows you to easily model low and high salaries! In other words, QR can be extended to noncentral locations. Namely, if we take a low quantile, for example 0.1 instead of 0.5, we'll model the difference between low income factory and low income IT workers. Similarly, if we take a high quantile, for example 0.9 instead of 0.5, we'll be able to check the difference between top salaries of industrial vs. top salaries of IT workers. 
+
+```{r}
+lr   <- lm(wage ~ jobclass, data = Wage)
+qm10 <- rq(wage ~ jobclass, data = Wage, tau = 0.10)
+qm50 <- rq(wage ~ jobclass, data = Wage, tau = 0.50)
+qm90 <- rq(wage ~ jobclass, data = Wage, tau = 0.90)
+
+plot_models(lr, qm10, qm50, qm90,
+            show.values = TRUE,
+            m.labels = c("LR", "QR 10%", "QR 50%", "QR 90%"), 
+            legend.title = "Model type")+
+  ylab("Increase in wage after switch to IT")
+```
+The results show, that for low salaries the difference between industrial and IT jobs is smaller, then for median or high salaries. The reason for that could be education, so that when your education level is low, switching jobs from factory to IT would only increase your salary by ca. 8.000 bucks, while when you have a college degree, changing to IT will increase your salary by over 25.000 bucks. However, the reason itself is not important. What is important here, is that, while ordinary linear regression describes only an average change in salaries when we switch from industrial to IT job, quantile regression uncovers what happen after you switch jobs having low, median or high salary. In other words, **a new salary after switching jobs depends on the salary before switching**, which makes sense. But what doesn't make any sense is that, an ordinary linear regression over-promises increase in salary for low earners and under-promises increase in salary for high earners. Thus, QR reveals a **more complete picture of reality**, and allows you to make a more informed decision.
+
+```{r}
+library(ggridges)
+ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
+  stat_density_ridges(
+    geom = "density_ridges_gradient", calc_ecdf = TRUE,
+    quantile_lines = TRUE, quantiles = seq(.1, .9, by = 0.1)
+  ) +
+  scale_fill_viridis_d(name = "Quantiles")
+```
+
+
+```{r}
+qm20 <- rq(wage ~ jobclass, data = Wage, tau = 0.20)
+qm30 <- rq(wage ~ jobclass, data = Wage, tau = 0.30)
+qm70 <- rq(wage ~ jobclass, data = Wage, tau = 0.70)
+qm80 <- rq(wage ~ jobclass, data = Wage, tau = 0.80)
+
+plot_models(lr, qm10, qm20, qm30, qm50, qm70, qm80, qm90, show.values = TRUE)+
+  theme(legend.position = "none")+
+  ylab("Increase in wage after switch to IT")
+```
+
+But that is just a beginning! Because, similarly to low (tau = 0.1) or high (tau = 0.9) quantiles, we can model more quantile to get **more useful inference**. And we can even ...
+
+# 5. Model **the entire conditional distribution** of salaries via all possible quantiles
+
+... by defining the sequence of quantiles, from let's say 0.1 to 0.9, and defining the step, in order to control how many quantiles we model. For example using "by = 0.1" will model 9 quantiles from 0.1 to 0.9.
+
+Plotting the summary of our model (a quantile process
+plot) uncovers how switching to IT affects **the entire conditional distribution** of salaries. The red lines show the mean effect with confidence intervals estimated by linear regression. While shaded gray area shows confidence intervals for the quantile regression estimates. The non-overlapping confidence intervals between quantile and linear regression can be seen as significant difference between models. So that, linear regression significantly over-promises the increase in salaries when you switch to IT for low and medium earners (if we ignore the very small overlap from 0.3 to 0.6 quantiles), significantly underestimates the increase in salary for top 10% earners, while correctly describes the increase in salary for only a small part of workers with already relatively high salaries.
+
+```{r}
+seq(0.1, 0.9, by = 0.1)
+q <- rq(wage ~ jobclass, data = Wage, 
+        tau = seq(0.1, 0.9, by = 0.1))
+
+summary(q) %>% 
+  plot(parm = "jobclass2. Information")
+```
+
+
+
+
+
+
+
+
+# 6. Multivariable regression
+
+So, I think a univariable QR is already much more useful then LR. But that's not all, multivariable QR is even more useful, because it can uncover which variables are important for low or for high values of the response variable.
+
+Let's have a look at two multivariable examples. 
+
+## 1) American salaries
+
+In the first example we'll continue to model salaries, but instead of only a "jobclass" predictor, we'll add "age" and "race" predictors. 
+
+Let's interpret the influence of "age" on salary first. The young low earners would significantly increase their salaries as they age, because y-axis, which shows the slope of this increase, is positive and does not include zero. However, this realistic increase over lifetime is significantly smaller then average, promised by the linear regression, because red and gray confidence intervals don't overlap. The young high earners have much higher slope, meaning much stronger increase in salary over lifetime, which was significantly underestimated by the linear regression. Here again, high educational degree could cause young people to earn a lot of money already in the beginning of their lives, and opens better chances to increase the salary over lifetime.
+
+The interpretation of the categorical predictor "race" is even more interesting. Since "White" people are the intercept, "Black"- and "Asian-Americans" can be compared to "White" Americans. Here, linear regression shows that on average for low income folks, Black people earn significantly less then White people, because the coefficient is negative and does not cross the zero, which is wrong. Because, in reality, since gray confidence intervals cross the zero, there is no significant difference between White and Black folks with low income. In contrast, when salaries are high, Black workers earn significantly less then White workers, even when they earn millions. 
+
+The wages of Asian Americans show the opposite. Namely, while linear regression mistakenly predicts that Asian folks get significantly more then White folks, independently of their salary, QR shows that low income Asian people earn significantly less or similar to White people. 
+
+```{r}
+# multivariable regression
+q <- rq(wage ~ jobclass + age + race, data = Wage, 
+        tau = seq(.05, .95, by = 0.05))
+
+summary(q) %>% 
+  plot(c("jobclass2. Information", "age", "race2. Black", "race3. Asian"))
+```
+Since, in all of the panels of the plot, the quantile regression estimates lie at some point outside the confidence intervals for the ordinary least squares regression, we can conclude that the effects of "jobclass", "age" and "race" are not constant across salaries, but depends on a height of the salary.
+
+And if that's not enough, you can go one step further and conduct a ...
+
+### Nonparametric non-linear quantile regression 
+
+... for numeric predictors using {quantregGrowth} package. But before you do that, have a look at the last example where we check the influence of 5 predictors on the efficiency of cars. 
+
+```{r}
+# non-linear quantile regression
+library(quantregGrowth)
+set.seed(1)
+o <-gcrq(wage ~ ps(age), 
+         data = Wage %>% sample_n(100), tau=seq(.10,.90,l=3))
+
+# par(mfrow=c(1,2)) # for several plots
+plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) 
+```
+
+
+## 2) Efficiency of cars
+
+Here, a linear regression will answer the question - which variables affect the average car mileage? A low quantile of 0.1 will tell us which predictors are important for not efficient cars, which drive only a few miles per gallon of gas. A high quantile of 0.9 will tell us which predictors are important for highly efficient cars, which drive a lot of miles per gallon of gas. We'll also conduct a median regression in order to compare it to LR and for a **more complete presentation of the results**. 
+
+Let's start with that. The negative coefficient of "horsepower" indicates significant decrease in efficiency of cars with increasing horsepower. Both, mean-based and median-based models agree on that. However, while linear regression reports "Engine displacement" to be not-important for efficiency, median regression shows that it is important. Moreover, quantile regression reports that increasing acceleration significantly reduces mileage of not-efficient cars and has no effect on highly efficient cars, while linear regression can's say anything about low or highly efficient cars.
+
+```{r}
+cars <- Auto %>% 
+  select(mpg, cylinders, displacement, horsepower, acceleration, origin)
+
+l   <- lm(mpg ~ ., data = cars)
+q10 <- rq(mpg ~ ., data = cars, tau = .1)
+q50 <- rq(mpg ~ ., data = cars, tau = .5)
+q90 <- rq(mpg ~ ., data = cars, tau = .9)
+
+library(gtsummary) # I made a video on this 📦
+tbl_merge(
+    tbls = list(
+      tbl_regression(l) %>% bold_p(),
+      tbl_regression(q10, se = "nid") %>% bold_p(), 
+      tbl_regression(q50, se = "nid") %>% bold_p(),
+      tbl_regression(q90, se = "nid") %>% bold_p()
+),
+    tab_spanner = c("OLS", "QR 10%", "QR 50%", "QR 90%")
+  )
+```
+
+
+The `se = "nid"` argument produces 95% confidence intervals and p-values, which allows to build this useful table. And if you want to learn how to produce similar publication ready tables for data summaries, results of statistical tests or models, check out my video on {gtsummary} package. 
+
+
+# 7. Some further useful things
+
+## Confidence intervals
+
+There are several ways to compute confidence intervals for quantile regression. This can be specified using the `"se ="` option in the `summary()` or `tbl_regression()`  functions. The default value is `se="rank"`, however, it does not deliver p-values, while other options "nid", "iid" (not good), "ker" and "boot" do (type `?summary.rq` for details). However, using "boot" is recommended only with large data-sets.
+
+## Equality of slopes
+
+Khmaladze [1981] introduced the tests of equality of slopes across quantiles. Or `anova()` can compare two (better) or more slopes.
+
+```{r}
+KhmaladzeTest(wage ~ jobclass, data = Wage, 
+              tau = seq(.05, .95, by = 0.05))
+
+anova(qm10, qm50)
+anova(qm20, qm30, qm50, qm70)
+```
+
+
+## Speed up the model
+
+The default calculation method is `method = "br"`. For more than a few thousand observations it is worthwhile considering `method = "fn"`. For extremely large data sets use `method = "pfn"`.
+
+## Contrasts in median regression
+
+```{r}
+mr <- rq(wage ~ education, data = Wage, tau = 0.5)
+
+emmeans::emmeans(mr, pairwise ~ education, weights = "prop", adjust = "bonferroni")
+
+plot_model(mr, type = "pred")
+```
+
+
+## Median regression with interactions
+
+```{r}
+mr <- rq(wage ~ education*jobclass, data = Wage, tau = 0.5)
+
+emmeans::emmeans(mr, pairwise ~ jobclass|education, weights = "prop", adjust = "fdr")
+
+plot_model(mr, type = "int")
+```
+## {lqmm} package: Fitting Linear Quantile Mixed Models
+
+### Random intercept model
+
+```{r}
+library(lqmm)
+data(Orthodont)
+rim <- lqmm(distance ~ age, random = ~ 1, group = Subject,
+tau = c(0.1,0.5,0.9), data = Orthodont)
+summary(rim)
+```
+
+
+### Random slope model
+
+```{r}
+rsm <- lqmm(distance ~ age, random = ~ age, group = Subject,
+tau = c(0.1,0.5,0.9), cov = "pdDiag", data = Orthodont)
+summary(rsm)
+```
+
+
+
+
+## Final thoughs
+
+- the QR can be applied in any case where relationships for different levels of response variable are needed to be addressed differently
+
+- the more data you have, the more details QR can capture from the conditional distribution of response
+
+- splitting a sample into several small dataset (low values of outcome, high values of the outcome) and using LR on them reduces statistical power. Besides, the results could differ depending on where the cut point (e.g. for low values) is set.
+
+- the interquantile range can be easily modeled and plotted with QR (i.e., .25, .50, .75), like a **fancy box-plot for continuous variables** :)
+
+```{r}
+set.seed(1)
+o <-gcrq(wage ~ ps(age), 
+         data = Wage %>% sample_n(1000), tau=seq(.25,.75,l=3))
+
+# par(mfrow=c(1,2)) # for several plots
+plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) 
+```
+
+
+# References and further readings
+
+- The best introduction on QR!!! https://nguyenvantien0405.files.wordpress.com/2014/03/quantile_regressiolingxin-hao.pdf 
+
+- I loved this paper too! But, be careful about their interpretation using "gap", it is confusing and might be incorrect, as shown in the next reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4166511/pdf/nihms529550.pdf
+
+- Commentary to the reference above with some corrections, among which the most important one - is that we can interpret the coefficients of QR as we do with OLS (page 9):
+https://srcd.onlinelibrary.wiley.com/doi/10.1111/cdev.13141
 
 - http://www.econ.uiuc.edu/~roger/research/rq/QRJEP.pdf
 
+- http://www.econ.uiuc.edu/~roger/research/rq/QReco.pdf
