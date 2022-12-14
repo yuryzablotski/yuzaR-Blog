@@ -1,0 +1,811 @@
+---
+title: "R package reviews {gtsummary} Publication-Ready Tables of Data, Stat-Tests and Models!"
+description: |
+  {gtsummary} package helps to easily produce publication-ready & beautifully formatted summary tables of Data, Statistical Tests and Models! It calculates tons of statistics and has a beautiful design by default, but you can customize every aspect of your table and export it as a picture or MS Word format.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - models
+  - machine learning
+preview: thumbnail_gtsummary.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+library(ggstatsplot)
+library(tidyverse)
+```
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 11 minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("hyP3Hx_1kTM") 
+```
+
+# Why do we need {gtsummary}
+
+The tables of data, different statistical tests and model results, we see in published scientific paper are beautifully formatted. But the road from data to such tables is often bumpy, has numerous steps and is prone to mistakes. Well, with {gtsummary} package you'll get these results in a few lines of code. So, let's get into it and start with data!
+
+# 1. Summarize data
+
+## `tbl_summary()`
+
+The `tbl_summary()` function: 
+
+- automatically recognizes continuous, categorical, and dichotomous (/daɪˈkɑːt.ə.məs/) variables in your data, 
+- calculates appropriate descriptive statistics, like counts and percentages for categorical, and Median + IQR for numeric variables
+- includes the amount of missing values in each variable and
+- automatically creates footnotes with explanations and abbreviations.
+
+
+```{r}
+# install.packages("gtsummary")
+library(gtsummary)
+
+d <- trial %>% select(trt, age, grade, response)
+
+tbl_summary(d)
+```
+
+
+
+## "by" argument
+
+However, most of the time we need to get descriptive stats for some groups, for example for *Drug A* and *Drug B* from the *Treatment* variable, which can be easily done by using "by" argument.
+
+```{r}
+tbl_summary(d, by = trt)
+```
+
+## Stratified {gtsummary} tables with *tbl_strata()*
+
+And if we need to go even further and calculate descriptive stats for Different Drugs inside of different Grade Levels, we can create a stratified table by using `tbl_summary()` function inside of `tbl_strata()` function, where we also specify "strata" argument.
+
+```{r}
+# minimalist example
+d %>%
+  tbl_strata(
+    strata = grade, 
+    ~.x %>% 
+      tbl_summary(by = trt))
+```
+
+
+```{r}
+# advanced example
+fancy_data_table <- trial %>%
+  select(trt, grade, age, stage) %>%
+  mutate(grade = paste("Grade", grade)) %>%
+  tbl_strata(
+    strata = grade, 
+    ~.x %>%
+      tbl_summary(by = trt, missing = "no") %>%
+      modify_header(all_stat_cols() ~ "**{level}**")
+  )
+
+library(flextable)
+fancy_data_table %>%
+  as_flex_table() %>% 
+  save_as_image(path = "fancy_data_table.png")
+```
+
+
+
+# 2. Summarize Statistical tests with p-values
+
+## 1) pimp your table with add_*() functions
+
+But while descriptive stats is fine, we often would rather compare some groups and see whether they significantly differ. And here is where the real magic of {gtsummary} starts. Namely, the `add_p()` function: 
+
+- automatically detects a variable type, 
+- applies correct statistical tests to check the difference between Treatment Drugs 
+- and displays p-values and names of Statistical Tests in the table
+
+```{r}
+d %>% 
+  tbl_summary(by = trt) %>% 
+  add_p()
+```
+
+Nice, right? But wait, there is more! There is a whole family of `add_*` functions which enable you to pimp your table with more useful information, namely:
+
+- `add_q()` - add a column of p-values corrected for multiple testing in order to reduce False Discovery Rate
+- `add_overall()` - add overall summary statistics
+- `add_n()` - add number of observations
+- `add_ci()` - add confidence intervals for medians proportions, etc., and even
+- `add_stat_label()` - add labels of descriptive statistics to each variable.
+
+
+```{r}
+tbl_summary(d, by = trt) %>% 
+  add_p() %>% 
+  add_q() %>% 
+  add_overall() %>% 
+  add_n() %>% 
+  add_ci() %>% 
+  add_stat_label()
+```
+
+The `add_*` helpers are actually just one of the four ways to improve your table and I'll show you the next three very soon, but for now, have a look at the last function from `add_*` family, namely: 
+
+- `add_difference()` which can be used instead of `add_p()`. It is useful, because "a difference" between groups is actually what we want most of the time. Here, you'll get different statistical tests by default, namely *Welch t-test for the difference in means*, and *Two sample test for equality in proportions*. How amazing is that?
+
+
+```{r}
+tbl_summary(d, by = trt) %>% 
+  add_difference() %>% 
+  add_q() %>% 
+  add_overall() %>% 
+  add_n() %>% 
+  add_ci() %>% 
+  add_stat_label() 
+```
+
+
+
+
+## Several different tests in one table
+
+But while default statistical tests save you tons of time and nerves, what if we want to apply specific tests to specific variables? Well, you can of coarse easily do that and here is how!
+
+### Change all tests
+
+First of all, you can change all tests at once. For example, if all of our your data is normally distributed, ... which would probably never happen ... by anyway, if all of our your data is normally distributed, we can apply "t.tests" to `all_continuous()` variables via "test" argument inside of `add_p()` function. And since it makes sense to use "Mean & SD" for "t.tests" instead of the default "Median & IQR", we can specify the descriptive statistics of our choice by using "statistic" argument inside of `tbl_summary()` function. Similarly, we can force `add_p()` to apply "fisher.tests" to `all_categorical()` variables.
+
+```{r}
+trial %>%
+  tbl_summary(
+    by        = trt,
+    statistic = gtsummary::all_continuous()  ~ "{mean} ({sd})") %>%
+  add_p(test  = list(
+      gtsummary::all_continuous()  ~ "t.test", 
+      gtsummary::all_categorical() ~ "fisher.test"))
+```
+
+
+### Specify Independent Tests
+
+Moreover, we can specify ANY descriptive statistics and ANY test we wish for ANY particular variable. The variables which were not explicitly specified, for example "Grade", will be analysed with default tests, and the *footnote* will be automatically extended in order to include all the necessary information, so that you have less things to worry about.
+
+```{r}
+trial %>% 
+  tbl_summary(
+    by = trt,
+    statistic = list(
+      age    ~ "{mean} ({sd})",
+      marker ~ "{mean} ({min}, {p25}, {p75}, {max})",
+      stage  ~ "{n} / {N} ({p}%)")) %>% 
+  add_p(test = list(
+      age    ~ "t.test",
+      marker ~ "wilcox.test",
+      stage  ~ "fisher.test")) %>% 
+  separate_p_footnotes()
+```
+
+
+### Specify Dependent Tests
+
+You can conduct almost any statistical test you can imagine. Here is a quick example of "paired.t.test" for continuous and paired "mcnemar.test" for categorical variables. You just need to make sure, you have an "id" column and have complete pairs in the data: 
+
+```{r}
+trial_paired <-
+  trial %>%
+  select(trt, marker, response) %>%
+  group_by(trt) %>%
+  mutate(id = row_number()) %>%
+  ungroup()
+
+trial_paired %>%
+  filter(complete.cases(.)) %>%
+  group_by(id) %>%
+  filter(n() == 2) %>%
+  ungroup() %>%
+  tbl_summary(by = trt, include = -id) %>%
+  add_p(test = list(
+    marker   ~ "paired.t.test",
+    response ~ "mcnemar.test"), 
+    group    = id)
+```
+
+
+## 2) pimp your table by `tbl_summary()` arguments
+
+Tests are amazing, but the real power of {gtsummary} is that it can easily summarize regression results. But before we summarize regressions, I have to give you the second useful kind of pimping your table, namely by using `tbl_summary()` arguments.
+
+![](customize2.png)
+
+Since you are already familiar with "by" and "statistic" arguments, you can imagine that there are more, right? Here are some of the most useful ones:
+
+- label - changes variable names
+- digits - changes the number of rounded decimal places
+- missing - determines whether missing observations are reported
+- missing_text - changes the name of the missing data
+- type - changes variable type for specified variables, affecting which summary statistics are displayed
+- sort - changes the type of sorting for categorical variables, where “alphanumeric” is a default, but when we change it to "frequency", "Tumor response" and "Patient Died" variables will be sorted differently
+- percent - determines how percentage statistics are calculated and displayed. While the default is "column", you can choose "row", or "cell"
+- include	- allows to either choose or remove particular predictors. For example, let's remove "Month to Death" for now, but make a separate survival study on that in a moment
+
+And of coarse, every function we use has it's own arguments. For instance, if you want to determine the number of decimal places in only p-values, not in the rest of the table, use `pvalue_fun` argument inside of `add_p()` function
+
+```{r}
+trial %>%
+  tbl_summary(
+    by           = trt,
+    statistic    = age   ~ "{mean} ({sd})", 
+    label        = grade ~ "New Name - Tumor Grade",
+    digits       = all_continuous() ~ 1,
+    # missing    = "no", 
+    missing_text = "Missing values",
+    type         = list(response ~ "categorical",
+                        death    ~ "categorical"),
+    sort         = everything()  ~ "frequency", 
+    percent      = "cell", 
+    include      = - ttdeath
+    ) %>%
+  add_p(pvalue_fun = ~style_pvalue(.x, digits = 3))
+```
+
+
+# 3. Summarize regression models
+
+Now, we finally arrived at the best part of {gtsummary}, namely summarizing regression models. ... Hallelujah... {gtsummary} supports most of the classic models (status 14.11.2022), like generalized linear, survival or mixed effects models and many more and this support is steadily growing:
+
+![](gtsummary_model_support.png)
+
+## Ready regression results with `tbl_regression()`
+
+For example the `tbl_regression()` function takes a multiple Bayesian logistic regression and returns a publication-ready and beautifully formatted table of model results. Here the "exponentiate = TRUE" argument displays *Odds Ratios* instead of default but less intuitive *Log-Odds Ratios*.
+
+
+```{r}
+bm <- arm::bayesglm(response ~ trt + age + grade, trial, family = binomial)
+
+bm_table <- tbl_regression(bm, exponentiate = TRUE) 
+
+bm_table
+```
+
+Now, remember we removed "time to death" predictor from the table for a separate analysis? Well, let's use "time to death" in a Cox Proportional Hazard regression and see a beautiful output `tbl_regression()` function produces:
+
+```{r}
+library(survival)
+cm <- coxph(Surv(ttdeath, death) ~ trt + age + grade, data = trial)
+
+cm_table <- tbl_regression(cm, exponentiate = TRUE) 
+
+cm_table
+```
+
+
+
+
+## Several univariate regression at once with `tbl_uvregression()`
+
+But `tbl_regression()` function is just a beginning. `tbl_uvregression()` conducts univariate model with every variable in our data set. We only need to 
+
+- define the method we want to use for modelling,
+- determine the "response" variable, which in our case is called ... response :) 
+- and specify modelling family in the "method arguments" ... argument :)
+
+... and viola, we have three separate logistic regression beautifully combined into one table. 
+
+
+```{r}
+uvlm_table <- trial %>%
+  select(response, trt, age, grade) %>%
+  tbl_uvregression(
+    method       = glm,
+    y            = response,
+    method.args  = list(family = binomial),
+    exponentiate = TRUE
+  ) 
+
+uvlm_table
+```
+Conducting several univariate Cox regressions is even more simple. I quickly learned to love `tbl_uvregression()`, because the same few lines of code would easily conduct 30 or 300 univariate models if my data set if huge. So, it saves time! But what saves time even more is **combining different tables with each other**. Have a look at it!
+
+```{r}
+uvcm_table <- tbl_uvregression(
+  trial %>% 
+    select(ttdeath, death, trt, age, grade), # 300 predictors
+  method       = coxph,
+  y            = Surv(ttdeath, death),
+  exponentiate = TRUE
+  ) 
+
+uvcm_table
+```
+
+## Regression model where the predictor remains the same, and the outcome changes
+
+```{r}
+trial %>%
+  select(age, marker, ttdeath, trt) %>%
+  tbl_uvregression(
+    method = lm,
+    x = trt,
+    show_single_row = "trt",
+    hide_n = TRUE
+  ) %>%
+  modify_header(list(
+    label ~"**Model Outcome**",
+    estimate ~ "**Treatment Coef.**"
+  )) %>%
+  modify_footnote(estimate ~ "Values larger than 0 indicate larger values in the Drug B group.")
+```
+
+
+
+## Side-by-side Regression Models with `tbl_merge()`
+
+Using only one function `tbl_merge()` we can put two tables we just created side-by-side and see the influence of the same predictors on two completely different response variables. We can even name those tables, for example "Tumor Response" for univariate logistic regressions and "Time to Death" for univariate Cox regressions we just conducted. The footnote is again, automatically displaying appropriate units for each model type. 
+
+### Different models with same predictors
+
+```{r}
+fancy_table <-
+  tbl_merge(
+    tbls        = list(bm_table, cm_table),
+    tab_spanner = c("Tumor Response", "Time to Death")
+  )
+
+fancy_table
+```
+
+
+### Uni- Multi-variate models with same predictors + Descpriptive stats
+
+But even more useful is a meta-table where descriptive statistics is combined with the results ob both univariate and multivariate models. 
+
+```{r}
+uni_multi <- tbl_merge(
+    tbls        = list(tbl_summary(d), uvlm_table, bm_table),
+    tab_spanner = c("**Describe**", "**Univariate Models**", "**Multivariate Model**")
+  )
+
+uni_multi
+```
+
+
+
+
+
+## tbl_stack()
+
+```{r}
+# stacking two tbl_regression objects
+t1 <-
+    glm(response ~ trt, trial, family = binomial) %>%
+    tbl_regression(
+        exponentiate = TRUE,
+        label = list(trt ~ "Treatment (unadjusted)")
+    )
+
+t2 <-
+    glm(response ~ trt + grade + stage + marker, trial, family = binomial) %>%
+    tbl_regression(
+        include = "trt",
+        exponentiate = TRUE,
+        label = list(trt ~ "Treatment (adjusted)")
+    )
+
+tbl_stack_ex1 <- tbl_stack(list(t1, t2))
+
+# Example 2 ----------------------------------
+# stacking two tbl_merge objects
+library(survival)
+t3 <-
+    coxph(Surv(ttdeath, death) ~ trt, trial) %>%
+    tbl_regression(
+        exponentiate = TRUE,
+        label = list(trt ~ "Treatment (unadjusted)")
+    )
+
+t4 <-
+    coxph(Surv(ttdeath, death) ~ trt + grade + stage + marker, trial) %>%
+    tbl_regression(
+        include = "trt",
+        exponentiate = TRUE,
+        label = list(trt ~ "Treatment (adjusted)")
+    )
+
+
+# first merging, then stacking
+row1 <- tbl_merge(list(t1, t3), tab_spanner = c("Tumor Response", "Death"))
+row2 <- tbl_merge(list(t2, t4))
+tbl_stack_ex2 <-
+    tbl_stack(list(row1, row2), group_header = c("Unadjusted Analysis", "Adjusted Analysis"))
+
+tbl_stack_ex2
+```
+
+
+
+## 3) Pimp your regression tables with helper functions modify_* (),  bold_* () / italicize_* ()
+
+And similarly to summary tables of statistical tests, we can easily customize our regression tables in 3 different ways.
+
+First, we can **add** more useful information to our regression table. For instance:
+
+- add_n(location = "level") - adds a N° of observations in each level of categorical variables
+- add_nevent(location = "level") - adds a N° of positive events of the outcome
+- add_global_p() - adds a global p-value for every variable, which is useful if we want to preselect potentially most influential variables for the further multivariate analysis with, let's say, p-value of under 0.2 
+- add_q() - adjusts p-values with False Discovery Rate correction for multiple testing as a default method, which can easily be changed to Bonferroni or any other correction method
+- add_significance_stars() - ... adds significant stars and by default removes p-values and confidence intervals, but we can choose to keep them
+- add_vif() - adds the variance inflation factor (VIF) or generalized VIF (GVIF) to the regression table. Function uses car::vif() to calculate the VIF.
+
+Secondly, we can modify the appearance of our table by modifying headers, captions or footnotes or by sorting variables by significance
+
+- modify_header()
+- modify_caption()
+- modify_footnote
+- sort_p()
+
+And finally, we have some aesthetics helpers, like `bold_ *` or `italic_ *` which helps to beautify our labels and levels even more. I personally found the `bold_p()` function to be the most interesting, because I can specify the threshold, under which the p-values will be displayed **bold**
+
+- bold_p(t = 0.10, q = TRUE) 
+- bold_labels()
+- bold_levels()
+- italicize_labels()
+- italicize_levels()
+
+```{r}
+glm(response ~ trt + age + ttdeath + grade, trial, family = binomial) %>% 
+  tbl_regression(
+    #pvalue_fun   = ~style_pvalue(.x, digits = 3),
+    exponentiate = TRUE
+  ) %>% 
+  
+  # add_* helpers
+  add_n(location = "level") %>%
+  add_nevent(location = "level") %>%  
+  add_global_p() %>%   
+  add_q() %>%        
+  add_significance_stars(hide_p = F, hide_se = T, hide_ci = F) %>% 
+  add_vif() %>% 
+  
+  # modify_* helpers
+  modify_header(label = "**Predictor**") %>% 
+  modify_caption("**Table 1. Really cool looking table!**") %>% 
+  modify_footnote(
+    ci = "CI = Credible Intervals are incredible ;)", abbreviation = TRUE) %>%
+  sort_p() %>% 
+  
+  # aesthetics helpers
+  bold_p(t = 0.10, q = TRUE) %>% 
+  bold_labels() %>% 
+  #bold_levels() %>% 
+  #italicize_labels() %>% 
+  italicize_levels()
+```
+
+Well, {gtsummary} has many more useful features that I can't cover in this blog-post without completely overwhelming you. But some of the honorable mentions are: 
+
+- cross tables, 
+- possibility to handle survey data, 
+- use predefined designs of tables with *themes*, 
+- report statistical result inside of body of text with *inline_text()* function, and 
+- customize the table even further using a massive functionality of {gt} package, 
+
+... so, feel free to explore it by yourself. But there is ONE THING left which you absolutely need to know how to do, namely ...
+
+# 4. Saving these beautiful tables as a picture or as MS Word document
+
+For that we'll use a {flextable} package and first convert our summary table into the flex-table-object, which we then save as an image, or as a publication ready "doc" file. Now, knowing how to visualize perfect tables, you absolutely need to learn how to perfectly visualize data and model results. Fortunately, you can also do it with only a few lines of code, which you can learn all about in less then 10 minutes from [this video](https://youtu.be/r3uKkmU4VQE).
+
+```{r}
+# install.packages("flextable")
+library(flextable)
+
+fancy_table %>%
+  as_flex_table() %>% 
+  save_as_image(path = "fancy_table.png")
+
+fancy_table %>%
+  as_flex_table() %>%
+  save_as_docx(path = "fancy_table.docx") 
+```
+
+
+
+
+## 4) Pimp your tables withadd {gt} arguments
+
+It does not matter what kind of appearence you wish to add to your table, using {gt} package - it's possible. By the way, that's where {gtsummary} got it's name ( ;) with sound ), where "gt" means "grammar of tables".
+
+```{r}
+library(gt)
+trial %>%
+  # create a gtsummary table
+  tbl_summary(by = trt) %>%
+  # convert from gtsummary object to gt object
+  as_gt() %>%
+  # modify with gt functions
+  tab_header("Table 1: Baseline Characteristics") %>% 
+  tab_spanner(
+    label = "Randomization Group",  
+    columns = starts_with("stat_")
+  ) %>% 
+  tab_options(
+    table.font.size = "small",
+    data_row.padding = px(1)) 
+```
+
+
+# 5. Report statistics inline
+
+##  inline_text()
+
+The Drug B was significantly different from Drug A inline_text(t1, variable = trt, level = "Drug B") ...
+
+
+We often need to report the results from a table in the text of an R markdown report
+
+```{r}
+trial2 <-
+  trial %>%
+  select(trt, marker, stage)
+
+tab1 <- tbl_summary(trial2, by = trt)
+tab1
+```
+
+The median (IQR) marker level in the Drug A and Drug B groups are `r inline_text(tab1, variable = marker, column = "Drug A")` and `r inline_text(tab1, variable = marker, column = "Drug B")`, respectively.
+
+```{r}
+m1 <- glm(response ~ age + stage, trial, family = binomial(link = "logit"))
+
+tbl_m1 <- tbl_regression(m1, exponentiate = TRUE)
+tbl_m1
+```
+
+
+
+`r inline_text(tbl_m1, variable = age)`
+
+Age was not significantly associated with tumor response `r inline_text(tbl_m1, variable = age, pattern = "(OR {estimate}; 95% CI {conf.low} - {conf.high}; {p.value})")`
+
+The inline_text function has arguments for rounding the p-value (pvalue_fun) and the coefficients and confidence interval (estimate_fun). These default to the same rounding performed in the table, but can be modified when reporting inline.
+
+However, while {gtsummary} is a King in producing amazing tables, reporting statistical results has it's own king, namely {report} package.
+
+
+
+# 6. themes()
+
+JAMA Theme
+
+```{r}
+theme_gtsummary_journal(journal = "jama")
+#> Setting theme `JAMA`
+theme_gtsummary_compact()
+
+library(ISLR)    # for Auto dataset
+m <- lm(mpg ~ origin * horsepower, data = Auto)
+
+tbl_regression(m) %>% 
+  modify_caption("Compact theme")
+
+reset_gtsummary_theme()
+```
+
+
+
+
+
+# 7. Survey Data
+
+The {gtsummary} package also supports survey data (objects created with the {survey} package) via the tbl_svysummary() function. The syntax for tbl_svysummary() and tbl_summary() are nearly identical, and the examples above apply to survey summaries as well.
+
+```{r}
+# loading the api data set
+data(api, package = "survey")
+
+svy_apiclus1 <- 
+  survey::svydesign(
+    id = ~dnum, 
+    weights = ~pw, 
+    data = apiclus1, 
+    fpc = ~fpc
+  ) 
+
+svy_apiclus1 %>%
+  tbl_svysummary(
+    # stratify summary statistics by the "both" column
+    by = both, 
+    # summarize a subset of the columns
+    include = c(api00, api99, both),
+    # adding labels to table
+    label = list(api00 ~ "API in 2000",
+                 api99 ~ "API in 1999")
+  ) %>%
+  add_p() %>%   # comparing values by "both" column
+  add_overall() %>%
+  # adding spanning header
+  modify_spanning_header(c("stat_1", "stat_2") ~ "**Met Both Targets**")
+```
+
+tbl_svysummary() can also handle weighted survey data where each row represents several individuals:
+
+```{r}
+Titanic %>%
+  as_tibble() %>%
+  survey::svydesign(data = ., ids = ~ 1, weights = ~ n) %>%
+  tbl_svysummary(include = c(Age, Survived))
+```
+
+
+
+
+
+
+
+
+
+
+
+# 8. Some potentially useful things
+
+## Cross Tables with `tbl_cross()`
+
+- Automatically adds a spanning header to your table with the name or label of your comparison variable.
+- Uses percent = "cell" by default.
+- Adds row and column margin totals (customizable through the margin argument).
+- Displays missing data in both row and column variables (customizable through the missing argument).
+
+
+
+```{r}
+trial %>%
+  tbl_cross(
+    row = stage,
+    col = trt,
+    percent = "cell", # or column, row, none
+    missing = "ifany", 
+    #margin = NULL # or column or row, to supress totals
+  ) %>%
+  add_p()
+```
+
+
+## Custom functions
+
+```{r}
+rmanova_common_variance <- function(data, variable, by, ...) {
+  data <- data[c(variable, by)] %>% dplyr::filter(complete.cases(.))
+  t.test(data[[variable]] ~ factor(data[[by]]), var.equal = TRUE) %>%
+  broom::tidy()
+}
+
+trial[c("age", "trt")] %>%
+  tbl_summary(by = trt) %>%
+  add_p(test = age ~ "rmanova_common_variance")
+```
+
+
+```{r eval = F}
+friedman_common_variance <- function(data, variable, by, random, ...) {
+  data <- data[c(variable, by)] %>% dplyr::filter(complete.cases(.))
+  friedman.test(variable ~ factor(data[[by]]) | random, data = data)
+
+  #t.test(data[[variable]] ~ factor(data[[by]]), var.equal = TRUE) %>%
+  broom::tidy()
+}
+
+wb %>%
+  tbl_summary(by = w, include = -t) %>%
+  add_p(test = x ~ "friedman_common_variance", random = t)
+```
+
+## Summarize a continuous variable by one or more categorical variables
+
+```{r}
+tbl_continuous(
+    data = trial,
+    variable = age,
+    by = trt,
+    include = grade
+)
+```
+
+```{r}
+trial %>%
+    tbl_custom_summary(
+        include = c("stage", "grade"),
+        by = "trt",
+        stat_fns = ~ gtsummary::continuous_summary("age"),
+        statistic = ~ "{median} [{p25}-{p75}]",
+        overall_row = TRUE,
+        overall_row_label = "All stages & grades"
+    ) %>%
+    modify_footnote(
+        update = all_stat_cols() ~ "Median age (IQR)"
+    )
+```
+
+## Plot estimate (experimental, the forest plot is much better for now)
+
+```{r}
+glm(response ~ marker + grade, trial, family = binomial) %>%
+  tbl_regression(
+    add_estimate_to_reference_rows = TRUE,
+    exponentiate = TRUE
+  ) %>%
+  plot()
+```
+
+## tbl_survfit - Creates table of survival probabilities
+
+```{r}
+library(survival)
+t1 <- tbl_survfit(
+  list(
+    survfit(Surv(ttdeath, death) ~ 1, trial),
+    survfit(Surv(ttdeath, death) ~ trt + grade, trial)),
+    times = c(12, 24),
+    label_header = "**{time} Month**") 
+
+t2 <- tbl_survfit(
+  trial, y = Surv(ttdeath, death),
+  include = c(trt, grade),
+  probs = 0.5,
+  label_header = "**Median Survival**"
+  ) %>% 
+  add_p()
+
+tbl_merge(list(t1,t2), tab_spanner = FALSE)
+```
+
+
+## Median survival
+
+```{r}
+library(survival)
+tbl_survfit(
+  trial, y = Surv(ttdeath, death),
+  include = c(trt, grade),
+  probs = 0.5,
+  label_header = "**Median Survival**"
+  ) %>% 
+  add_p()
+```
+
+
+
+
+# 9. Further readings and references
+
+- Main page of a package with most of the info you found here: https://www.danieldsjoberg.com/gtsummary/index.html
+
+- Cheat sheet: file:///Users/zablotski/Downloads/gtsummary.pdf
+
+- [The R Journal Article](file:///Users/zablotski/Downloads/RJ-2021-053.pdf)
+
+- Here is a very informative video of {gtsummary} creator - Daniel Sjoberg: https://www.youtube.com/watch?v=tANo9E1SYJE&t=2s&ab_channel=DanielSjoberg
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+

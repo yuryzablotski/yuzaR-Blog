@@ -1,0 +1,496 @@
+---
+title: "Publication-Ready Tables of Particular Statistical Tests and Models with {gtsummary}"
+description: |
+  Find a review of incredibly useful {gtsummary} package in a separate blog-post. Here I'll just collect all the possible Statsitcal Tests and Models, {gtsummary} can help with.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - models
+  - machine learning
+preview: thumbnail_gtsummary2.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+library(ggstatsplot)
+library(tidyverse)
+```
+
+# Quick review of the package as a video
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("hyP3Hx_1kTM") 
+```
+
+
+
+
+# Individual Statistical tests with p-values
+
+
+## Wilcoxon rank sum test for independent samples
+
+
+
+```{r}
+library(gtsummary)
+trial %>% 
+  select(trt, age) %>% 
+  tbl_summary(by = trt) %>% 
+  add_p()
+```
+
+## Student's Two Sample t-test for independent samples with equal variances
+
+```{r}
+trial %>% 
+  select(trt, age) %>% 
+  tbl_summary(
+    by = trt, 
+    statistic = age ~ "{mean} ({sd})",
+    missing = "no") %>% 
+  add_n() %>% 
+  add_p(age ~ "t.test", test.args = age ~ list(var.equal = TRUE))
+```
+
+
+
+
+
+## Welch Two Sample t-test for independent samples with unequal variances
+
+```{r}
+trial %>% 
+  select(trt, age) %>% 
+    tbl_summary(
+    by = trt, 
+    statistic = age ~ "{mean} ({sd})") %>%
+  add_p(age ~ "t.test")
+```
+
+## Paired t-test
+
+```{r}
+# install.packages("BSDA")       # for Fitness data
+library(BSDA)
+
+Fitness %>%
+  tbl_summary(
+    by = test, 
+    include = -subject,
+    statistic = number ~ "{mean} ({sd})") %>%
+  add_p(test = number ~ "paired.t.test", group = subject)
+
+# prove
+# make wide format
+d <- Fitness %>% 
+  pivot_wider(
+    id_cols     = subject, 
+    names_from  = test, 
+    values_from = number) %>% 
+  mutate(difference =  After - Before)
+
+t.test(d$Before, d$After, paired = T)
+
+ggwithinstats(
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = "parametric"
+)
+```
+
+
+## Paired Wilcoxon test
+
+```{r}
+# install.packages("BSDA")       # for Fitness data
+library(BSDA)
+
+Fitness %>%
+  tbl_summary(
+    by = test, 
+    include = -subject) %>%
+    add_p(test = number ~ "paired.wilcox.test", group = subject, test.args = number ~ list(exact = F))
+
+# prove
+wilcox.test(d$Before, d$After, paired = T, exact = F)
+
+ggwithinstats(
+  data = Fitness,
+  x    = test, 
+  y    = number, 
+  type = "np"
+)
+```
+
+
+
+## Kruskal-wallis test
+
+```{r}
+trial %>% 
+  select(age, stage) %>% 
+  tbl_summary(by = stage) %>% 
+  add_p()
+
+ggbetweenstats(trial, stage, age, type = "np")
+```
+
+## Fisher's ANOVA
+
+```{r}
+trial %>% 
+  select(age, stage) %>% 
+  tbl_summary(
+    by = stage, 
+    statistic = age ~ "mean ({sd})") %>% 
+  add_p(
+    age ~ "aov", 
+    pvalue_fun = ~ style_pvalue(.x, digits = 2),
+    test.args = age ~ list(var.equal = T))
+
+ggbetweenstats(trial, stage, age, var.equal = T)
+```
+
+
+## Welsh's ANOVA (not implemented yet: Nov. 2022)
+
+```{r}
+trial %>% 
+  select(age, stage) %>% 
+  tbl_summary(
+    by = stage, 
+    statistic = age ~ "mean ({sd})") %>% 
+  add_p(
+    age ~ "aov", 
+    pvalue_fun = ~ style_pvalue(.x, digits = 2),
+    test.args = age ~ list(var.equal = F))
+
+ggbetweenstats(trial, stage, age, var.equal = F)
+```
+
+## Repeated Measures ANOVA (not implemented yet: Nov. 2022)
+
+
+## Friedman test (not implemented yet: Nov. 2022)
+
+
+## Pearson's Chi-squared test
+
+```{r}
+trial %>% 
+  select(trt, stage) %>% 
+  tbl_summary(by = stage) %>% 
+  add_p(pvalue_fun = ~ style_pvalue(.x, digits = 3))
+
+ggbarstats(trial, trt, stage, label = "both")
+```
+
+
+## Fisher's test
+
+If number of observations in the categorical variable are <5, it takes Fisher's test automatically, which is kind of genius. 
+
+```{r}
+mtcars %>% 
+  select(am, cyl) %>% 
+  tbl_summary(by = am) %>% 
+  add_p()
+```
+
+
+But we can force the function calculate Fisher's test with >5 numbers too.
+
+
+```{r}
+trial %>% 
+  select(trt, stage) %>%
+  tbl_summary(by = trt) %>% 
+  add_p(
+    stage ~ "fisher.test", 
+    pvalue_fun = ~ style_pvalue(.x, digits = 2))
+```
+
+
+
+
+## McNemar's Chi-squared test with continuity correction
+
+### short table format
+
+```{r}
+set.seed(9) # for reproducibility 
+
+data2 <- data.frame(
+  id     = c(1:20),
+  before = sample(c("Yes", "No", "Yes", "Yes"), 20, replace = TRUE),
+  after  = sample(c("No", "Yes", "No", "No"), 20, replace = TRUE))
+
+
+data2 %>% 
+  select(-id) %>% 
+  tbl_cross(row = before, col = after) %>% 
+  add_p("mcnemar.test.wide")
+
+mcnemar.test(x = data2$before, y = data2$after, correct = T)
+```
+
+### long table format
+
+```{r}
+data <- data2 %>% 
+  pivot_longer(cols = 2:3, names_to = "time", values_to = "result")
+
+data %>%
+  tbl_summary(
+    by = time, 
+    include = result,
+    type = list(result ~ "categorical")) %>%
+  add_p(
+    everything() ~ "mcnemar.test", 
+    group = id,
+    pvalue_fun = ~style_pvalue(., digits = 3)
+  ) 
+```
+
+
+## McNemar's Chi-squared test without continuity correction
+
+```{r}
+data2 %>% 
+  select(-id) %>% 
+  tbl_cross(row = before, col = after) %>% 
+  add_p("mcnemar.test.wide", test.args=list(correct = F))
+
+mcnemar.test(x = data2$before, y = data2$after, correct = F)
+
+ggbarstats(
+  data = data2, 
+  x = before,
+  y = after, 
+  paired = T
+)
+```
+
+
+
+
+## Proportion test: 2-sample test for equality of proportions with continuity correction
+
+```{r}
+trial %>%
+  select(response, death, trt) %>%
+  tbl_summary(by = trt, missing = "no") %>%
+  add_p(
+    test = everything() ~ "prop.test", 
+    pvalue_fun = ~style_pvalue(.x, digits = 3)) %>%
+  add_n() 
+
+stats::prop.test(table(trial$trt, trial$response))
+stats::prop.test(table(trial$trt, trial$death))
+```
+
+
+
+
+# Individual models
+
+## Linear regression
+
+```{r}
+m <- glm(age ~ trt + grade, trial, family = gaussian)
+
+t1 <- tbl_regression(m) %>%
+  add_glance_table()
+
+t1
+
+```
+
+## Logistic regression
+
+```{r}
+m <- arm::bayesglm(response ~ trt + age + grade, trial, family = binomial)
+
+t2 <- tbl_regression(m, exponentiate = TRUE) %>% 
+  add_vif()
+
+t2
+```
+
+
+## Cox Proportional Hazards Regression
+
+```{r}
+library(survival)
+cox_m <- coxph(Surv(ttdeath, death) ~ age + marker + grade, data = trial)
+tbl_regression(cox_m, exponentiate = TRUE)
+```
+
+Note the sensible defaults with this basic usage (that can be customized later):
+
+- The model was recognized as logistic regression with coefficients exponentiated, so the header displayed “OR” for odds ratio.
+
+- Variable types are automatically detected and reference rows are added for categorical variables.
+
+- Model estimates and confidence intervals are rounded and formatted.
+
+- Because the variables in the data set were labelled, the labels were carried through into the {gtsummary} output table. Had the data not been labelled, the default is to display the variable name.
+
+- Variable levels are indented and footnotes added.
+
+### Univariate Cox models
+
+```{r}
+cox_uv_m <- trial %>%
+  select(ttdeath, death, age, marker, grade) %>%
+  tbl_uvregression(
+    method = coxph,
+    y = Surv(ttdeath, death), 
+    exponentiate = TRUE,
+    hide_n = TRUE
+  ) %>%
+  add_nevent(location = "level")
+
+cox_uv_m
+```
+
+```{r}
+uni_multi <- tbl_merge(
+    tbls        = list(
+      tbl_summary(
+        trial %>%
+          select(age, marker, grade)), 
+      cox_uv_m, 
+      tbl_regression(cox_m, exponentiate = TRUE)),
+    tab_spanner = c("**Describe**", "**Univariate Models**", "**Multivariate Model**")
+  )
+
+uni_multi
+```
+
+## Mixed effects models
+
+```{r}
+lme4::lmer(age ~ marker + stage + (1|grade), trial) %>%
+  tbl_regression()
+```
+
+## Multinomial models
+
+```{r}
+library(nnet)
+m <- multinom(grade ~ age, trial)
+
+tbl_regression(m)
+```
+
+
+## emmeans - or sort of - simply pairwise tests
+
+
+```{r}
+# table summarizing data with no p-values
+small_trial <- trial %>% select(grade, age, response)
+t0 <- small_trial %>%
+  tbl_summary(by = grade, missing = "no") %>%
+  modify_header(all_stat_cols() ~ "**{level}**")
+
+library(gt)
+# table comparing grade I and II
+t1 <- small_trial %>%
+  filter(grade %in% c("I", "II")) %>%
+  tbl_summary(by = grade, missing = "no") %>%
+  add_p() %>%
+  modify_header(p.value ~ md("**I vs. II**")) %>%
+  # hide summary stat columns
+  modify_column_hide(all_stat_cols())
+
+# table comparing grade I and III
+t2 <- small_trial %>%
+  filter(grade %in% c("I", "III")) %>%
+  tbl_summary(by = grade, missing = "no") %>%
+  add_p()  %>%
+  modify_header(p.value ~ md("**I vs. III**")) %>%
+  # hide summary stat columns
+  modify_column_hide(all_stat_cols())
+
+# table comparing grade II and III
+t3 <- small_trial %>%
+  filter(grade %in% c("II", "III")) %>%
+  tbl_summary(by = grade, missing = "no") %>%
+  add_p()  %>%
+  modify_header(p.value ~ md("**II vs. III**")) %>%
+  # hide summary stat columns
+  modify_column_hide(all_stat_cols())
+
+# merging the 3 tables together, and adding additional gt formatting
+tbl_merge(list(t0, t1, t2, t3)) %>%
+  modify_spanning_header(
+    list(
+      all_stat_cols() ~ "**Tumor Grade**",
+      starts_with("p.value") ~ "**p-values**"
+    )
+  )
+```
+
+
+
+```{r eval=F}
+library(broom.helpers)
+mod <- glm(response ~ stage + grade, data = trial, family = binomial)
+
+mod %>%
+  tidy_plus_plus(
+    add_pairwise_contrasts = TRUE, 
+    exponentiate = TRUE
+  ) %>%
+  knitr::kable()
+```
+
+
+
+
+
+# Further readings and references
+
+- Main page of a package with most of the info you found here: https://www.danieldsjoberg.com/gtsummary/index.html
+
+- Cheat sheet: file:///Users/zablotski/Downloads/gtsummary.pdf
+
+- [The R Journal Article](file:///Users/zablotski/Downloads/RJ-2021-053.pdf)
+
+- Here is a very informative video of {gtsummary} creator - Daniel Sjoberg: https://www.youtube.com/watch?v=tANo9E1SYJE&t=2s&ab_channel=DanielSjoberg
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+
+
