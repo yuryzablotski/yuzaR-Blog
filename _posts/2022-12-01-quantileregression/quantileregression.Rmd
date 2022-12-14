@@ -38,7 +38,7 @@ theme_set(theme_bw())
 I recommend to watch a video first, because I highlight things I talk about. It's only 14 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("Gtz8ca_4hVg") 
 ```
 
 
@@ -89,7 +89,7 @@ library(quantreg)
 mr <- rq(outcome ~ predictor, data = d, tau = .5)
 
 # compare models
-AIC(lr, mr) # => the lower AIS the better
+AIC(lr, mr) # => the lower AIC the better
 
 library(sjPlot) # I made a video on this 📦
 theme_set(theme_bw())
