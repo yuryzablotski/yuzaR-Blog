@@ -399,6 +399,34 @@ emmeans::emmeans(mr, pairwise ~ jobclass|education, weights = "prop", adjust = "
 
 plot_model(mr, type = "int")
 ```
+
+
+## Bayesian median regression
+
+```{r}
+library(brms)
+
+d <- tibble(
+  predictor = c(  1,   2,   3,  4,   5,   6,   7),
+  outcome   = c(1.5, 2.3, 2.8,  4.1, 5.3, 0, 6.8)
+)
+
+mr <- brm(
+  bf(outcome ~ predictor,
+     quantile = 0.5),
+  data = d,
+  family = asym_laplace(link_quantile = "identity")
+)
+
+mr2 <- quantreg::rq(outcome ~ predictor, data = d, tau = .5)
+
+ggplot(d, aes(predictor, outcome)) + 
+  geom_point() + 
+  geom_line(aes(y = fitted(mr2), color = "rq")) + 
+  geom_line(aes(y = fitted(mr, dpar = "mu")[,1], color = "brm"))
+```
+
+
 ## {lqmm} package: Fitting Linear Quantile Mixed Models
 
 ### Random intercept model

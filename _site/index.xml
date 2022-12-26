@@ -7,7 +7,7 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 13 Dec 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 25 Dec 2022 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Quantile Regression as an useful Alternative for Ordinary Linear Regression</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -65,7 +65,7 @@ ggplot(d, aes(predictor, outcome))+
   geom_point()+
   geom_smooth(method = lm, se = F,color = &amp;quot;red&amp;quot;, )+
   geom_quantile(quantiles = 0.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows, that linear model tries to please all points and
 misses most of them, which results in a bad fit. In contrast, the Median
 Regression ignores the outlier and visually fits the rest of the data
@@ -94,12 +94,12 @@ theme_set(theme_bw())
 plot_models(lr, mr, show.values = TRUE, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;By the way, we can use &lt;code&gt;ols_plot_resid_lev()&lt;/code&gt; function
 from {olsrr} package and see that we indeed have an outlier.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(olsrr)
 ols_plot_resid_lev(lr)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;
 # 2. Solve heteroscedasticity&lt;/p&gt;
 &lt;p&gt;Now let’s take a real world heteroscedastic data and see whether
 median regression handles it better. Engel dataset from {quantreg}
@@ -116,7 +116,7 @@ ggplot(engel, aes(income, foodexp))+
   geom_quantile(color = &amp;quot;blue&amp;quot;, quantiles = 0.5)+
   geom_quantile(color = &amp;quot;gray&amp;quot;, alpha = 0.3, 
                   quantiles = seq(.05, .95, by = 0.05))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;In order to better justify the use of QR, we can check
 heteroskedasticity via Breusch-Pagan test. Our test detects
 heteroscedasticity, so that we again need an alternative to linear
@@ -141,7 +141,7 @@ across groups + categorical predictor&lt;/h1&gt;
 &lt;p&gt;Now let’s see how both models handle not-normally distributed or
 skewed data, and, at the same time, see how they handle categorical
 predictors.&lt;/p&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For that we’ll use a Wage dataset from {ISLR} package and model the
 salary of 30 industrial and IT workers. And when we check the
 assumptions of linear model, we’ll see, that our data has no outliers,
@@ -185,7 +185,7 @@ mr &amp;lt;- rq(wage ~ jobclass, data = salary, tau = 0.5)
 plot_models(lr, mr, show.values = T, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;AIC(lr, mr)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;   df      AIC
 lr  3 630.4943
@@ -203,7 +203,7 @@ mr &amp;lt;- rq(wage ~ jobclass, data = Wage)
 plot_models(lr, mr, show.values = T, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;AIC(lr, mr)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;   df      AIC
 lr  3 30774.50
@@ -220,7 +220,7 @@ ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
   ) +
   scale_fill_viridis_d(name = &amp;quot;Quantiles&amp;quot;)+
   xlab(&amp;quot;salary&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;While median regression delivers better results, the median is still
 a single central location, similar to the mean. But since median
 regression is a special case of QR, which uses only a 5th quantile, and
@@ -241,7 +241,7 @@ plot_models(lr, qm10, qm50, qm90,
             m.labels = c(&amp;quot;LR&amp;quot;, &amp;quot;QR 10%&amp;quot;, &amp;quot;QR 50%&amp;quot;, &amp;quot;QR 90%&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)+
   ylab(&amp;quot;Increase in wage after switch to IT&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;
 The results show, that for low salaries the difference between
 industrial and IT jobs is smaller, then for median or high salaries. The
 reason for that could be education, so that when your education level is
@@ -265,7 +265,7 @@ ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
     quantile_lines = TRUE, quantiles = seq(.1, .9, by = 0.1)
   ) +
   scale_fill_viridis_d(name = &amp;quot;Quantiles&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;qm20 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.20)
 qm30 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.30)
 qm70 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.70)
@@ -274,7 +274,7 @@ qm80 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.80)
 plot_models(lr, qm10, qm20, qm30, qm50, qm70, qm80, qm90, show.values = TRUE)+
   theme(legend.position = &amp;quot;none&amp;quot;)+
   ylab(&amp;quot;Increase in wage after switch to IT&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But that is just a beginning! Because, similarly to low (tau = 0.1)
 or high (tau = 0.9) quantiles, we can model more quantile to get
 &lt;strong&gt;more useful inference&lt;/strong&gt;. And we can even …&lt;/p&gt;
@@ -305,7 +305,7 @@ workers with already relatively high salaries.&lt;/p&gt;
 
 summary(q) %&amp;gt;% 
   plot(parm = &amp;quot;jobclass2. Information&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="multivariable-regression"&gt;6. Multivariable regression&lt;/h1&gt;
 &lt;p&gt;So, I think a univariable QR is already much more useful then LR. But
 that’s not all, multivariable QR is even more useful, because it can
@@ -347,7 +347,7 @@ q &amp;lt;- rq(wage ~ jobclass + age + race, data = Wage,
 
 summary(q) %&amp;gt;% 
   plot(c(&amp;quot;jobclass2. Information&amp;quot;, &amp;quot;age&amp;quot;, &amp;quot;race2. Black&amp;quot;, &amp;quot;race3. Asian&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
 Since, in all of the panels of the plot, the quantile regression
 estimates lie at some point outside the confidence intervals for the
 ordinary least squares regression, we can conclude that the effects of
@@ -368,7 +368,7 @@ o &amp;lt;-gcrq(wage ~ ps(age),
 
 # par(mfrow=c(1,2)) # for several plots
 plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="efficiency-of-cars"&gt;2) Efficiency of cars&lt;/h2&gt;
 &lt;p&gt;Here, a linear regression will answer the question - which variables
 affect the average car mileage? A low quantile of 0.1 will tell us which
@@ -1015,7 +1015,7 @@ $contrasts
 P value adjustment: bonferroni method for 10 tests &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(mr, type = &amp;quot;pred&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$education&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="median-regression-with-interactions"&gt;Median regression with
 interactions&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;mr &amp;lt;- rq(wage ~ education*jobclass, data = Wage, tau = 0.5)
@@ -1070,8 +1070,152 @@ education = 5. Advanced Degree:
  contrast                       estimate   SE   df t.ratio p.value
  1. Industrial - 2. Information    -7.07 7.38 2990  -0.958  0.3383&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(mr, type = &amp;quot;int&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;
-## {lqmm} package: Fitting Linear Quantile Mixed Models&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="bayesian-median-regression"&gt;Bayesian median regression&lt;/h2&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(brms)
+
+d &amp;lt;- tibble(
+  predictor = c(  1,   2,   3,  4,   5,   6,   7),
+  outcome   = c(1.5, 2.3, 2.8,  4.1, 5.3, 0, 6.8)
+)
+
+mr &amp;lt;- brm(
+  bf(outcome ~ predictor,
+     quantile = 0.5),
+  data = d,
+  family = asym_laplace(link_quantile = &amp;quot;identity&amp;quot;)
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB \
+  foo.c
+clang -mmacosx-version-min=10.13 -I&amp;quot;/Library/Frameworks/R.framework/Resources/include&amp;quot; -DNDEBUG   -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/unsupported&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/BH/include&amp;quot; -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include&amp;quot; -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DBOOST_NO_AUTO_PTR  -include &amp;#39;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp&amp;#39;  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+In file included from &amp;lt;built-in&amp;gt;:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Dense:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Core:88:
+/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name &amp;#39;namespace&amp;#39;
+namespace Eigen {
+^
+/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected &amp;#39;;&amp;#39; after top level declarator
+namespace Eigen {
+               ^
+               ;
+In file included from &amp;lt;built-in&amp;gt;:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Dense:1:
+/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Core:96:10: fatal error: &amp;#39;complex&amp;#39; file not found
+#include &amp;lt;complex&amp;gt;
+         ^~~~~~~~~
+3 errors generated.
+make: *** [foo.o] Error 1
+
+SAMPLING FOR MODEL &amp;#39;85b2020786ce5146d45f30d196f73e53&amp;#39; NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 3.5e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.35 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.055794 seconds (Warm-up)
+Chain 1:                0.039998 seconds (Sampling)
+Chain 1:                0.095792 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL &amp;#39;85b2020786ce5146d45f30d196f73e53&amp;#39; NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 1e-05 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.049198 seconds (Warm-up)
+Chain 2:                0.045848 seconds (Sampling)
+Chain 2:                0.095046 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL &amp;#39;85b2020786ce5146d45f30d196f73e53&amp;#39; NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 9e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.052762 seconds (Warm-up)
+Chain 3:                0.055581 seconds (Sampling)
+Chain 3:                0.108343 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL &amp;#39;85b2020786ce5146d45f30d196f73e53&amp;#39; NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 1e-05 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 0.050343 seconds (Warm-up)
+Chain 4:                0.055897 seconds (Sampling)
+Chain 4:                0.10624 seconds (Total)
+Chain 4: &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;mr2 &amp;lt;- quantreg::rq(outcome ~ predictor, data = d, tau = .5)
+
+ggplot(d, aes(predictor, outcome)) + 
+  geom_point() + 
+  geom_line(aes(y = fitted(mr2), color = &amp;quot;rq&amp;quot;)) + 
+  geom_line(aes(y = fitted(mr, dpar = &amp;quot;mu&amp;quot;)[,1], color = &amp;quot;brm&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h2 id="lqmm-package-fitting-linear-quantile-mixed-models"&gt;{lqmm}
+package: Fitting Linear Quantile Mixed Models&lt;/h2&gt;
 &lt;h3 id="random-intercept-model"&gt;Random intercept model&lt;/h3&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(lqmm)
 data(Orthodont)
@@ -1085,8 +1229,8 @@ tau = 0.1
 
 Fixed effects:
                 Value Std. Error lower bound upper bound  Pr(&amp;gt;|t|)
-(Intercept) 16.733609   0.774097   15.178002     18.2892 &amp;lt; 2.2e-16
-age          0.522199   0.070113    0.381301      0.6631 1.346e-09
+(Intercept) 16.733609   0.763980   15.198334     18.2689 &amp;lt; 2.2e-16
+age          0.522199   0.062525    0.396551      0.6478 5.563e-11
                
 (Intercept) ***
 age         ***
@@ -1097,8 +1241,8 @@ tau = 0.5
 
 Fixed effects:
                 Value Std. Error lower bound upper bound  Pr(&amp;gt;|t|)
-(Intercept) 16.811968   0.768394   15.267822     18.3561 &amp;lt; 2.2e-16
-age          0.618802   0.076946    0.464174      0.7734 1.648e-10
+(Intercept) 16.811968   0.762259   15.280150     18.3438 &amp;lt; 2.2e-16
+age          0.618802   0.069988    0.478157      0.7594 1.017e-11
                
 (Intercept) ***
 age         ***
@@ -1109,8 +1253,8 @@ tau = 0.9
 
 Fixed effects:
                 Value Std. Error lower bound upper bound  Pr(&amp;gt;|t|)
-(Intercept) 16.826789   0.769971   15.279475      18.374 &amp;lt; 2.2e-16
-age          0.796190   0.085502    0.624368       0.968 2.031e-12
+(Intercept) 16.826789   0.763037   15.293408     18.3602 &amp;lt; 2.2e-16
+age          0.796190   0.088709    0.617923      0.9745 6.417e-12
                
 (Intercept) ***
 age         ***
@@ -1129,9 +1273,9 @@ summary(rsm)&lt;/code&gt;&lt;/pre&gt;
 tau = 0.1
 
 Fixed effects:
-               Value Std. Error lower bound upper bound  Pr(&amp;gt;|t|)    
-(Intercept) 16.74285    0.57417    15.58901     17.8967 &amp;lt; 2.2e-16 ***
-age          0.57087    0.14996     0.26951      0.8722 0.0003921 ***
+                Value Std. Error lower bound upper bound Pr(&amp;gt;|t|)    
+(Intercept) 16.742845   0.941291   14.851249     18.6344  &amp;lt; 2e-16 ***
+age          0.570874   0.308036   -0.048148      1.1899  0.06987 .  
 ---
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
 
@@ -1139,8 +1283,8 @@ tau = 0.5
 
 Fixed effects:
                Value Std. Error lower bound upper bound  Pr(&amp;gt;|t|)    
-(Intercept) 16.76179    0.56423    15.62792     17.8957 &amp;lt; 2.2e-16 ***
-age          0.65987    0.12215     0.41440      0.9053 1.922e-06 ***
+(Intercept) 16.76179    0.94237    14.86801     18.6556 &amp;lt; 2.2e-16 ***
+age          0.65987    0.10140     0.45611      0.8636  3.84e-08 ***
 ---
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
 
@@ -1148,8 +1292,8 @@ tau = 0.9
 
 Fixed effects:
                Value Std. Error lower bound upper bound  Pr(&amp;gt;|t|)    
-(Intercept) 16.79738    0.56463    15.66271     17.9320 &amp;lt; 2.2e-16 ***
-age          0.62056    0.12088     0.37764      0.8635 4.884e-06 ***
+(Intercept) 16.79738    0.93414    14.92015     18.6746 &amp;lt; 2.2e-16 ***
+age          0.62056    0.11194     0.39560      0.8455 1.172e-06 ***
 ---
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
 
@@ -1176,7 +1320,7 @@ o &amp;lt;-gcrq(wage ~ ps(age),
 
 # par(mfrow=c(1,2)) # for several plots
 plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c4ab6233_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b6389f06d_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="references-and-further-readings"&gt;References and further
 readings&lt;/h1&gt;
 &lt;ul&gt;
@@ -1204,7 +1348,7 @@ class="uri"&gt;http://www.econ.uiuc.edu/~roger/research/rq/QReco.pdf&lt;/a&gt;&l
       <category>statistics</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-12-01-quantileregression</guid>
-      <pubDate>Tue, 13 Dec 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 25 Dec 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-12-01-quantileregression/thumbnail_quantile_regression.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -1222,7 +1366,7 @@ about. It’s less then 5 minutes long.&lt;/p&gt;
 &lt;iframe src="https://www.youtube.com/embed/M_7MOkAm9WU" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="make-sure-you-have-unusual-data"&gt;Make sure you have unusual
 data&lt;/h1&gt;
 &lt;p&gt;For the sake of simplicity let’s take only 5 observations with one
@@ -1242,14 +1386,14 @@ d &amp;lt;- tibble(
 )
 
 plot(d)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 2. run ordinary least squares regression
 m &amp;lt;- lm(outcome ~ predictor, data= d)
 
 # 3.make residual diagnostics
 library(olsrr)
 ols_plot_resid_lev(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="perform-robust-regression"&gt;Perform robust regression&lt;/h1&gt;
 &lt;p&gt;Now, we’ll use &lt;code&gt;lmrob()&lt;/code&gt; function form {robustbase}
 package to conduct the robust regression and have a look at the
@@ -1304,7 +1448,7 @@ compute.outlier.stats
 seed : int(0) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(sjPlot)
 plot_residuals(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="how-and-why-does-robust-regression-works"&gt;How and why does
 robust regression works?&lt;/h1&gt;
 &lt;p&gt;Namely, a robust regression gives different &lt;strong&gt;robustness
@@ -1351,7 +1495,7 @@ which made me miss an important discovery (4) and never win a Nobel
 Price ;)&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="file14d3c38340cbc_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 6. compare coefficients and goodness of fit of both models
 tab_model(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;table style="border-collapse:collapse; border:none;"&gt;
@@ -1504,7 +1648,7 @@ model&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(carData)
 cm &amp;lt;- lm(prestige ~ income * education, data = Duncan)
 ols_plot_resid_lev(cm)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;crm &amp;lt;- lmrob(prestige ~ income * education, data = Duncan)
 
 library(performance)
@@ -1531,7 +1675,7 @@ plot_model(rm2, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(rm3, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3c38340cbc_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="file14d3c38340cbc_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="file382b3ffa8ccf_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -1890,17 +2034,17 @@ optimal_model_backward           |   glm | 135.9 (0.215) |  165.9 (&amp;lt;.001)
 optimal_model_forward            |   glm | 144.9 (0.002) |  149.6 (0.007) | 155.2 (0.006) | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7f8d7a176370&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc2c55f8c20&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7f8d3b0d1948&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc273820c30&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7f8d5cd34558&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc2a47383e0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7f8d5cd34558&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fc2a47383e0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -1947,7 +2091,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3cc5c2752_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b2d48911f_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -1996,7 +2140,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3cc5c2752_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b2d48911f_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -2005,7 +2149,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="f9179015-dd37-4bca-971f-a193f7fa9a57"&gt;&lt;style&gt;
+&lt;template id="d689c759-f306-4f28-a559-eadbef2186bb"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -2043,11 +2187,11 @@ background-color: transparent;
 .katex-display {
     margin: 0 0 !important;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-1e0e954c{}.cl-1e035ab0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1e083a44{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1e083a58{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1e08597a{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e085984{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e08598e{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e085998{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e085999{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e0859a2{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e0859a3{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e0859ac{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1e0859b6{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-1e0e954c'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-1e08597a"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-1e085984"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-1e08598e"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1e085998"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e085999"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859a2"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1e085998"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e085999"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859a2"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1e085998"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e085999"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859a2"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1e085998"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e085999"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859a2"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1e085998"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e085999"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859a2"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-1e0859a3"&gt;&lt;p class="cl-1e083a44"&gt;&lt;span class="cl-1e035ab0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859ac"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-1e0859b6"&gt;&lt;p class="cl-1e083a58"&gt;&lt;span class="cl-1e035ab0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="f37c2c88-fed9-4be9-8685-88101d7623b3"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-33a1a3b6{}.cl-33989aa0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-339c756c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-339c7576{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-339c8f8e{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8f98{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8f99{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8fa2{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8fa3{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8fac{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8fad{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8fb6{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-339c8fc0{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-33a1a3b6'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-339c8f8e"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-339c8f98"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-339c8f99"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-339c8fa2"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fa3"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fac"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-339c8fa2"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fa3"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fac"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-339c8fa2"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fa3"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fac"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-339c8fa2"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fa3"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fac"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-339c8fa2"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fa3"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fac"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-339c8fad"&gt;&lt;p class="cl-339c756c"&gt;&lt;span class="cl-33989aa0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fb6"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-339c8fc0"&gt;&lt;p class="cl-339c7576"&gt;&lt;span class="cl-33989aa0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="124d4b1f-d2c5-473f-82e8-ea6c3e069b78"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("f37c2c88-fed9-4be9-8685-88101d7623b3");
-var template = document.getElementById("f9179015-dd37-4bca-971f-a193f7fa9a57");
+var dest = document.getElementById("124d4b1f-d2c5-473f-82e8-ea6c3e069b78");
+var template = document.getElementById("d689c759-f306-4f28-a559-eadbef2186bb");
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
@@ -2080,7 +2224,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3cc5c2752_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b2d48911f_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -2117,7 +2261,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file14d3cc5c2752_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file382b2d48911f_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;

@@ -28,403 +28,538 @@ draft: true
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
-
-Rewrite: "There are statistical effects, marginal effects, marginal means, marginal slopes, conditional effects, conditional marginal effects, marginal effects at the mean, and many other similarly-named ideas. There are also regression coefficients and estimates, which have marginal effects vibes, but may or may not actually be marginal effects depending on the complexity of the model."
-
-
-```{r}
-# Load packages
-# ---------------
-library(tidyverse)        # dplyr, ggplot2, and friends
-library(broom)            # Convert models to data frames
-library(marginaleffects)  # Marginal effects stuff
-library(emmeans)          # Marginal effects stuff
-
-# Visualization-related packages
-library(ggtext)           # Add markdown/HTML support to text in plots
-library(glue)             # Python-esque string interpolation
-library(scales)           # Functions to format numbers nicely
-library(gganimate)        # Make animated plots
-library(patchwork)        # Combine ggplots
-library(ggrepel)          # Make labels that don't overlap
-library(MetBrewer)        # Artsy color palettes
-# library(sjPlot)
-
-# Data-related packages
-library(palmerpenguins)   # Penguin data
-library(WDI)              # Get data from the World Bank's API
-library(countrycode)      # Map country codes to different systems
-library(vdemdata)         # Use data from the Varieties of Democracy
-library(gtsummary)
-# (V-Dem) project
-# Install vdemdata from GitHub, not CRAN
-# devtools::install_github("vdeminstitute/vdemdata")
-
-theme_set(theme_test())
-```
-
-
-```{r}
-# Helpful functions
-# -------------------
-# Format numbers in pretty ways
-nice_number <- label_number(style_negative = "minus", accuracy = 0.01)
-nice_p <- label_pvalue(prefix = c("p < ", "p = ", "p > "))
-
-# Point-slope formula: (y - y1) = m(x - x1)
-find_intercept <- function(x1, y1, slope) {
-  intercept <- slope * (-x1) + y1
-  return(intercept)
-}
-
-# Visualization settings
-# ------------------------
-
-# Custom ggplot theme to make pretty plots
-# Get IBM Plex Sans Condensed at https://fonts.google.com/specimen/IBM+Plex+Sans+Condensed
-theme_mfx <- function() {
-  theme_minimal(base_family = "IBM Plex Sans Condensed") +
-    theme(panel.grid.minor = element_blank(),
-          plot.background = element_rect(fill = "white", color = NA),
-          plot.title = element_text(face = "bold"),
-          axis.title = element_text(face = "bold"),
-          strip.text = element_text(face = "bold"),
-          strip.background = element_rect(fill = "grey80", color = NA),
-          legend.title = element_text(face = "bold"))
-}
-
-# Make labels use IBM Plex Sans by default
-update_geom_defaults("label", 
-                     list(family = "IBM Plex Sans Condensed"))
-update_geom_defaults(ggtext::GeomRichText, 
-                     list(family = "IBM Plex Sans Condensed"))
-update_geom_defaults("label_repel", 
-                     list(family = "IBM Plex Sans Condensed"))
-
-# Use the Johnson color palette
-clrs <- met.brewer("Johnson")
-```
-
-
-
-rewrite: "Put as simply as possible, in the world of statistics, “marginal” means “additional,” or what happens to outcome variable  when explanatory variable  changes a little."
-
-
-rewrite: Importantly, the slope shows the relationship between  and . If  increases by 1 unit,  increases by 2: when  is 1,  is 1; when  is 2,  is 3, and so on. We can call this the marginal effect, or the change in  that results from one additional .
-
-rewrte: In the calculus world, the term “marginal” isn’t used all that often. Instead they talk about derivatives. But in the end, all these marginal/derivative things are just slopes. My first exposure to the word “marginal” meaning “changes in things” wasn’t actually in the world of statistics, but in economics. My first exposure to the word “marginal” meaning “changes in things” wasn’t actually in the world of statistics, but in economics.
-
-At its core, regression modeling in statistics is all about fancy ways of finding averages and fancy ways of drawing lines. Even if you’re doing non-regression things like t-tests, those are technically still just regression behind the scenes. Statistics is all about lines, and lines have slopes, or derivatives. These slopes represent the marginal changes in an outcome. As you move an independent/explanatory variable , what happens to the dependent/outcome variable ?
-
-
-```{r}
-penguins <- penguins |> drop_na()
-
-model_slider <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
-tbl_regression(model_slider)
-library(sjPlot)
-plot_model(model_slider, type = "pred")
-
-model_switch <- lm(body_mass_g ~ species, data = penguins)
-tbl_regression(model_switch)
-plot_model(model_switch, type = "pred")
+knitr::opts_chunk$set(echo = T)
 ```
 
 ```{r}
-model_mixer <- lm(body_mass_g ~ flipper_length_mm + bill_depth_mm + species + sex,
-                  data = penguins)
-tbl_regression(model_mixer)
+library(tidyverse)       # for everything good in R
+theme_set(theme_test())  # beautifies plots 
+library(emmeans)         # multiply power of your results!
 ```
 
-rewrite: Interpreting these coefficients is a little different now, since we’re working with multiple moving parts. In regular stats class, you’ve probably learned to say something like “Holding all other variables constant, a 1 mm increase in flipper length is associated with a 17.5 gram increase in body mass, on average” (slider) or “Holding all other variables constant, Chinstrap penguins are 79 grams lighter than Adelie penguins, on average” (switch).
+# Why do we need {emmeans}?
 
-rewrite: This idea of “holding everything constant” though can be tricky to wrap your head around. Imagining this model like a mixer board can help, though. Pretend that you set the bill depth slider to some value (0, the average, whatever), you flip the Chinstrap and Gentoo switches off, you flip the male switch off, and then you slide only the flipper length switch up and down. You’d be looking at **the marginal effect of flipper length for female Adelie penguins with an average (or 0 or whatever) length of bill depth.** Stop moving the flipper length slider and start moving the bill depth slider and you’ll see the marginal effect of bill depth for female Adelie penguins. Flip on the male switch and you’ll see the marginal effect of bill depth for male Adelie penguins. Flip on the Gentoo switch and you’ll see the marginal effect of bill depth for male Gentoo penguins. And so on.
+# Understanding "emmeans"
 
+"emmeans" is an abbreviation for estimated marginal means. And in a linear regression it calculates means of a numeric predictor. However, since it also calculates probabilities, counts etc., the name - {emmeans} is, I think, just an artifact from the old times, where this package wasn't that powerful.
 
-# What are marginal effects?
+"estimated" is part of the name, since any results of {emmmeans} is estimated from models, not from data
 
-...but we haven’t officially defined it in the statistics world yet. It’s tricky to do that, though, because there are so many synonyms and near synonyms for the idea of a statistical effect, like marginal effect, marginal mean, marginal slope, conditional effect, conditional marginal effect, and so on.
-
-- Marginal effect: the statistical effect for continuous explanatory variables; the partial derivative of a variable in a regression model; the effect of a single slider
-- Conditional effect or group contrast: the statistical effect for categorical explanatory variables; the difference in means when a condition is on vs. when it is off; the effect of a single switch
-
-# Slopes and marginal effects
+"marginal" - could be seen as average of averages. In a contingency table, the "marginal means" of one variable are the means for that variable averaged across every level of the other variable. For example, a marginal mean of mpg for cyl = 4 is 25.4 averaged over 0 and 1 levels of "am". The same is with a average of mpg for am = 0, which is 19, which was averages over the means of all three types of cylinders. 
 
 ```{r}
-# Get data from the World Bank's API
-wdi_raw <- WDI(country = "all", 
-               indicator = c(population = "SP.POP.TOTL",
-                             gdp_percapita = "NY.GDP.PCAP.KD"), 
-               start = 2000, end = 2020, extra = TRUE)
+d <- mtcars %>% 
+  mutate(cyl = factor(cyl),
+         am  = factor(am),
+         gear= factor(gear))
 
-# Clean up the World Bank data
-wdi_2020 <- wdi_raw |> 
-  filter(region != "Aggregates") |> 
-  filter(year == 2020) |> 
-  mutate(log_gdp_percapita = log(gdp_percapita)) |> 
-  select(-region, -status, -year, -country, -lastupdated, -lending)
-
-# Get data from V-Dem and clean it up
-vdem_2020 <- vdem %>% 
-  select(country_name, country_text_id, year, region = e_regionpol_6C,
-         disclose_donations_ord = v2eldonate_ord, 
-         public_sector_corruption = v2x_pubcorr,
-         polyarchy = v2x_polyarchy, civil_liberties = v2x_civlib) %>% 
-  filter(year == 2020) %>% 
-  mutate(disclose_donations = disclose_donations_ord >= 3,
-         disclose_donations = ifelse(is.na(disclose_donations), FALSE, disclose_donations)) %>% 
-  # Scale these up so it's easier to talk about 1-unit changes
-  mutate(across(c(public_sector_corruption, polyarchy, civil_liberties), ~ . * 100)) |> 
-  mutate(region = factor(region, 
-                         labels = c("Eastern Europe and Central Asia",
-                                    "Latin America and the Caribbean",
-                                    "Middle East and North Africa",
-                                    "Sub-Saharan Africa",
-                                    "Western Europe and North America",
-                                    "Asia and Pacific")))
-
-# Combine World Bank and V-Dem data into a single dataset
-corruption <- vdem_2020 |> 
-  left_join(wdi_2020, by = c("country_text_id" = "iso3c")) |> 
-  drop_na(gdp_percapita)
-
-glimpse(corruption)
+with(d, tapply(mpg, list(cyl, am), mean)) %>% 
+  addmargins(FUN = mean)
 ```
+This is called reference grid:
+
+- For each predictor that is a factor, use its levels.
+- For each numeric predictor (covariate), use its average
+
+Estimated marginal means.Once the reference grid is established, we can consider using the model to estimate the mean at each point in the reference grid.
+
 ```{r}
-model_simple <- lm(public_sector_corruption ~ civil_liberties,
-                   data = corruption)
+m <- lm(mpg ~ cyl + am + hp, d)
+ref_grid(m)
+mean(d$hp)
+```
 
-plot_model(model_simple, type = "pred", show.data = T)
+But that's just an example, let's take it slowly one step at the time
 
-tbl_regression(model_simple)
-emtrends(model_simple, 
-         var = "civil_liberties")
+# 1. one categorical predictor
+
+```{r}
+m <- lm(mpg ~ cyl, d)
+library(sjPlot) # I made a video on this 📦
+plot_model(m, type = "pred")
+
+ref_grid(m)
+emmeans::emmeans(m, pairwise ~ cyl)
 ```
 
 
-rewrite: The  coefficient by itself is thus enough to tell us what the effect of moving civil liberties around is—it is the marginal effect of civil liberties on public sector corruption. Slide the civil liberties index up by 1 point and public sector corruption will be −0.81 points lower, on average.
+# 2. one numeric predictor
 
 
 ```{r}
-model_sq <- lm(public_sector_corruption ~ civil_liberties + I(civil_liberties^2),
-               data = corruption)
+m <- lm(mpg ~ hp, d)
 
-tbl_regression(model_sq)
+plot_model(m, type = "pred")
+tab_model(m)
 
-model_sq |> 
-  emtrends(~ civil_liberties, var = "civil_liberties",
-           at = list(civil_liberties = c(25, 55, 80)),
-           delta.var = 0.001) |> 
-  test()
+ref_grid(m)
+emmeans(m, ~ hp)
 ```
 
-# marginaleffects’s and emmeans’s philosophies of averaging
+# Altering the reference grid
 
-We deal with the uncertainty of these marginal effects by taking averages, which is why we talk about “average marginal effects” when interpreting these effects. So far, marginaleffects::marginaleffects() and emmeans::emtrends() have given identical results. But behind the scenes, these packages take two different approaches to calculating these marginal averages. The difference is very subtle, but incredibly important.
+while an average mpg estimate per cyl category is nice,
+a single average mpg for a single average predictor value hp
+is not that informative, however, if we use at least two of
+them, for example the lowest and the highest, we see the slope
+we see on the plot and see why it is significant, it differst a lot.
 
 
 ```{r}
-mfx_sq <- marginaleffects(model_sq)
-head(mfx_sq)
-
-mfx_sq |> 
-  group_by(term) |> 
-  summarize(avg_dydx = mean(dydx))
-
-summary(mfx_sq)
+ref_grid(m, cov.reduce = range)
+emmeans(m, ~ hp, cov.reduce = range)
+emmeans(m, ~ hp, cov.reduce = range) %>% plot()
 ```
 
-# Marginal effects at the mean (the default in emmeans)
-
-The emmeans package actually calculates two average things: “marginal effects at the means” (MEM), or average slopes using emtrends(), and “estimated marginal means” (EMM), or average predictions using emmeans().
+moreover, instead of a range we can specify any
+particular values of predictor
 
 ```{r}
-avg_civ_lib <- mean(corruption$civil_liberties)
-avg_civ_lib
-
-
-model_sq |> 
-  emtrends(~ civil_liberties, var = "civil_liberties", delta.var = 0.001)
-
-model_sq |> 
-  marginaleffects(newdata = "mean") |> 
-  summary()
+ref_grid(m, at = list(hp = c(100, 200, 300)))
+emmeans(m, ~ hp, at = list(hp = c(100, 200, 300)))
+emmeans(m, ~ hp, at = list(hp = c(100, 200, 300))) %>% 
+  plot()
 ```
-The disadvantage of this approach is that no actual country has a civil_liberties score of exactly 70.16. If we had other covariates in the model, no country would have exactly the average of every variable. The marginal effect is thus calculated based on a hypothetical country that might not possibly exist in real life.
 
+which can be very useful for non-linear models. Let me show
+you an example, if we have a closer look at the data, we'll
+notice a non-linear, namely quadratic, pattern.
+plot_model(m, type = "pred", show.data = T)
 
-# Marginal effects in logistic regression
-
-Disclosure laws is a binary outcome, so we’ll use logistic regression to constrain the fitted values and predictions to between 0 and 1.
+which we can depict using second polynomial degree: 
 
 ```{r}
-model_logit <- glm(
-  disclose_donations ~ public_sector_corruption,
-  family = binomial(link = "logit"),
-  data = corruption
+m1 <- lm(mpg ~ poly(hp, 2), d) 
+plot_model(m1, type = "pred", show.data = T)
+```
+
+
+the significance of both degrees tells us that we are right
+
+```{r}
+tab_model(m1)
+```
+
+
+now we can use three particular values to take three slices
+of hp and since the CIs of two last would overlap, we can 
+can assume those are not different.
+
+```{r}
+emmeans(m1, ~ hp, at = list(hp = c(100, 200, 300))) %>% 
+  plot()
+```
+
+
+using emmeans and "specs" argument, we can compare those emmeans
+and see that there is no difference between hp = 200 and 300
+
+```{r}
+emmeans(m1, specs = pairwise ~ hp, 
+        at = list(hp = c(100, 200, 300)))
+```
+
+
+
+# 3. two categorical predictors without interactions
+
+```{r}
+m <- lm(mpg ~ am + cyl, d)
+ref_grid(m)
+```
+
+
+Results are averaged over the levels of: am
+
+```{r}
+emmeans::emmeans(m, pairwise ~ cyl)
+```
+
+
+contrasts are identical, but emmeans not
+
+```{r}
+emmeans(m, pairwise ~ cyl, at = list(am = "0"))
+emmeans(m, pairwise ~ cyl, at = list(am = "1"))
+
+emmeans(m, pairwise ~ cyl, at = list(am = "0"))$emmeans
+emmeans(m, pairwise ~ cyl, at = list(am = "1"))$emmeans
+```
+
+
+Now I understand this: Results are averaged over the levels of: am
+(24.8+27.4)/2 = 26.1
+(18.6+21.2)/2 = 19.9
+(14.7 +17.3)/2= 16
+
+
+
+
+
+
+# 4. one categorical + one numeric predictor without interactions
+
+In models with covariates, EMMs are often called adjusted means.
+
+```{r}
+m <- lm(mpg ~ cyl + hp, d)
+ref_grid(m)
+```
+
+
+Results are for the average hp = 146.69
+
+```{r}
+emmeans(m, pairwise ~ cyl)
+```
+
+
+contrasts are identical, but emmeans not
+here is the prove
+
+```{r}
+emmeans(m, pairwise ~ cyl, at = list(hp = 146.69))$emmeans
+```
+
+
+Results are averaged over the levels of: hp 
+we can't determine the levels of covariate, it'll be averaged
+
+```{r}
+emmeans(m, pairwise ~ cyl, at = list(hp = c(46.69, 246.69)))$emmeans
+```
+
+
+but we can determine one value of covariate
+
+```{r}
+emmeans(m, pairwise ~ cyl, at = list(hp = 500))$emmeans
+```
+
+
+
+# 5. multiple predictors without interactions
+
+```{r}
+m <- lm(mpg ~ cyl + hp + am + disp + gear, d)
+
+ref_grid(m)
+ref_grid(m)@grid
+```
+
+
+Results are averaged over the levels of: am, gear 
+
+```{r}
+emmeans::emmeans(m, pairwise ~ cyl)
+library(gtsummary) # I made a video on this 📦
+tbl_regression(m, add_pairwise_contrasts = T, 
+               pvalue_fun   = ~style_pvalue(.x, digits = 3))
+
+```
+
+determine different values then reg_grid using "at"
+
+```{r}
+emmeans(m, pairwise ~ cyl, 
+        at = list(
+          hp = 100, am = "1", disp = 100, gear = "5")
+        )$emmeans
+
+```
+
+contrasts still stay the same
+
+
+
+
+
+
+
+# 6. two categorical predictors WITH interactions
+
+```{r}
+m <- lm(mpg ~ am * cyl, d)
+ref_grid(m)
+
+emmip(m, cyl ~ am, CIs = TRUE)
+```
+
+
+not cool
+
+```{r}
+emmeans(m, pairwise ~ cyl)
+```
+
+
+NOTE: Results may be misleading due to involvement in interactions
+
+cooler
+determine different values then reg_grid using "at"
+
+
+```{r}
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "0")
 )
 
-tbl_regression(model_logit)
-```
-
-Each row contains actual observed data, so the predictions arguably reflect variation in reality. marginaleffects() helpfully converts the AME into percentage points (note that it says “Prediction type: response”), so we can interpret the value directly.
-
-
-```{r}
-model_logit |> 
-  marginaleffects() |> 
-  summary()
-```
-
-
-
-
-```{r}
-emmeans(model_logit, ~public_sector_corruption, type = "response")
-
-model_logit |> 
-  emtrends(~ public_sector_corruption, 
-           var = "public_sector_corruption", 
-           regrid = "response")
-
-```
-For fun, let’s make a super fancy logistic regression model with a quadratic term and an interaction. We’ll compare the AME and MEM for public sector corruption again. This is where either marginaleffects() or emtrends() is incredibly helpful—correctly combining all the necessary coefficients, given that corruption is both squared and interacted, and given that there are other variables to worry about, would be really hard.
-
-```{r}
-model_logit_fancy <- glm(
-  disclose_donations ~ public_sector_corruption + I(public_sector_corruption^2) + 
-    polyarchy + log_gdp_percapita + public_sector_corruption * region,
-  family = binomial(link = "logit"),
-  data = corruption
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "1")
 )
 ```
 
+very cool
 
 ```{r}
-model_logit_fancy |> 
-  marginaleffects() |> 
-  summary()
-```
+emmeans(m, pairwise ~ cyl | am)
+emmeans(m, pairwise ~ am | cyl)
 
-ich: er sagt also, dass marginaleffects package is viel besser. 
-er: We can use emtrends() to get region-specific slopes, but we’ll get different results because of the order of averaging. emmeans creates averages and then plugs them in; marginaleffects plugs all the values in and then creates averages:
-
-```{r}
-mfx_logit_fancy <- model_logit_fancy |> 
-  marginaleffects(variables = "public_sector_corruption")
-
-# Original data frame + estimated dydx for each row
-head(mfx_logit_fancy)
-
-mfx_logit_fancy |> 
-  group_by(region) |> 
-  summarize(region_ame = mean(dydx))
-```
-
-```{r}
-model_logit_fancy |> 
-  emtrends(~ public_sector_corruption + region,
-           var = "public_sector_corruption", regrid = "response")
-```
-
-We can replicate the results from emtrends() with marginaleffects() if we plug in average or representative values (more on that in the next section), since that follows the same averaging order as emmeans (i.e. plugging averages into the model)
-
-```{r}
-model_logit_fancy |> 
-  marginaleffects(variables = "public_sector_corruption",
-                  by = "region",
-                  newdata = datagrid(region = levels(corruption$region))) 
 ```
 
 
 
+
+
+# 7. Interactions with covariates
+
 ```{r}
-regions_to_use <- c("Western Europe and North America", 
-                    "Latin America and the Caribbean",
-                    "Middle East and North Africa")
+m <- lm(mpg ~ cyl * hp, d)
+ref_grid(m)
+emtrends(m, pairwise ~ cyl, var = "hp")
+emtrends(m, pairwise ~ cyl, var = "hp")[[1]] %>% plot()
 
-expand_grid(public_sector_corruption = c(20, 80),
-            region = regions_to_use,
-            polyarchy = mean(corruption$polyarchy),
-            log_gdp_percapita = mean(corruption$log_gdp_percapita))
+# plotting and getting contrasts
+plot_model(m, type = "int")
+emmeans(m, pairwise ~ hp|cyl,  cov.reduce = range)
 
-modelr::data_grid(corruption,
-                  public_sector_corruption = c(20, 80),
-                  region = regions_to_use,
-                  .model = model_logit_fancy) 
+emmeans(m, pairwise ~ cyl|hp,  cov.reduce = range)
 
-datagrid(model = model_logit_fancy,
-         public_sector_corruption = c(20, 80),
-         region = regions_to_use)
+ref_grid(m, cov.reduce = range) %>% plot(by = "hp")
 
-ref_grid(model_logit_fancy,
-         at = list(public_sector_corruption = c(20, 80),
-                   region = regions_to_use))
-```
-```{r}
-model_logit_fancy |> 
-  marginaleffects(variables = "public_sector_corruption",
-                  newdata = datagrid(public_sector_corruption = c(20, 80),
-                                     region = regions_to_use))
-
-model_logit_fancy |> 
-  emtrends(~ public_sector_corruption + region, var = "public_sector_corruption",
-           at = list(public_sector_corruption = c(20, 80),
-                     region = regions_to_use),
-           regrid = "response", delta.var = 0.001) 
+emmip(m, cyl ~ hp, CIs = TRUE, 
+      cov.reduce = range, dodge = 50) 
 ```
 
 
+# 8. one interaction + more predictors
+
 ```{r}
-model_logit_fancy |> 
-  emmeans(~ public_sector_corruption + region, var = "public_sector_corruption",
-          at = list(public_sector_corruption = c(20, 80),
-                    region = regions_to_use),
-          regrid = "response") 
+m <- lm(mpg ~ am * cyl + hp + gear + disp, d)
+ref_grid(m)
+
+# cooler determine different values then reg_grid using "at"
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "0", hp = 146.6875, disp = 230.7219)
+)$emmeans
+
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "1", hp = 146.6875, disp = 230.7219)
+)$emmeans
+
+# contrasts here are amazingly still stay the same ;)
+
+# very cool
+emmeans(m, pairwise ~ cyl | am)$emmeans
+
+# determine different values then reg_grid using "at"
+
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "1", hp = 300, disp = c(100, 200, 300), gear = "5")
+)$emmeans %>% plot()
+
+emmip(m, cyl ~ am, CIs = TRUE) 
+
+mtcars.rg <- ref_grid(m,
+                      at = list(hp = 300, 
+                                disp = c(100, 200, 300)))
+mtcars.rg
+
+# plotting 
+plot(mtcars.rg, by = "disp")
+
 ```
 
 
-```{r}
-logit_predictions <- model_logit_fancy |> 
-  emmeans(~ public_sector_corruption + region, var = "public_sector_corruption",
-          at = list(public_sector_corruption = seq(0, 90, 1)),
-          regrid = "response") |> 
-  as_tibble()
 
-ggplot(logit_predictions, aes(x = public_sector_corruption, y = prob, color = region)) +
-  geom_line(size = 1) +
-  labs(x = "Public sector corruption", y = "Predicted probability of having\na campaign finance disclosure law", color = NULL) +
-  scale_y_continuous(labels = percent_format()) +
-  scale_color_manual(values = c(clrs, "grey30")) +
-  theme(legend.position = "bottom")
-```
 
-(Alternatively, you can use marginaleffects’s built-in plot_cap() to make this plot with one line of code):
-
+# 9. Interactions with covariates + other predictors
 
 ```{r}
-plot_cap(model_logit_fancy, condition = c("public_sector_corruption", "region"))
+library(ISLR)
+m <- lm(wage ~ age*education + jobclass, data = Wage)
+
+ref_grid(m)
+
+emtrends(m, pairwise ~ education, var = "age")$emtrends
+
+emmip(m, education ~ age, CIs = T, 
+      cov.reduce = range)
+
+# nothing changes on the 5 slopes, doesn't matter what jobclass level I take, and whether I take one
+
+emtrends(m, pairwise ~ education, var = "age", 
+        at = list(jobclass = "1. Industrial")
+)$emtrends
+```
+
+
+
+# 10. several interactions
+
+```{r}
+m <- lm(mpg ~ am * cyl + hp * gear, d)
+ref_grid(m)
+
+emmeans(m, pairwise ~ cyl | am)
+emmip(m, am ~ cyl, CIs = T)
+
+emtrends(m, ~ gear, var = "hp", cov.reduce = range)
+emmip(m, gear ~ hp, CIs = T, cov.reduce = range)
 
 ```
 
-# Categorical contrasts as statistical/marginal effects
 
-Confusingly, people sometimes also use the term “marginal effect” to talk about group averages or predicted values (I myself am guilty of this!). Technically speaking, a marginal effect is only a partial derivative, or a slope—not a predicted value or a difference in group means.
+# 11. plotting p-values
+
+```{r}
+m <- lm(mpg ~ cyl * am, data = d)
+
+m_emmeans <- emmeans(m, pairwise ~ cyl | am)
+m_emmeans
+
+# This matrix shows the EMMs along the diagonal, P values in the 
+# upper triangle, and the differences in the lower triangle.
+
+pwpm(m_emmeans[[1]])
+
+# 28.1-20.6
+
+pwpm(m_emmeans[[1]], adjust = "fdr")
+
+```
+
+# ??? Effect size: Cohen effect sizes are close cousins of pairwise differences
+
+```{r}
+eff_size(
+  m_emmeans, 
+  sigma = sqrt(mean(sigma(m)^2)), 
+  edf   = df.residual(m) )
+```
 
 
-The main takeaway from this whole post is this: If you take the average before plugging values into the model, you compute average marginal effects for a combination of covariates that might not actually exist in reality. If you take the average after plugging values into the model, each original observation reflects combinations of covariates that definitely exist in reality, so the average marginal effect reflects that reality.
+# Graphical comparisons
 
-# conclusion
+```{r}
 
-To remember all these differences, here’s a table summarizing all their different approaches:
+plot(m_emmeans, comparisons = TRUE)
+
+pwpp(m_emmeans[[1]], type = "response")+ # by = "am"
+  geom_vline(xintercept = 0.05, linetype = 2) 
+```
 
 
 
 
 
-# Refernces and further readings
 
-- https://www.andrewheiss.com/blog/2022/05/20/marginalia/
+
+
+
+
+
+
+
+This plot illustrates, as much as anything else, how silly it is 
+to try to predict mileage for a 4-cylinder car having high 
+displacement, or an 8-cylinder car having low displacement. 
+The widths of the intervals give us a clue that we are extrapolating.
+
+
+
+
+# ??? Using weights?  HOW???
+
+```{r}
+# same
+m <- lm(mpg ~ am + cyl, d)
+sapply(c("equal", "prop", "outer", "cells", "flat"), function(w)
+  emmeans(m, ~ cyl * am, weights = w, type = "response")) %>% 
+  as.data.frame() %>% 
+  select(equal.cyl, equal.am, contains("emmean")) # prob
+
+# differ
+m <- lm(mpg ~ am + cyl + hp + gear, d)
+sapply(c("equal", "prop", "outer", "cells", "flat"), function(w)
+  emmeans(m, ~ cyl * am, weights = w, type = "response")) %>% 
+  as.data.frame() %>% 
+  select(equal.cyl, equal.am, contains("emmean")) # prob
+
+# same
+m <- lm(mpg ~ am * cyl, d)
+sapply(c("equal", "prop", "outer", "cells", "flat"), function(w)
+  emmeans(m, ~ cyl * am, weights = w, type = "response")) %>% 
+  as.data.frame() %>% 
+  select(equal.cyl, equal.am, contains("emmean")) # prob
+
+# differ
+m <- lm(mpg ~ am * cyl + hp * gear, d)
+sapply(c("equal", "prop", "outer", "cells", "flat"), function(w)
+  emmeans(m, ~ cyl * am, weights = w, type = "response")) %>% 
+  as.data.frame() %>% 
+  select(equal.cyl, equal.am, contains("emmean")) # prob
+```
+
+
+
+# ??? 3 way interactions 
+
+```{r}
+noise.lm <- lm(noise/10 ~ size * type * side, data = auto.noise)
+anova(noise.lm)
+
+ref_grid(noise.lm)
+
+# WRONG
+emmeans(noise.lm, pairwise ~ size)
+emmip(noise.lm, type ~ size | side)
+
+# ALSO WRONG
+emm_s.t <- emmeans(noise.lm, pairwise ~ size | type)
+
+# Use lots of plots, and think about the results.
+car::Anova(noise.lm)
+
+joint_tests(noise.lm)
+joint_tests(noise.lm, by = "side")
+
+
+
+
+
+
+ref_grid(m, at = list(hp = median(d$hp)))
+emmeans(m, ~ hp, at = list(hp = median(d$hp)))
+```
+
+# Exotic models (probably extra post)
+
+## Median based regression ;) 
+
+is very useful when hp is not normally distributed.
+
+```{r}
+library(quantreg)
+mm <- rq(mpg ~ hp, data = d)
+
+emmeans(mm, ~ hp, at = list(hp = median(d$hp)))
+```
+
+## Mixed-effects models
+
+## Multinomila models
+
+
+
+
