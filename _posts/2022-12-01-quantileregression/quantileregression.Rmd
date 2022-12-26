@@ -403,7 +403,7 @@ plot_model(mr, type = "int")
 
 ## Bayesian median regression
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(brms)
 
 d <- tibble(
@@ -414,7 +414,7 @@ d <- tibble(
 mr <- brm(
   bf(outcome ~ predictor,
      quantile = 0.5),
-  data = d,
+  data = d, iter = 10, refresh = 0,
   family = asym_laplace(link_quantile = "identity")
 )
 

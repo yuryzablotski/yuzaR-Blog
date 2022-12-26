@@ -2560,7 +2560,7 @@ education = 5. Advanced Degree:
 <span><span class='va'>mr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brm.html'>brm</a></span><span class='op'>(</span></span>
 <span>  <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brmsformula.html'>bf</a></span><span class='op'>(</span><span class='va'>outcome</span> <span class='op'>~</span> <span class='va'>predictor</span>,</span>
 <span>     quantile <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>,</span>
-<span>  data <span class='op'>=</span> <span class='va'>d</span>,</span>
+<span>  data <span class='op'>=</span> <span class='va'>d</span>, iter <span class='op'>=</span> <span class='fl'>10</span>, refresh <span class='op'>=</span> <span class='fl'>0</span>,</span>
 <span>  family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brmsfamily.html'>asym_laplace</a></span><span class='op'>(</span>link_quantile <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span></span>
 <span><span class='op'>)</span></span></code></pre>
 </div>
@@ -2585,107 +2585,7 @@ In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/lib
 #include &lt;complex&gt;
          ^~~~~~~~~
 3 errors generated.
-make: *** [foo.o] Error 1
-
-SAMPLING FOR MODEL &#39;85b2020786ce5146d45f30d196f73e53&#39; NOW (CHAIN 1).
-Chain 1: 
-Chain 1: Gradient evaluation took 3.4e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.34 seconds.
-Chain 1: Adjust your expectations accordingly!
-Chain 1: 
-Chain 1: 
-Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 1: 
-Chain 1:  Elapsed Time: 0.051276 seconds (Warm-up)
-Chain 1:                0.041081 seconds (Sampling)
-Chain 1:                0.092357 seconds (Total)
-Chain 1: 
-
-SAMPLING FOR MODEL &#39;85b2020786ce5146d45f30d196f73e53&#39; NOW (CHAIN 2).
-Chain 2: 
-Chain 2: Gradient evaluation took 9e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
-Chain 2: Adjust your expectations accordingly!
-Chain 2: 
-Chain 2: 
-Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 2: 
-Chain 2:  Elapsed Time: 0.043488 seconds (Warm-up)
-Chain 2:                0.054178 seconds (Sampling)
-Chain 2:                0.097666 seconds (Total)
-Chain 2: 
-
-SAMPLING FOR MODEL &#39;85b2020786ce5146d45f30d196f73e53&#39; NOW (CHAIN 3).
-Chain 3: 
-Chain 3: Gradient evaluation took 1e-05 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
-Chain 3: Adjust your expectations accordingly!
-Chain 3: 
-Chain 3: 
-Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 3: 
-Chain 3:  Elapsed Time: 0.056586 seconds (Warm-up)
-Chain 3:                0.061702 seconds (Sampling)
-Chain 3:                0.118288 seconds (Total)
-Chain 3: 
-
-SAMPLING FOR MODEL &#39;85b2020786ce5146d45f30d196f73e53&#39; NOW (CHAIN 4).
-Chain 4: 
-Chain 4: Gradient evaluation took 9e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.09 seconds.
-Chain 4: Adjust your expectations accordingly!
-Chain 4: 
-Chain 4: 
-Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-Chain 4: 
-Chain 4:  Elapsed Time: 0.057047 seconds (Warm-up)
-Chain 4:                0.062175 seconds (Sampling)
-Chain 4:                0.119222 seconds (Total)
-Chain 4: </code></pre>
+make: *** [foo.o] Error 1</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mr2</span> <span class='op'>&lt;-</span> <span class='fu'>quantreg</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/quantreg/man/rq.html'>rq</a></span><span class='op'>(</span><span class='va'>outcome</span> <span class='op'>~</span> <span class='va'>predictor</span>, data <span class='op'>=</span> <span class='va'>d</span>, tau <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span></span>
 <span></span>
@@ -2713,8 +2613,8 @@ tau = 0.1
 
 Fixed effects:
                 Value Std. Error lower bound upper bound  Pr(&gt;|t|)
-(Intercept) 16.733609   0.737472   15.251602     18.2156 &lt; 2.2e-16
-age          0.522199   0.066765    0.388028      0.6564 3.586e-10
+(Intercept) 16.733609   0.799386   15.127181     18.3400 &lt; 2.2e-16
+age          0.522199   0.075741    0.369992      0.6744 9.662e-09
                
 (Intercept) ***
 age         ***
@@ -2725,8 +2625,8 @@ tau = 0.5
 
 Fixed effects:
                 Value Std. Error lower bound upper bound  Pr(&gt;|t|)
-(Intercept) 16.811968   0.739747   15.325390     18.2985 &lt; 2.2e-16
-age          0.618802   0.084143    0.449711      0.7879 1.879e-09
+(Intercept) 16.811968   0.769289   15.266023     18.3579 &lt; 2.2e-16
+age          0.618802   0.092032    0.433858      0.8037 1.777e-08
                
 (Intercept) ***
 age         ***
@@ -2736,12 +2636,9 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 tau = 0.9
 
 Fixed effects:
-                Value Std. Error lower bound upper bound  Pr(&gt;|t|)
-(Intercept) 16.826789   0.740276   15.339149     18.3144 &lt; 2.2e-16
-age          0.796190   0.095524    0.604228      0.9882 5.901e-11
-               
-(Intercept) ***
-age         ***
+               Value Std. Error lower bound upper bound  Pr(&gt;|t|)    
+(Intercept) 16.82679    0.78381    15.25166      18.402 &lt; 2.2e-16 ***
+age          0.79619    0.11188     0.57135       1.021 4.384e-09 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
@@ -2762,17 +2659,20 @@ tau = 0.1
 
 Fixed effects:
                 Value Std. Error lower bound upper bound Pr(&gt;|t|)    
-(Intercept) 16.742845   0.783705   15.167931     18.3178  &lt; 2e-16 ***
-age          0.570874   0.320909   -0.074016      1.2158  0.08146 .  
+(Intercept) 16.742845   0.634666   15.467437     18.0183  &lt; 2e-16 ***
+age          0.570874   0.324664   -0.081564      1.2233  0.08493 .  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 tau = 0.5
 
 Fixed effects:
-               Value Std. Error lower bound upper bound  Pr(&gt;|t|)    
-(Intercept) 16.76179    0.76585    15.22275     18.3008 &lt; 2.2e-16 ***
-age          0.65987    0.12137     0.41597      0.9038 1.703e-06 ***
+                Value Std. Error lower bound upper bound  Pr(&gt;|t|)
+(Intercept) 16.761786   0.641923   15.471794     18.0518 &lt; 2.2e-16
+age          0.659872   0.081927    0.495233      0.8245 1.578e-10
+               
+(Intercept) ***
+age         ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
@@ -2780,8 +2680,8 @@ tau = 0.9
 
 Fixed effects:
                Value Std. Error lower bound upper bound  Pr(&gt;|t|)    
-(Intercept) 16.79738    0.76168    15.26673     18.3280 &lt; 2.2e-16 ***
-age          0.62056    0.11015     0.39919      0.8419 8.543e-07 ***
+(Intercept) 16.79738    0.64733    15.49651     18.0982 &lt; 2.2e-16 ***
+age          0.62056    0.10978     0.39995      0.8412 7.979e-07 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
