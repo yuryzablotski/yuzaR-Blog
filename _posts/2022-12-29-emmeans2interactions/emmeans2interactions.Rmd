@@ -1,0 +1,406 @@
+---
+title: "R package reviews {emmeans} Interactions - unleash the power of {emmeans}"
+description: |
+  Analysing interactions is both (1) very challenging, that's why it's rarely executed, and (2) very rewording if done well, that's why it's still sometimes attempted. {emmeans} is one of the few packages which demistify interactions and extract the most knowledge out of statistical models!
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - models
+preview: thumbnail_gtsummary.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+
+
+```{r}
+library(ISLR)            # for Wage data
+library(emmeans)         # unleash power of your results!
+library(tidyverse)       # for everything good in R
+theme_set(theme_test())  # beautifies plots 
+
+set.seed(1)              # for reproducibility
+salary <- Wage %>% 
+  mutate(age_cat = case_when(
+    age < 40 ~ "1. young",
+    TRUE     ~ "2. old"
+  )) %>% 
+  group_by(education) %>% 
+  sample_n(40)
+```
+
+
+
+
+
+
+# Why do we need interactions?
+
+Interactions in a statistical model allow for a much deeper understanding of the relationships between variables. Interaction effects can be viewed as an "it depends" effect.
+
+For instance, if someone asks you, "Do you prefer to wear a raincoat or a sweater on a cold day?" Your response would probably be, "It depends on whether it's raining or not!" In this case, the *precipitation* is the other variable in the interaction term, and it affects your preference for wearing a *raincoat or a sweater*. This shows the "it depends" nature of an interaction effect, where you can't answer the question without considering the other variable in the interaction term.
+
+# Interaction between two categorical predictors
+
+Let's compare a model with to a model without interaction to see how. These models explore, whether we'll earn more money as we age and see how a profession choice affects our salary. 
+
+And the model without interaction clearly states, that as we age, our income increases by the average of 15K, and when we choose the IT job over the Industrial job, we'll earn 21 thousand dollars more. So far so good. 
+
+
+```{r}
+m  <- lm(wage ~ age_cat * jobclass, salary)
+m1 <- lm(wage ~ age_cat + jobclass, salary)
+
+library(gtsummary) # I made a video on this 📦
+tbl_regression(m1)
+```
+
+However, the model has a problem: salary increases with age regardless of profession, resulting in identical differences between young and old in both job classes. Similarly, IT professionals earn 21.3K more than factory workers at any age, young or old. This seems unrealistic!
+
+```{r}
+emmeans(m1, pairwise ~ age_cat | jobclass)$contrasts
+emmeans(m1, pairwise ~ jobclass| age_cat)$contrasts
+```
+
+
+This occurs because models without interactions examine the influence of each predictor while holding all other predictors constant. While this is fine, it does not offer a deep understanding of how our income **depends** on both job type and age at the same time. On the other hand, a model with interaction looks at the **effect of one predictor at each level of the other predictor**. 
+
+```{r}
+a <- emmip(m1, age_cat ~ jobclass, CIs = TRUE)+
+  theme(legend.position = "top")+
+  ggtitle("NO interaction")
+
+b <- emmip(m, age_cat ~ jobclass, CIs = TRUE)+
+  theme(legend.position = "top")+
+  ggtitle("Interaction")
+
+library(patchwork)
+a + b
+```
+
+For instance, for the young, a choice of profession is of great importance, as they can earn more in IT than in an industrial job. While as people age, the difference in income between the two types of jobs becomes less significant. Similarly, an Industrial jobs tend to have a noticeable increase in salary with age, while IT jobs do not. This may seem disappointing for IT crowd, but we must remember that IT folks earn a lot from the very beginning of their careers.
+
+```{r}
+emmeans(m, pairwise ~ jobclass | age_cat)$contrasts
+emmeans(m, pairwise ~ age_cat | jobclass)$contrasts
+```
+
+
+If you are still uncertain about the usefulness of interactions in models, consider this: which model would you trust to design your professional life? The one with interactions, or the one without? The choice is yours. The consequences, lasting. ... No pressure ;)
+
+> **_NOTE:_** Buy the way, if you stumbled upon this video and some words or code are unclear, I highly recommend watching the [introductory video on {emmeans} first](https://youtu.be/hyP3Hx_1kTM).
+
+
+For now, let's return to our model (very quick picture of a female model, like in fight club) and point out 3 important nuances.
+
+1) First, if we ask for EMMs in only one of predictors, let's say *age*, we'll get a red warning that our **results may be misleading due to involvement in interactions** ... which seems like a problem (disappointing sound), but it is actually not! The effect of *age* is now studied for different *jobclasses*, and the warning helps us to remember that. (supportive sound) Therefore, when interaction is involved, do not interpret the main effects separately. 
+ 
+```{r}
+emmeans(m, pairwise ~ age_cat)
+```
+
+2) Secondly, the difference between the young and old is negative because the income of older workers was subtracted from that of younger workers. If this seems counterintuitive, we can simply reverse the order within the pairs to obtain a positive number.
+ 
+
+```{r}
+emmeans(m, ~ age_cat | jobclass) %>%
+          pairs(reverse = TRUE)
+```
+
+3) And finally, did you realize that *emmeans* have 95% confidence intervals (CIs), while *contrasts* do not? Don't worry, I have you covered ;) We can display them using the `infer = TRUE` argument. 
+
+```{r}
+emmeans(m, pairwise ~ age_cat | jobclass, infer = TRUE)$contrasts
+```
+
+
+
+
+
+# Interactions with covariates
+
+## Linear relationship
+
+```{r}
+set.seed(1)              # for reproducibility
+salary <- Wage %>% 
+  group_by(education) %>% 
+  sample_n(100)
+
+m <- lm(wage ~ health * age, salary)
+
+library(sjPlot) # I made a video on this 📦
+plot_model(m, type = "pred", terms = c("age", "health"))
+```
+
+
+An interaction between a categorical predictor and a numeric predictor (covariate) is even more intriguing, as it produces even more results. Specifically, we can estimate and compare the slopes for *salary* changes over a *lifetime* for individuals with varying levels of *health* using the `emtrends()` function.
+
+```{r}
+emtrends(m, pairwise ~ health, var = "age", infer = T)
+```
+
+
+Here, the salary of individuals with merely good health hardly changes over a lifetime, as indicated by the non-significant slope. On the other hand, the salary increase for those with excellent health is significant. The contrast between the two slopes also reveals a significant difference. To put it in statistical terms: good health has a significant marginal disadvantage in terms of income, amounting to 0.8 relative to the income of those with excellent health.
+
+As a result, young people earn roughly the same amount regardless of their health, while older, healthier individuals will earn approximately 53K per year more at the end of their career, around age 80, which IS significant.
+
+```{r}
+emmeans(m, pairwise ~ health|age, cov.reduce = range)
+```
+
+
+## Non-Linear relationship
+
+
+Well, being healthy and rich at 80 might sound like a dream come true, but let's face it, it's probably not gonna happen. Most older folks are retired and can't make that kind of money. So, to spice things up a bit, let's make the numeric variable non-linear, since that's often how it goes in the real world. But the problem with this more realistic approach is that non-linear relationships can't be summed up as slopes. Fortunately, we can use specific values of age using the "emmip" function.
+
+```{r}
+m <- lm(wage ~ health * poly(age, 2), salary)
+
+emmip(m, health ~ age, CIs = TRUE, 
+      cov.reduce = FALSE, ylab = "Salary  [1000 $]")
+```
+
+
+Check this out! If we use the "cov.reduce = FALSE" argument with "emmip" function, we will be able to see all possible values of age. This gives us a helpful overview of our data and enables us to choose fewer more meaningful values to compare. The "at = list()" argument allows us to specify exact ages. Let's take 25, 45, and 65 years, representing the beginning, middle, and end of a career, as an example.  
+
+```{r}
+emmip(m, health ~ age, CIs = TRUE, 
+      at = list(age = c(25, 45, 65)), 
+      dodge = 5, ylab = "Salary  [1000 $]")
+```
+
+And all of a sudden, it looks like we're comparing two categorical variables, with *age* having 3 categories and *health* having 2. As a result, we can again create two different types of contrasts. The first is between specific values of the *age* covariate, at the beginning, middle, and end of a career, within each level of *health*. And the second type of contrast can be examined between *health* levels at any particular value of *age*.
+
+
+```{r}
+# get contrasts
+emmeans(m, pairwise ~ age|health,  at = list(age = c(25, 45, 65)))
+emmeans(m, pairwise ~ health|age,  at = list(age = c(25, 45, 65)))
+```
+
+Therefore, if someone asks you who earns more, healthy or less healthy people, you would have to respond, "It depends on their age. Young people earn the same regardless of their health, while older individuals with very good health definitely earn more, probably because they are more capable of delivering. You can't certainly answer the question about salaries in different health levels without knowing the age, because "IT DEPENDS" on age ... and probably some other important things. So, since the relationships between things in real life always depend on something, models with interactions tend to be more realistic. Then how does an interaction between *two numeric predictors* work?
+
+# Two numeric predictors
+
+Having the option to select specific values of numeric predictors gives us a valuable tool for easily modeling and interpreting interactions between two numeric predictors. It's crucial to choose only a few key values, as plotting all the numeric values of both covariates could be overwhelming and chaotic, although it does also provide a complete overview and reveal the story within our data.
+
+Take for instance, slow and weak cars - they may not be flashy but they can go the farthest on a single gallon of fuel, making them the most sustainable. On the other hand, slow and strong cars would go the least distance on a gallon of fuel, likely because of their weight. Similarly, quick and strong cars have lower mileage compared to quick and weak cars, as the latter type is not able to burn as much fuel and therefore can go further.
+
+```{r}
+m <- lm(mpg ~ poly(hp, 2) * poly(qsec, 2), mtcars)
+
+emmip(m, hp ~ qsec, cov.reduce = FALSE, 
+      ylab = "Miles per gallon")
+```
+Having the full picture gives us an advantage as it allows us to **choose the most meaningful values for both numeric variables**. From there, we can **treat those specific values as categories** and easily obtain EMMs and the pairwise contrasts between them. I think it's quite remarkable that we can interpret a model with two interacting numeric predictors that have a non-linear relationship with the response and with each other in such an understandable way. Let me know in the comments below if you're aware of a better method for interpreting this.
+
+```{r}
+emmip(m, hp ~ qsec, CIs = TRUE, dodge = 1,
+      at = list(hp   = c(50, 150, 250), 
+                qsec = c(14, 17, 20)),
+      ylab = "Miles per gallon")
+
+
+emmeans(m, pairwise ~ qsec | hp,  
+        at = list(hp   = c(50, 150, 250), 
+                  qsec = c(14, 17, 20)))
+```
+
+
+# Higher order interactions
+
+Treating interactions as "it depends" effects enables us to model higher-order interactions, like a three-way interaction which involves three variables in the term, for example `age * jobclass * health`, where the relationship between wage and any of the predictors is entirely dependent on the other two predictors 
+
+```{r}
+m  <- lm(wage ~ poly(age, 2) * jobclass * health, Wage)
+
+emmip(m, health ~ age|jobclass, CIs = TRUE, 
+      at = list(age = c(25, 45, 65)), 
+      dodge = 5, ylab = "Salary  [1000 $]")
+```
+
+For example, the relationship between *money* and *health* depends on *jobclass* and *age*. As we can see from the *reference grid* of our model, there are many combinations you can get *contrasts* for. You can essentially compare every error-bar on the plot to any other error-bar. Here are just a couple of *contrast* examples, but feel free to explore any of them. 
+
+
+```{r}
+ref_grid(m, at = list(age = c(25, 45, 65))) @grid 
+
+emmeans(m, pairwise ~ health|jobclass,  by = "age",
+        at = list(age = c(25, 45, 65)))$contrasts
+
+emmeans(m, pairwise ~ age|jobclass,  by = "health",
+        at = list(age = c(25, 45, 65)))$contrasts
+```
+
+But weight! You may suddenly realize that you now have a different problem. While models without interactions have limited results, models with interactions provide too many results, even with only two or three categories per predictor. Imagine the results if one of the predictors had five categories. Fortunately, there is a solution that allows for presenting these results in a more compact manner.
+
+
+# Matrix results 
+
+For that, and in order to be more realistic, let's actually consider the *education* predictor with **five** categories and have it interact with *jobclass*. Even with only two predictors, we'll get so many EMMs and contrasts that they won't fit on a single computer page. So, as the number of results increases, it **becomes necessary to have a more compact way of presenting** them.
+
+One of the most effective ways way I have found is to put all the results into a matrix. This matrix displays the EMMs along the diagonal, P values in the upper triangle, and differences in the lower triangle. For example, the EMMs for individuals who did not finish high school are 85 for Industrial jobs and 88 for IT jobs, which is exactly what we see in the first square brackets. The salary difference between them and their peers who did finish high school is 16K per year and is not significant for the Industrial job class because the p-value is 0.16. You get the idea.
+
+```{r}
+m  <- lm(wage ~ education * jobclass, salary)
+
+m_emmeans <- emmeans(m, pairwise ~ education | jobclass, adjust = "bonferroni")
+m_emmeans
+
+pwpm(m_emmeans[[1]], adjust = "bonferroni")
+```
+
+# Graphical comparisons and plot p-values
+
+And since one picture is worth a thousands words, the second effective way to present a lot of results is to actually visualize them, where we: 
+
+- first visualize the estimates with contrasts using a simple `plot` command and the argument `comparisons = TRUE` and
+
+- then plot all the p-values using the **Pairwise P-value plot** (via `pwpp` command)
+
+```{r}
+plot(m_emmeans, comparisons = TRUE)
+```
+
+
+
+```{r fig.width=14}
+pwpp(m_emmeans[[1]])+     # by = "health"
+  geom_vline(xintercept = 0.05, linetype = 2) 
+```
+
+Now that we know how useful and informative interactions can be, the ONLY thing left to learn is how to find the best model, which includes only meaningful interactions. Fortunately, {glmulti} package allows you to do this with a few lines of code and you wanna find out how, check out [this video](https://youtu.be/Im293ClFen4).
+
+
+# Conclusion
+
+Including and interpreting interactions make things more complicated, but also more rewarding. However, interpreting three-way type of effect can be difficult and is prone to mistakes. That is why they are rarely used in inferential statistics, despite the fact that they can improve predictive power of models. Further difficult to interpret cases would be including one interaction and several non-interacting predictors, or including several interactions into the same model. Thus, I'd only use two predictors and two-way interactions.
+
+# Bonus (questionable) content 
+
+## Effect size: Cohen effect sizes are close cousins of pairwise differences
+
+```{r}
+eff_size(
+  m_emmeans, 
+  sigma = sqrt(mean(sigma(m)^2)), 
+  edf   = df.residual(m) )
+```
+
+
+
+
+
+## One interaction + more predictors (think twice before you do that)
+
+```{r}
+d <- mtcars %>% 
+  mutate(cyl = factor(cyl),
+         am  = factor(am),
+         gear= factor(gear))
+
+m <- lm(mpg ~ am * cyl + hp + gear + disp, d)
+ref_grid(m)
+
+# cooler determine different values then reg_grid using "at"
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "0", hp = 146.6875, disp = 230.7219)
+)$emmeans
+
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "1", hp = 146.6875, disp = 230.7219)
+)$emmeans
+
+# contrasts here stay the same because of the linear numeric predictors
+
+# determine different values then reg_grid using "at"
+
+emmeans(m, pairwise ~ cyl | am, 
+        at = list(am = "1", hp = 300, disp = c(100, 200, 300), gear = "5")
+)$emmeans %>% plot()
+
+mtcars.rg <- ref_grid(m,
+                      at = list(hp = 300, 
+                                disp = c(100, 200, 300)))
+mtcars.rg
+
+# plotting 
+plot(mtcars.rg, by = "gear")
+
+```
+
+
+
+
+## Interactions with covariates + other predictors (think twice before doing this)
+
+```{r}
+library(ISLR)
+m <- lm(wage ~ age*education + jobclass, data = Wage)
+
+ref_grid(m)
+
+emtrends(m, pairwise ~ education, var = "age")$emtrends
+
+emmip(m, education ~ age, CIs = T, 
+      cov.reduce = range)
+
+emtrends(m, pairwise ~ education, var = "age", 
+        at = list(jobclass = "1. Industrial")
+)$emtrends
+```
+
+
+
+## Several interactions (thing three times before doing this and then run away without doing this! or try to consult a VERY professional statistitian!)
+
+```{r}
+m <- lm(mpg ~ am * cyl + hp * gear, d)
+ref_grid(m)
+
+emmeans(m, pairwise ~ cyl | am)
+emmip(m, am ~ cyl, CIs = T)
+
+emtrends(m, ~ gear, var = "hp", cov.reduce = range)
+emmip(m, gear ~ hp, CIs = T, cov.reduce = range)
+```
+
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
