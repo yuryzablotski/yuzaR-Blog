@@ -70,7 +70,7 @@ Have you ever wondered, why a "summary" function of an omnibus test like ANOVA, 
 
 ![](type_1_errors.png)
 
-Summary function doesn't plot the results of a model and makes it almost impossible to interpret interactions! So, if you've ever been frustrated due to similar issues, you're definitely not alone! The **"summary" function doesn't actually provide a very useful summary**, and that's why do we need {emmeans} package, which solves all those problems. 
+Summary function doesn't plot the results of a model and makes it almost impossible to interpret interactions! So, if you've ever been frustrated due to similar issues, you're definitely not alone! The **"summary" function doesn't actually provide a very useful summary**, and that's why we need {emmeans} package, which solves all those problems. 
 
 
 ```{r}
@@ -213,7 +213,7 @@ emmeans(m1, ~ hp, at = list(hp = c(100, 200, 300))) %>%
   plot(comparisons = TRUE)
 ```
 
-Speaking of significance: if we want to see the exact p-values for pairwise comparisons among the different "horsepowers," we can add the "pairwise" argument in front of the tilde (~) and see that after crossing the 200 horsepower threshold, the mileage doesn't significant change anymore, but stays at around 14.5 miles. 
+Speaking of significance: if we want to see the exact p-values for pairwise comparisons among the different "horsepowers," we again can add the "pairwise" argument in front of the tilde (~) and see that after crossing the 200 horsepower threshold, the mileage doesn't significant change anymore, but stays at around 14.5 miles. 
 
 ```{r}
 emmeans(m1, pairwise ~ hp, at = list(hp = c(100, 200, 300)))
@@ -276,7 +276,7 @@ The model with two categorical predictors works a little differently. If we exam
 - (18.6 + 21.2)  / 2 = 19.9
 - (14.7 + 17.3)  / 2 = 16
 
-Oh, by the way, if want to display the sample size of every level, use `calc = c(n = ".wgt.")` argument ;)
+Oh, by the way, if you want to display the sample size of every level, use `calc = c(n = ".wgt.")` argument ;)
 
 
 ```{r}
@@ -310,8 +310,6 @@ lm(mpg ~ hp + wt, d) %>%
   emmeans(pairwise ~ wt | hp, cov.reduce = range)
 ```
 
-
-However, things improve dramatically when we introduce interactions, because EMMs can be calculated for every level of one predictors inside of every level of the other predictor and we can easily get contrasts between levels with unique p-values. This, however, is a completely different story, because analyzing interactions is very challenging, but at the same time (2) very rewording, because it extracts even more useful knowledge out of models. Thus, if you want to step up your data science game and unleash the real power of {emmeans} you need to see this video next!
 
 However, when we introduce interactions, things dramatically improve, because we can calculate EMMs for every level of one predictor within every level of the other predictor, and we can easily obtain contrasts between levels with unique p-values. This, however, is a completely different story, because analyzing interactions can be very challenging, but at the same time, it is extremely rewarding because it allows us to extract even more valuable knowledge from models. Thus, if you want to step up your data science game and unleash the real power of {emmeans}, you should definitely watch this video!
 

@@ -7,7 +7,7 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 03 Jan 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Jan 2023 00:00:00 +0000</lastBuildDate>
     <item>
       <title>R package reviews {emmeans} Introduction: squizze all the knowledge out of your models!</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -23,7 +23,7 @@ about. It’s ca. .. minutes long.&lt;/p&gt;
 &lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="why-do-we-need-emmeans"&gt;Why do we need {emmeans}?&lt;/h1&gt;
 &lt;p&gt;Have you ever wondered, why a “summary” function of an omnibus test
 like ANOVA, tells you that “the number of cylinders” significantly
@@ -41,8 +41,8 @@ making too many type-I errors.&lt;/p&gt;
 almost impossible to interpret interactions! So, if you’ve ever been
 frustrated due to similar issues, you’re definitely not alone! The
 &lt;strong&gt;“summary” function doesn’t actually provide a very useful
-summary&lt;/strong&gt;, and that’s why do we need {emmeans} package, which
-solves all those problems.&lt;/p&gt;
+summary&lt;/strong&gt;, and that’s why we need {emmeans} package, which solves
+all those problems.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)       # for everything good in R
 theme_set(theme_test())  # beautifies plots 
 library(emmeans)         # unleash power of your results!
@@ -104,7 +104,7 @@ $contrasts
 
 P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ cyl, d) %&amp;gt;% emmeans(pairwise ~ cyl) %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="understand-what-emmeans-actually-stands-for"&gt;Understand what
 “emmeans” actually stands for&lt;/h1&gt;
 &lt;p&gt;The “emmeans” is an abbreviation for &lt;strong&gt;Estimated Marginal
@@ -301,9 +301,9 @@ advantages of using “emmeans” over “summary” doesn’t stop there. The
 benefits are even more pronounced if we analyze numeric predictors or
 covariates.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, level = 0.5)$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-11-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-11-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="single-numeric-predictor-altering-the-reference-grid"&gt;Single
 numeric predictor + altering the reference grid&lt;/h1&gt;
 &lt;p&gt;Namely, instead of just looking at the average 20 miles per gallon
@@ -336,7 +336,7 @@ of horsepower.&lt;/p&gt;
 library(sjPlot) # I made a video on this 📦
 plot_model(m1, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$hp&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s use 100, 200, and 300 “horsepowers” and not only plot the
 estimates, but also compare them statistically by using the “comparisons
 = TRUE” argument. The blue bars represent the 95% confidence intervals
@@ -345,10 +345,10 @@ them. If an arrow from one mean overlaps with an arrow from another
 mean, the difference is not significant.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m1, ~ hp, at = list(hp = c(100, 200, 300))) %&amp;gt;% 
   plot(comparisons = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Speaking of significance: if we want to see the exact p-values for
-pairwise comparisons among the different “horsepowers,” we can add the
-“pairwise” argument in front of the tilde (~) and see that after
+pairwise comparisons among the different “horsepowers,” we again can add
+the “pairwise” argument in front of the tilde (~) and see that after
 crossing the 200 horsepower threshold, the mileage doesn’t significant
 change anymore, but stays at around 14.5 miles.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m1, pairwise ~ hp, at = list(hp = c(100, 200, 300)))&lt;/code&gt;&lt;/pre&gt;
@@ -469,8 +469,8 @@ same EMMs we obtained initially.&lt;/p&gt;
 &lt;li&gt;(18.6 + 21.2) / 2 = 19.9&lt;/li&gt;
 &lt;li&gt;(14.7 + 17.3) / 2 = 16&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Oh, by the way, if want to display the sample size of every level,
-use &lt;code&gt;calc = c(n = ".wgt.")&lt;/code&gt; argument ;)&lt;/p&gt;
+&lt;p&gt;Oh, by the way, if you want to display the sample size of every
+level, use &lt;code&gt;calc = c(n = ".wgt.")&lt;/code&gt; argument ;)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl, by = &amp;quot;am&amp;quot;, calc = c(n = &amp;quot;.wgt.&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;am = 0:
  cyl emmean    SE df  n lower.CL upper.CL
@@ -532,7 +532,7 @@ in a multiple model &lt;strong&gt;without interactions&lt;/strong&gt; we can onl
 adjust the effect of one predictor, such as &lt;em&gt;weight&lt;/em&gt;, while the
 other predictors are held constant and do not change or vary.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;wt&amp;quot;, &amp;quot;hp [52, 335]&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ hp + wt, d) %&amp;gt;% 
   emmeans(pairwise ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$emmeans
@@ -556,15 +556,6 @@ hp =  52:
 hp = 335:
  contrast          estimate   SE df t.ratio p.value
  wt1.513 - wt5.424     15.2 2.47 29   6.129  &amp;lt;.0001&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;However, things improve dramatically when we introduce interactions,
-because EMMs can be calculated for every level of one predictors inside
-of every level of the other predictor and we can easily get contrasts
-between levels with unique p-values. This, however, is a completely
-different story, because analyzing interactions is very challenging, but
-at the same time (2) very rewording, because it extracts even more
-useful knowledge out of models. Thus, if you want to step up your data
-science game and unleash the real power of {emmeans} you need to see
-this video next!&lt;/p&gt;
 &lt;p&gt;However, when we introduce interactions, things dramatically improve,
 because we can calculate EMMs for every level of one predictor within
 every level of the other predictor, and we can easily obtain contrasts
@@ -598,7 +589,7 @@ hp = 335:
  contrast          estimate   SE df t.ratio p.value
  wt1.513 - wt5.424    -4.35 5.59 28  -0.778  0.4430&lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id="whats-next-interactions"&gt;What’s next? … Interactions!&lt;/h1&gt;
-&lt;p&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;img src="filead882fef81eb_files/figure-html/unnamed-chunk-24-3.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;img src="filede0853aacae2_files/figure-html/unnamed-chunk-24-3.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="some-bonus-content"&gt;Some bonus content&lt;/h1&gt;
 &lt;h2 id="cohens-d-effect-sizes"&gt;“Cohen’s d” Effect sizes&lt;/h2&gt;
 &lt;ul&gt;
@@ -625,7 +616,7 @@ improve this tutorial.&lt;/p&gt;
       <category>statistics</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans</guid>
-      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans/emmeans_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
@@ -682,12 +673,12 @@ m1 &amp;lt;- lm(wage ~ age_cat + jobclass, salary)
 
 library(gtsummary) # I made a video on this 📦
 tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="uehxgtdqjd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="ehxgtdqjdy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uehxgtdqjd .gt_table {
+#ehxgtdqjdy .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -712,7 +703,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-left-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_heading {
+#ehxgtdqjdy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -724,12 +715,12 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_caption {
+#ehxgtdqjdy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uehxgtdqjd .gt_title {
+#ehxgtdqjdy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -741,7 +732,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-bottom-width: 0;
 }
 
-#uehxgtdqjd .gt_subtitle {
+#ehxgtdqjdy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -753,13 +744,13 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-top-width: 0;
 }
 
-#uehxgtdqjd .gt_bottom_border {
+#ehxgtdqjdy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_col_headings {
+#ehxgtdqjdy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -774,7 +765,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_col_heading {
+#ehxgtdqjdy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -794,7 +785,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#uehxgtdqjd .gt_column_spanner_outer {
+#ehxgtdqjdy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -806,15 +797,15 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   padding-right: 4px;
 }
 
-#uehxgtdqjd .gt_column_spanner_outer:first-child {
+#ehxgtdqjdy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uehxgtdqjd .gt_column_spanner_outer:last-child {
+#ehxgtdqjdy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uehxgtdqjd .gt_column_spanner {
+#ehxgtdqjdy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -826,7 +817,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   width: 100%;
 }
 
-#uehxgtdqjd .gt_group_heading {
+#ehxgtdqjdy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -852,7 +843,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   text-align: left;
 }
 
-#uehxgtdqjd .gt_empty_group_heading {
+#ehxgtdqjdy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -867,15 +858,15 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   vertical-align: middle;
 }
 
-#uehxgtdqjd .gt_from_md &gt; :first-child {
+#ehxgtdqjdy .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#uehxgtdqjd .gt_from_md &gt; :last-child {
+#ehxgtdqjdy .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#uehxgtdqjd .gt_row {
+#ehxgtdqjdy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -894,7 +885,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   overflow-x: hidden;
 }
 
-#uehxgtdqjd .gt_stub {
+#ehxgtdqjdy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -907,7 +898,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#uehxgtdqjd .gt_stub_row_group {
+#ehxgtdqjdy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -921,11 +912,11 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   vertical-align: top;
 }
 
-#uehxgtdqjd .gt_row_group_first td {
+#ehxgtdqjdy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uehxgtdqjd .gt_summary_row {
+#ehxgtdqjdy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -935,16 +926,16 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#uehxgtdqjd .gt_first_summary_row {
+#ehxgtdqjdy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_first_summary_row.thick {
+#ehxgtdqjdy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uehxgtdqjd .gt_last_summary_row {
+#ehxgtdqjdy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -954,7 +945,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-bottom-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_grand_summary_row {
+#ehxgtdqjdy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -964,7 +955,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#uehxgtdqjd .gt_first_grand_summary_row {
+#ehxgtdqjdy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -974,11 +965,11 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-top-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_striped {
+#ehxgtdqjdy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uehxgtdqjd .gt_table_body {
+#ehxgtdqjdy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -987,7 +978,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-bottom-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_footnotes {
+#ehxgtdqjdy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1001,7 +992,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_footnote {
+#ehxgtdqjdy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1010,7 +1001,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#uehxgtdqjd .gt_sourcenotes {
+#ehxgtdqjdy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1024,7 +1015,7 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   border-right-color: #D3D3D3;
 }
 
-#uehxgtdqjd .gt_sourcenote {
+#ehxgtdqjdy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1032,64 +1023,64 @@ tbl_regression(m1)&lt;/code&gt;&lt;/pre&gt;
   padding-right: 5px;
 }
 
-#uehxgtdqjd .gt_left {
+#ehxgtdqjdy .gt_left {
   text-align: left;
 }
 
-#uehxgtdqjd .gt_center {
+#ehxgtdqjdy .gt_center {
   text-align: center;
 }
 
-#uehxgtdqjd .gt_right {
+#ehxgtdqjdy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uehxgtdqjd .gt_font_normal {
+#ehxgtdqjdy .gt_font_normal {
   font-weight: normal;
 }
 
-#uehxgtdqjd .gt_font_bold {
+#ehxgtdqjdy .gt_font_bold {
   font-weight: bold;
 }
 
-#uehxgtdqjd .gt_font_italic {
+#ehxgtdqjdy .gt_font_italic {
   font-style: italic;
 }
 
-#uehxgtdqjd .gt_super {
+#ehxgtdqjdy .gt_super {
   font-size: 65%;
 }
 
-#uehxgtdqjd .gt_footnote_marks {
+#ehxgtdqjdy .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#uehxgtdqjd .gt_asterisk {
+#ehxgtdqjdy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uehxgtdqjd .gt_indent_1 {
+#ehxgtdqjdy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uehxgtdqjd .gt_indent_2 {
+#ehxgtdqjdy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uehxgtdqjd .gt_indent_3 {
+#ehxgtdqjdy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uehxgtdqjd .gt_indent_4 {
+#ehxgtdqjdy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uehxgtdqjd .gt_indent_5 {
+#ehxgtdqjdy .gt_indent_5 {
   text-indent: 25px;
 }
 &lt;/style&gt;
@@ -1174,7 +1165,7 @@ b &amp;lt;- emmip(m, age_cat ~ jobclass, CIs = TRUE)+
 
 library(patchwork)
 a + b&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For instance, for the young, a choice of profession is of great
 importance, as they can earn more in IT than in an industrial job. While
 as people age, the difference in income between the two types of jobs
@@ -1280,7 +1271,7 @@ m &amp;lt;- lm(wage ~ health * age, salary)
 
 library(sjPlot) # I made a video on this 📦
 plot_model(m, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;age&amp;quot;, &amp;quot;health&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;An interaction between a categorical predictor and a numeric
 predictor (covariate) is even more intriguing, as it produces even more
 results. Specifically, we can estimate and compare the slopes for
@@ -1348,7 +1339,7 @@ function.&lt;/p&gt;
 
 emmip(m, health ~ age, CIs = TRUE, 
       cov.reduce = FALSE, ylab = &amp;quot;Salary  [1000 $]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Check this out! If we use the “cov.reduce = FALSE” argument with
 “emmip” function, we will be able to see all possible values of age.
 This gives us a helpful overview of our data and enables us to choose
@@ -1359,7 +1350,7 @@ example.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, health ~ age, CIs = TRUE, 
       at = list(age = c(25, 45, 65)), 
       dodge = 5, ylab = &amp;quot;Salary  [1000 $]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And all of a sudden, it looks like we’re comparing two categorical
 variables, with &lt;em&gt;age&lt;/em&gt; having 3 categories and &lt;em&gt;health&lt;/em&gt;
 having 2. As a result, we can again create two different types of
@@ -1459,7 +1450,7 @@ therefore can go further.&lt;/p&gt;
 
 emmip(m, hp ~ qsec, cov.reduce = FALSE, 
       ylab = &amp;quot;Miles per gallon&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
 Having the full picture gives us an advantage as it allows us to
 &lt;strong&gt;choose the most meaningful values for both numeric
 variables&lt;/strong&gt;. From there, we can &lt;strong&gt;treat those specific
@@ -1473,7 +1464,7 @@ a better method for interpreting this.&lt;/p&gt;
       at = list(hp   = c(50, 150, 250), 
                 qsec = c(14, 17, 20)),
       ylab = &amp;quot;Miles per gallon&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ qsec | hp,  
         at = list(hp   = c(50, 150, 250), 
                   qsec = c(14, 17, 20)))&lt;/code&gt;&lt;/pre&gt;
@@ -1530,7 +1521,7 @@ predictors&lt;/p&gt;
 emmip(m, health ~ age|jobclass, CIs = TRUE, 
       at = list(age = c(25, 45, 65)), 
       dodge = 5, ylab = &amp;quot;Salary  [1000 $]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For example, the relationship between &lt;em&gt;money&lt;/em&gt; and
 &lt;em&gt;health&lt;/em&gt; depends on &lt;em&gt;jobclass&lt;/em&gt; and &lt;em&gt;age&lt;/em&gt;. As we can
 see from the &lt;em&gt;reference grid&lt;/em&gt; of our model, there are many
@@ -1747,10 +1738,10 @@ where we:&lt;/p&gt;
 plot&lt;/strong&gt; (via &lt;code&gt;pwpp&lt;/code&gt; command)&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(m_emmeans, comparisons = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;pwpp(m_emmeans[[1]])+     # by = &amp;quot;health&amp;quot;
   geom_vline(xintercept = 0.05, linetype = 2) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-22-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-22-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;Now that we know how useful and informative interactions can be, the
 ONLY thing left to learn is how to find the best model, which includes
 only meaningful interactions. Fortunately, {glmulti} package allows you
@@ -1869,7 +1860,7 @@ Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 emmeans(m, pairwise ~ cyl | am, 
         at = list(am = &amp;quot;1&amp;quot;, hp = 300, disp = c(100, 200, 300), gear = &amp;quot;5&amp;quot;)
 )$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;mtcars.rg &amp;lt;- ref_grid(m,
                       at = list(hp = 300, 
                                 disp = c(100, 200, 300)))
@@ -1882,7 +1873,7 @@ mtcars.rg&lt;/code&gt;&lt;/pre&gt;
     disp = 100, 200, 300&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# plotting 
 plot(mtcars.rg, by = &amp;quot;gear&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2
 id="interactions-with-covariates-other-predictors-think-twice-before-doing-this"&gt;Interactions
 with covariates + other predictors (think twice before doing this)&lt;/h2&gt;
@@ -1906,7 +1897,7 @@ Results are averaged over the levels of: jobclass
 Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, education ~ age, CIs = T, 
       cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emtrends(m, pairwise ~ education, var = &amp;quot;age&amp;quot;, 
         at = list(jobclass = &amp;quot;1. Industrial&amp;quot;)
 )$emtrends&lt;/code&gt;&lt;/pre&gt;
@@ -1963,7 +1954,7 @@ am = 1:
 Results are averaged over the levels of: gear 
 P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, am ~ cyl, CIs = T)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-26-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-26-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emtrends(m, ~ gear, var = &amp;quot;hp&amp;quot;, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt; gear hp.trend     SE df lower.CL upper.CL
  3     -0.0423 0.0236 21  -0.0913  0.00679
@@ -1973,7 +1964,7 @@ P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code
 Results are averaged over the levels of: am, cyl, hp 
 Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, gear ~ hp, CIs = T, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88673249_files/figure-html/unnamed-chunk-26-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0831770a43_files/figure-html/unnamed-chunk-26-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -1984,7 +1975,7 @@ improve this tutorial.&lt;/p&gt;
       <category>statistics</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-12-29-emmeans2interactions</guid>
-      <pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-12-29-emmeans2interactions/emmeans2interactions_files/figure-html5/unnamed-chunk-5-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
@@ -2044,7 +2035,7 @@ ggplot(d, aes(predictor, outcome))+
   geom_point()+
   geom_smooth(method = lm, se = F,color = &amp;quot;red&amp;quot;, )+
   geom_quantile(quantiles = 0.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows, that linear model tries to please all points and
 misses most of them, which results in a bad fit. In contrast, the Median
 Regression ignores the outlier and visually fits the rest of the data
@@ -2073,12 +2064,12 @@ theme_set(theme_bw())
 plot_models(lr, mr, show.values = TRUE, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;By the way, we can use &lt;code&gt;ols_plot_resid_lev()&lt;/code&gt; function
 from {olsrr} package and see that we indeed have an outlier.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(olsrr)
 ols_plot_resid_lev(lr)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;
 # 2. Solve heteroscedasticity&lt;/p&gt;
 &lt;p&gt;Now let’s take a real world heteroscedastic data and see whether
 median regression handles it better. Engel dataset from {quantreg}
@@ -2095,7 +2086,7 @@ ggplot(engel, aes(income, foodexp))+
   geom_quantile(color = &amp;quot;blue&amp;quot;, quantiles = 0.5)+
   geom_quantile(color = &amp;quot;gray&amp;quot;, alpha = 0.3, 
                   quantiles = seq(.05, .95, by = 0.05))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;In order to better justify the use of QR, we can check
 heteroskedasticity via Breusch-Pagan test. Our test detects
 heteroscedasticity, so that we again need an alternative to linear
@@ -2120,7 +2111,7 @@ across groups + categorical predictor&lt;/h1&gt;
 &lt;p&gt;Now let’s see how both models handle not-normally distributed or
 skewed data, and, at the same time, see how they handle categorical
 predictors.&lt;/p&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For that we’ll use a Wage dataset from {ISLR} package and model the
 salary of 30 industrial and IT workers. And when we check the
 assumptions of linear model, we’ll see, that our data has no outliers,
@@ -2164,7 +2155,7 @@ mr &amp;lt;- rq(wage ~ jobclass, data = salary, tau = 0.5)
 plot_models(lr, mr, show.values = T, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;AIC(lr, mr)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;   df      AIC
 lr  3 630.4943
@@ -2182,7 +2173,7 @@ mr &amp;lt;- rq(wage ~ jobclass, data = Wage)
 plot_models(lr, mr, show.values = T, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;AIC(lr, mr)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;   df      AIC
 lr  3 30774.50
@@ -2199,7 +2190,7 @@ ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
   ) +
   scale_fill_viridis_d(name = &amp;quot;Quantiles&amp;quot;)+
   xlab(&amp;quot;salary&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;While median regression delivers better results, the median is still
 a single central location, similar to the mean. But since median
 regression is a special case of QR, which uses only a 5th quantile, and
@@ -2220,7 +2211,7 @@ plot_models(lr, qm10, qm50, qm90,
             m.labels = c(&amp;quot;LR&amp;quot;, &amp;quot;QR 10%&amp;quot;, &amp;quot;QR 50%&amp;quot;, &amp;quot;QR 90%&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)+
   ylab(&amp;quot;Increase in wage after switch to IT&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;
 The results show, that for low salaries the difference between
 industrial and IT jobs is smaller, then for median or high salaries. The
 reason for that could be education, so that when your education level is
@@ -2244,7 +2235,7 @@ ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
     quantile_lines = TRUE, quantiles = seq(.1, .9, by = 0.1)
   ) +
   scale_fill_viridis_d(name = &amp;quot;Quantiles&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;qm20 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.20)
 qm30 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.30)
 qm70 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.70)
@@ -2253,7 +2244,7 @@ qm80 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.80)
 plot_models(lr, qm10, qm20, qm30, qm50, qm70, qm80, qm90, show.values = TRUE)+
   theme(legend.position = &amp;quot;none&amp;quot;)+
   ylab(&amp;quot;Increase in wage after switch to IT&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But that is just a beginning! Because, similarly to low (tau = 0.1)
 or high (tau = 0.9) quantiles, we can model more quantile to get
 &lt;strong&gt;more useful inference&lt;/strong&gt;. And we can even …&lt;/p&gt;
@@ -2284,7 +2275,7 @@ workers with already relatively high salaries.&lt;/p&gt;
 
 summary(q) %&amp;gt;% 
   plot(parm = &amp;quot;jobclass2. Information&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="multivariable-regression"&gt;6. Multivariable regression&lt;/h1&gt;
 &lt;p&gt;So, I think a univariable QR is already much more useful then LR. But
 that’s not all, multivariable QR is even more useful, because it can
@@ -2326,7 +2317,7 @@ q &amp;lt;- rq(wage ~ jobclass + age + race, data = Wage,
 
 summary(q) %&amp;gt;% 
   plot(c(&amp;quot;jobclass2. Information&amp;quot;, &amp;quot;age&amp;quot;, &amp;quot;race2. Black&amp;quot;, &amp;quot;race3. Asian&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
 Since, in all of the panels of the plot, the quantile regression
 estimates lie at some point outside the confidence intervals for the
 ordinary least squares regression, we can conclude that the effects of
@@ -2347,7 +2338,7 @@ o &amp;lt;-gcrq(wage ~ ps(age),
 
 # par(mfrow=c(1,2)) # for several plots
 plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="efficiency-of-cars"&gt;2) Efficiency of cars&lt;/h2&gt;
 &lt;p&gt;Here, a linear regression will answer the question - which variables
 affect the average car mileage? A low quantile of 0.1 will tell us which
@@ -2994,7 +2985,7 @@ $contrasts
 P value adjustment: bonferroni method for 10 tests &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(mr, type = &amp;quot;pred&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$education&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="median-regression-with-interactions"&gt;Median regression with
 interactions&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;mr &amp;lt;- rq(wage ~ education*jobclass, data = Wage, tau = 0.5)
@@ -3049,7 +3040,7 @@ education = 5. Advanced Degree:
  contrast                       estimate   SE   df t.ratio p.value
  1. Industrial - 2. Information    -7.07 7.38 2990  -0.958  0.3383&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(mr, type = &amp;quot;int&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="bayesian-median-regression"&gt;Bayesian median regression&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(brms)
 
@@ -3071,7 +3062,7 @@ ggplot(d, aes(predictor, outcome)) +
   geom_point() + 
   geom_line(aes(y = fitted(mr2), color = &amp;quot;rq&amp;quot;)) + 
   geom_line(aes(y = fitted(mr, dpar = &amp;quot;mu&amp;quot;)[,1], color = &amp;quot;brm&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="lqmm-package-fitting-linear-quantile-mixed-models"&gt;{lqmm}
 package: Fitting Linear Quantile Mixed Models&lt;/h2&gt;
 &lt;h3 id="random-intercept-model"&gt;Random intercept model&lt;/h3&gt;
@@ -3178,7 +3169,7 @@ o &amp;lt;-gcrq(wage ~ ps(age),
 
 # par(mfrow=c(1,2)) # for several plots
 plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8864b1813f_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede086dfdbbe8_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="references-and-further-readings"&gt;References and further
 readings&lt;/h1&gt;
 &lt;ul&gt;
@@ -3224,7 +3215,7 @@ about. It’s less then 5 minutes long.&lt;/p&gt;
 &lt;iframe src="https://www.youtube.com/embed/M_7MOkAm9WU" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="make-sure-you-have-unusual-data"&gt;Make sure you have unusual
 data&lt;/h1&gt;
 &lt;p&gt;For the sake of simplicity let’s take only 5 observations with one
@@ -3244,14 +3235,14 @@ d &amp;lt;- tibble(
 )
 
 plot(d)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 2. run ordinary least squares regression
 m &amp;lt;- lm(outcome ~ predictor, data= d)
 
 # 3.make residual diagnostics
 library(olsrr)
 ols_plot_resid_lev(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="perform-robust-regression"&gt;Perform robust regression&lt;/h1&gt;
 &lt;p&gt;Now, we’ll use &lt;code&gt;lmrob()&lt;/code&gt; function form {robustbase}
 package to conduct the robust regression and have a look at the
@@ -3306,7 +3297,7 @@ compute.outlier.stats
 seed : int(0) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(sjPlot)
 plot_residuals(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="how-and-why-does-robust-regression-works"&gt;How and why does
 robust regression works?&lt;/h1&gt;
 &lt;p&gt;Namely, a robust regression gives different &lt;strong&gt;robustness
@@ -3353,7 +3344,7 @@ which made me miss an important discovery (4) and never win a Nobel
 Price ;)&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="filead88308e2572_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="filede0815708850_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 6. compare coefficients and goodness of fit of both models
 tab_model(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;table style="border-collapse:collapse; border:none;"&gt;
@@ -3506,7 +3497,7 @@ model&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(carData)
 cm &amp;lt;- lm(prestige ~ income * education, data = Duncan)
 ols_plot_resid_lev(cm)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;crm &amp;lt;- lmrob(prestige ~ income * education, data = Duncan)
 
 library(performance)
@@ -3533,7 +3524,7 @@ plot_model(rm2, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(rm3, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead88308e2572_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="filead88308e2572_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede0815708850_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="filede0815708850_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -3892,17 +3883,17 @@ optimal_model_backward           |   glm | 135.9 (0.215) |  165.9 (&amp;lt;.001)
 optimal_model_forward            |   glm | 144.9 (0.002) |  149.6 (0.007) | 155.2 (0.006) | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fd268721b28&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f8a00193bb8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7fd23cd4c400&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f8a42bcd9c8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7fd27a02efa0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f8a44de92f8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7fd27a02efa0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7f8a44de92f8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -3949,7 +3940,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8832183ab_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede085a00f380_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -3998,7 +3989,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8832183ab_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede085a00f380_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -4007,7 +3998,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="ca272abb-74b5-4444-b865-bb87ee7e9616"&gt;&lt;style&gt;
+&lt;template id="e0a3ef90-adee-4844-abd9-3b283a49833b"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -4045,11 +4036,11 @@ background-color: transparent;
 .katex-display {
     margin: 0 0 !important;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-26c24e92{}.cl-26bbd9c2{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-26be7d12{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-26be7d26{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-26be9270{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be927a{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be9284{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be9285{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be928e{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be928f{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be9298{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be9299{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-26be929a{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-26c24e92'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-26be9270"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-26be927a"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-26be9284"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-26be9285"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928e"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928f"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-26be9285"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928e"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928f"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-26be9285"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928e"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928f"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-26be9285"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928e"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928f"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-26be9285"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928e"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be928f"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-26be9298"&gt;&lt;p class="cl-26be7d12"&gt;&lt;span class="cl-26bbd9c2"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be9299"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-26be929a"&gt;&lt;p class="cl-26be7d26"&gt;&lt;span class="cl-26bbd9c2"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="74c702e3-d8fe-4e48-8506-9bb69884b52a"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-03da3f4a{}.cl-03cfca24{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-03d42dd0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-03d42de4{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-03d44d24{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d2e{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d38{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d39{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d42{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d43{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d44{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d4c{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-03d44d4d{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-03da3f4a'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-03d44d24"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-03d44d2e"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-03d44d38"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-03d44d39"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d42"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d43"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-03d44d39"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d42"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d43"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-03d44d39"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d42"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d43"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-03d44d39"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d42"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d43"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-03d44d39"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d42"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d43"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-03d44d44"&gt;&lt;p class="cl-03d42dd0"&gt;&lt;span class="cl-03cfca24"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d4c"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-03d44d4d"&gt;&lt;p class="cl-03d42de4"&gt;&lt;span class="cl-03cfca24"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="adf5ff0a-dd4b-46bc-8f3a-26ec86591768"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("74c702e3-d8fe-4e48-8506-9bb69884b52a");
-var template = document.getElementById("ca272abb-74b5-4444-b865-bb87ee7e9616");
+var dest = document.getElementById("adf5ff0a-dd4b-46bc-8f3a-26ec86591768");
+var template = document.getElementById("e0a3ef90-adee-4844-abd9-3b283a49833b");
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
@@ -4082,7 +4073,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8832183ab_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede085a00f380_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -4119,7 +4110,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filead8832183ab_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filede085a00f380_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;
