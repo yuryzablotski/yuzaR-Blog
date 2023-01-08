@@ -473,7 +473,11 @@ plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, r
 
 # References and further readings
 
-- The best introduction on QR!!! https://nguyenvantien0405.files.wordpress.com/2014/03/quantile_regressiolingxin-hao.pdf 
+- The best introduction to QR!!! https://books.google.de/books?id=Oc91AwAAQBAJ&printsec=frontcover&hl=de&source=gbs_ge_summary_r&cad=0#v=onepage&q&f=false
+
+Quantile Regression
+Lingxin Hao - Johns Hopkins University, USA
+Daniel Q. Naiman - The Johns Hopkins University
 
 - I loved this paper too! But, be careful about their interpretation using "gap", it is confusing and might be incorrect, as shown in the next reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4166511/pdf/nihms529550.pdf
 
