@@ -414,16 +414,19 @@ d <- tibble(
 mr <- brm(
   bf(outcome ~ predictor,
      quantile = 0.5),
-  data = d, iter = 10, refresh = 0,
+  data = d, iter = 2000, warmup = 1000, chains = 4, refresh = 0,
   family = asym_laplace(link_quantile = "identity")
 )
 
 mr2 <- quantreg::rq(outcome ~ predictor, data = d, tau = .5)
 
+fitted_brm <- fitted(mr, dpar = "mu")
+
 ggplot(d, aes(predictor, outcome)) + 
   geom_point() + 
+  geom_ribbon(aes(ymin = fitted_brm[,3], ymax = fitted_brm[,4], fill = 'brm'), alpha = 0.2) +
   geom_line(aes(y = fitted(mr2), color = "rq")) + 
-  geom_line(aes(y = fitted(mr, dpar = "mu")[,1], color = "brm"))
+  geom_line(aes(y = fitted_brm[,1], color = "brm"))
 ```
 
 
