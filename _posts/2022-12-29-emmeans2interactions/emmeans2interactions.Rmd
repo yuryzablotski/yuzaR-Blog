@@ -1,5 +1,5 @@
 ---
-title: "R package reviews {emmeans} Interactions - unleash the power of {emmeans}"
+title: "Don't Ignore Interactions - Unleash the Full Power of Models with {emmeans} R-package"
 description: |
   Analysing interactions is both (1) very challenging, that's why it's rarely executed, and (2) very rewording if done well, that's why it's still sometimes attempted. {emmeans} is one of the few packages which demistify interactions and extract the most knowledge out of statistical models!
 author:
@@ -10,7 +10,7 @@ categories:
   - videos
   - statistics
   - models
-preview: thumbnail_gtsummary.png
+preview: thumbnail_emmeans_2.png
 output:
   distill::distill_article:
     self_contained: false
@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
-# This post as a video
+# This post as a video (coming soon)
 
 I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
 
@@ -44,7 +44,7 @@ vembedr::embed_youtube("")
 
 ```{r}
 library(ISLR)            # for Wage data
-library(emmeans)         # unleash power of your results!
+library(emmeans)         # unleash the power of your results!
 library(tidyverse)       # for everything good in R
 theme_set(theme_test())  # beautifies plots 
 
@@ -67,11 +67,11 @@ salary <- Wage %>%
 
 Interactions in a statistical model allow for a much deeper understanding of the relationships between variables. Interaction effects can be viewed as an "it depends" effect.
 
-For instance, if someone asks you, "Do you prefer to wear a raincoat or a sweater on a cold day?" Your response would probably be, "It depends on whether it's raining or not!" In this case, the *precipitation* is the other variable in the interaction term, and it affects your preference for wearing a *raincoat or a sweater*. This shows the "it depends" nature of an interaction effect, where you can't answer the question without considering the other variable in the interaction term.
+For instance, if someone asks you, "Do you prefer to wear a raincoat or a sweater on a cold day?" Your response would probably be, "It depends on whether it's raining or not!" In this case, the *cloths* is one variable, while the *precipitation* is the other variable in the interaction term, and it affects your preference for wearing a *raincoat or a sweater*. This shows the "it depends" nature of an interaction effect, where you can't answer the question without considering the other variable in the interaction term.
 
 # Interaction between two categorical predictors
 
-Let's compare a model with to a model without interaction to see how. These models explore, whether we'll earn more money as we age and see how a profession choice affects our salary. 
+Let's compare a model with, to a model without interaction to better understand the advantages of using interactions. Both models explore, whether we'll earn more money as we age and see how a profession choice affects our salary. 
 
 And the model without interaction clearly states, that as we age, our income increases by the average of 15K, and when we choose the IT job over the Industrial job, we'll earn 21 thousand dollars more. So far so good. 
 
@@ -84,7 +84,7 @@ library(gtsummary) # I made a video on this 📦
 tbl_regression(m1)
 ```
 
-However, the model has a problem: salary increases with age regardless of profession, resulting in identical differences between young and old in both job classes. Similarly, IT professionals earn 21.3K more than factory workers at any age, young or old. This seems unrealistic!
+However, the model has a problem: salary increases with age regardless of profession, resulting in identical differences of 15k between young and old in both job classes. Similarly, IT professionals earn 21.3K more than factory workers at any age, young or old. This seems unrealistic! Right?
 
 ```{r}
 emmeans(m1, pairwise ~ age_cat | jobclass)$contrasts
@@ -92,19 +92,27 @@ emmeans(m1, pairwise ~ jobclass| age_cat)$contrasts
 ```
 
 
-This occurs because models without interactions examine the influence of each predictor while holding all other predictors constant. While this is fine, it does not offer a deep understanding of how our income **depends** on both job type and age at the same time. On the other hand, a model with interaction looks at the **effect of one predictor at each level of the other predictor**. 
+This occurs because models without interactions examine the influence of each predictor while holding all other predictors constant. While **this IS fine**, it does not offer a deep understanding of how our income **depends** on both (1) job type and (2) age at the same time. In contrast, a model with interaction looks at the **effect of one predictor at each level of the other predictor**, which provides many more insights. 
 
 ```{r}
 a <- emmip(m1, age_cat ~ jobclass, CIs = TRUE)+
   theme(legend.position = "top")+
-  ggtitle("NO interaction")
+  ggtitle("NO INTERACTION")+
+  ylab("SALARY [1000$]")+ 
+  labs(color = "AGE")+
+  scale_color_manual(values=c('blue','black'))
 
 b <- emmip(m, age_cat ~ jobclass, CIs = TRUE)+
   theme(legend.position = "top")+
-  ggtitle("Interaction")
+  ggtitle("INTERACTION")+
+  ylab("SALARY [1000$]")+ 
+  labs(color = "AGE")+
+  scale_color_manual(values=c('blue','black'))
 
 library(patchwork)
 a + b
+
+ggsave("interaction.png", plot = last_plot(), width = 5, height = 3)
 ```
 
 For instance, for the young, a choice of profession is of great importance, as they can earn more in IT than in an industrial job. While as people age, the difference in income between the two types of jobs becomes less significant. Similarly, an Industrial jobs tend to have a noticeable increase in salary with age, while IT jobs do not. This may seem disappointing for IT crowd, but we must remember that IT folks earn a lot from the very beginning of their careers.
@@ -117,7 +125,7 @@ emmeans(m, pairwise ~ age_cat | jobclass)$contrasts
 
 If you are still uncertain about the usefulness of interactions in models, consider this: which model would you trust to design your professional life? The one with interactions, or the one without? The choice is yours. The consequences, lasting. ... No pressure ;)
 
-> **_NOTE:_** Buy the way, if you stumbled upon this video and some words or code are unclear, I highly recommend watching the [introductory video on {emmeans} first](https://youtu.be/hyP3Hx_1kTM).
+> **_NOTE:_** Buy the way, if you stumbled upon this video and some words or code are unclear, I highly recommend watching the [introductory video on {emmeans} first]().
 
 
 For now, let's return to our model (very quick picture of a female model, like in fight club) and point out 3 important nuances.
@@ -170,9 +178,9 @@ emtrends(m, pairwise ~ health, var = "age", infer = T)
 ```
 
 
-Here, the salary of individuals with merely good health hardly changes over a lifetime, as indicated by the non-significant slope. On the other hand, the salary increase for those with excellent health is significant. The contrast between the two slopes also reveals a significant difference. To put it in statistical terms: good health has a significant marginal disadvantage in terms of income, amounting to 0.8 relative to the income of those with excellent health.
+Here, the salary of individuals with merely good health hardly changes over a lifetime, as indicated by the non-significant slope. On the other hand, the salary increase for those with excellent health is significant. The contrast between the two slopes also reveals a significant difference. To put it in statistical terms: good health has a significant marginal disadvantage in terms of income, amounting to 0.8 relative to the income of those with excellent health. 
 
-As a result, young people earn roughly the same amount regardless of their health, while older, healthier individuals will earn approximately 53K per year more at the end of their career, around age 80, which IS significant.
+However, the problem with this difference in slopes of 0.8 is that we still don't know, how much more people on the blue line would earn. Moreover, the plot shows that this difference changes with *age* and can not be expressed as a single number. The `cov.reduce = range` argument solves this problem, by measuring the difference between blue and red lines at minimum and maximum ages. This reveals, that young people earn roughly the same amount regardless of their health, while older healthier individuals will earn over 53K per year more at the end of their career, which IS significant.
 
 ```{r}
 emmeans(m, pairwise ~ health|age, cov.reduce = range)
@@ -192,7 +200,7 @@ emmip(m, health ~ age, CIs = TRUE,
 ```
 
 
-Check this out! If we use the "cov.reduce = FALSE" argument with "emmip" function, we will be able to see all possible values of age. This gives us a helpful overview of our data and enables us to choose fewer more meaningful values to compare. The "at = list()" argument allows us to specify exact ages. Let's take 25, 45, and 65 years, representing the beginning, middle, and end of a career, as an example.  
+Check this out! If we use the "cov.reduce = FALSE" argument with "emmip" function, we will be able to see all possible values of age. This gives us a complete overview of our data and enables us to choose fewer, more meaningful values of age to compare. The "at = list()" argument allows us to specify exact ages. Let's for example take 25, 45, and 65 years, representing the beginning, middle, and the end of a career.  
 
 ```{r}
 emmip(m, health ~ age, CIs = TRUE, 
@@ -209,11 +217,11 @@ emmeans(m, pairwise ~ age|health,  at = list(age = c(25, 45, 65)))
 emmeans(m, pairwise ~ health|age,  at = list(age = c(25, 45, 65)))
 ```
 
-Therefore, if someone asks you who earns more, healthy or less healthy people, you would have to respond, "It depends on their age. Young people earn the same regardless of their health, while older individuals with very good health definitely earn more, probably because they are more capable of delivering. You can't certainly answer the question about salaries in different health levels without knowing the age, because "IT DEPENDS" on age ... and probably some other important things. So, since the relationships between things in real life always depend on something, models with interactions tend to be more realistic. Then how does an interaction between *two numeric predictors* work?
+Therefore, if someone asks you who earns more, very healthy or less healthy people, you would have to respond, "It depends on their age. Young people earn the same regardless of their health, while older individuals with very good health definitely earn more, probably because they are more capable of delivering. You can't certainly answer the question about salaries in different health levels without knowing the age, because "IT DEPENDS" on age ... and probably some other important things. So, since the relationships between things in real life always depend on something, models with interactions tend to be more realistic. Then how does an interaction between *two numeric predictors* work?
 
 # Two numeric predictors
 
-Having the option to select specific values of numeric predictors gives us a valuable tool for easily modeling and interpreting interactions between two numeric predictors. It's crucial to choose only a few key values, as plotting all the numeric values of both covariates could be overwhelming and chaotic, although it does also provide a complete overview and reveal the story within our data.
+Pretty easy actually! Having the option to select specific values of numeric predictors gives us a valuable tool for easily modeling and interpreting interactions between two numeric predictors. It's crucial to choose only a few key values, as plotting all the numeric values of both covariates could be overwhelming and chaotic, although it does also provide a complete overview and reveals the story within our data.
 
 Take for instance, slow and weak cars - they may not be flashy but they can go the farthest on a single gallon of fuel, making them the most sustainable. On the other hand, slow and strong cars would go the least distance on a gallon of fuel, likely because of their weight. Similarly, quick and strong cars have lower mileage compared to quick and weak cars, as the latter type is not able to burn as much fuel and therefore can go further.
 
@@ -223,7 +231,7 @@ m <- lm(mpg ~ poly(hp, 2) * poly(qsec, 2), mtcars)
 emmip(m, hp ~ qsec, cov.reduce = FALSE, 
       ylab = "Miles per gallon")
 ```
-Having the full picture gives us an advantage as it allows us to **choose the most meaningful values for both numeric variables**. From there, we can **treat those specific values as categories** and easily obtain EMMs and the pairwise contrasts between them. I think it's quite remarkable that we can interpret a model with two interacting numeric predictors that have a non-linear relationship with the response and with each other in such an understandable way. Let me know in the comments below if you're aware of a better method for interpreting this.
+Having the full picture gives us an advantage as it allows us to **choose the most meaningful values for both numeric variables**. From there, we can **treat those specific values as categories** and easily obtain EMMs and the pairwise contrasts between them. I think it's quite remarkable that we can interpret a model with two interacting numeric predictors that have a non-linear relationship with the response and with each other in such an understandable way. Let me know in the comments below what you think, and whether you know a better way to interpret similar models.
 
 ```{r}
 emmip(m, hp ~ qsec, CIs = TRUE, dodge = 1,
@@ -300,7 +308,7 @@ pwpp(m_emmeans[[1]])+     # by = "health"
   geom_vline(xintercept = 0.05, linetype = 2) 
 ```
 
-Now that we know how useful and informative interactions can be, the ONLY thing left to learn is how to find the best model, which includes only meaningful interactions. Fortunately, {glmulti} package allows you to do this with a few lines of code and you wanna find out how, check out [this video](https://youtu.be/Im293ClFen4).
+Now, that we know how useful and informative interactions can be, the ONLY thing left to learn is how to find the best model, which includes only meaningful interactions. Fortunately, {glmulti} package allows you to do this with a few lines of code and if you wanna find out how, check out [this video](https://youtu.be/Im293ClFen4).
 
 
 # Conclusion
