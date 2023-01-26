@@ -32,12 +32,12 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
-# This post as a video (coming soon)
+# This post as a video 
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 12 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("cqmMNR6x73g") 
 ```
 
 
@@ -112,6 +112,7 @@ b <- emmip(m, age_cat ~ jobclass, CIs = TRUE)+
 library(patchwork)
 a + b
 
+# save your fancy image ;)
 ggsave("interaction.png", plot = last_plot(), width = 5, height = 3)
 ```
 
@@ -125,7 +126,7 @@ emmeans(m, pairwise ~ age_cat | jobclass)$contrasts
 
 If you are still uncertain about the usefulness of interactions in models, consider this: which model would you trust to design your professional life? The one with interactions, or the one without? The choice is yours. The consequences, lasting. ... No pressure ;)
 
-> **_NOTE:_** Buy the way, if you stumbled upon this video and some words or code are unclear, I highly recommend watching the [introductory video on {emmeans} first]().
+> **_NOTE:_** Buy the way, if you stumbled upon this video and some words or code are unclear, I highly recommend watching the [introductory video on {emmeans} first](https://youtu.be/_okuMw4JFfU).
 
 
 For now, let's return to our model (very quick picture of a female model, like in fight club) and point out 3 important nuances.
@@ -315,7 +316,7 @@ Now, that we know how useful and informative interactions can be, the ONLY thing
 
 Including and interpreting interactions make things more complicated, but also more rewarding. However, interpreting three-way type of effect can be difficult and is prone to mistakes. That is why they are rarely used in inferential statistics, despite the fact that they can improve predictive power of models. Further difficult to interpret cases would be including one interaction and several non-interacting predictors, or including several interactions into the same model. Thus, I'd only use two predictors and two-way interactions.
 
-# Bonus (questionable) content 
+# Bonus (questionable ;) content 
 
 ## Effect size: Cohen effect sizes are close cousins of pairwise differences
 

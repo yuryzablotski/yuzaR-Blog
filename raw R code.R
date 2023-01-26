@@ -1,5 +1,5 @@
 library(ISLR)            # for Wage data
-library(emmeans)         # unleash the power of your results!
+library(emmeans)         # unleash the power results!
 library(tidyverse)       # for everything good in R
 theme_set(theme_test())  # beautifies plots 
 
@@ -12,6 +12,7 @@ salary <- Wage %>%
   group_by(education) %>% 
   sample_n(40)
 
+# Interaction between two categorical predictors
 m  <- lm(wage ~ age_cat * jobclass, salary)
 m1 <- lm(wage ~ age_cat + jobclass, salary)
 
@@ -23,14 +24,24 @@ emmeans(m1, pairwise ~ jobclass| age_cat)$contrasts
 
 a <- emmip(m1, age_cat ~ jobclass, CIs = TRUE)+
   theme(legend.position = "top")+
-  ggtitle("NO interaction")
+  ggtitle("NO INTERACTION")+
+  ylab("SALARY [1000$]")+ 
+  labs(color = "AGE")+
+  scale_color_manual(values=c('blue','black'))
 
 b <- emmip(m, age_cat ~ jobclass, CIs = TRUE)+
   theme(legend.position = "top")+
-  ggtitle("Interaction")
+  ggtitle("INTERACTION")+
+  ylab("SALARY [1000$]")+ 
+  labs(color = "AGE")+
+  scale_color_manual(values=c('blue','black'))
 
 library(patchwork)
 a + b
+
+# save your fancy image ;)
+ggsave("interaction.png", plot = last_plot(), 
+       width = 5, height = 3)
 
 emmeans(m, pairwise ~ jobclass | age_cat)$contrasts
 emmeans(m, pairwise ~ age_cat | jobclass)$contrasts
@@ -40,7 +51,11 @@ emmeans(m, pairwise ~ age_cat)
 emmeans(m, ~ age_cat | jobclass) %>%
   pairs(reverse = TRUE)
 
-emmeans(m, pairwise ~ age_cat | jobclass, infer = TRUE)$contrasts
+emmeans(m, pairwise ~ age_cat | jobclass, 
+        infer = TRUE)$contrasts
+
+# Interactions with covariates
+## Linear relationship
 
 set.seed(1)              # for reproducibility
 salary <- Wage %>% 
@@ -50,12 +65,13 @@ salary <- Wage %>%
 m <- lm(wage ~ health * age, salary)
 
 library(sjPlot) # I made a video on this 📦
-plot_model(m, type = "pred", terms = c("age", "health"))
+plot_model(m, type = "pred",terms = c("age","health"))
 
 emtrends(m, pairwise ~ health, var = "age", infer = T)
 
 emmeans(m, pairwise ~ health|age, cov.reduce = range)
 
+## Non-Linear relationship
 m <- lm(wage ~ health * poly(age, 2), salary)
 
 emmip(m, health ~ age, CIs = TRUE, 
@@ -66,9 +82,12 @@ emmip(m, health ~ age, CIs = TRUE,
       dodge = 5, ylab = "Salary  [1000 $]")
 
 # get contrasts
-emmeans(m, pairwise ~ age|health,  at = list(age = c(25, 45, 65)))
-emmeans(m, pairwise ~ health|age,  at = list(age = c(25, 45, 65)))
+emmeans(m, pairwise ~ age|health,  
+        at = list(age = c(25, 45, 65)))
+emmeans(m, pairwise ~ health|age,  
+        at = list(age = c(25, 45, 65)))
 
+# Two numeric predictors
 m <- lm(mpg ~ poly(hp, 2) * poly(qsec, 2), mtcars)
 
 emmip(m, hp ~ qsec, cov.reduce = FALSE, 
@@ -79,12 +98,12 @@ emmip(m, hp ~ qsec, CIs = TRUE, dodge = 1,
                 qsec = c(14, 17, 20)),
       ylab = "Miles per gallon")
 
-
 emmeans(m, pairwise ~ qsec | hp,  
         at = list(hp   = c(50, 150, 250), 
                   qsec = c(14, 17, 20)))
 
-m  <- lm(wage ~ poly(age, 2) * jobclass * health, Wage)
+# Higher order interactions
+m <- lm(wage ~ poly(age, 2) * jobclass * health, Wage)
 
 emmip(m, health ~ age|jobclass, CIs = TRUE, 
       at = list(age = c(25, 45, 65)), 
@@ -98,14 +117,16 @@ emmeans(m, pairwise ~ health|jobclass,  by = "age",
 emmeans(m, pairwise ~ age|jobclass,  by = "health",
         at = list(age = c(25, 45, 65)))$contrasts
 
+# Matrix results
 m  <- lm(wage ~ education * jobclass, salary)
 
-m_emmeans <- emmeans(m, pairwise ~ education | jobclass, adjust = "bonferroni")
-m_emmeans
+emm <- emmeans(m, pairwise ~ education | jobclass, 
+               adjust = "bonferroni")
+emm
 
-pwpm(m_emmeans[[1]], adjust = "bonferroni")
+pwpm(emm[[1]], adjust = "bonferroni")
 
-plot(m_emmeans, comparisons = TRUE)
+plot(emm, comparisons = TRUE)
 
-pwpp(m_emmeans[[1]])+     # by = "health"
+pwpp(emm[[1]])+     # by = "health"
   geom_vline(xintercept = 0.05, linetype = 2)

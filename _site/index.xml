@@ -7,7 +7,624 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 19 Jan 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 Jan 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>{emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans</link>
+      <description>
+
+
+&lt;h1 id="this-post-as-a-video"&gt;This post as a video&lt;/h1&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s ca. 14 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/_okuMw4JFfU" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="why-do-we-need-emmeans"&gt;Why do we need {emmeans}?&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Have you ever wondered, why a “summary” function of an omnibus
+test like ANOVA, tells you that “the number of cylinders” significantly
+affects “car mileage” &lt;strong&gt;without explaining how?&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Or have you ever been puzzled why a model compares all categories
+of a categorical predictor to &lt;strong&gt;only the reference category,
+without comparing categories to each other?&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;And what about those mysterious slopes with standard errors we
+get as model coefficients instead of the averages per category with 95%
+CIs that we actually want?&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Moreover, “summary” function doesn’t adjust p-values for multiple
+comparisons, which increases the probability of discovering nonsense by
+making too many type-I errors.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-11-29-emmeans/type_1_errors.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Summary function doesn’t plot the results of a model and&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;makes it almost impossible to interpret interactions!&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, if you’ve ever been frustrated due to similar issues, you’re
+definitely not alone! The &lt;strong&gt;“summary” function doesn’t actually
+provide a very useful summary&lt;/strong&gt;, and that’s why we need {emmeans}
+package, which solves all those problems.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)       # for everything good in R
+theme_set(theme_test())  # beautifies plots 
+library(emmeans)         # unleash power of your results!
+
+d &amp;lt;- mtcars %&amp;gt;% 
+  mutate(cyl  = factor(cyl),
+         am   = factor(am),
+         gear = factor(gear))
+
+# omnibus test
+aov(mpg ~ cyl, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;            Df Sum Sq Mean Sq F value   Pr(&amp;gt;F)    
+cyl          2  824.8   412.4    39.7 4.98e-09 ***
+Residuals   29  301.3    10.4                     
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# linear model
+lm(mpg ~ cyl, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Call:
+lm(formula = mpg ~ cyl, data = d)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.2636 -1.8357  0.0286  1.3893  7.2364 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&amp;gt;|t|)    
+(Intercept)  26.6636     0.9718  27.437  &amp;lt; 2e-16 ***
+cyl6         -6.9208     1.5583  -4.441 0.000119 ***
+cyl8        -11.5636     1.2986  -8.905 8.57e-10 ***
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+
+Residual standard error: 3.223 on 29 degrees of freedom
+Multiple R-squared:  0.7325,    Adjusted R-squared:  0.714 
+F-statistic:  39.7 on 2 and 29 DF,  p-value: 4.979e-09&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# lm(mpg ~ cyl, d) %&amp;gt;% summary() %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Even the simplest “emmeans” application provides averages with CIs,
+compares all categories to each other pair-wisely, adjusts p-values for
+multiple comparisons and can be easily plotted. And that’s just a
+beginning, because {emmeans} can do soo much more! But before we unleash
+the full power of {emmeans} package, we need to …&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# emmeans helps ;)
+lm(mpg ~ cyl, d) %&amp;gt;% emmeans(pairwise ~ cyl) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.7 0.972 29     24.7     28.7
+ 6     19.7 1.218 29     17.3     22.2
+ 8     15.1 0.861 29     13.3     16.9
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0003
+ cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0112
+
+P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ cyl, d) %&amp;gt;% emmeans(pairwise ~ cyl) %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="understand-what-emmeans-actually-stands-for"&gt;Understand what
+“emmeans” actually stands for&lt;/h1&gt;
+&lt;p&gt;The “emmeans” is an abbreviation for &lt;strong&gt;Estimated Marginal
+MEANS&lt;/strong&gt; (EMMs).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;“estimated” is part of the name, since results are estimated (or
+predicted) only from models, not from data&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the “means” is part of of the name, because the averages
+themselves are often estimated. However, the term “means” is just a
+generalization, because for a median-based regression {emmeans} would
+estimate the marginal medians, while for a logistic regression {emmeans}
+calculates marginal probabilities. Cool, right?&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(quantreg)
+rq(mpg ~ cyl, d, tau = .5) %&amp;gt;% emmeans(~ cyl)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; cyl emmean    SE df lower.CL upper.CL
+ 4     26.0 1.872 29     22.2     29.8
+ 6     19.7 0.895 29     17.9     21.5
+ 8     15.2 0.873 29     13.4     17.0
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;glm(am ~ cyl, d, family = binomial) %&amp;gt;% 
+  emmeans(~ cyl, type = &amp;quot;response&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; cyl  prob     SE  df asymp.LCL asymp.UCL
+ 4   0.727 0.1343 Inf     0.414     0.910
+ 6   0.429 0.1870 Inf     0.144     0.770
+ 8   0.143 0.0935 Inf     0.036     0.427
+
+Confidence level used: 0.95 
+Intervals are back-transformed from the logit scale &lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;so, the last part of the name is called “marginal”, which describes
+a &lt;strong&gt;group of values that we want to compute an average
+for&lt;/strong&gt;. For a categorical predictor, each category is a “margin”.
+And for a numeric predictor, an average of that predictor is the
+“margin”. For example, a marginal mean of “miles per gallon” for 4
+cylinders is 26.7, and for 8 cylinders only 15.1, while the average
+“mpg” will be estimated for an average horsepower of 147.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ gear + am + hp, d)
+ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
+    gear = 3, 4, 5
+    am = 0, 1
+    hp = 146.69&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;mean(d$hp)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 146.6875&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;All margins of a model are combined in a REFERENCE GRID,
+which is the FOUNDATION for EMMs,&lt;/strong&gt; because we can estimate the
+mean at each point in the reference grid, or even define new points of
+the reference grid we want to estimate the means for. But let’s take it
+one step at the time, starting with a …&lt;/p&gt;
+&lt;h1 id="single-categorical-predictor"&gt;Single categorical predictor&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ cyl, d)
+ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
+    cyl = 4, 6, 8&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.7 0.972 29     24.7     28.7
+ 6     19.7 1.218 29     17.3     22.2
+ 8     15.1 0.861 29     13.3     16.9
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0003
+ cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0112
+
+P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The reference grid of this model shows 3 points we can estimate mean
+“mpg” for, namely cylinders 4, 6 and 8. The “emmeans” function displays
+those means with their 95% CIs, compares the mileage of cylinders among
+each other pair-wisely and adjusts p-values for multiple comparison with
+a &lt;em&gt;Tukey&lt;/em&gt; method by default.&lt;/p&gt;
+&lt;p&gt;The default method of adjustment can easily be changed thought, which
+is very useful for several cases. First of all, people might want to use
+a famous &lt;em&gt;Bonferroni&lt;/em&gt; method. However, &lt;em&gt;Bonferroni&lt;/em&gt;
+correction is quite conservative and produces higher p-values as
+compared to &lt;em&gt;Tukey&lt;/em&gt;, which is dangerous, because it increases
+chances to make a type II error - namely missing a discovery.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-11-29-emmeans/type_2_errors.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Thus, &lt;em&gt;Bonferroni&lt;/em&gt; correction is more useful when you have a
+lot of data. But if you only have a few observations or conduct an
+exploratory pilot study, you can even stop correcting for multiple
+comparisons by using, adjust = “none”, argument. I personally prefer
+Benjamini &amp;amp; Hochberg (1995) method (“BH” or its alias “fdr”) to
+control the false discovery rate.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, adjust = &amp;quot;bonferroni&amp;quot;)$contrasts&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0004
+ cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0125
+
+P value adjustment: bonferroni method for 3 tests &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, adjust = &amp;quot;none&amp;quot;)$contrasts&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0001
+ cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0042&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, adjust = &amp;quot;BH&amp;quot;) # = “fdr”&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.7 0.972 29     24.7     28.7
+ 6     19.7 1.218 29     17.3     22.2
+ 8     15.1 0.861 29     13.3     16.9
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0002
+ cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0042
+
+P value adjustment: BH method for 3 tests &lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="summary-of-summaries"&gt;Summary of … summaries ;)&lt;/h1&gt;
+&lt;p&gt;Interestingly, the “emmeans” function shows us 95% CIs of the means,
+but not of the estimates of contrasts, which are differences between
+cylinders. On the other hand, the contrasts have p-values which test the
+null hypothesis that the difference is literally zero, while the
+“emmeans” section does not test any hypothesis and therefore has no
+p-values.&lt;/p&gt;
+&lt;p&gt;We could greatly enhance the output of “emmeans” by using the “infer
+= TRUE” argument. This produces 95% CIs for the differences among
+cylinders, which is more useful than the standard error (SE). It also
+tests the null hypothesis that the means are actually zero. However,
+testing “emmeans” against zero is not particularly useful – which is why
+p-values are not usually shown. But it makes a lot more sense to test
+them against some target mileage, let’s say 14. For that, we can use the
+“null” argument to set the null hypothesis to 14. This makes cylinder 8,
+with a mean mileage of 15.1, no longer significantly different from our
+new null hypothesis. The “pairwise” argument is removed, because
+otherwise the contrasts would also have been tested against 14.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, infer = T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ cyl emmean    SE df lower.CL upper.CL t.ratio p.value
+ 4     26.7 0.972 29     24.7     28.7  27.437  &amp;lt;.0001
+ 6     19.7 1.218 29     17.3     22.2  16.206  &amp;lt;.0001
+ 8     15.1 0.861 29     13.3     16.9  17.529  &amp;lt;.0001
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df lower.CL upper.CL t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29    3.072    10.77   4.441  0.0003
+ cyl4 - cyl8    11.56 1.30 29    8.356    14.77   8.905  &amp;lt;.0001
+ cyl6 - cyl8     4.64 1.49 29    0.958     8.33   3.112  0.0112
+
+Confidence level used: 0.95 
+Conf-level adjustment: tukey method for comparing a family of 3 estimates 
+P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl, infer = T, null = 14, adjust = &amp;quot;mvt&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; cyl emmean    SE df lower.CL upper.CL null t.ratio p.value
+ 4     26.7 0.972 29     24.2     29.1   14  13.031  &amp;lt;.0001
+ 6     19.7 1.218 29     16.7     22.8   14   4.714  0.0002
+ 8     15.1 0.861 29     12.9     17.3   14   1.277  0.5018
+
+Confidence level used: 0.95 
+Conf-level adjustment: mvt method for 3 estimates 
+P value adjustment: mvt method for 3 tests &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see, the “emmeans” function does a great job of
+summarizing all the important results, while the “summary” function
+misses most of them. We can even go in the opposite direction and
+summarize the “emmeans” results themselves to include &lt;strong&gt;only the
+most essential information&lt;/strong&gt;. For that we’ll use the Pairwise
+P-value matrix (“pwpm”) function, which presents results from “emmeans”
+and pairwise comparisons thereof in a most compact way, where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the upper triangle displays the “Tukey” adjusted P values,&lt;/li&gt;
+&lt;li&gt;the diagonal shows the Estimates (EMMs), and&lt;/li&gt;
+&lt;li&gt;the lower triangle compares the estimates between levels.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this way, rarely used information such as “df” or “t.ratios” is
+left out.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl) %&amp;gt;% pwpm()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;       4      6      8
+4 [26.7] 0.0003 &amp;lt;.0001
+6   6.92 [19.7] 0.0112
+8  11.56   4.64 [15.1]
+
+Row and column labels: cyl
+Upper triangle: P values   adjust = &amp;quot;tukey&amp;quot;
+Diagonal: [Estimates] (emmean) 
+Lower triangle: Comparisons (estimate)   earlier vs. later&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Another advantage of “emmeans” over “summary” function is that we can
+easily plot our estimates with their 95% confidence intervals by using a
+“plot” command. (The 95% confidence intervals are the default, but you
+can change them with “level” argument, if you want to.) But the
+advantages of using “emmeans” over “summary” doesn’t stop there. The
+benefits are even more pronounced if we analyze numeric predictors or
+covariates.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, level = 0.5)$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-11-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="single-numeric-predictor-altering-the-reference-grid"&gt;Single
+numeric predictor + altering the reference grid&lt;/h1&gt;
+&lt;p&gt;Namely, instead of just looking at the average 20 miles per gallon
+for a boring average car (as represented by the mean “horsepower” of
+147), we can estimate “mileages per gallon” for weak (imagine a baby
+car) and muscle cars (imagine a muscle car and a engine noise)? To do
+this, we’ll &lt;em&gt;reduce our covariate&lt;/em&gt; to only the &lt;em&gt;range&lt;/em&gt; of
+“horsepower”, from 52 to 335, which gives us a &lt;strong&gt;much more
+informative&lt;/strong&gt; and less boring look at fuel efficiency.
+Particularly, weak cars drive further and strong cars drive &lt;strong&gt;much
+less&lt;/strong&gt; than the average 20 miles per gallon.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ hp, d)
+emmeans(m, ~ hp)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  hp emmean    SE df lower.CL upper.CL
+ 147   20.1 0.683 30     18.7     21.5
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  hp emmean   SE df lower.CL upper.CL
+  52  26.55 1.18 30    24.15     29.0
+ 335   7.24 2.02 30     3.11     11.4
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Moreover, we can specify any particular values of a numeric
+predictor, which might be useful when we have a non-linear relationship,
+but still need to figure out the efficiency of cars at different values
+of horsepower.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m1 &amp;lt;- lm(mpg ~ poly(hp, 2), d) 
+
+library(sjPlot) # I made a video on this 📦
+plot_model(m1, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$hp&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Let’s use 100, 200, and 300 “horsepowers” and not only plot the
+estimates, but also compare them statistically by using the “comparisons
+= TRUE” argument. The blue bars represent the 95% confidence intervals
+for the EMMs, and the red arrows show statistical comparisons among
+them. If an arrow from one mean overlaps with an arrow from another
+mean, the difference is not significant.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m1, ~ hp, at = list(hp = c(100, 200, 300))) %&amp;gt;% 
+  plot(comparisons = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Speaking of significance: if we want to see the exact p-values for
+pairwise comparisons among the different “horsepowers,” we again can add
+the “pairwise” argument in front of the tilde (~) and see that after
+crossing the 200 horsepower threshold, the mileage doesn’t significant
+change anymore, but stays at around 14.5 miles.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m1, pairwise ~ hp, at = list(hp = c(100, 200, 300)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+  hp emmean    SE df lower.CL upper.CL
+ 100   23.3 0.662 29     21.9     24.6
+ 200   14.6 0.820 29     12.9     16.3
+ 300   14.3 1.735 29     10.7     17.8
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast      estimate    SE df t.ratio p.value
+ hp100 - hp200     8.71 0.919 29   9.477  &amp;lt;.0001
+ hp100 - hp300     9.00 1.945 29   4.626  0.0002
+ hp200 - hp300     0.29 1.728 29   0.168  0.9846
+
+P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, having learned what “emmeans” does with one categorical and one
+numeric predictors, let’s figure out what happens if we have both in a
+multiple model.&lt;/p&gt;
+&lt;h1 id="one-categorical-one-numeric-predictors"&gt;One categorical + One
+numeric predictors&lt;/h1&gt;
+&lt;p&gt;In models that include covariates, EMMs are often referred to as
+&lt;em&gt;adjusted means&lt;/em&gt;. For example, consider a scenario where we want
+to understand the effect of profession on &lt;em&gt;salary.&lt;/em&gt; We might
+include &lt;em&gt;age&lt;/em&gt; as a covariate in our model because &lt;em&gt;salary&lt;/em&gt;
+certainly changes over the lifetime. By holding &lt;em&gt;age&lt;/em&gt; constant at
+its average, we are controlling for the influence of &lt;em&gt;age&lt;/em&gt; and
+are able to better understand the unique effect of profession on
+&lt;em&gt;salary&lt;/em&gt; and make more accurate predictions.&lt;/p&gt;
+&lt;p&gt;If you wonder whether we really need any covariate at all, you can
+compare the Akaike’s Information Criterion (AIC) of a model with, to the
+model without this covariate. The lower AIC of the model with age
+indicates that the covariate improves the model and thus makes
+predictions of salary by profession indeed more realistic.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ISLR)
+
+set.seed(10)  # for reproducibility
+salary &amp;lt;- Wage %&amp;gt;% 
+    group_by(jobclass) %&amp;gt;% 
+    sample_n(50)
+
+m_no_age &amp;lt;- lm(wage ~ jobclass, salary)
+m &amp;lt;- lm(wage ~ jobclass + age, salary)
+AIC(m, m_no_age)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;         df      AIC
+m         4 1014.413
+m_no_age  3 1020.342&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The average age of 41.39 years shows that industrial workers earn
+slightly below 100K, while the IT crowd earns over 116K, which is
+already a first insight into our question. However, we can go one step
+further and ask “emmeans” to provide salary estimates for different ages
+in order to see how strongly salary increases over a lifetime for
+different professions.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
+    jobclass = 1. Industrial, 2. Information
+    age = 41.39&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ jobclass)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; jobclass       emmean   SE df lower.CL upper.CL
+ 1. Industrial    99.9 5.33 97     89.4      111
+ 2. Information  116.4 5.33 97    105.8      127
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For instance, if people start working at 25 and finish working at 65
+years old, we will see that IT professionals receive a salary of over
+100K already at the beginning of their career at the age of 25, while
+factory workers only reach that 100K mark by the age of 42.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ age | jobclass, at = list(age = c(25, 42, 65)))$emmeans&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;jobclass = 1. Industrial:
+ age emmean   SE df lower.CL upper.CL
+  25     85 7.33 97     70.4     99.5
+  42    100 5.34 97     89.9    111.1
+  65    121 9.49 97    102.6    140.3
+
+jobclass = 2. Information:
+ age emmean   SE df lower.CL upper.CL
+  25    101 7.67 97     86.2    116.6
+  42    117 5.32 97    106.3    127.5
+  65    138 9.09 97    119.8    155.9
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="two-categorical-predictors"&gt;Two categorical predictors&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ am + cyl, d)
+ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
+    am = 0, 1
+    cyl = 4, 6, 8&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.1 0.972 28     24.1     28.1
+ 6     19.9 1.165 28     17.5     22.3
+ 8     16.0 0.943 28     14.1     17.9
+
+Results are averaged over the levels of: am 
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.16 1.54 28   4.009  0.0012
+ cyl4 - cyl8    10.07 1.45 28   6.933  &amp;lt;.0001
+ cyl6 - cyl8     3.91 1.47 28   2.660  0.0331
+
+Results are averaged over the levels of: am 
+P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model with two categorical predictors works a little differently.
+If we examine the estimated marginal means (EMMs) of &lt;em&gt;cylinders&lt;/em&gt;
+while adjusting for &lt;em&gt;automatic transmission&lt;/em&gt;, the “emmeans”
+command indicates that the results are somehow averaged over the levels
+of the variable &lt;em&gt;“am”&lt;/em&gt;. I was initially unsure of what this
+meant, so I calculated the means of cylinders separately for
+transmission 0 and 1 using “by” argument and averaged them to get the
+same EMMs we obtained initially.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(24.8 + 27.4) / 2 = 26.1&lt;/li&gt;
+&lt;li&gt;(18.6 + 21.2) / 2 = 19.9&lt;/li&gt;
+&lt;li&gt;(14.7 + 17.3) / 2 = 16&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Oh, by the way, if you want to display the sample size of every
+level, use &lt;code&gt;calc = c(n = ".wgt.")&lt;/code&gt; argument ;)&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl, by = &amp;quot;am&amp;quot;, calc = c(n = &amp;quot;.wgt.&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;am = 0:
+ cyl emmean    SE df  n lower.CL upper.CL
+ 4     24.8 1.323 28  3     22.1     27.5
+ 6     18.6 1.288 28  4     16.0     21.3
+ 8     14.7 0.842 28 12     13.0     16.5
+
+am = 1:
+ cyl emmean    SE df  n lower.CL upper.CL
+ 4     27.4 0.992 28  8     25.3     29.4
+ 6     21.2 1.378 28  3     18.4     24.0
+ 8     17.3 1.383 28  2     14.5     20.1
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, in the case of a numeric covariate, “emmeans” are estimated for
+the mean of the covariate. However, for a categorical covariate,
+“emmeans” calculates the averages for each category and then takes the
+average of the estimated marginal means over the categories.&lt;/p&gt;
+&lt;p&gt;But what happens if we have two numeric predictors?&lt;/p&gt;
+&lt;h1 id="two-numeric-predictors"&gt;Two numeric predictors&lt;/h1&gt;
+&lt;p&gt;To answer this question, let’s consider the horsepower and weight of
+cars in the same model. The reference grid tells us that the mileage
+will be calculated only for the averages of predictors, which is
+somewhat boring. However, using the “cov.reduce” argument we learned
+about today, we can tell a more interesting story that is already part
+of the model but would have gone untold if we had only used the
+“summary” function. In particular, weak (52 horsepower) and light (1.52
+weight) cars are the most efficient, as they can drive the most distance
+(nearly 30 miles per gallon of fuel). If a weak car is heavy (5.42
+weight), it can only manage to drive 14.5 miles, which is less than a
+light but sporty muscle car (335 horsepower) with a mileage of 20 miles
+per gallon. The most inefficient cars, however, are strong and heavy,
+which can only manage 5.5 miles per gallon, so you’ll never pass a gas
+station.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ hp + wt, d)
+ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
+    hp = 146.69
+    wt = 3.2172&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;hp =  52:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  29.71 0.943 29    27.78    31.64
+ 5.42  14.54 2.113 29    10.22    18.86
+
+hp = 335:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  20.72 2.585 29    15.43    26.00
+ 5.42   5.55 1.387 29     2.71     8.39
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Plotting the results supports our conclusion that increasing the
+&lt;em&gt;strength&lt;/em&gt; and &lt;em&gt;weight&lt;/em&gt; of cars decreases their
+efficiency. The only thing we would need to be absolutely sure of our
+finding is the p-values. However, if we use the “pairwise” argument in
+front of the tilde (~) to get contrasts between values, we oddly get
+identical results for different horsepower levels. This happens because
+in a multiple model &lt;strong&gt;without interactions&lt;/strong&gt; we can only
+adjust the effect of one predictor, such as &lt;em&gt;weight&lt;/em&gt;, while the
+other predictors are held constant and do not change or vary.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_model(m, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;wt&amp;quot;, &amp;quot;hp [52, 335]&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ hp + wt, d) %&amp;gt;% 
+  emmeans(pairwise ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+hp =  52:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  29.71 0.943 29    27.78    31.64
+ 5.42  14.54 2.113 29    10.22    18.86
+
+hp = 335:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  20.72 2.585 29    15.43    26.00
+ 5.42   5.55 1.387 29     2.71     8.39
+
+Confidence level used: 0.95 
+
+$contrasts
+hp =  52:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424     15.2 2.47 29   6.129  &amp;lt;.0001
+
+hp = 335:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424     15.2 2.47 29   6.129  &amp;lt;.0001&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, when we introduce interactions, things dramatically improve,
+because we can calculate EMMs for every level of one predictor within
+every level of the other predictor, and we can easily obtain contrasts
+between levels with unique p-values. This, however, is a completely
+different story, because analyzing interactions can be very challenging,
+but at the same time, it is extremely rewarding because it allows us to
+extract even more valuable knowledge from models. Thus, if you want to
+step up your data science game and unleash the real power of {emmeans},
+you should definitely &lt;a href="https://youtu.be/cqmMNR6x73g"&gt;watch this
+video!&lt;/a&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ hp * wt, d) %&amp;gt;% 
+  emmeans(pairwise ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+hp =  52:
+   wt emmean   SE df lower.CL upper.CL
+ 1.51  33.32 1.24 28    30.78     35.9
+ 5.42   6.85 2.70 28     1.33     12.4
+
+hp = 335:
+   wt emmean   SE df lower.CL upper.CL
+ 1.51  11.26 3.31 28     4.48     18.0
+ 5.42  15.61 2.92 28     9.63     21.6
+
+Confidence level used: 0.95 
+
+$contrasts
+hp =  52:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424    26.47 3.65 28   7.261  &amp;lt;.0001
+
+hp = 335:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424    -4.35 5.59 28  -0.778  0.4430&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="whats-next-interactions"&gt;What’s next? … Interactions!&lt;/h1&gt;
+&lt;p&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;img src="file887e1d2795dc_files/figure-html/unnamed-chunk-24-3.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="some-bonus-content"&gt;Some bonus content&lt;/h1&gt;
+&lt;h2 id="cohens-d-effect-sizes"&gt;“Cohen’s d” Effect sizes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;you must specify the “emmGrid” object with the means to be compared,
+the estimated population SD sigma of the model, and its degrees of
+freedom “edf”:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;eff_size(emmeans(m, ~ cyl), sigma = sigma(m), edf = 29)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; contrast    effect.size    SE df lower.CL upper.CL
+ cyl4 - cyl6        1.86 0.566 26    0.698     3.02
+ cyl4 - cyl8        3.38 0.677 26    1.993     4.78
+ cyl6 - cyl8        1.52 0.576 26    0.340     2.71
+
+Results are averaged over the levels of: am 
+sigma used for effect sizes: 3.032 
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>c83950e7eef34060a220213921b4dd8d</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans</guid>
+      <pubDate>Thu, 26 Jan 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans/thumbnail_emmeans_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>Don't Ignore Interactions - Unleash the Full Power of Models with {emmeans} R-package</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -15,13 +632,12 @@
       <description>
 
 
-&lt;h1 id="this-post-as-a-video-coming-soon"&gt;This post as a video (coming
-soon)&lt;/h1&gt;
+&lt;h1 id="this-post-as-a-video"&gt;This post as a video&lt;/h1&gt;
 &lt;p&gt;I recommend to watch a video first, because I highlight things I talk
-about. It’s ca. … minutes long.&lt;/p&gt;
+about. It’s ca. 12 minutes long.&lt;/p&gt;
 &lt;div class="vembedr"&gt;
 &lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;iframe src="https://www.youtube.com/embed/cqmMNR6x73g" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(ISLR)            # for Wage data
@@ -564,8 +1180,9 @@ b &amp;lt;- emmip(m, age_cat ~ jobclass, CIs = TRUE)+
 
 library(patchwork)
 a + b&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;interaction.png&amp;quot;, plot = last_plot(), width = 5, height = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# save your fancy image ;)
+ggsave(&amp;quot;interaction.png&amp;quot;, plot = last_plot(), width = 5, height = 3)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;For instance, for the young, a choice of profession is of great
 importance, as they can earn more in IT than in an industrial job. While
 as people age, the difference in income between the two types of jobs
@@ -596,7 +1213,8 @@ choice is yours. The consequences, lasting. … No pressure ;)&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;NOTE:&lt;/em&gt;&lt;/strong&gt; Buy the way, if you stumbled upon
 this video and some words or code are unclear, I highly recommend
-watching the &lt;a href=""&gt;introductory video on {emmeans} first&lt;/a&gt;.&lt;/p&gt;
+watching the &lt;a href="https://youtu.be/_okuMw4JFfU"&gt;introductory video
+on {emmeans} first&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;For now, let’s return to our model (very quick picture of a female
 model, like in fight club) and point out 3 important nuances.&lt;/p&gt;
@@ -670,7 +1288,7 @@ m &amp;lt;- lm(wage ~ health * age, salary)
 
 library(sjPlot) # I made a video on this 📦
 plot_model(m, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;age&amp;quot;, &amp;quot;health&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;An interaction between a categorical predictor and a numeric
 predictor (covariate) is even more intriguing, as it produces even more
 results. Specifically, we can estimate and compare the slopes for
@@ -744,7 +1362,7 @@ function.&lt;/p&gt;
 
 emmip(m, health ~ age, CIs = TRUE, 
       cov.reduce = FALSE, ylab = &amp;quot;Salary  [1000 $]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Check this out! If we use the “cov.reduce = FALSE” argument with
 “emmip” function, we will be able to see all possible values of age.
 This gives us a complete overview of our data and enables us to choose
@@ -755,7 +1373,7 @@ career.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, health ~ age, CIs = TRUE, 
       at = list(age = c(25, 45, 65)), 
       dodge = 5, ylab = &amp;quot;Salary  [1000 $]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And all of a sudden, it looks like we’re comparing two categorical
 variables, with &lt;em&gt;age&lt;/em&gt; having 3 categories and &lt;em&gt;health&lt;/em&gt;
 having 2. As a result, we can again create two different types of
@@ -855,7 +1473,7 @@ therefore can go further.&lt;/p&gt;
 
 emmip(m, hp ~ qsec, cov.reduce = FALSE, 
       ylab = &amp;quot;Miles per gallon&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
 Having the full picture gives us an advantage as it allows us to
 &lt;strong&gt;choose the most meaningful values for both numeric
 variables&lt;/strong&gt;. From there, we can &lt;strong&gt;treat those specific
@@ -869,7 +1487,7 @@ and whether you know a better way to interpret similar models.&lt;/p&gt;
       at = list(hp   = c(50, 150, 250), 
                 qsec = c(14, 17, 20)),
       ylab = &amp;quot;Miles per gallon&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ qsec | hp,  
         at = list(hp   = c(50, 150, 250), 
                   qsec = c(14, 17, 20)))&lt;/code&gt;&lt;/pre&gt;
@@ -926,7 +1544,7 @@ predictors&lt;/p&gt;
 emmip(m, health ~ age|jobclass, CIs = TRUE, 
       at = list(age = c(25, 45, 65)), 
       dodge = 5, ylab = &amp;quot;Salary  [1000 $]&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For example, the relationship between &lt;em&gt;money&lt;/em&gt; and
 &lt;em&gt;health&lt;/em&gt; depends on &lt;em&gt;jobclass&lt;/em&gt; and &lt;em&gt;age&lt;/em&gt;. As we can
 see from the &lt;em&gt;reference grid&lt;/em&gt; of our model, there are many
@@ -1143,10 +1761,10 @@ where we:&lt;/p&gt;
 plot&lt;/strong&gt; (via &lt;code&gt;pwpp&lt;/code&gt; command)&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(m_emmeans, comparisons = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;pwpp(m_emmeans[[1]])+     # by = &amp;quot;health&amp;quot;
   geom_vline(xintercept = 0.05, linetype = 2) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-22-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-22-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;Now, that we know how useful and informative interactions can be, the
 ONLY thing left to learn is how to find the best model, which includes
 only meaningful interactions. Fortunately, {glmulti} package allows you
@@ -1161,7 +1779,7 @@ predictive power of models. Further difficult to interpret cases would
 be including one interaction and several non-interacting predictors, or
 including several interactions into the same model. Thus, I’d only use
 two predictors and two-way interactions.&lt;/p&gt;
-&lt;h1 id="bonus-questionable-content"&gt;Bonus (questionable) content&lt;/h1&gt;
+&lt;h1 id="bonus-questionable-content"&gt;Bonus (questionable ;) content&lt;/h1&gt;
 &lt;h2
 id="effect-size-cohen-effect-sizes-are-close-cousins-of-pairwise-differences"&gt;Effect
 size: Cohen effect sizes are close cousins of pairwise differences&lt;/h2&gt;
@@ -1265,7 +1883,7 @@ Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 emmeans(m, pairwise ~ cyl | am, 
         at = list(am = &amp;quot;1&amp;quot;, hp = 300, disp = c(100, 200, 300), gear = &amp;quot;5&amp;quot;)
 )$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;mtcars.rg &amp;lt;- ref_grid(m,
                       at = list(hp = 300, 
                                 disp = c(100, 200, 300)))
@@ -1278,7 +1896,7 @@ mtcars.rg&lt;/code&gt;&lt;/pre&gt;
     disp = 100, 200, 300&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# plotting 
 plot(mtcars.rg, by = &amp;quot;gear&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2
 id="interactions-with-covariates-other-predictors-think-twice-before-doing-this"&gt;Interactions
 with covariates + other predictors (think twice before doing this)&lt;/h2&gt;
@@ -1302,7 +1920,7 @@ Results are averaged over the levels of: jobclass
 Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, education ~ age, CIs = T, 
       cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emtrends(m, pairwise ~ education, var = &amp;quot;age&amp;quot;, 
         at = list(jobclass = &amp;quot;1. Industrial&amp;quot;)
 )$emtrends&lt;/code&gt;&lt;/pre&gt;
@@ -1359,7 +1977,7 @@ am = 1:
 Results are averaged over the levels of: gear 
 P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, am ~ cyl, CIs = T)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-26-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-26-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emtrends(m, ~ gear, var = &amp;quot;hp&amp;quot;, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt; gear hp.trend     SE df lower.CL upper.CL
  3     -0.0423 0.0236 21  -0.0913  0.00679
@@ -1369,7 +1987,7 @@ P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code
 Results are averaged over the levels of: am, cyl, hp 
 Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;emmip(m, gear ~ hp, CIs = T, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95cdc7a1_files/figure-html/unnamed-chunk-26-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e5cf5b9a2_files/figure-html/unnamed-chunk-26-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -1380,625 +1998,8 @@ improve this tutorial.&lt;/p&gt;
       <category>statistics</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-12-29-emmeans2interactions</guid>
-      <pubDate>Thu, 19 Jan 2023 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 25 Jan 2023 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-12-29-emmeans2interactions/thumbnail_emmeans_2.png" medium="image" type="image/png" width="1920" height="1080"/>
-    </item>
-    <item>
-      <title>{emmeans} Game-Changing R-package Squeezes Hideen Knowledge out of Models!</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans</link>
-      <description>
-
-
-&lt;h1 id="this-post-as-a-video-coming-soon"&gt;This post as a video (coming
-soon!)&lt;/h1&gt;
-&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
-about. It’s ca. .. minutes long.&lt;/p&gt;
-&lt;div class="vembedr"&gt;
-&lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h1 id="why-do-we-need-emmeans"&gt;Why do we need {emmeans}?&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Have you ever wondered, why a “summary” function of an omnibus
-test like ANOVA, tells you that “the number of cylinders” significantly
-affects “car mileage” &lt;strong&gt;without explaining how?&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Or have you ever been puzzled why a model compares all categories
-of a categorical predictor to &lt;strong&gt;only the reference category,
-without comparing categories to each other?&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;And what about those mysterious slopes with standard errors we
-get as model coefficients instead of the averages per category with 95%
-CIs that we actually want?&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Moreover, “summary” function doesn’t adjust p-values for multiple
-comparisons, which increases the probability of discovering nonsense by
-making too many type-I errors.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-11-29-emmeans/type_1_errors.png" /&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Summary function doesn’t plot the results of a model and&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;makes it almost impossible to interpret interactions!&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;So, if you’ve ever been frustrated due to similar issues, you’re
-definitely not alone! The &lt;strong&gt;“summary” function doesn’t actually
-provide a very useful summary&lt;/strong&gt;, and that’s why we need {emmeans}
-package, which solves all those problems.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)       # for everything good in R
-theme_set(theme_test())  # beautifies plots 
-library(emmeans)         # unleash power of your results!
-
-d &amp;lt;- mtcars %&amp;gt;% 
-  mutate(cyl  = factor(cyl),
-         am   = factor(am),
-         gear = factor(gear))
-
-# omnibus test
-aov(mpg ~ cyl, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;            Df Sum Sq Mean Sq F value   Pr(&amp;gt;F)    
-cyl          2  824.8   412.4    39.7 4.98e-09 ***
-Residuals   29  301.3    10.4                     
----
-Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# linear model
-lm(mpg ~ cyl, d) %&amp;gt;% summary()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;
-Call:
-lm(formula = mpg ~ cyl, data = d)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.2636 -1.8357  0.0286  1.3893  7.2364 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&amp;gt;|t|)    
-(Intercept)  26.6636     0.9718  27.437  &amp;lt; 2e-16 ***
-cyl6         -6.9208     1.5583  -4.441 0.000119 ***
-cyl8        -11.5636     1.2986  -8.905 8.57e-10 ***
----
-Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
-
-Residual standard error: 3.223 on 29 degrees of freedom
-Multiple R-squared:  0.7325,    Adjusted R-squared:  0.714 
-F-statistic:  39.7 on 2 and 29 DF,  p-value: 4.979e-09&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# lm(mpg ~ cyl, d) %&amp;gt;% summary() %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Even the simplest “emmeans” application provides averages with CIs,
-compares all categories to each other pair-wisely, adjusts p-values for
-multiple comparisons and can be easily plotted. And that’s just a
-beginning, because {emmeans} can do soo much more! But before we unleash
-the full power of {emmeans} package, we need to …&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# emmeans helps ;)
-lm(mpg ~ cyl, d) %&amp;gt;% emmeans(pairwise ~ cyl) &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
- cyl emmean    SE df lower.CL upper.CL
- 4     26.7 0.972 29     24.7     28.7
- 6     19.7 1.218 29     17.3     22.2
- 8     15.1 0.861 29     13.3     16.9
-
-Confidence level used: 0.95 
-
-$contrasts
- contrast    estimate   SE df t.ratio p.value
- cyl4 - cyl6     6.92 1.56 29   4.441  0.0003
- cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
- cyl6 - cyl8     4.64 1.49 29   3.112  0.0112
-
-P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ cyl, d) %&amp;gt;% emmeans(pairwise ~ cyl) %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h1 id="understand-what-emmeans-actually-stands-for"&gt;Understand what
-“emmeans” actually stands for&lt;/h1&gt;
-&lt;p&gt;The “emmeans” is an abbreviation for &lt;strong&gt;Estimated Marginal
-MEANS&lt;/strong&gt; (EMMs).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;“estimated” is part of the name, since results are estimated (or
-predicted) only from models, not from data&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the “means” is part of of the name, because the averages
-themselves are often estimated. However, the term “means” is just a
-generalization, because for a median-based regression {emmeans} would
-estimate the marginal medians, while for a logistic regression {emmeans}
-calculates marginal probabilities. Cool, right?&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(quantreg)
-rq(mpg ~ cyl, d, tau = .5) %&amp;gt;% emmeans(~ cyl)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; cyl emmean    SE df lower.CL upper.CL
- 4     26.0 1.872 29     22.2     29.8
- 6     19.7 0.895 29     17.9     21.5
- 8     15.2 0.873 29     13.4     17.0
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;glm(am ~ cyl, d, family = binomial) %&amp;gt;% 
-  emmeans(~ cyl, type = &amp;quot;response&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; cyl  prob     SE  df asymp.LCL asymp.UCL
- 4   0.727 0.1343 Inf     0.414     0.910
- 6   0.429 0.1870 Inf     0.144     0.770
- 8   0.143 0.0935 Inf     0.036     0.427
-
-Confidence level used: 0.95 
-Intervals are back-transformed from the logit scale &lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;so, the last part of the name is called “marginal”, which describes
-a &lt;strong&gt;group of values that we want to compute an average
-for&lt;/strong&gt;. For a categorical predictor, each category is a “margin”.
-And for a numeric predictor, an average of that predictor is the
-“margin”. For example, a marginal mean of “miles per gallon” for 4
-cylinders is 26.7, and for 8 cylinders only 15.1, while the average
-“mpg” will be estimated for an average horsepower of 147.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ gear + am + hp, d)
-ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
-    gear = 3, 4, 5
-    am = 0, 1
-    hp = 146.69&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;mean(d$hp)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] 146.6875&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;All margins of a model are combined in a REFERENCE GRID,
-which is the FOUNDATION for EMMs,&lt;/strong&gt; because we can estimate the
-mean at each point in the reference grid, or even define new points of
-the reference grid we want to estimate the means for. But let’s take it
-one step at the time, starting with a …&lt;/p&gt;
-&lt;h1 id="single-categorical-predictor"&gt;Single categorical predictor&lt;/h1&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ cyl, d)
-ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
-    cyl = 4, 6, 8&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
- cyl emmean    SE df lower.CL upper.CL
- 4     26.7 0.972 29     24.7     28.7
- 6     19.7 1.218 29     17.3     22.2
- 8     15.1 0.861 29     13.3     16.9
-
-Confidence level used: 0.95 
-
-$contrasts
- contrast    estimate   SE df t.ratio p.value
- cyl4 - cyl6     6.92 1.56 29   4.441  0.0003
- cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
- cyl6 - cyl8     4.64 1.49 29   3.112  0.0112
-
-P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The reference grid of this model shows 3 points we can estimate mean
-“mpg” for, namely cylinders 4, 6 and 8. The “emmeans” function displays
-those means with their 95% CIs, compares the mileage of cylinders among
-each other pair-wisely and adjusts p-values for multiple comparison with
-a &lt;em&gt;Tukey&lt;/em&gt; method by default.&lt;/p&gt;
-&lt;p&gt;The default method of adjustment can easily be changed thought, which
-is very useful for several cases. First of all, people might want to use
-a famous &lt;em&gt;Bonferroni&lt;/em&gt; method. However, &lt;em&gt;Bonferroni&lt;/em&gt;
-correction is quite conservative and produces higher p-values as
-compared to &lt;em&gt;Tukey&lt;/em&gt;, which is dangerous, because it increases
-chances to make a type II error - namely missing a discovery.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-11-29-emmeans/type_2_errors.png" /&gt;&lt;/p&gt;
-&lt;p&gt;Thus, &lt;em&gt;Bonferroni&lt;/em&gt; correction is more useful when you have a
-lot of data. But if you only have a few observations or conduct an
-exploratory pilot study, you can even stop correcting for multiple
-comparisons by using, adjust = “none”, argument. I personally prefer
-Benjamini &amp;amp; Hochberg (1995) method (“BH” or its alias “fdr”) to
-control the false discovery rate.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, adjust = &amp;quot;bonferroni&amp;quot;)$contrasts&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; contrast    estimate   SE df t.ratio p.value
- cyl4 - cyl6     6.92 1.56 29   4.441  0.0004
- cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
- cyl6 - cyl8     4.64 1.49 29   3.112  0.0125
-
-P value adjustment: bonferroni method for 3 tests &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, adjust = &amp;quot;none&amp;quot;)$contrasts&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; contrast    estimate   SE df t.ratio p.value
- cyl4 - cyl6     6.92 1.56 29   4.441  0.0001
- cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
- cyl6 - cyl8     4.64 1.49 29   3.112  0.0042&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, adjust = &amp;quot;BH&amp;quot;) # = “fdr”&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
- cyl emmean    SE df lower.CL upper.CL
- 4     26.7 0.972 29     24.7     28.7
- 6     19.7 1.218 29     17.3     22.2
- 8     15.1 0.861 29     13.3     16.9
-
-Confidence level used: 0.95 
-
-$contrasts
- contrast    estimate   SE df t.ratio p.value
- cyl4 - cyl6     6.92 1.56 29   4.441  0.0002
- cyl4 - cyl8    11.56 1.30 29   8.905  &amp;lt;.0001
- cyl6 - cyl8     4.64 1.49 29   3.112  0.0042
-
-P value adjustment: BH method for 3 tests &lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id="summary-of-summaries"&gt;Summary of … summaries ;)&lt;/h1&gt;
-&lt;p&gt;Interestingly, the “emmeans” function shows us 95% CIs of the means,
-but not of the estimates of contrasts, which are differences between
-cylinders. On the other hand, the contrasts have p-values which test the
-null hypothesis that the difference is literally zero, while the
-“emmeans” section does not test any hypothesis and therefore has no
-p-values.&lt;/p&gt;
-&lt;p&gt;We could greatly enhance the output of “emmeans” by using the “infer
-= TRUE” argument. This produces 95% CIs for the differences among
-cylinders, which is more useful than the standard error (SE). It also
-tests the null hypothesis that the means are actually zero. However,
-testing “emmeans” against zero is not particularly useful – which is why
-p-values are not usually shown. But it makes a lot more sense to test
-them against some target mileage, let’s say 14. For that, we can use the
-“null” argument to set the null hypothesis to 14. This makes cylinder 8,
-with a mean mileage of 15.1, no longer significantly different from our
-new null hypothesis. The “pairwise” argument is removed, because
-otherwise the contrasts would also have been tested against 14.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, infer = T)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
- cyl emmean    SE df lower.CL upper.CL t.ratio p.value
- 4     26.7 0.972 29     24.7     28.7  27.437  &amp;lt;.0001
- 6     19.7 1.218 29     17.3     22.2  16.206  &amp;lt;.0001
- 8     15.1 0.861 29     13.3     16.9  17.529  &amp;lt;.0001
-
-Confidence level used: 0.95 
-
-$contrasts
- contrast    estimate   SE df lower.CL upper.CL t.ratio p.value
- cyl4 - cyl6     6.92 1.56 29    3.072    10.77   4.441  0.0003
- cyl4 - cyl8    11.56 1.30 29    8.356    14.77   8.905  &amp;lt;.0001
- cyl6 - cyl8     4.64 1.49 29    0.958     8.33   3.112  0.0112
-
-Confidence level used: 0.95 
-Conf-level adjustment: tukey method for comparing a family of 3 estimates 
-P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl, infer = T, null = 14, adjust = &amp;quot;mvt&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; cyl emmean    SE df lower.CL upper.CL null t.ratio p.value
- 4     26.7 0.972 29     24.2     29.1   14  13.031  &amp;lt;.0001
- 6     19.7 1.218 29     16.7     22.8   14   4.714  0.0002
- 8     15.1 0.861 29     12.9     17.3   14   1.277  0.5018
-
-Confidence level used: 0.95 
-Conf-level adjustment: mvt method for 3 estimates 
-P value adjustment: mvt method for 3 tests &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As you can see, the “emmeans” function does a great job of
-summarizing all the important results, while the “summary” function
-misses most of them. We can even go in the opposite direction and
-summarize the “emmeans” results themselves to include &lt;strong&gt;only the
-most essential information&lt;/strong&gt;. For that we’ll use the Pairwise
-P-value matrix (“pwpm”) function, which presents results from “emmeans”
-and pairwise comparisons thereof in a most compact way, where:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;the upper triangle displays the “Tukey” adjusted P values,&lt;/li&gt;
-&lt;li&gt;the diagonal shows the Estimates (EMMs), and&lt;/li&gt;
-&lt;li&gt;the lower triangle compares the estimates between levels.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;In this way, rarely used information such as “df” or “t.ratios” is
-left out.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl) %&amp;gt;% pwpm()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;       4      6      8
-4 [26.7] 0.0003 &amp;lt;.0001
-6   6.92 [19.7] 0.0112
-8  11.56   4.64 [15.1]
-
-Row and column labels: cyl
-Upper triangle: P values   adjust = &amp;quot;tukey&amp;quot;
-Diagonal: [Estimates] (emmean) 
-Lower triangle: Comparisons (estimate)   earlier vs. later&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Another advantage of “emmeans” over “summary” function is that we can
-easily plot our estimates with their 95% confidence intervals by using a
-“plot” command. (The 95% confidence intervals are the default, but you
-can change them with “level” argument, if you want to.) But the
-advantages of using “emmeans” over “summary” doesn’t stop there. The
-benefits are even more pronounced if we analyze numeric predictors or
-covariates.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl, level = 0.5)$emmeans %&amp;gt;% plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-11-2.png" width="672" /&gt;&lt;/p&gt;
-&lt;h1 id="single-numeric-predictor-altering-the-reference-grid"&gt;Single
-numeric predictor + altering the reference grid&lt;/h1&gt;
-&lt;p&gt;Namely, instead of just looking at the average 20 miles per gallon
-for a boring average car (as represented by the mean “horsepower” of
-147), we can estimate “mileages per gallon” for weak (imagine a baby
-car) and muscle cars (imagine a muscle car and a engine noise)? To do
-this, we’ll &lt;em&gt;reduce our covariate&lt;/em&gt; to only the &lt;em&gt;range&lt;/em&gt; of
-“horsepower”, from 52 to 335, which gives us a &lt;strong&gt;much more
-informative&lt;/strong&gt; and less boring look at fuel efficiency.
-Particularly, weak cars drive further and strong cars drive &lt;strong&gt;much
-less&lt;/strong&gt; than the average 20 miles per gallon.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ hp, d)
-emmeans(m, ~ hp)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;  hp emmean    SE df lower.CL upper.CL
- 147   20.1 0.683 30     18.7     21.5
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;  hp emmean   SE df lower.CL upper.CL
-  52  26.55 1.18 30    24.15     29.0
- 335   7.24 2.02 30     3.11     11.4
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Moreover, we can specify any particular values of a numeric
-predictor, which might be useful when we have a non-linear relationship,
-but still need to figure out the efficiency of cars at different values
-of horsepower.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m1 &amp;lt;- lm(mpg ~ poly(hp, 2), d) 
-
-library(sjPlot) # I made a video on this 📦
-plot_model(m1, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$hp&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;Let’s use 100, 200, and 300 “horsepowers” and not only plot the
-estimates, but also compare them statistically by using the “comparisons
-= TRUE” argument. The blue bars represent the 95% confidence intervals
-for the EMMs, and the red arrows show statistical comparisons among
-them. If an arrow from one mean overlaps with an arrow from another
-mean, the difference is not significant.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m1, ~ hp, at = list(hp = c(100, 200, 300))) %&amp;gt;% 
-  plot(comparisons = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;Speaking of significance: if we want to see the exact p-values for
-pairwise comparisons among the different “horsepowers,” we again can add
-the “pairwise” argument in front of the tilde (~) and see that after
-crossing the 200 horsepower threshold, the mileage doesn’t significant
-change anymore, but stays at around 14.5 miles.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m1, pairwise ~ hp, at = list(hp = c(100, 200, 300)))&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
-  hp emmean    SE df lower.CL upper.CL
- 100   23.3 0.662 29     21.9     24.6
- 200   14.6 0.820 29     12.9     16.3
- 300   14.3 1.735 29     10.7     17.8
-
-Confidence level used: 0.95 
-
-$contrasts
- contrast      estimate    SE df t.ratio p.value
- hp100 - hp200     8.71 0.919 29   9.477  &amp;lt;.0001
- hp100 - hp300     9.00 1.945 29   4.626  0.0002
- hp200 - hp300     0.29 1.728 29   0.168  0.9846
-
-P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now, having learned what “emmeans” does with one categorical and one
-numeric predictors, let’s figure out what happens if we have both in a
-multiple model.&lt;/p&gt;
-&lt;h1 id="one-categorical-one-numeric-predictors"&gt;One categorical + One
-numeric predictors&lt;/h1&gt;
-&lt;p&gt;In models that include covariates, EMMs are often referred to as
-&lt;em&gt;adjusted means&lt;/em&gt;. For example, consider a scenario where we want
-to understand the effect of profession on &lt;em&gt;salary.&lt;/em&gt; We might
-include &lt;em&gt;age&lt;/em&gt; as a covariate in our model because &lt;em&gt;salary&lt;/em&gt;
-certainly changes over the lifetime. By holding &lt;em&gt;age&lt;/em&gt; constant at
-its average, we are controlling for the influence of &lt;em&gt;age&lt;/em&gt; and
-are able to better understand the unique effect of profession on
-&lt;em&gt;salary&lt;/em&gt; and make more accurate predictions.&lt;/p&gt;
-&lt;p&gt;If you wonder whether we really need any covariate at all, you can
-compare the Akaike’s Information Criterion (AIC) of a model with, to the
-model without this covariate. The lower AIC of the model with age
-indicates that the covariate improves the model and thus makes
-predictions of salary by profession indeed more realistic.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(ISLR)
-
-set.seed(10)  # for reproducibility
-salary &amp;lt;- Wage %&amp;gt;% 
-    group_by(jobclass) %&amp;gt;% 
-    sample_n(50)
-
-m_no_age &amp;lt;- lm(wage ~ jobclass, salary)
-m &amp;lt;- lm(wage ~ jobclass + age, salary)
-AIC(m, m_no_age)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;         df      AIC
-m         4 1014.413
-m_no_age  3 1020.342&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The average age of 41.39 years shows that industrial workers earn
-slightly below 100K, while the IT crowd earns over 116K, which is
-already a first insight into our question. However, we can go one step
-further and ask “emmeans” to provide salary estimates for different ages
-in order to see how strongly salary increases over a lifetime for
-different professions.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
-    jobclass = 1. Industrial, 2. Information
-    age = 41.39&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ jobclass)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; jobclass       emmean   SE df lower.CL upper.CL
- 1. Industrial    99.9 5.33 97     89.4      111
- 2. Information  116.4 5.33 97    105.8      127
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;For instance, if people start working at 25 and finish working at 65
-years old, we will see that IT professionals receive a salary of over
-100K already at the beginning of their career at the age of 25, while
-factory workers only reach that 100K mark by the age of 42.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ age | jobclass, at = list(age = c(25, 42, 65)))$emmeans&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;jobclass = 1. Industrial:
- age emmean   SE df lower.CL upper.CL
-  25     85 7.33 97     70.4     99.5
-  42    100 5.34 97     89.9    111.1
-  65    121 9.49 97    102.6    140.3
-
-jobclass = 2. Information:
- age emmean   SE df lower.CL upper.CL
-  25    101 7.67 97     86.2    116.6
-  42    117 5.32 97    106.3    127.5
-  65    138 9.09 97    119.8    155.9
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id="two-categorical-predictors"&gt;Two categorical predictors&lt;/h1&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ am + cyl, d)
-ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
-    am = 0, 1
-    cyl = 4, 6, 8&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, pairwise ~ cyl)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
- cyl emmean    SE df lower.CL upper.CL
- 4     26.1 0.972 28     24.1     28.1
- 6     19.9 1.165 28     17.5     22.3
- 8     16.0 0.943 28     14.1     17.9
-
-Results are averaged over the levels of: am 
-Confidence level used: 0.95 
-
-$contrasts
- contrast    estimate   SE df t.ratio p.value
- cyl4 - cyl6     6.16 1.54 28   4.009  0.0012
- cyl4 - cyl8    10.07 1.45 28   6.933  &amp;lt;.0001
- cyl6 - cyl8     3.91 1.47 28   2.660  0.0331
-
-Results are averaged over the levels of: am 
-P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The model with two categorical predictors works a little differently.
-If we examine the estimated marginal means (EMMs) of &lt;em&gt;cylinders&lt;/em&gt;
-while adjusting for &lt;em&gt;automatic transmission&lt;/em&gt;, the “emmeans”
-command indicates that the results are somehow averaged over the levels
-of the variable &lt;em&gt;“am”&lt;/em&gt;. I was initially unsure of what this
-meant, so I calculated the means of cylinders separately for
-transmission 0 and 1 using “by” argument and averaged them to get the
-same EMMs we obtained initially.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;(24.8 + 27.4) / 2 = 26.1&lt;/li&gt;
-&lt;li&gt;(18.6 + 21.2) / 2 = 19.9&lt;/li&gt;
-&lt;li&gt;(14.7 + 17.3) / 2 = 16&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Oh, by the way, if you want to display the sample size of every
-level, use &lt;code&gt;calc = c(n = ".wgt.")&lt;/code&gt; argument ;)&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ cyl, by = &amp;quot;am&amp;quot;, calc = c(n = &amp;quot;.wgt.&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;am = 0:
- cyl emmean    SE df  n lower.CL upper.CL
- 4     24.8 1.323 28  3     22.1     27.5
- 6     18.6 1.288 28  4     16.0     21.3
- 8     14.7 0.842 28 12     13.0     16.5
-
-am = 1:
- cyl emmean    SE df  n lower.CL upper.CL
- 4     27.4 0.992 28  8     25.3     29.4
- 6     21.2 1.378 28  3     18.4     24.0
- 8     17.3 1.383 28  2     14.5     20.1
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So, in the case of a numeric covariate, “emmeans” are estimated for
-the mean of the covariate. However, for a categorical covariate,
-“emmeans” calculates the averages for each category and then takes the
-average of the estimated marginal means over the categories.&lt;/p&gt;
-&lt;p&gt;But what happens if we have two numeric predictors?&lt;/p&gt;
-&lt;h1 id="two-numeric-predictors"&gt;Two numeric predictors&lt;/h1&gt;
-&lt;p&gt;To answer this question, let’s consider the horsepower and weight of
-cars in the same model. The reference grid tells us that the mileage
-will be calculated only for the averages of predictors, which is
-somewhat boring. However, using the “cov.reduce” argument we learned
-about today, we can tell a more interesting story that is already part
-of the model but would have gone untold if we had only used the
-“summary” function. In particular, weak (52 horsepower) and light (1.52
-weight) cars are the most efficient, as they can drive the most distance
-(nearly 30 miles per gallon of fuel). If a weak car is heavy (5.42
-weight), it can only manage to drive 14.5 miles, which is less than a
-light but sporty muscle car (335 horsepower) with a mileage of 20 miles
-per gallon. The most inefficient cars, however, are strong and heavy,
-which can only manage 5.5 miles per gallon, so you’ll never pass a gas
-station.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(mpg ~ hp + wt, d)
-ref_grid(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;#39;emmGrid&amp;#39; object with variables:
-    hp = 146.69
-    wt = 3.2172&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;emmeans(m, ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;hp =  52:
-   wt emmean    SE df lower.CL upper.CL
- 1.51  29.71 0.943 29    27.78    31.64
- 5.42  14.54 2.113 29    10.22    18.86
-
-hp = 335:
-   wt emmean    SE df lower.CL upper.CL
- 1.51  20.72 2.585 29    15.43    26.00
- 5.42   5.55 1.387 29     2.71     8.39
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Plotting the results supports our conclusion that increasing the
-&lt;em&gt;strength&lt;/em&gt; and &lt;em&gt;weight&lt;/em&gt; of cars decreases their
-efficiency. The only thing we would need to be absolutely sure of our
-finding is the p-values. However, if we use the “pairwise” argument in
-front of the tilde (~) to get contrasts between values, we oddly get
-identical results for different horsepower levels. This happens because
-in a multiple model &lt;strong&gt;without interactions&lt;/strong&gt; we can only
-adjust the effect of one predictor, such as &lt;em&gt;weight&lt;/em&gt;, while the
-other predictors are held constant and do not change or vary.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;plot_model(m, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;wt&amp;quot;, &amp;quot;hp [52, 335]&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ hp + wt, d) %&amp;gt;% 
-  emmeans(pairwise ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
-hp =  52:
-   wt emmean    SE df lower.CL upper.CL
- 1.51  29.71 0.943 29    27.78    31.64
- 5.42  14.54 2.113 29    10.22    18.86
-
-hp = 335:
-   wt emmean    SE df lower.CL upper.CL
- 1.51  20.72 2.585 29    15.43    26.00
- 5.42   5.55 1.387 29     2.71     8.39
-
-Confidence level used: 0.95 
-
-$contrasts
-hp =  52:
- contrast          estimate   SE df t.ratio p.value
- wt1.513 - wt5.424     15.2 2.47 29   6.129  &amp;lt;.0001
-
-hp = 335:
- contrast          estimate   SE df t.ratio p.value
- wt1.513 - wt5.424     15.2 2.47 29   6.129  &amp;lt;.0001&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;However, when we introduce interactions, things dramatically improve,
-because we can calculate EMMs for every level of one predictor within
-every level of the other predictor, and we can easily obtain contrasts
-between levels with unique p-values. This, however, is a completely
-different story, because analyzing interactions can be very challenging,
-but at the same time, it is extremely rewarding because it allows us to
-extract even more valuable knowledge from models. Thus, if you want to
-step up your data science game and unleash the real power of {emmeans},
-you should definitely &lt;a href=""&gt;watch this video!&lt;/a&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;lm(mpg ~ hp * wt, d) %&amp;gt;% 
-  emmeans(pairwise ~ wt | hp, cov.reduce = range)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
-hp =  52:
-   wt emmean   SE df lower.CL upper.CL
- 1.51  33.32 1.24 28    30.78     35.9
- 5.42   6.85 2.70 28     1.33     12.4
-
-hp = 335:
-   wt emmean   SE df lower.CL upper.CL
- 1.51  11.26 3.31 28     4.48     18.0
- 5.42  15.61 2.92 28     9.63     21.6
-
-Confidence level used: 0.95 
-
-$contrasts
-hp =  52:
- contrast          estimate   SE df t.ratio p.value
- wt1.513 - wt5.424    26.47 3.65 28   7.261  &amp;lt;.0001
-
-hp = 335:
- contrast          estimate   SE df t.ratio p.value
- wt1.513 - wt5.424    -4.35 5.59 28  -0.778  0.4430&lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id="whats-next-interactions"&gt;What’s next? … Interactions!&lt;/h1&gt;
-&lt;p&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-24-1.png" width="672" /&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-24-2.png" width="672" /&gt;&lt;img src="file1c956b5e7cdc_files/figure-html/unnamed-chunk-24-3.png" width="672" /&gt;&lt;/p&gt;
-&lt;h1 id="some-bonus-content"&gt;Some bonus content&lt;/h1&gt;
-&lt;h2 id="cohens-d-effect-sizes"&gt;“Cohen’s d” Effect sizes&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;you must specify the “emmGrid” object with the means to be compared,
-the estimated population SD sigma of the model, and its degrees of
-freedom “edf”:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class="r"&gt;&lt;code&gt;eff_size(emmeans(m, ~ cyl), sigma = sigma(m), edf = 29)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; contrast    effect.size    SE df lower.CL upper.CL
- cyl4 - cyl6        1.86 0.566 26    0.698     3.02
- cyl4 - cyl8        3.38 0.677 26    1.993     4.78
- cyl6 - cyl8        1.52 0.576 26    0.340     2.71
-
-Results are averaged over the levels of: am 
-sigma used for effect sizes: 3.032 
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
-&lt;hr /&gt;
-&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
-improve this tutorial.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>c83950e7eef34060a220213921b4dd8d</distill:md5>
-      <category>videos</category>
-      <category>statistics</category>
-      <category>models</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans</guid>
-      <pubDate>Thu, 19 Jan 2023 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans/thumbnail_emmeans_1.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>Quantile Regression as an useful Alternative for Ordinary Linear Regression</title>
@@ -2057,7 +2058,7 @@ ggplot(d, aes(predictor, outcome))+
   geom_point()+
   geom_smooth(method = lm, se = F,color = &amp;quot;red&amp;quot;, )+
   geom_quantile(quantiles = 0.5)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows, that linear model tries to please all points and
 misses most of them, which results in a bad fit. In contrast, the Median
 Regression ignores the outlier and visually fits the rest of the data
@@ -2086,12 +2087,12 @@ theme_set(theme_bw())
 plot_models(lr, mr, show.values = TRUE, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;By the way, we can use &lt;code&gt;ols_plot_resid_lev()&lt;/code&gt; function
 from {olsrr} package and see that we indeed have an outlier.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(olsrr)
 ols_plot_resid_lev(lr)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;
 # 2. Solve heteroscedasticity&lt;/p&gt;
 &lt;p&gt;Now let’s take a real world heteroscedastic data and see whether
 median regression handles it better. Engel dataset from {quantreg}
@@ -2108,7 +2109,7 @@ ggplot(engel, aes(income, foodexp))+
   geom_quantile(color = &amp;quot;blue&amp;quot;, quantiles = 0.5)+
   geom_quantile(color = &amp;quot;gray&amp;quot;, alpha = 0.3, 
                   quantiles = seq(.05, .95, by = 0.05))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;In order to better justify the use of QR, we can check
 heteroskedasticity via Breusch-Pagan test. Our test detects
 heteroscedasticity, so that we again need an alternative to linear
@@ -2133,7 +2134,7 @@ across groups + categorical predictor&lt;/h1&gt;
 &lt;p&gt;Now let’s see how both models handle not-normally distributed or
 skewed data, and, at the same time, see how they handle categorical
 predictors.&lt;/p&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For that we’ll use a Wage dataset from {ISLR} package and model the
 salary of 30 industrial and IT workers. And when we check the
 assumptions of linear model, we’ll see, that our data has no outliers,
@@ -2177,7 +2178,7 @@ mr &amp;lt;- rq(wage ~ jobclass, data = salary, tau = 0.5)
 plot_models(lr, mr, show.values = T, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;AIC(lr, mr)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;   df      AIC
 lr  3 630.4943
@@ -2195,7 +2196,7 @@ mr &amp;lt;- rq(wage ~ jobclass, data = Wage)
 plot_models(lr, mr, show.values = T, 
             m.labels = c(&amp;quot;Linear model&amp;quot;, &amp;quot;Median model&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;AIC(lr, mr)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;   df      AIC
 lr  3 30774.50
@@ -2212,7 +2213,7 @@ ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
   ) +
   scale_fill_viridis_d(name = &amp;quot;Quantiles&amp;quot;)+
   xlab(&amp;quot;salary&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;While median regression delivers better results, the median is still
 a single central location, similar to the mean. But since median
 regression is a special case of QR, which uses only a 5th quantile, and
@@ -2233,7 +2234,7 @@ plot_models(lr, qm10, qm50, qm90,
             m.labels = c(&amp;quot;LR&amp;quot;, &amp;quot;QR 10%&amp;quot;, &amp;quot;QR 50%&amp;quot;, &amp;quot;QR 90%&amp;quot;), 
             legend.title = &amp;quot;Model type&amp;quot;)+
   ylab(&amp;quot;Increase in wage after switch to IT&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;
 The results show, that for low salaries the difference between
 industrial and IT jobs is smaller, then for median or high salaries. The
 reason for that could be education, so that when your education level is
@@ -2257,7 +2258,7 @@ ggplot(Wage, aes(x = wage, y = jobclass, fill = factor(stat(quantile)))) +
     quantile_lines = TRUE, quantiles = seq(.1, .9, by = 0.1)
   ) +
   scale_fill_viridis_d(name = &amp;quot;Quantiles&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;qm20 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.20)
 qm30 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.30)
 qm70 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.70)
@@ -2266,7 +2267,7 @@ qm80 &amp;lt;- rq(wage ~ jobclass, data = Wage, tau = 0.80)
 plot_models(lr, qm10, qm20, qm30, qm50, qm70, qm80, qm90, show.values = TRUE)+
   theme(legend.position = &amp;quot;none&amp;quot;)+
   ylab(&amp;quot;Increase in wage after switch to IT&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But that is just a beginning! Because, similarly to low (tau = 0.1)
 or high (tau = 0.9) quantiles, we can model more quantile to get
 &lt;strong&gt;more useful inference&lt;/strong&gt;. And we can even …&lt;/p&gt;
@@ -2297,7 +2298,7 @@ workers with already relatively high salaries.&lt;/p&gt;
 
 summary(q) %&amp;gt;% 
   plot(parm = &amp;quot;jobclass2. Information&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="multivariable-regression"&gt;6. Multivariable regression&lt;/h1&gt;
 &lt;p&gt;So, I think a univariable QR is already much more useful then LR. But
 that’s not all, multivariable QR is even more useful, because it can
@@ -2339,7 +2340,7 @@ q &amp;lt;- rq(wage ~ jobclass + age + race, data = Wage,
 
 summary(q) %&amp;gt;% 
   plot(c(&amp;quot;jobclass2. Information&amp;quot;, &amp;quot;age&amp;quot;, &amp;quot;race2. Black&amp;quot;, &amp;quot;race3. Asian&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-16-1.png" width="672" /&gt;
 Since, in all of the panels of the plot, the quantile regression
 estimates lie at some point outside the confidence intervals for the
 ordinary least squares regression, we can conclude that the effects of
@@ -2360,7 +2361,7 @@ o &amp;lt;-gcrq(wage ~ ps(age),
 
 # par(mfrow=c(1,2)) # for several plots
 plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="efficiency-of-cars"&gt;2) Efficiency of cars&lt;/h2&gt;
 &lt;p&gt;Here, a linear regression will answer the question - which variables
 affect the average car mileage? A low quantile of 0.1 will tell us which
@@ -3007,7 +3008,7 @@ $contrasts
 P value adjustment: bonferroni method for 10 tests &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(mr, type = &amp;quot;pred&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$education&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="median-regression-with-interactions"&gt;Median regression with
 interactions&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;mr &amp;lt;- rq(wage ~ education*jobclass, data = Wage, tau = 0.5)
@@ -3062,7 +3063,7 @@ education = 5. Advanced Degree:
  contrast                       estimate   SE   df t.ratio p.value
  1. Industrial - 2. Information    -7.07 7.38 2990  -0.958  0.3383&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(mr, type = &amp;quot;int&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="bayesian-median-regression"&gt;Bayesian median regression&lt;/h2&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(brms)
 
@@ -3076,30 +3077,9 @@ mr &amp;lt;- brm(
      quantile = 0.5),
   data = d, iter = 2000, warmup = 1000, chains = 4, refresh = 0,
   family = asym_laplace(link_quantile = &amp;quot;identity&amp;quot;)
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB \
-  foo.c
-clang -mmacosx-version-min=10.13 -I&amp;quot;/Library/Frameworks/R.framework/Resources/include&amp;quot; -DNDEBUG   -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/unsupported&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/BH/include&amp;quot; -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/&amp;quot;  -I&amp;quot;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include&amp;quot; -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DBOOST_NO_AUTO_PTR  -include &amp;#39;/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp&amp;#39;  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
-In file included from &amp;lt;built-in&amp;gt;:1:
-In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13:
-In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Dense:1:
-In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Core:88:
-/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name &amp;#39;namespace&amp;#39;
-namespace Eigen {
-^
-/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:16: error: expected &amp;#39;;&amp;#39; after top level declarator
-namespace Eigen {
-               ^
-               ;
-In file included from &amp;lt;built-in&amp;gt;:1:
-In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13:
-In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Dense:1:
-/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Core:96:10: fatal error: &amp;#39;complex&amp;#39; file not found
-#include &amp;lt;complex&amp;gt;
-         ^~~~~~~~~
-3 errors generated.
-make: *** [foo.o] Error 1&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;mr2 &amp;lt;- quantreg::rq(outcome ~ predictor, data = d, tau = .5)
+)
+
+mr2 &amp;lt;- quantreg::rq(outcome ~ predictor, data = d, tau = .5)
 
 fitted_brm &amp;lt;- fitted(mr, dpar = &amp;quot;mu&amp;quot;)
 
@@ -3108,7 +3088,7 @@ ggplot(d, aes(predictor, outcome)) +
   geom_ribbon(aes(ymin = fitted_brm[,3], ymax = fitted_brm[,4], fill = &amp;#39;brm&amp;#39;), alpha = 0.2) +
   geom_line(aes(y = fitted(mr2), color = &amp;quot;rq&amp;quot;)) + 
   geom_line(aes(y = fitted_brm[,1], color = &amp;quot;brm&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="lqmm-package-fitting-linear-quantile-mixed-models"&gt;{lqmm}
 package: Fitting Linear Quantile Mixed Models&lt;/h2&gt;
 &lt;h3 id="random-intercept-model"&gt;Random intercept model&lt;/h3&gt;
@@ -3215,7 +3195,7 @@ o &amp;lt;-gcrq(wage ~ ps(age),
 
 # par(mfrow=c(1,2)) # for several plots
 plot(o, legend=TRUE, conf.level = .95, shade=TRUE, lty = 1, lwd = 3, col = -1, res=TRUE) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c95690af558_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887ea3f2b22_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="references-and-further-readings"&gt;References and further
 readings&lt;/h1&gt;
 &lt;ul&gt;
@@ -3247,7 +3227,7 @@ class="uri"&gt;http://www.econ.uiuc.edu/~roger/research/rq/QReco.pdf&lt;/a&gt;&l
       <category>statistics</category>
       <category>models</category>
       <guid>https://yuzar-blog.netlify.app/posts/2022-12-01-quantileregression</guid>
-      <pubDate>Wed, 18 Jan 2023 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 19 Jan 2023 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-12-01-quantileregression/thumbnail_quantile_regression.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -3265,7 +3245,7 @@ about. It’s less then 5 minutes long.&lt;/p&gt;
 &lt;iframe src="https://www.youtube.com/embed/M_7MOkAm9WU" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="make-sure-you-have-unusual-data"&gt;Make sure you have unusual
 data&lt;/h1&gt;
 &lt;p&gt;For the sake of simplicity let’s take only 5 observations with one
@@ -3285,14 +3265,14 @@ d &amp;lt;- tibble(
 )
 
 plot(d)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 2. run ordinary least squares regression
 m &amp;lt;- lm(outcome ~ predictor, data= d)
 
 # 3.make residual diagnostics
 library(olsrr)
 ols_plot_resid_lev(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="perform-robust-regression"&gt;Perform robust regression&lt;/h1&gt;
 &lt;p&gt;Now, we’ll use &lt;code&gt;lmrob()&lt;/code&gt; function form {robustbase}
 package to conduct the robust regression and have a look at the
@@ -3347,7 +3327,7 @@ compute.outlier.stats
 seed : int(0) &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(sjPlot)
 plot_residuals(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="how-and-why-does-robust-regression-works"&gt;How and why does
 robust regression works?&lt;/h1&gt;
 &lt;p&gt;Namely, a robust regression gives different &lt;strong&gt;robustness
@@ -3394,7 +3374,7 @@ which made me miss an important discovery (4) and never win a Nobel
 Price ;)&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="file1c954e7104b7_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/figures-side2-1.png" width="50%" /&gt;&lt;img src="file887e59fe8c75_files/figure-html/figures-side2-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# 6. compare coefficients and goodness of fit of both models
 tab_model(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;table style="border-collapse:collapse; border:none;"&gt;
@@ -3547,7 +3527,7 @@ model&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(carData)
 cm &amp;lt;- lm(prestige ~ income * education, data = Duncan)
 ols_plot_resid_lev(cm)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;crm &amp;lt;- lmrob(prestige ~ income * education, data = Duncan)
 
 library(performance)
@@ -3574,7 +3554,7 @@ plot_model(rm2, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(rm3, type = &amp;quot;pred&amp;quot;, show.data = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$predictor&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c954e7104b7_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="file1c954e7104b7_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e59fe8c75_files/figure-html/figures-side4-1.png" width="50%" /&gt;&lt;img src="file887e59fe8c75_files/figure-html/figures-side4-2.png" width="50%" /&gt;&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -3927,24 +3907,23 @@ compare_performance(optimal_model_glmulti_exhaustive, optimal_model_glmulti_gene
 
 Name                             | Model | AIC (weights) | AICc (weights) | BIC (weights) |    R2 |  RMSE | Sigma
 -----------------------------------------------------------------------------------------------------------------
-optimal_model_glmulti_exhaustive |   glm | 134.7 (0.464) |  141.0 (0.987) | 146.5 (0.981) | 0.932 | 1.547 | 1.750
-optimal_model_glmulti_genetic    |   glm | 135.8 (0.278) |  165.8 (&amp;lt;.001) | 157.7 (0.003) | 0.955 | 1.263 | 1.684
-optimal_model_backward           |   glm | 135.9 (0.256) |  165.9 (&amp;lt;.001) | 157.9 (0.003) | 0.954 | 1.266 | 1.689
-optimal_model_forward            |   glm | 144.9 (0.003) |  149.6 (0.013) | 155.2 (0.013) | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+optimal_model_glmulti_exhaustive |   glm | 134.7 (0.493) |  141.0 (0.673) | 146.5 (0.672) | 0.932 | 1.547 | 1.750
+optimal_model_glmulti_genetic    |   glm | 136.2 (0.232) |  142.5 (0.318) | 148.0 (0.317) | 0.929 | 1.584 | 1.792
+optimal_model_backward           |   glm | 135.9 (0.271) |  165.9 (&amp;lt;.001) | 157.9 (0.002) | 0.954 | 1.266 | 1.689
+optimal_model_forward            |   glm | 144.9 (0.003) |  149.6 (0.009) | 155.2 (0.009) | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
-&amp;lt;environment: 0x7f8f001fee80&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fe497364ce0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mpg ~ 1 + hp + wt + qsec + gear + drat:hp + wt:hp + wt:drat + 
-    qsec:hp + qsec:drat + qsec:wt + gear:hp + gear:drat + gear:wt
-&amp;lt;environment: 0x7f8f0546b100&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + qsec:hp + qsec:wt + gear:wt
+&amp;lt;environment: 0x7fe473a15dd0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
     hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
-&amp;lt;environment: 0x7f8f067ef6d8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fe4477d7e60&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
-&amp;lt;environment: 0x7f8f067ef6d8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&amp;lt;environment: 0x7fe4477d7e60&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
 BIC Information criteria, and interestingly enough, the &lt;span
 class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
@@ -3991,7 +3970,7 @@ multinom_glmulti &amp;lt;- glmulti(
 &lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
      lines = list(multiline = T),
      confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c9515cd1377_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e605e4649_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;And lastly, despite the fact there is no straightforward fitting
 function for the mixed-effects models, such as GLMER from {lme4}
 package, we can easily write our own wrapper-function and use it inside
@@ -4040,7 +4019,7 @@ of the best model and even the number of models which as good as the
 best model. There are 6 models, which we can also see if we plot our
 object:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c9515cd1377_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e605e4649_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the IC values for all 100 models from the confidence
 set. A horizontal line separates 6 best models, that are less than 2 IC
 units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
@@ -4049,7 +4028,7 @@ can easily display them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
   regulartable() %&amp;gt;%       # beautifying tables
   autofit()&lt;/code&gt;&lt;/pre&gt;
-&lt;template id="1caeee99-53fa-4aaa-a9c7-3308b657d562"&gt;&lt;style&gt;
+&lt;template id="52226392-a5a0-4ab5-8c04-6ea69d746ba9"&gt;&lt;style&gt;
 .tabwid table{
   border-spacing:0px !important;
   border-collapse:collapse;
@@ -4087,11 +4066,11 @@ background-color: transparent;
 .katex-display {
     margin: 0 0 !important;
 }
-&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-8b511fe0{}.cl-8b4b47f0{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8b4db1ac{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b4db1c0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b4dc426{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc430{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc431{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc432{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc43a{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc43b{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc43c{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc444{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b4dc445{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-8b511fe0'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-8b4dc426"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-8b4dc430"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-8b4dc431"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b4dc432"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43a"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43b"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b4dc432"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43a"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43b"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b4dc432"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43a"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43b"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b4dc432"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43a"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43b"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b4dc432"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43a"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc43b"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-8b4dc43c"&gt;&lt;p class="cl-8b4db1ac"&gt;&lt;span class="cl-8b4b47f0"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc444"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-8b4dc445"&gt;&lt;p class="cl-8b4db1c0"&gt;&lt;span class="cl-8b4b47f0"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
-&lt;div class="flextable-shadow-host" id="6d5f8307-ec1a-425e-9902-5a153aff572e"&gt;&lt;/div&gt;
+&lt;/style&gt;&lt;div class="tabwid"&gt;&lt;style&gt;.cl-486b6b88{}.cl-4861c934{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4865e1a4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4865e1b8{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4866038c{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48660396{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603a0{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603aa{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603b4{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603b5{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603be{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603bf{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-486603c8{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table class='cl-486b6b88'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-4866038c"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-48660396"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-486603a0"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-486603aa"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b4"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b5"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-486603aa"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b4"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b5"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-486603aa"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b4"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b5"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-486603aa"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b4"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b5"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-486603aa"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b4"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603b5"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-486603be"&gt;&lt;p class="cl-4865e1a4"&gt;&lt;span class="cl-4861c934"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603bf"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-486603c8"&gt;&lt;p class="cl-4865e1b8"&gt;&lt;span class="cl-4861c934"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/template&gt;
+&lt;div class="flextable-shadow-host" id="9ed02ed3-2f7d-4d12-986e-e73f65af0f53"&gt;&lt;/div&gt;
 &lt;script&gt;
-var dest = document.getElementById("6d5f8307-ec1a-425e-9902-5a153aff572e");
-var template = document.getElementById("1caeee99-53fa-4aaa-a9c7-3308b657d562");
+var dest = document.getElementById("9ed02ed3-2f7d-4d12-986e-e73f65af0f53");
+var template = document.getElementById("52226392-a5a0-4ab5-8c04-6ea69d746ba9");
 var fantome = dest.attachShadow({mode: 'open'});
 var templateContent = template.content;
 fantome.appendChild(templateContent);
@@ -4124,7 +4103,7 @@ so that we are free to set it at … let’s say 50% and include all the
 predictors and interactions with the importance above 50% into the final
 model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c9515cd1377_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e605e4649_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the very first model contains the
 &lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
 it would be totally fine to go with that. But, since we have so many
@@ -4161,7 +4140,7 @@ health:age              10.13  1   0.001459 **
 Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file1c9515cd1377_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file887e605e4649_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
 &lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
 using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
 &lt;div class="vembedr"&gt;
