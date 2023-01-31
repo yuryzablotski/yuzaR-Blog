@@ -1,0 +1,245 @@
+---
+title: "Data Wrangling Vol. 1: evolution of a dataset"
+author: Yury Zablotski
+date: '2019-09-19'
+slug: data-wrangling-1
+categories:
+  - R
+tags:
+  - data wrangling
+  - statistics
+  - R packages
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
+featuredImage: "evolution.png"
+subtitle: ''
+summary: ''
+authors: ["admin"]
+lastmod: '2019-09-19T15:30:13+02:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+![](/post/2019-09-19-data-wrangling-1_files/evolution.png)
+
+The picture above is originated from [here](https://tnw.to/2zzXzPe)
+
+```{r setup, echo = F, include=FALSE, warning=F}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)      # for data wrangling and visualization
+```
+
+
+### Previous topics
+
+No previous programming experience is required. You only need to have *R* and *R-studio* installed.
+
+### Why do we need it? What are the benefits?
+
+**80% of work with data is pre-processing**: cleaning, transforming, wrangling. However, we rarely see this efforts in the end result, be it a model or a scientific paper. For many scientists it is often the most boring part of work (though, I somehow love it). But also often the **most important**, because: "Garbage in, garbage out". So, making this part of work intuitive and fun, would save the world from wrong conclusions, boredom and pain, and thus, make the world a better place.
+
+And this is exactly what Hadley Wickham[^1] has done with `tidyverse` - a bundle of intuitive and fun to use packages for data scientist. Here we'll focus on `dplyr` package from that bundle.
+
+[^1]: Amazing and Free Book by Hadley Wickham: "R for Data Science" https://r4ds.had.co.nz/
+
+But isn't learning programming language very difficult? Well, it depends on the language and the teaching. In the case of `dplyr`, I'd say it's not hard at all. Let me explain. Since you are reading it, you know at least one language, English. But I suggest you know more! A frequency dictionary claims that 5,000 most frequent words account for up to 95% of a written text and the 1,000 most frequent words account for 85% of speech. Now, I claim that **knowing 10 words in** "`dplyr` language" **would give you 85% of the data manipulation power** you need in everyday life. Knowing **50 words in** `tidyverse` would cover your data manipulation needs to **95%**. So, since you already know at least 5000 words, I am pretty sure that you can learn 10 more words today and 40 more words (in another post) in a very near future.
+
+Why do I call programming commands - words? Well, because `dplyr` **uses normal verbs from a plain English**, e.g. select or summarise. It's just a vocabulary. And it should be like this because it is a programming **language**, right? And if I want to tell computer what to do, why don't just use the language we have, instead of creating new weird programming languages? 
+
+And the best way to learn a vocabulary (in my opinion) is to learn it within a sentence, or within a coherent interesting text. Thus, solely for the sake of teaching programming, I tell you a bit about the evolution and rank the 10 verbs we want to learn today in brackets.
+
+### Quick **glimpse** (1) into evolution
+
+Darwin's **view** (2) on evolution by natural **selection** (5) is one of the greatest theories in the history of science, because it explains how life works. Evolution is a process by which organisms change, e.g. get a new colour (tail of a peacock) or a new form of а beak (Galapagos finches). Such changes are caused by random **mutations** (7) which create new heritable features of species. Of course not all changes are useful, thus, a mother nature masterfully **filters** (6) out the most beneficial mutations and rejects the harmful ones. But even **then** (4) the new feature is just in a **pipe**line (4) and needs to survive over numerous generations. 
+
+There are two main survival strategies: 1. survival of the fittest and 2. survival of the coexisting or collaborator. A fittest **arranged** (3) a food **chain** (2) to its own advantage by outrunning the competitors. Such strategy is not always beneficial, since a very dominant predator might consume all the prey and die out. A collaborator survives **by grouping** (10) together and becoming a super-organism, like a pack of wolves, colonies of corals, swarm of bees or school of fish. A collaborator can be **renamed** (8) to coexisting survivor, if he starts to collaborate with its competitors for a mutual benefit. Thus, life as we know it simply **summarised** (9) all the vital features in current survivors who now populate the planet Earth.
+
+### Coding: 10 verbs, which will give you 85% of data wrangling power
+
+Load the only package you need `tidyverse`, because `dplyr` is part of it:
+
+```{r}
+library(tidyverse)
+```
+
+
+1. `glimpse` allows you a quick **glimpse** into your dataset
+
+```{r}
+glimpse(diamonds)
+```
+
+It shows all the variables, their first values and even a type of variable, e.g. integer, character etc. It also shows you how big your dataset is, how many columns (variables) and rows (observations) it contains. However, it won't fill all your screen if your dataset is big, it will just show you a small part - a **glimpse** into it. To **view** the whole dataset you can use:
+
+2. `View`
+
+Just type `View(diamonds)` in the Console to see the whole table. One useful feature in such table **view** is that you can easily **arrange** the values by clicking on the name of the variable in the header.
+
+3. `arrange`
+
+By the way you can also arrange / sort values while you working with it. Compare the column *year* of two following outputs:
+
+```{r}
+table1
+```
+
+For example, the table above is arranged after countries alphabetically. But we can re-arrange the whole table using any other column(**s**) we want
+
+```{r}
+table1 %>% 
+  arrange(year)
+```
+
+Oh God, what is this weird `%>%` sign?! It is not a vocabulary as promised! Yes, I purposely wanted to show it in action first, and **then** explain it. So, know it's time...
+
+4. `%>%` (**pipe**)
+
+`%>%` simply means - **then**. Because it allows you to transform your data step-by-step: do one thing first, **then** do second thing, **then**... you get the idea. It's called a **pipe-operator** because it **pipes** the left-hand side values into transformed values on the right-hand side, i.e. it replaces **f(x)** with **x %>% f**, or **left-to-right, as you naturally read, instead of inside-out**. This greatly improves reading, understanding and writing of code! Moreover, it allows to **chain** multiple simple steps to achieve a complex result (we'll see it very soon) fast. And there is of course a shortcut to pipe-operator: `Shift-Cmd/Ctrl-M`, try it. 
+
+5. `select`
+
+Similar to the evolution by natural selection, you can `select` only useful columns/variables. The useless columns won't survive, because they will be rejected automatically.
+
+```{r}
+table1 %>% 
+  select(country, population)
+```
+
+But if you have a lot of useful columns (let's say 30) and want to get rid of only one or two, instead or writing all 30 names into the `select` command, which is cumbersome, might produce typing mistakes and probably hurt your fingertips ;), you can de-select unwishful columns by simply putting minus sign in front of their names
+
+```{r}
+table1 %>% 
+  select(-cases, -year)
+```
+
+6. `filter`
+
+Also similarly to the evolution by natural selection, you can `filter` out only beneficial rows/individuals/observations
+
+```{r}
+table1 %>% 
+  filter(year == 2000)
+```
+
+You can also filter out the harmful individuals by using `!=` operator, which means - **not equal to**, if you exactly know what you don't want in your data set
+
+```{r}
+table1 %>% 
+  filter(year != 2000)
+```
+
+You can of course do both **select** and **filter** at the same time
+
+```{r}
+table1 %>% 
+  select(country, year, population) %>% 
+  filter(year == 2000)
+```
+
+So far, so gut. Mimicking nature helps us to get rid of some useless features/columns. But what if we want to play God and want to create new features. Well, we do it in a similar way evolution does, via **mutations**.
+
+7. `mutate` 
+
+**Mutate** literally means - **creating new feature**/column. We can either fill our new feature with whatever we want (play God :) or use the existing (parent) features to calculate a new (offspring) ones.
+
+```{r}
+table1 %>% 
+  mutate(fill_new_feature = "with whatever I want ;)") %>% 
+  mutate(popul_per_case   = population / cases)
+```
+
+You can not only **name** your feature whatever you want while creating it, but also **rename** it at any time...
+
+8. `rename`
+
+```{r}
+table1 %>% 
+  mutate(fill_new_feature = "with whatever I want ;)") %>%
+  rename(much_better_name = fill_new_feature)
+```
+
+Now, using the commands above you became your "perfect" transformed dataset. By data by itself is hardly useful, especially if there is a lot of it. Thus, you usually want to **summarise** data in some way, by e.g. counting, getting a sum, or average, to a single row.
+
+9. `summarise`
+
+For this you just pick a column you want to **summarise** and a function to apply to this column, e.g. `mean`.
+
+```{r}
+table1 %>% 
+  summarise(average = mean(population))
+```
+
+With `dplyr` you can **summarise** different columns in different ways. For instance, use `n()` to count the number of rows and `sum()` to really summarise all values of the column.
+
+
+```{r}
+table1 %>% 
+  summarise(avr_popul = mean(population),
+            all_cases = sum(cases),
+            how_many  = n())
+```
+
+See, it starts to get interesting, because you can slowly create some new numbers (making statistics) and get a better overview about your dataset with a plain English. The only thing to consider here, that the overview above is not really useful, since you have two different years and three countries. Thus, it would be much more useful to know averages (or any other summary statistic) for every year, or every country. And this is where the `group_by` comes into play...
+
+10. `group_by`
+
+```{r}
+table1 %>% 
+  group_by(year) %>% 
+  summarise(avr_popul = mean(population),
+            all_cases = sum(cases),
+            how_many  = n())
+
+table1 %>% 
+  group_by(country) %>% 
+  summarise(avr_popul = mean(population),
+            all_cases = sum(cases),
+            how_many  = n())
+```
+
+You can `group_by` several variables at the same time. For example, let's take the `mtcars` dataset and find out how many cars with 4, 6 or 8 cylinders (`cyl`) and different gearboxes (`am`) the dataset contains. And while we're at it, let's get the average efficiency (`mpg`) and strength in horsepower (`hp`) of cars in every combination of cylinders + gearboxes.
+
+```{r}
+mtcars %>% 
+  group_by(cyl, am) %>% 
+  summarise(avr_mpg = mean(mpg),
+            avr_hp  = mean(hp),
+            count   = n())
+```
+
+Thus, the combination of `group_by` and `summarise` turns out to be much more useful, then using them separately. And this applies to any function we have learned today: the more functions you chain up together using the pipe-operator ` %>% `, the more sophisticated your data manipulation becomes. For instance, look at the code below not as a big chunk of code, but read just one row at the time and you'll understand this code without any trouble. And the last would mean, that you'll be able to produce your own code in no time.
+
+```{r}
+diamonds %>% 
+  select(-x, -y, -z, -table) %>%    
+  filter(color == c("E", "I"), clarity == "SI2") %>%  # "c" means concatenate 
+  mutate(price_carat = price / carat) %>% 
+  rename(new_name = depth) %>% 
+  group_by(cut, color, clarity) %>% 
+  summarise(avg_price = mean(price, na.rm = TRUE),    # remove NAs, otherwise you'll get NAs
+            count     = n()) 
+```
+
+You can give the resulting table a name (name = ...) and so save it into an object you can use later.
+
+These 10 verbs in general, and "The big 6" verbs you used in the last chunk of code in particular, will cover the majority of data manipulation you'll need in your daily work in an easy way. And it will be easy to read and understand not only for your colleagues, but also for a future you ;)
+
+### Why evolution to teach programming?
+
+It's personal. I did my PhD in evolutionary biology on [sympatric speciation](https://macau.uni-kiel.de/receive/dissertation_diss_00015365?lang=en).
+
+### Conclusion
+
+Similarly to evolution, "`dplyr` language" produces heritable changes in a dataset, which allows the data to better adapt to any statistical method, which is planned to be executed on these data. Good pre-processing will help the dataset (and the data scientist) to survive and to produce a fruitful offspring in the form of hypotheses and inferences. It is important, because in the current age of big data there are so many dead (unused or seemingly useless) data in the world. And it is getting more. Data is an important resource of 21st century that supposed to be handled sustainably. Thus let's bring it back to life.
+
+### What's next?
+
+- [Data Wrangling Vol. 2: ´The big 6´ and their babies](https://yury-zablotski.netlify.com/post/2019-09-22-data-wrangling-2/data-wrangling-2/)
+
+**Thank you for reading!**
