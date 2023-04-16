@@ -1,0 +1,38 @@
+---
+title: "chatgpt_rstudio"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: 2023-04-07
+output:
+  distill::distill_article:
+    self_contained: false
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Why do we need it
+
+# Steps
+
+Make an OpenAI account.
+
+Create an OpenAI API key to use with the package.
+
+Set the API key up in Rstudio
+
+# install.packages("pak") # if needed
+# pak::pak("MichelNivard/gptstudio")
+
+Setting OpenAI API Key
+By default, API calls will look for OPENAI_API_KEY environment variable. If you want to set a global environment variable, you can use the following command, where "<APIKEY>" should be replaced with your actual key:
+
+Sys.setenv(OPENAI_API_KEY = "<APIKEY>")
+
+

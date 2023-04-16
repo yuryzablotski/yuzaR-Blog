@@ -1,0 +1,653 @@
+---
+title: "Advanced {dplyr}: 50+ Data Wrangling Techniques!"
+description: |
+  Have you ever been frustrated with messy data that seems impossible to analyze? Or have you ever spend hours cleaning and transforming data before you could even start producing results? Well, no worries! In this video, I'm going to show you over 50 data wrangling techniques, which will allow you to solve the most of your daily data manipulation challenges like a pro. 
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - data wrangling
+preview: dplyr_2_thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+# This post as a video (in progress)
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. 17 minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+We'll start with loading the `tidyverse` package. First, because `dplyr` package is part of it and secondly, `tidyverse` contains ready to use data-sets, such as "table2".
+
+We'll use the ´The big 6´ English verbs (**arrange, select, mutate, filter, group by and summarise**), we learned from the [first video](https://youtu.be/XcK4chr2jws) of the series, but we now will dive deep into their arguments. 
+
+
+```{r}
+library(tidyverse)
+```
+
+## 1. Arrange
+
+![](arrange.png)
+
+Using the first verb **arrange()**, we can sort our table by one or more columns. We get the earliest year first, then within every year we'll display the lowest counts first.
+
+```{r}
+# this %>% is pipe, explained in the first video
+table2 %>%  
+  arrange(year, count) 
+```
+
+The only problem with that is, that `arrange` orders rows by values in the **ascending**  (or - low to high) order by default. But we sometimes need the **descending** order to see the highest values first. For that we can use the `desc` function to sort a variable in the **descending** (or - high to low) order. While sorting several variables, only variables where you explicitly mention `desc` will be sorted in a descending order, the others will remain sorted in a default - ascending way. It is useful for the case when you'd want to see the earlier ears first, but at the same time the highest counts every year.
+
+```{r}
+table2 %>% 
+  arrange(year, desc(count)) 
+```
+
+As you arrange your data, missing values will be neatly placed at the bottom of your table, regardless of whether you choose to sort in ascending or descending order.
+
+```{r}
+x <- tibble(y = c(1,2,NA,3,4))
+x %>% arrange(y) 
+x %>% arrange(desc(y))
+```
+ 
+
+After arranging data, the next most useful thing is to **select** the most useful columns via the… drumroll… **select** command.
+
+## 2. Select
+
+```{r}
+mtcars %>% 
+  select(mpg, hp) %>% 
+  glimpse()
+```
+
+Selecting columns by simply writing their names into brackets seems like a great idea, but not when you're dealing with a table of 300 columns. Writing out 100 column names in brackets **is no fun**, but don't worry - there's a solution. By using a **semicolon** between the variables you need, you can easily select multiple columns in the middle of your table. 
+
+```{r}
+mtcars %>% 
+  select(hp:vs) %>% 
+  glimpse()
+```
+
+Cool, right? But sometimes, the columns in your table won't be nicely grouped together, which means you can't use the **semicolon** trick for selecting multiple columns. But there's still an easy way to eliminate unwanted columns *without typing out every single name*. Just add a **minus sign** in front of the columns you want to **remove**. Some folks like to use an **exclamation mark** instead of the minus, but personally, I find the minus sign more intuitive.
+
+```{r}
+mtcars %>% 
+  select(-(mpg:disp), !wt, -(am:carb)) %>% 
+  glimpse()
+```
+
+Still a lot of typing? If you know the column numbers you need, you can actually code even faster. This way, your code won't be dependent on specific column names, and you'll make less typing mistakes. However, let me give you a warning: unlike many other programming languages, in R, the first column is denoted by 1, not 0. I don't know about you, but using *1 for the first column just makes more sense to me*. So keep this in mind the next time you're selecting columns in R using numbers.
+
+```{r eval = F}
+mtcars %>% 
+  select(2:5, 7) 
+
+mtcars %>% 
+  select(-(2:5), -7)
+```
+
+Now, with {dplyr}, you can make your life even easier if your column names follow certain patterns, such as "mean_of_this" and "mean_of_that". Instead of tediously typing them all out, simply utilize {dplyr}'s powerful starts_with(), ends_with(), or contains() functions to quickly gather all the necessary columns. With this time-saving technique, you'll have more time to focus on the real work and get things done efficiently.
+
+```{r}
+diamonds %>% 
+  select(starts_with("c")) %>% 
+  glimpse()
+
+mtcars %>% 
+  select(ends_with("c")) %>% 
+  glimpse()
+
+mtcars %>% 
+  select(contains("c")) %>% 
+  glimpse()
+```
+
+Want to apply multiple selection options at once? No problem - just use the "&" or "|" operators to define multiple conditions. You can also use the "exclamation mark" to negate a condition. For example, if you want your final table to exclude any columns with the letter "a", but still include columns starting with "c", you can use the "exclamation mark" before the first condition, "&" between conditions, and no "exclamation mark" before the second.
+
+```{r}
+mtcars %>%
+  select(!contains("a") & contains("c")) %>% 
+  glimpse()
+```
+
+
+Similarly, if you only want to select variables starting with "c" **or** ending with any letter except "p" and "t", you can use the "|" operator and negate the endings with "p" and "t" letters with the "exclamation mark".
+
+```{r}
+mtcars %>%
+  select(starts_with("c") | !ends_with(c("p", "t"))) %>% 
+  glimpse()
+```
+
+If you forget how to spell a variable, {dplyr} offers the **one_of** function to choose the correct name(s). This is helpful for managing ongoing flow of field data with common misspellings, which can prevent your pipeline from breaking down.
+
+```{r}
+mtcars %>% 
+  select(one_of("weight", "wt", "wtf", "whatever")) %>% 
+  glimpse()
+```
+
+
+To move important columns to the beginning of the table, list them first and add the **everything()** argument to include the rest.
+
+```{r}
+mtcars %>% 
+  select(mpg, hp, everything()) %>% 
+  glimpse()
+```
+
+If you prefer, you can use the function **relocate** instead, which does the same job as reordering columns manually. 
+
+```{r}
+mtcars %>% 
+  relocate(mpg, hp) %>% 
+  glimpse()
+
+mtcars %>% 
+  relocate(contains("c"), hp) %>% 
+  glimpse()
+```
+
+To fetch the last or third last column, simply request it with the `last_col()` function and use the `offset` argument.  You see, with dplyr, programming feels entirely natural and instinctive.
+
+```{r}
+mtcars %>% 
+  select(last_col()) %>% 
+  glimpse()
+
+mtcars %>% 
+  select(last_col(offset = 3)) %>% 
+  glimpse()
+```
+
+To select specific columns that meet certain criteria, such as being numeric or textual, use **select_if**. This is particularly useful for large datasets with numerous columns, as it allows for easy selection of the desired variables without manual selection. For instance, when working with the diamonds dataset, we can avoid three ordered categorical columns by using **select_if(is.numeric)** in our pipeline.
+
+```{r}
+glimpse(diamonds)
+diamonds %>% 
+  select_if(is.numeric) %>% 
+  glimpse()
+```
+
+We can also transform particular variable names for our convenience, e.g. we could change the case of the column names to upper (`toupper`) or to lower (`tolower`) cases by using `select_at` command.
+
+```{r}
+mtcars %>% 
+  select_at(vars(mpg, hp), toupper) %>% 
+  glimpse()
+```
+
+Every now and then we just want to have a look at the values of one specific column. To do so, the `pull` command comes in handy. And if you need to select a specific row, it's as straightforward as specifying which one you want - whether it's the `first`, `last`, `ninth`, or any other number.
+
+```{r}
+mtcars %>% pull(1)
+```
+
+
+```{r}
+mtcars %>% first()
+mtcars %>% last()
+mtcars %>% nth(9)
+```
+
+## 3. Mutate
+
+Now, it's time to transition away from reducing our dataset using 'select' and 'filter' commands and instead utilize the 'mutate' function to expand it. This command is intuitive because anything new in nature arises through mutations.
+
+![](mutation.jpg)
+
+
+
+
+
+But before proceeding to the 'mutate()' function, we can add a new column using the 'add_columns' function. It's useful for adding IDs to each row. By default, the 'mutate()' command places new columns on the right-hand side, which can be difficult to keep track of with many columns. However, you can use the '.before' argument to add new columns on the left-hand side. In case you want to add a new column 'before' or 'after' a specific column, it's preferable to use 'mutate' instead of 'add_column'.
+
+```{r}
+mtcars %>% 
+  select(1:3) %>% 
+  add_column(new = 1:32)
+
+mtcars %>% 
+  select(1:3) %>% 
+  add_column(ID = 1:32, .before = T) %>% 
+  glimpse()
+
+mtcars %>% 
+  select(1:3) %>% 
+  mutate(ID = 1:32, .after = cyl) %>% 
+  glimpse()
+```
+
+In addition, you can either fill new columns with with whatever you want (playing God) or use existing columns to calculate new ones. And the best part is, right after you create a new column, you can use it for further calculations in the same chunk of code.
+
+```{r}
+mtcars %>% 
+  mutate(make_new_column  = "with whatever you want") %>% 
+  mutate(mpg_hp           = mpg / hp) %>% 
+  mutate(use_new_column   = mpg_hp * 100) %>% 
+  select(make_new_column, mpg_hp, use_new_column, everything()) %>% 
+  glimpse()
+```
+
+Although `mutate()` keeps the old columns used to create new ones, you can use the `transmute()` command if you only want to retain the new variables that you have created.
+
+```{r}
+mtcars %>% 
+  transmute(mpg_hp = mpg / hp) %>% 
+  glimpse()
+```
+
+
+Similarly, you can `.keep` only the "used" columns. This retains only the columns involved or created via `mutate()`. It's especially handy for large tables.
+
+```{r}
+mtcars %>% 
+  mutate(mpg_hp = mpg / hp,
+    .keep = "used") %>% 
+  glimpse()
+```
+
+
+Even more convenient is the possibility to create multiple columns with a **comma instead of repeating the `mutate` command** for each new column. Near the usual arithmetic operations, like 
+
+- subtract or multiply, you can easily 
+- rank the values in any columns or get a 
+- cumulative mean, cumulative sum, or cumulative product and even
+- get a column with lagged or leading values if you need to and many more
+
+```{r}
+d <- tibble(
+  a = 1:5,
+  b = 6:10)
+d
+
+d %>% 
+  mutate(substr  = b - mean(a),
+         divide  = b * sum(a),
+         rank    = rank(a),
+         cummean = cummean(a), # Cumulative mean
+         cumsum  = cumsum(a),
+         cumprod = cumprod(a),
+         lag_a   = lag(a),  
+         lead_a  = lead(a), 
+         # or: <, <=, >, >=, !=, and == 
+         logical = a > 3) %>%
+  glimpse()
+  
+```
+
+
+
+Finally, before we go to the really cool stuff, I have to tell you that sometimes it's useful to be able to transfer the **row names to a real column**, or vice versa, any **column to row-names**. Well, with {dplyr} it could not be more intuitive, because programming in {dplyr} is very close to normal English:
+
+```{r}
+mtcars %>% 
+  select(-1:4) %>% 
+  rownames_to_column() %>% 
+  head()   # "head" shows only first 6 rows of a dataset, "tail" the last 6 row
+  
+d %>% 
+  column_to_rownames("b") 
+```
+
+### Work across multiple columns simultaneously
+
+So, we have learned a few good techniques already. But **you can become even more effective, when you work with several columns at the same time**! For example, you can select particular *numeric* variables in your table with `mutate_at()` function and make them *categorical* using `factor` argument. In order to get averages for ALL variables, use `summarise_all()`. Or, when you want to transform all numeric columns with a logarithm, 
+
+- use `mutate_if` function,
+- then provide an argument `is.numeric` and finally
+- give a command of your choice, for example `log`
+
+```{r}
+mtcars %>%
+  mutate_at(vars(cyl, am, gear), factor) %>% 
+  glimpse()
+
+mtcars %>%
+  summarise_all(mean) 
+
+iris %>%
+  mutate_if(is.numeric, log) %>% 
+  glimpse()
+```
+
+Since R is a very intuitive programming language and since `_at, _if and _all` allow you to make any calculation **across** multiple columns, it didn't take long until a function named  - `across` was created, which unites the capabilities of `_at, _if and _all`. For instance we can 
+
+- easily round particular columns or
+- calculate any statistics, like mean or standard deviation, for all groups of any categorical variable:
+
+```{r}
+mtcars %>%
+  mutate(across(c(mpg, wt), round)) %>% 
+  glimpse()
+
+iris %>%
+  group_by(Species) %>%
+  summarise(
+    across(
+      starts_with("Sepal"), 
+      list(mean = mean, sd = sd) ) )
+```
+
+
+
+### Work across multiple rows simultaneously
+
+So, summarizing values within columns is cool, but what if we want to summarize values of rows across multiple columns? Well, we can easily do that by using the `rowwise()`and `c_across()` functions to perform row-wise aggregations.
+
+
+```{r}
+df <- tibble(a = 1:4, b = 4:1, c = c(5:8))
+
+df %>%
+  rowwise() %>%
+  mutate(
+    sum = sum(c_across(a:c)),
+    sd  = sd(c_across(a:c))
+  )
+```
+
+
+## 4. Filter
+
+![](filter.jpg)
+
+
+Speaking of rows: sometimes we need only a few particular rows. Using the `filter` function and logical operators such as `<` (less than), `<=` (less than or equal to), `>` (greater than), `>=` (greater than or equal to), `!=` (not equal), `==` (equal), `&` (and), `|` (or), we can tell **R** exactly what data we want. We may even employ multiple operators simultaneously, should the need arise, by using the "&" operator to verify several conditions, or by using the vertical line "|" to determine either condition:
+
+![](transform-logical.png)
+
+
+
+```{r}
+mtcars %>% 
+  filter(cyl == 6, vs == 0)
+
+mtcars %>% 
+  filter(cyl == 6 & vs == 0 & gear == 4)
+
+mtcars %>% 
+  filter(cyl == 4 & gear != 4)
+
+mtcars %>% 
+  filter(mpg < 30, hp > 200, am == 0) %>% 
+  glimpse()
+
+mtcars %>% 
+  filter(cyl == 8 | am == 0) %>% 
+  glimpse()
+
+mtcars %>% 
+  filter(mpg > 30 | hp < 90)
+```
+
+But what if we need to filter out several values or categories? Well, in this case we'll utilize the `%in%` argument with the concatinate argument `c()`:
+
+```{r}
+mtcars %>% 
+  filter(cyl %in% c(4,6) & gear %in% c(3,5))
+```
+
+
+Furthermore, you can `slice` the dataset to retrieve specific rows, such as rows 1 to 3. Additionally, you can easily select random rows using the `slice_sample()` function. With the `n` argument, you can specify the number of random rows to retrieve, or with the `prop` argument, you can specify the proportion of the data to retrieve. Furthermore, you can use `slice_head()` to extract the top two rows and `slice_tail()` to retrieve the last three values. To obtain the two smallest or three largest values from any column, you can use the `slice_min()` and `slice_max()` commands, which are even more intuitive.
+
+
+```{r}
+mtcars %>% 
+  slice(1:3)
+
+mtcars %>% 
+  slice_sample(n = 4)
+
+mtcars %>% 
+  slice_sample(prop = .1) # since we have 32 rows, 10% of it would be 3 
+
+mtcars %>% 
+  slice_head(n = 2)
+
+mtcars %>% 
+  slice_tail(n = 3)
+
+mtcars %>% 
+  group_by(am) %>% 
+  slice_min(mpg, n = 2)
+
+mtcars %>% 
+  group_by(am) %>% 
+  slice_max(hp, n = 3)
+```
+
+And final thing for slicing is that, using `prop` argument you can easily obtain the top 10% or the lowest 10% of specific values in each group:
+
+```{r}
+mtcars %>% 
+  group_by(cyl) %>% 
+  slice_max(mpg, prop = 0.1)
+```
+
+
+Another useful way to filter is when you want to determine how many `distinct` categories or values a particular column has. This also works for multiple columns. Additionally, if you want to retain other columns when filtering for unique rows, you can use the `.keep_all = TRUE` option. Alternatively, if you want to know the frequency of unique values in your table, use the `count()` function instead of `distinct()`.
+
+```{r}
+mtcars %>% 
+  distinct(cyl) 
+
+mtcars %>% 
+  distinct(cyl, am) 
+
+mtcars %>% 
+  distinct(cyl, am, .keep_all = TRUE) 
+
+mtcars %>% 
+  count(cyl, am) 
+```
+
+Then, we sometime need to remove duplicate rows from our dataset, right? We can easily do that by either using `distinct_all()` command, or, by using even more intuitive `unique()` command:
+
+```{r}
+bla <- tibble(y = c(2,2,NA,3,4,4),
+       y2 = c(2,2,2,NA,4,4))
+
+distinct_all(bla)
+unique(bla)
+```
+
+Finally, similarly to `add_column` command, you can `add_row`s to your dataset:
+
+```{r}
+bla %>% 
+  add_row(y = 100, y2 = 999)
+```
+
+
+
+## Bonus chapter: Common Mistakes
+
+By the way, here are three common mistakes I used to make often, which caused me a lot of frustration, and which I want to save you from.
+
+### 1. "=" vs "=="
+
+The first mistake is using the **assignment operator** (single equal sign) "=" instead of the **comparison operator** (double equal sign) "==" while testing for equality. Fortunately, `filter()` command will let you know about this mistake with an informative error message:
+
+```{r eval = F}
+mtcars |>        # |> is similar to %>% 
+  filter(am = 1)
+```
+
+    "Error in `filter()`:
+    ! We detected a named input.
+    ℹ This usually means that you've used `=` instead
+      of `==`.
+    ℹ Did you mean `am == 1`?
+    Run `rlang::last_error()` to see where the error occurred."
+
+### 2. Specify all conditions
+
+The second mistake is to specify the first condition and then use "or" without explicitly specifying the second condition. Although it "works" without throwing an error, it does not achieve the intended purpose because "|" first checks the more important condition "mpg == 14.7" before checking the less important second condition.
+
+```{r eval = F}
+# wrong
+mtcars |> 
+  filter(mpg == 14.7 | 16.4)
+
+# correct
+mtcars |> 
+  filter(mpg == 14.7 | cyl == 16.4)
+```
+
+### 3. Don't ignore NAs!
+
+"Now listen to me very carefully" (Arnold Schwarzenegger from Terminator 2), because what I am about to tell you could save a lot of frustration. "NAs", which is the abbreviation for **Not Available** or simply for **missing values**, are highly contagious. Any operation involving an unknown value will also become unknown. To safeguard your data analysis, remove these "NAs" with the `na.rm` argument.
+
+```{r}
+x <- tibble(
+  y  = c(2,2,NA,3,4,4),
+  y2 = c(2,2,2,NA,4,4)) 
+
+x %>% summarise(mean(y), mean(y2))
+
+x %>% summarise(mean(y, na.rm = TRUE), mean(y2, na.rm = TRUE))
+```
+
+
+
+## 5. Group by
+
+![](connected-groups-of-people.jpg)
+
+The `group_by()` divides your dataset into groups meaningful for your analysis. The `top_n` is the older version of `slice_max()` we just learned in the previous section, and it also gives you top values for every group. For instance, let's pick the two most effective cars (highest `mpg`) for every transmission type (`am`):
+
+```{r}
+mtcars %>% 
+  group_by(am) %>% 
+  top_n(2, mpg)
+```
+
+`group_by_all` is particularly useful for identifying duplicates in your dataset, because after grouping, a simple `count()` will reveal the frequencies, which can be sorted in descending order using `desc` option to bring the duplicates to the top of the resulting table. Than, you could `filter` out all values with n > 1 to keep only unique rows.
+
+```{r}
+blup <- tibble(y = c(2,2,NA,3,4,4),
+       y2 = c(2,2,2,NA,4,4)) %>% 
+  group_by_all() %>% 
+  count() %>% 
+  arrange(desc(n))
+
+blup
+```
+
+
+Groups are excellent for summarizing data, but at times, they might hinder calculations. Therefore, if needed, you can always ungroup any dataset before complaining about R being stupid. That's what I used to do before I learned about ungrouping ;)
+
+```{r}
+blup %>% 
+  summarise(mean(n)) 
+
+blup %>% 
+  ungroup() %>% 
+  summarise(mean(n)) 
+```
+
+
+Similar, to **select** and **mutate** you can **group** variables conditionally using `group_by_if`, `group_by_at` and `group_by_all`. For instance, let's change three variables to factors (categories) and group by only categorical (factor) variables after it. The **dplyr** package will find all factors by itself, which is particularly useful for big datasets. Once grouped, computing group-wise averages becomes a very simple task.
+
+```{r}
+mtcars %>% 
+  mutate_at(vars(cyl, gear, am), factor) %>% 
+  group_by_if(is.factor) %>% 
+  summarise(avg = mean(mpg))
+```
+
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("XcK4chr2jws") 
+```
+
+As mentioned in the previous video (see above if you want), `group_by()` is the most effective if used with `summarise()` function, because they allow you to aggregate data and calculate any summary statistics you want. 
+
+## 6. Summarise
+
+Here's an example: let's say you have a dataset about flowers in a field with three different species. You could use the "summarise" function to calculate the total lengths and widths of flowers for each species separately.
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+  summarise(total_length = sum(Sepal.Length))
+```
+
+In this code, "group_by" specifies the column by which the data should be grouped, namely "Species" and "summarise" calculates the total lengths of flowers for each Species.
+
+You can also do conditional **summarizing** `across` multiple columns at once using `summarise_at`, `summarise_if`, and `summarise_all`. This can save you a lot of time if you have a table with lots of columns.
+
+```{r}
+mtcars %>% 
+  group_by(am) %>% 
+  summarise_at(vars(mpg, hp, wt), mean)
+
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+
+mtcars %>% 
+  group_by(vs) %>% 
+  summarise_all(list(med = median))
+```
+
+
+But "summarize" is **even more useful when you need to calculate multiple summary statistics for multiple variables at once**. For instance, consider a dataset about cars. By using "summarise," you can count the number of cars with different cylinders, obtain the mean and standard deviation for each cylinder separately to compare mileage, and find any quantile of horsepower. The median, which might be more useful than the average, is taken at the 0.5 quantile. Additionally, you can define what makes a car "strong" and count how many strong cars each category contains. It's amazing how just a few lines of code can help you quickly explore your dataset. However, if you want to explore your dataset in just one line of code and get even more valuable insights, check out [this video](https://youtu.be/sKrWYE63Vk4) on the **automated exploratory analysis**.
+
+
+```{r}
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarise(count     = n(), 
+            aver_mpg  = mean(mpg),
+            sd_mpg    = sd(mpg),
+            Q_0.25    = quantile(hp, 0.5), 
+            n_of_strong_cars = sum(hp > 100))
+```
+
+
+
+### Further readings and references
+
+- Amazing and Free Book by Garrett Grolemund and Hadley Wickham: [“R for Data Science”](https://r4ds.had.co.nz/)
+- for more info on `dplyr` package go [here](https://dplyr.tidyverse.org/)
+
+- to download a *Cheat Sheet* (they both are really good) go [here](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) or [there](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) 
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
