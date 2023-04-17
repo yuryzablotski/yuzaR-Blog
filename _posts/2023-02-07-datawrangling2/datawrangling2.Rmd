@@ -1,7 +1,7 @@
 ---
 title: "Advanced {dplyr}: 50+ Data Wrangling Techniques!"
 description: |
-  Have you ever been frustrated with messy data that seems impossible to analyze? Or have you ever spend hours cleaning and transforming data before you could even start producing results? Well, no worries! In this video, I'm going to show you over 50 data wrangling techniques, which will allow you to solve the most of your daily data manipulation challenges like a pro. 
+  Have you ever been frustrated with messy data that seems impossible to analyze? Or have you ever spend hours cleaning and transforming data before you could even start producing results? Well, no worries! In this blog-post, I'll show you >50 Data Wrangling techniques, which will allow you to solve the most of your daily data manipulation challenges like a pro. 
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -32,12 +32,12 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
-# This post as a video (in progress)
+# This post as a video
 
 I recommend to watch a video first, because I highlight things I talk about. It's ca. 17 minutes long.
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("n4kmHjKZh0E") 
 ```
 
 We'll start with loading the `tidyverse` package. First, because `dplyr` package is part of it and secondly, `tidyverse` contains ready to use data-sets, such as "table2".
