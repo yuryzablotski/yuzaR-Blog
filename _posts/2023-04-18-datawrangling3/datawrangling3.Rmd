@@ -1,0 +1,618 @@
+---
+title: "{dplyr} on steroids: 20+ Expert Data Wrangling Techniques!"
+description: |
+  Reshaping data in Excel is painful and prone to mistakes. Just remember the time where you needed to quickly (1) turn columns to rows or rows to columns, (2) unite or separate columns
+  
+    **80% of work with data is data pre-processing**: cleaning, transforming and wrangling. In this post you'll learn how to (1) combine tables, (2) reformat tables by turning columns to rows or rows to columns, (3) find implicit missing values and complete the table by filling them out, (4) join tables to reduce duplicates, (5) unite and separate them and finally (6) how to manipulate values inside of the table in an easy way. But most importantly, it will prepare your data for a really cool stuff, like visualisations, models and machine learning algorithms. `tidyr` and `dplyr` packages which are both part of `tidyverse` will help with that. And after mastering my **Data Wrangling Trilogy**, you'll be able to manipulate data (in *R*) in 95% of the cases. 
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - data wrangling
+  - R package reviews
+preview: dplyr_3_thumbnail.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+# This post as a video
+
+I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+
+
+Most of this article, especially pictures, code and quotes below, stem from [“R for Data Science”](https://r4ds.had.co.nz/) book by Garrett Grolemund and Hadley Wickham (Chapters 12 and 13). 
+
+    “Happy families are all alike; every unhappy family is unhappy in its own way.” 
+    – Leo Tolstoy
+
+    “Tidy datasets are all alike, but every messy dataset is messy in its own way.” 
+    – Hadley Wickham
+      
+### Previous topics
+
+To maximise the effect of this post you should definitely work through [Data Wrangling Vol. 1](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/) and [Data Wrangling Vol. 2](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/) before.
+
+### Why do we need tidy data? What are the benefits?
+
+
+
+
+### How to tidy up your data
+
+There are three simple rules which make a dataset tidy[^1]:
+
+[^1]: Amazing and Free Book by Garrett Grolemund and Hadley Wickham: [“R for Data Science”](https://r4ds.had.co.nz/)
+
+1. Each variable must have its own column.
+2. Each observation must have its own row.
+3. Each value must have its own cell.
+
+![](tidy-1.png) 
+
+
+
+But it's surprising, how rare these three rules are followed Here is an examples of **tidy dataset**:
+
+```{r}
+library(tidyverse) # it's the only package you need
+
+table1 
+```
+
+
+Consider following tables:
+
+```{r}
+x <- tibble(A = c("a", "b", "c"), B = c("one", "two", "three"), C = c(1, 2, 3) )
+
+y <- tibble(A = c("a", "b", "d"), B = c("one", "two", "four"),  C = c(3, 2, 1) )
+
+z <- tibble(D = c("a", "b", "d"), E = c("one", "two", "four"),  F = c(3, 2, 1) )
+```
+
+
+```{r message=FALSE, warning=FALSE, echo=F}
+library(gridExtra)
+gridExtra::grid.arrange(tableGrob(x), tableGrob(y), tableGrob(z), ncol = 3)
+```
+
+
+#### Bind rows and bind columns
+
+Sometimes you just want to combine (bind) several tables into one. You can bind together either their columns, or rows. 
+
+```{r}
+bind_cols(x, y, z) 
+```
+
+`bind_cols` even renames identical columns automatically, so that every column name is unique. That's really cool, but it also has one problem: it needs the **same number of rows**, or it refuses to work. Run the code below, and you'll get a following error message: `Error: Argument 3 must be length 3, not 4`.
+
+```{r eval=FALSE}
+bind_cols(x, 
+          y,
+          z %>% add_row(D = "bla", E = "bla", F = 0))
+```
+
+If you want to put two tables below each other, they need to have the **same column names**, otherwise it'll produce *NAs* in your new dataset, where names of columns don't match:
+
+```{r}
+bind_rows(x, y) 
+bind_rows(x, y, z,  .id = "table") 
+```
+
+The `.id` argument allows you to track to which table belong the values.
+
+#### Intersect and union
+
+If you need to find rows identical in both tables (duplicates), use `intersect`, but if you wish to find rows which differ, use `setdiff`:
+
+```{r}
+intersect(x,y)   # find duplicates
+setdiff(x,y)     # find rows that appear in x but not y 
+setdiff(y,x)     # find rows that appear in y but not x 
+```
+
+`bind_rows` simply combines tables without examining them, which might produce duplicates, if there are identical rows appear in both tables. Another command you might encounter which produce the same result is `union all`. 
+
+```{r}
+union_all(x,y) == bind_rows(x,y)
+```
+
+But in order to remove duplicates while combining two tables, use `union`:
+
+```{r}
+union(x,y)
+```
+
+#### Wider and longer tables (spread and gather)
+
+Imagine the situation where several different categories are combined in one column, but you need to **spread** them out in different columns, because the values they describe are incompatible, e.g. check two columns below `type` and `count`:
+
+```{r}
+table2
+```
+
+The values of `cases` and values of `population` have nothing in common and therefore, they don't belong in the same column. So, we have to **spread** them **wider** by taking the **names from** the `type` column and the **values from** the `count` column:
+
+![](tidy-8.png)
+
+```{r}
+table2 %>% 
+  pivot_wider(names_from = type, values_from = count)
+```
+
+
+A `pivot_wider` is a next generation of `spread` command, which suppose to be more intuitive. But since `spread` is still widely used, it will remain in the package and it is good to know how it works for a better understanding of older code:
+
+```{r}
+table2 %>% 
+  spread(key = type, value = count) 
+```
+
+A `pivot_wider` is great, but it can eventually produce missing values:
+
+```{r}
+x %>% pivot_wider(names_from = B, values_from = C)
+```
+
+For this case `pivot_wider` has an useful argument, which fills into the missing values:
+
+```{r}
+x %>% pivot_wider(names_from = B, values_from = C, values_fill = list(C = 0))
+```
+
+If you widen a table and get several values into one cell (like in the first example below), you can use `values_fn` to fill this cell with any aggregation function, e.g. `mean`. And if there are still some missing values after aggregation (because there was nothing to aggregate), you can fill them out with a value of choice like in the step above - `values_fill`:
+
+```{r eval=FALSE}
+data %>% 
+  pivot_wider(
+    id_cols = c(cyl, am), 
+    names_from = cyl, 
+    values_from = mpg)
+
+##      am         `6`         `4`         `8`
+##   <dbl> <list<dbl>> <list<dbl>> <list<dbl>>
+## 1     1         [3]         [8]         [2]
+## 2     0         [4]         [3]        [12]
+
+data %>% 
+  pivot_wider(
+    id_cols = c(cyl, am, gear), 
+    names_from = cyl, 
+    values_from = mpg, 
+    values_fn = list(mpg = mean),
+    values_fill = list(mpg = 0) )
+
+##      am  gear   `6`   `4`   `8`
+##   <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1     1     4  21    28.0   0  
+## 2     0     3  19.8  21.5  15.0
+## 3     0     4  18.5  23.6   0  
+## 4     1     5  19.7  28.2  15.4
+```
+
+
+
+
+
+Now, imagine some time series, where measurements of something are collected over several years. Such surveys most likely put values from different years into different columns, one column for every particular year:
+
+```{r}
+table4a
+```
+
+Such data storing reduces the amount of information we can get from these data, because it renounces the potential variable - **time**. Such "new" variable could be then used for plotting or modelling, in contrast to the case where values of **time** are captured in the table header. For such a case, `pivot_longer` **gathers** multiple columns together into only two, one describing the "new" variable (in our case - **time**) and the other column containing survey values:
+
+![](tidy-9.png)
+
+```{r}
+table4a %>% 
+  pivot_longer(cols = c("1999", "2000"))
+```
+
+Writing down all the columns names is cumbersome and might be even impossible, if you have hundreds of columns (e.g. genetic information). Thus, you can use a **semicolon** between the first and the last column names to cover them all quick. The names of the `name` and `value` columns are also not particularly useful, but if needed, you can re**name** them **to** whatever you want:
+
+```{r}
+table4a %>% 
+  pivot_longer(cols = c("1999" : "2000"), names_to = "year", values_to = "cases")
+```
+
+A `pivot_longer` is a next generation of `gather` command, which is still widely used and therefore will remain in the package. So, it's worth to know it, for the case where you will need to understand older *R* code. In my opinion `pivot_longes` is much more intuitive than `gather`, so I completely stopped using `gather` in my code. 
+
+```{r}
+table4a %>% 
+  gather(2:3, key = "year", value = "value")
+```
+
+#### Unite and separate
+
+Sometimes you want to combine / `unite` some columns into one, when it does not make much sense in the separated form, e.g. century (19) and year (99) into 1999: 
+
+![](tidy-18.png)
+
+```{r}
+table5 %>% 
+  unite(col = "year", c("century", "year"), sep = "")
+```
+
+But in the very next column `rate` we have the opposite problem, where two variables are captured in the same columns. Dates are often represented in formats like this - "01/03/1999", and you often need to `separate` the date `into` three different variables / columns: "day", "month" and "year." If you can visually recognise a separator, you can report is to the `separate` command in form of `sep` argument. But `separate` things along and tries to split columns in places, which are neither characters nor letters. Thus if you have a messy dataset where separators are always on the same spot but differ, e.g. underscore, slash, empty space, `tidyr` will split it for you:
+
+![](tidy-17.png)
+
+There are two ways of separating a "crowded" column:
+
+1. Separate each cell in a column to **make several columns**.
+
+```{r}
+table5 %>% 
+  unite(col = "year", c("century", "year"), sep = "") %>% 
+  separate(col = rate, sep = "/", into = c("cases", "population"))
+```
+
+The output above shows that two new columns are of a *character* type, because they inherited it from the original column. But I'd like them to be what they are - numbers. For this we can allow `separate()` to convert them to a better format of it's choice:
+
+```{r}
+table5 %>% 
+  unite(col = "year", c("century", "year"), sep = "") %>% 
+  separate(col = rate, into = c("cases", "population"), convert = TRUE)
+```
+
+Similarly, you can also split a column, which does not have any separator, by telling `separate` on which place the values supposed to be separated:
+
+```{r}
+table1 %>% 
+  separate(country, into = c("begin", "end"),    sep = 3) %>% 
+  separate(year,    into = c("century", "year"), sep = 2)
+```
+
+
+2. Separate each cell in a column to **make several rows**. 
+
+```{r}
+table5 %>% 
+  unite(col = year, c(century, year), sep = "") %>% 
+  separate_rows(rate, sep = "/", )
+```
+
+This is a bad example, because it transforms one kind of messy into the other messy, but still, such functionality might be useful in everyday life of a data scientist.
+
+
+#### Expand and complete
+
+Sometimes when we think that we have enough data, we really don't. For instance, if we decide to study different cars and compare their ... everything, we start to collect different categories of cars, e.g. cars with different numbers of cylinders, different transmission or different number of gears.
+
+A `mtcars` dataset could be a good example of such a survey:
+
+```{r}
+mtcars %>% distinct(cyl)
+mtcars %>% distinct(am)
+mtcars %>% distinct(gear) 
+```
+
+So, having 2 categories coming from transmission variable (`am`) and three from the gearbox (`gear`), we should have 6 **distinct** combinations (groups) of cars. But if we check out our dataset, we just have 4:
+
+```{r}
+mtcars %>% distinct(am, gear)
+```
+
+There are (1) no cars in our dataset having and automatic transmission (`am = 0`) and 5 gears and (2) no cars having a manual transmission (`am = 1`) and 3 gears. Our dataset might be as huge as we want, but these two combinations would still be missing. But the worst part of it is that we don't see that we miss something, because these missing values are implicit. And that is the exact moment, where we think that we have enough data, but we really don't.
+
+Fortunately, `expend` function provides a solution for it, by finding all possible combinations of categorical variables:
+
+```{r}
+mtcars %>% expand(am, gear)
+```
+
+The only problem is - it does not tell us how many observations every combination has. So, we might see more combinations, but without painful inspection of our data we wouldn't know which combinations are empty and which might only contain a few observations...
+
+
+
+A `table` function does the same as expand does but it also counts. 
+
+```{r}
+table(mtcars$am, mtcars$gear) 
+```
+
+Now we see our missing categories which we discovered after using `distinct` above, namely: there not a single manual gearbox car (`am = 1`) having three gears and there are no cars in our dataset with automatic transmission (`am = 0`) having 5 gears. Hmm... we know both categories exist, but we don't have them in our sample, meaning - our sample is **not complete**. 
+
+But wouldn't it be nice to have these missing combinations in out dataset (even without the data, all NAs)? 
+
+Well, yes! Why? 
+
+Because we then could simply extrapolate our dataset to those missing cases by estimating their probable values. 
+
+Estimate? Probable? Sounds wage, isn't it? Yes. But even a bad estimation (a model) is often much more useful than an excellent "not-knowing". Thus, it's worth to **complete** our dataset to see what we **miss** - meaning to see the new **opportunities**. And you think, that this all might be unnecessary since you can look it all up yourself, think about how many combinations you'd need to check in the case where you have 100 categorical variables and each of them has several categories. To emphasize this point I'll take **only** three categorical variables from `mtcars` dataset with only 32 observations and show in the code below that 8 combinations our of 26 are missing:
+
+```{r}
+mtcars %>% complete(cyl, am, gear) %>% arrange(desc(is.na(mpg)))
+```
+
+Now we see what we miss in our data, for instance an automatic gearbox car with 5 gears and 4 cylinders, or a manual gearbox car with 3 gears and 4 cylinders.
+
+And the very next step would be to fill it up with some useful value. What is useful? Sometimes average. Sometimes median or something else. Here, for the sake of an example, let's fill the first three columns (`mpg, disp and hp`) with their averages:
+
+```{r}
+mtcars %>% 
+  complete(cyl, am, gear, fill = list(mpg = mean(mtcars$mpg), 
+                                               disp = mean(mtcars$disp), 
+                                               hp = mean(mtcars$hp))) %>% 
+  arrange(desc(is.na(wt)))
+```
+
+Well, I don't know if it's better then nothing... Wait, you can also fill it with the last value the variable had before hitting the nest *NA*:
+
+```{r}
+mtcars %>% complete(cyl, am, gear) %>% fill(mpg, disp, hp) %>% 
+  arrange(desc(is.na(wt)))
+```
+
+
+
+Hmm, it's also far from perfect, I know, but that's not the point. The point is that you can first "discover" your implicit missing values and then turn them into opportunity by filling them out with some sophisticated statistical method, which are unfortunately way outside of the scope of this post. 
+
+
+#### Join tables
+
+Combining tables is important, but it sometimes leads to a **redundancy**. Consider binding columns of two following tables:
+
+```{r}
+tidy4a <- table4a %>%
+  gather(`1999`, `2000`, key = "year", value = "cases")
+tidy4b <- table4b %>%
+  gather(`1999`, `2000`, key = "year", value = "population")
+
+bind_cols(tidy4a,tidy4b)
+```
+
+Two of the columns, `country` and `year`, are **identical** in both tables. We'll call them **key** columns. A `bind_cols()` nicely renames them for us to avoid confusion, but it keeps both. Although they don't provide any new information -  they are redundant! If we add a green colour to a green colour, it will still be green. Thus, we would love *R* to recognise those identical - **key** columns and use them to **join** (not to add!) only columns which are different. And that is exactly what **join** commands are for.
+
+The `inner_join` is the most intuitive. It looks inside of the tables, finds identical columns and keeps just one of them and adds all not matching columns behind it. This removes redundancy and delivers a tidy dataset:
+
+```{r}
+inner_join(tidy4a, tidy4b)
+```
+
+But what if columns are not perfectly identical? I am grad you asked :). To answer this question, please, let me explain all the joins visually, beginning with our friend `inner_join`.
+
+##### Mutating joins combine columns
+
+1. inner_join
+
+An inner join matches pairs of observations whenever their keys are equal. And, as mentioned before, it then keeps the key columns and all the other columns which are different.
+
+![](join-inner.png)
+
+Below is an example with x and y we have created earlier in the post. Have a look at them in the console, if you forgot them. 
+
+If **all** three columns are the **key** columns, `inner_join` looks for a perfect match, where all columns for this row have identical values in both tables. In our example only second row matches perfectly (see the first output below). The first row is different in the column "C" and the third raw have different values in all three columns.
+
+If only two variables are **keys**, "A" and "B", then two rows have identical values in this both columns, while other, not matching values from the column "C" are added to the right of the table. In this way we reduce the redundancy but don't loose any information.
+
+If only one variable is a key, then you'll simply get more unmatched columns, "B" and "C" in our case, see below. This case is interesting, because it does not reduce the redundancy for "B" columns. This emphasizes the importance of **key** columns, thus you often have to know (and you usually do!) what **keys** are you want to join by.
+
+```{r}
+inner_join(x, y, by = c("A", "B", "C"))
+inner_join(x, y, by = c("A", "B"))
+inner_join(x, y, by = c("A"))
+```
+
+The only problem with `inner_join` is that it looses observations. If you are interested in keeping all the observations from one, the other or both tables, you can apply `outer_joins`. There are three of them: 
+
+- `left_join`  keeps all observations from the left table, i.e.  *x* for `left_join(x, y)`
+- `right_join` keeps all observations from the right table, i.e. *y* for `left_join(x, y)`
+- `full_join`  keeps all observations from both *x* and *y* tables
+
+![](join-outer.png)
+
+To summarise how they all work, have a look at the following diagram:
+
+![](join-venn.png)
+
+
+2. left_join
+
+`left_join` keeps all the common / matched observations in the left columns and adds additional data from another table. But as you could see in the graphs above, if I want to keep all the observations from *x*, but there is no match for some of them in *y*, it'll add empty rows - *NA*. It doesn't sound good first, but I actually loved this side effect, because it always showed me a mismatch between tables, which, if not discovered early enough, could lead to crappy results.
+
+Now, let's left-join *x* and *y* considering all columns a **key**. The `left_join` does it by default, so you could actually right `left_join(x, y)` to get the same result, but here for the teaching purposes I prefer to write out the keys explicitly:
+
+```{r}
+left_join(x, y, by = c("A", "B", "C"))
+```
+
+Hmm, interestingly, our result is identical to *x* and there is not a single value from *y*. This is because not a single row in *y* matched a row in *x* in all three **keys**. So, since there is a total mismatch between tables, only *x* table was returned.
+
+Now, if we only have two **keys**, `left_join` finds that second and third rows in both table match for columns "A" and "B". It keeps only one of them to reduce the redundancy. The column "C" was different for first two rows, so `left_join` kept "C" columns from both tables. The third row from *x* does not find any match in *y*, thus it kept its own observation and joined a new-empty cell - *NA*:
+
+```{r}
+left_join(x, y, by = c("A", "B"))
+```
+
+One key shows that column "B" in *y* table also has one unmatching value in the third row, thus, it uncovers the mismatch, which could be useful, if you want to make sure the tables have identical observations. But if you know they are not and you want to get rid of the mismatch, use `inner_join` instead.
+
+```{r}
+left_join(x, y, by = c("A"))
+```
+
+3. right_join
+
+*Right join* works in the say way *left join* does, but keeps all the observation from the right table, *y* in our case. 
+
+```{r}
+right_join(x, y, by = c("A", "B", "C"))
+right_join(x, y, by = c("A", "B"))
+right_join(x, y, by = c("A"))
+```
+
+
+4. full_join
+
+*Full join* is the most greedy join because it keeps every possible mismatch. Thus, if all columns are **keys**, similarly to the *inner join* finds that only second row matches across all the columns. But, in contrast to inner join, it keeps the first and third rows from both tables. That's how with `full_join` you'll finish up with 5 rows in contrast to only 1 raw returned by the `inner_join`. If not all columns are **keys**, a *full join* acts as a combination of *left* and *right* joins.
+
+```{r}
+full_join(x, y, by = c("A", "B", "C"))
+full_join(x, y, by = c("A", "B"))
+full_join(x, y, by = c("A"))
+```
+
+Returning every mismatch between tables could be a blessing if you want to find inconsistencies in your table, but it also could become a huge headache since it may produce thousands of "new" observations out of nowhere. And if your dataset is big and messy, and the chances are it is, and you have *NAs* in it from the start, you wouldn’t be able to differentiate among original *NAs* and "new" *NAs*. The danger here is that you might continue with your analysis and produce unrealistic results without even knowing about it. 
+
+**Thus, despite the advantages of joins, e.g. reducing redundancy, please, be very careful and always double check the output.** 
+
+5. Duplicates
+
+When you join duplicated keys, you get all possible combinations, thus try to make a **key** column as unique as possible.
+
+![](join-many-to-many.png)
+
+6. Join tables with different names
+
+If you know that some columns in two different tables are identical but have different names, you don't have to **rename** them (although you can), but use the **equal** sing to tell `dplyr` they are the same:
+
+```{r}
+left_join(y, z, by = c("A" = "D", "B" = "E"))
+```
+
+
+
+##### Filtering joins combine rows
+
+
+Filtering joins affect only the rows / observations, not the columns / variables. But filtering joins never duplicate rows like mutating joins do.
+
+1. semi_join
+
+An semi-join keeps only the rows that have a match:
+
+![](join-semi-many.png)
+
+```{r}
+semi_join(x, y, by = c("A", "B", "C"))
+semi_join(x, y, by = c("A", "B"))
+semi_join(x, y, by = c("A"))
+```
+
+2. anti_join
+
+An `anti-join` only keeps the rows that don’t have a match. I often use it to check for discrepancies between tables. If `anti_join` returns nothing - it's a good sign ;).
+
+![](join-anti.png)
+
+```{r}
+anti_join(x, y, by = c("A", "B", "C"))
+anti_join(x, y, by = c("A", "B"))
+anti_join(x, y, by = c("A"))
+```
+
+
+#### Conditioning
+
+Having columns and rows where you want them to be it amazing, and if you have a structure of your table, which is ready to "take off" to the "machine learning wonderland" it's even better. But in order to do some statistics with the data, the perfect structure of the dataset is sometimes not the most important thing. If we want to do something with data, the data itself, meaning the values inside of the cell, is the essence of a good statistical analysis and meaningful results. Thus, we often need to manipulate the values inside our tables. Here I'd like to present two most useful techniques, which I use in everyday professional life.
+
+##### If ... else ...
+
+The `ifelse` command allows you to produce a new column depending on the existing one (like in the first chunk of code below), or simply change the values in the existing variable, if you need to (like in the second).
+
+```{r}
+table1 %>% 
+  mutate(population_2 = ifelse(population < mean(population), "low", "high"))
+```
+
+The only problem with `ifelse` is that, if you have to many **cases**, it will be painful to write multiple `ifelse`s, thus we can use `case_when`:
+
+##### Case when ...
+
+```{r}
+
+table1 %>% 
+  mutate(country = case_when(
+    country == "Afghanistan" ~ "Afgh",
+    country == "Brazil"      ~ "Braz",
+    country == "China"       ~ "Chin",
+    TRUE                     ~ "Rest of the World"
+  ))
+```
+
+
+### Bonus peace of code
+
+Have a look at a messy dataset `who`, think about what would you do with it and then check out the code below which is mostly borrowed from the referenced book.
+
+```{r}
+who
+```
+
+
+```{r}
+who %>% 
+  pivot_longer(cols = new_sp_m014:newrel_f65, values_drop_na = T) %>% 
+  select(-iso2, -iso3) %>% 
+  mutate(name = stringr::str_replace(name, "newrel", "new_rel")) %>% 
+  separate(name, into = c("new", "type", "sexage")) %>% 
+  separate("sexage", into = c("sex", "age"), sep = 1) %>% 
+  mutate(age_2 = case_when(
+    age == "014"  ~ "0 – 14 years old",
+    age == "1524" ~ "15 - 24 years old",
+    age == "2534" ~ "25 - 34 years old",
+    age == "3544" ~ "35 - 44 years old",
+    age == "4554" ~ "45 - 54 years old",
+    age == "5564" ~ "55 - 64 years old",
+    age == "65"   ~ "65 or older",
+    TRUE          ~ "bla"
+  ))
+```
+
+
+### Conclusion
+
+In the current age of **big data**, data manipulation is one of the most important skills for any data scientist. It not only allows you to make the best out of your own data in terms of visualisation, statistics and machine learning, but may also help you to reanimate unused or too-messy data and so make exiting discoveries. Mastering my **Data Wrangling Trilogy** ( [Vol. 1](https://yury-zablotski.netlify.com/post/data-wrangling-1/), [Vol. 2](https://yury-zablotski.netlify.com/post/2019-09-22-data-wrangling-2/data-wrangling-2/) and this [Vol. 3]()) will enable you to solve 95% of common data problems in *R*.
+
+### What’s next
+
+After bringing the data to the form you need, it's time to produce some results:
+
+- [Fancy tables: frequency, contingency and pivot](https://yury-zablotski.netlify.com/post/fancy-tables/)
+- [Fancy descriptive statistics](https://yury-zablotski.netlify.com/post/fancy-descriptive-statistics/)
+
+
+**Thank you for reading!**
+
+### Further readings and references
+
+
+
+
+
+
+
+
+

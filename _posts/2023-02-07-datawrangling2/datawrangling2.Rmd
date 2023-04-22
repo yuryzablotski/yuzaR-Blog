@@ -87,7 +87,7 @@ mtcars %>%
   glimpse()
 ```
 
-Selecting columns by simply writing their names into brackets seems like a great idea, but not when you're dealing with a table of 300 columns. Writing out 100 column names in brackets **is no fun**, but don't worry - there's a solution. By using a **semicolon** between the variables you need, you can easily select multiple columns in the middle of your table. 
+Selecting columns by simply writing their names into brackets seems like a great idea, but not when you're dealing with a table of 300 columns. Writing out 100 column names in brackets **is no fun**, but don't worry - there's a solution. By using a **colon** between the variables you need, you can easily select multiple columns in the middle of your table. 
 
 ```{r}
 mtcars %>% 
@@ -95,7 +95,7 @@ mtcars %>%
   glimpse()
 ```
 
-Cool, right? But sometimes, the columns in your table won't be nicely grouped together, which means you can't use the **semicolon** trick for selecting multiple columns. But there's still an easy way to eliminate unwanted columns *without typing out every single name*. Just add a **minus sign** in front of the columns you want to **remove**. Some folks like to use an **exclamation mark** instead of the minus, but personally, I find the minus sign more intuitive.
+Cool, right? But sometimes, the columns in your table won't be nicely grouped together, which means you can't use the **colon** trick for selecting multiple columns. But there's still an easy way to eliminate unwanted columns *without typing out every single name*. Just add a **minus sign** in front of the columns you want to **remove**. Some folks like to use an **exclamation mark** instead of the minus, but personally, I find the minus sign more intuitive.
 
 ```{r}
 mtcars %>% 
