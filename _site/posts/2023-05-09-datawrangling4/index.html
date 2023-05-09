@@ -2506,9 +2506,7 @@ gtag('config', 'G-Q28WX9Y4VS');
 <ul>
 <li><a href="#this-post-as-a-video" id="toc-this-post-as-a-video">This post as a video</a>
 <ul>
-<li><a href="#previous-topics" id="toc-previous-topics">Previous topics</a></li>
-<li><a href="#why-do-we-need-tidy-data-what-are-the-benefits" id="toc-why-do-we-need-tidy-data-what-are-the-benefits">Why do we need tidy data? What are the benefits?</a></li>
-<li><a href="#how-to-tidy-up-your-data" id="toc-how-to-tidy-up-your-data">How to tidy up your data</a>
+<li><a href="#previous-topics" id="toc-previous-topics">Previous topics</a>
 <ul>
 <li><a href="#bind-rows-and-bind-columns" id="toc-bind-rows-and-bind-columns">Bind rows and bind columns</a></li>
 <li><a href="#intersect-and-union" id="toc-intersect-and-union">Intersect and union</a></li>
@@ -2545,25 +2543,8 @@ gtag('config', 'G-Q28WX9Y4VS');
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Most of this article, especially pictures, code and quotes below, stem from <a href="https://r4ds.had.co.nz/">“R for Data Science”</a> book by Garrett Grolemund and Hadley Wickham (Chapters 12 and 13).</p>
-<pre><code>“Happy families are all alike; every unhappy family is unhappy in its own way.” 
-– Leo Tolstoy
-
-“Tidy datasets are all alike, but every messy dataset is messy in its own way.” 
-– Hadley Wickham
-  </code></pre>
 <h3 id="previous-topics">Previous topics</h3>
-<p>To maximise the effect of this post you should definitely work through <a href="https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/">Data Wrangling Vol. 1</a> and <a href="https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/">Data Wrangling Vol. 2</a> before.</p>
-<h3 id="why-do-we-need-tidy-data-what-are-the-benefits">Why do we need tidy data? What are the benefits?</h3>
-<h3 id="how-to-tidy-up-your-data">How to tidy up your data</h3>
-<p>There are three simple rules which make a dataset tidy<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
-<ol type="1">
-<li>Each variable must have its own column.</li>
-<li>Each observation must have its own row.</li>
-<li>Each value must have its own cell.</li>
-</ol>
-<p><img src="tidy-1.png" /></p>
-<p>But it’s surprising, how rare these three rules are followed Here is an examples of <strong>tidy dataset</strong>:</p>
+<p>To maximise the effect of this post you should definitely work through <a href="https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/">{dplyr} for beginners</a>, <a href="https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/">advanced {dplyr}</a> and the review about {tidyr} package before</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span> <span class='co'># it's the only package you need</span></span>
@@ -3154,13 +3135,10 @@ gtag('config', 'G-Q28WX9Y4VS');
 </ul>
 <p><strong>Thank you for reading!</strong></p>
 <h3 id="further-readings-and-references">Further readings and references</h3>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Amazing and Free Book by Garrett Grolemund and Hadley Wickham: <a href="https://r4ds.had.co.nz/">“R for Data Science”</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
+<ul>
+<li>Most of this article originate from <a href="https://r4ds.hadley.nz/">“R for Data Science”</a> book by Garrett Grolemund and Hadley Wickham.</li>
+</ul>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">
