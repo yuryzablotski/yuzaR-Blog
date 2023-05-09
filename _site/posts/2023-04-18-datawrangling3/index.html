@@ -138,7 +138,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["datawrangling3_files/anchor-4.2.2/anchor.min.js","datawrangling3_files/bowser-1.9.3/bowser.min.js","datawrangling3_files/distill-2.2.21/template.v2.js","datawrangling3_files/figure-html5/unnamed-chunk-3-1.gif","datawrangling3_files/figure-html5/unnamed-chunk-5-1.png","datawrangling3_files/header-attrs-2.20/header-attrs.js","datawrangling3_files/header-attrs-2.21/header-attrs.js","datawrangling3_files/jquery-3.6.0/jquery-3.6.0.js","datawrangling3_files/jquery-3.6.0/jquery-3.6.0.min.js","datawrangling3_files/jquery-3.6.0/jquery-3.6.0.min.map","datawrangling3_files/popper-2.6.0/popper.min.js","datawrangling3_files/tippy-6.2.7/tippy-bundle.umd.min.js","datawrangling3_files/tippy-6.2.7/tippy-light-border.css","datawrangling3_files/tippy-6.2.7/tippy.css","datawrangling3_files/tippy-6.2.7/tippy.umd.min.js","datawrangling3_files/vembedr-0.1.5/css/vembedr.css","datawrangling3_files/webcomponents-2.0.0/webcomponents.js","dplyr_3_thumbnail.png","nest_data.png","tidy_data.jpg","tidy-1.png","tidy-17.png","tidy-18.png","tidy-8.png","tidy-9.png","tidyr-pivoting.gif","unnest_longer.png","unnest_wider.png"]}
+  {"type":"character","attributes":{},"value":["datawrangling3_files/anchor-4.2.2/anchor.min.js","datawrangling3_files/bowser-1.9.3/bowser.min.js","datawrangling3_files/distill-2.2.21/template.v2.js","datawrangling3_files/figure-html5/unnamed-chunk-12-1.gif","datawrangling3_files/figure-html5/unnamed-chunk-3-1.gif","datawrangling3_files/figure-html5/unnamed-chunk-5-1.png","datawrangling3_files/header-attrs-2.20/header-attrs.js","datawrangling3_files/header-attrs-2.21/header-attrs.js","datawrangling3_files/jquery-3.6.0/jquery-3.6.0.js","datawrangling3_files/jquery-3.6.0/jquery-3.6.0.min.js","datawrangling3_files/jquery-3.6.0/jquery-3.6.0.min.map","datawrangling3_files/popper-2.6.0/popper.min.js","datawrangling3_files/tippy-6.2.7/tippy-bundle.umd.min.js","datawrangling3_files/tippy-6.2.7/tippy-light-border.css","datawrangling3_files/tippy-6.2.7/tippy.css","datawrangling3_files/tippy-6.2.7/tippy.umd.min.js","datawrangling3_files/vembedr-0.1.5/css/vembedr.css","datawrangling3_files/webcomponents-2.0.0/webcomponents.js","dplyr_3_thumbnail.png","nest_data.png","tidy_data.jpg","tidy-1.png","tidy-17.png","tidy-18.png","tidy-8.png","tidy-9.png","tidyr-pivoting.gif","tidyr-spread-gather.gif","unnest_longer.png","unnest_wider.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2417,6 +2417,8 @@ d-appendix d-footnote-list a.footnote-backlink {
 <!--/radix_placeholder_distill-->
   <script src="../../site_libs/header-attrs-2.21/header-attrs.js"></script>
   <link href="../../site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+  <link href="../../site_libs/tabwid-1.1.3/tabwid.css" rel="stylesheet" />
+  <script src="../../site_libs/tabwid-1.1.3/tabwid.js"></script>
   <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2507,7 +2509,24 @@ gtag('config', 'G-Q28WX9Y4VS');
 <li><a href="#reshape-data-make-then-wider-or-longer" id="toc-reshape-data-make-then-wider-or-longer">Reshape data: make then wider or longer</a>
 <ul>
 <li><a href="#pivot_wider-spread" id="toc-pivot_wider-spread">pivot_wider &amp; spread</a></li>
+<li><a href="#pivot_longer-gather" id="toc-pivot_longer-gather">pivot_longer &amp; gather</a></li>
 </ul></li>
+<li><a href="#split-or-combine-cells" id="toc-split-or-combine-cells">Split or combine cells</a>
+<ul>
+<li><a href="#unite" id="toc-unite">unite</a></li>
+<li><a href="#separate" id="toc-separate">separate</a></li>
+</ul></li>
+<li><a href="#nested-data" id="toc-nested-data">Nested data</a>
+<ul>
+<li><a href="#create-nested-data" id="toc-create-nested-data">Create nested data</a></li>
+<li><a href="#reshape-nested-data" id="toc-reshape-nested-data">Reshape nested data</a></li>
+</ul></li>
+<li><a href="#expand-and-complete-tables" id="toc-expand-and-complete-tables">Expand and complete tables</a>
+<ul>
+<li><a href="#expand" id="toc-expand">expand</a></li>
+<li><a href="#complete" id="toc-complete">complete</a></li>
+</ul></li>
+<li><a href="#further-readings-and-references" id="toc-further-readings-and-references">Further readings and references</a></li>
 </ul>
 </nav>
 </div>
@@ -2634,7 +2653,456 @@ gtag('config', 'G-Q28WX9Y4VS');
 5 China        1999 212258 1272915272
 6 China        2000 213766 1280428583</code></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="pivot_longer-gather">pivot_longer &amp; gather</h2>
+<p>Now, imagine this: you’ve got a bunch of data collected over a span of years. Usually, these surveys organize the measurements by year and put them in separate columns. So, you’d have a column for each specific year.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table4a</span></span></code></pre>
+</div>
+<pre><code># A tibble: 3 × 3
+  country     `1999` `2000`
+  &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+1 Afghanistan    745   2666
+2 Brazil       37737  80488
+3 China       212258 213766</code></pre>
+</div>
+<p>However, storing data in this manner limits the information we can extract from it. By separating the measurements into different columns based on year, we lose the valuable variable - “time”, which is imprisoned in the table header (imagine liquid metal T-1000 before passing prison bars), unable to be fully utilized.</p>
+<p><img src="tidy-9.png" /></p>
+<p>For such a case, “pivot_longer” takes multiple columns and combines them into just two columns - one with column names and one with survey values. This way, the information about time is freed up (T-1000 passing prison bars) and can be used for things like plotting or modeling.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table4a</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span>cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1999"</span>, <span class='st'>"2000"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 3
+  country     name   value
+  &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt;
+1 Afghanistan 1999     745
+2 Afghanistan 2000    2666
+3 Brazil      1999   37737
+4 Brazil      2000   80488
+5 China       1999  212258
+6 China       2000  213766</code></pre>
+</div>
+<p>So in this example, we kept it simple and just used two years. But let’s say you have a lot more data, like hundreds of columns. No problem, just use a “colon” between the first and last column names to quickly cover them all. And if you want to make things <strong>even clearer</strong>, you can use the “names_to” and “values_to” arguments to give the new columns better names, like “year” and “number of cases” for example.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table4a</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span>cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1999"</span> <span class='op'>:</span> <span class='st'>"2000"</span><span class='op'>)</span>, names_to <span class='op'>=</span> <span class='st'>"year"</span>, values_to <span class='op'>=</span> <span class='st'>"number of cases"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 3
+  country     year  `number of cases`
+  &lt;chr&gt;       &lt;chr&gt;             &lt;dbl&gt;
+1 Afghanistan 1999                745
+2 Afghanistan 2000               2666
+3 Brazil      1999              37737
+4 Brazil      2000              80488
+5 China       1999             212258
+6 China       2000             213766</code></pre>
+</div>
+<p>And the “pivot_longer” command is basically the new and improved version of the retired “gather” command. But don’t worry, “gather” is still around and people still use it, so it’s good to know how it works too.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table4a</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>, key <span class='op'>=</span> <span class='st'>"year"</span>, value <span class='op'>=</span> <span class='st'>"value"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 3
+  country     year   value
+  &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt;
+1 Afghanistan 1999     745
+2 Brazil      1999   37737
+3 China       1999  212258
+4 Afghanistan 2000    2666
+5 Brazil      2000   80488
+6 China       2000  213766</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="datawrangling3_files/figure-html5/unnamed-chunk-12-1.gif" /><!-- --></p>
+</div>
+<h1 id="split-or-combine-cells">Split or combine cells</h1>
+<h2 id="unite">unite</h2>
+<p><img src="tidy-18.png" /></p>
+<p>The real-world data can be a bit messy (footbal star messy), which sometimes requires us to <strong>combine several columns into one</strong>. For example, separating a century and a year into different columns doesn’t make much sense, does it? That’s where the “unite” command comes in handy.</p>
+<p>With “unite”, we can do a few things. First, we give a name to the new column. Second, we specify which columns to combine. Third, we determine what separator to use between the values. Fourth, we can decide whether to remove the input columns from the output data (but I like to keep them in to make sure everything is working properly). And finally, we can choose to remove any missing values.</p>
+<p>For example, we could unite a “century” and a “year” into a “new_year” column (imagine a picture of Santa here). After we’re confident that our code is working properly, we can set the “remove” argument to TRUE and say goodbye to those old, separate columns.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table5</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span><span class='op'>(</span></span>
+<span>    col <span class='op'>=</span> <span class='st'>"new_year"</span>, </span>
+<span>    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"century"</span>, <span class='st'>"year"</span><span class='op'>)</span>, </span>
+<span>    sep <span class='op'>=</span> <span class='st'>""</span>, </span>
+<span>    remove <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='co'># remove = TRUE, </span></span>
+<span>    na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 5
+  country     new_year century year  rate             
+  &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;            
+1 Afghanistan 1999     19      99    745/19987071     
+2 Afghanistan 2000     20      00    2666/20595360    
+3 Brazil      1999     19      99    37737/172006362  
+4 Brazil      2000     20      00    80488/174504898  
+5 China       1999     19      99    212258/1272915272
+6 China       2000     20      00    213766/1280428583</code></pre>
+</div>
+<p>Isn’t that cool? However, it’s too early to celebrate just yet, because in the very next “rate” column, we face an opposite problem where two variables “cases” and “population” are trapped within the same column. Luckily, the “separate” command offers an intuitive solution to this issue.</p>
+<h2 id="separate">separate</h2>
+<p><img src="tidy-17.png" /></p>
+<p>Let me break this down for you. If you spot a separator within your data, you can utilize the “sep” argument to inform the “separate” command where to split, and you can specify the names of new columns you want to create.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table5</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unite.html'>unite</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"year"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"century"</span>, <span class='st'>"year"</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='va'>rate</span>, sep <span class='op'>=</span> <span class='st'>"/"</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cases"</span>, <span class='st'>"population"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 4
+  country     year  cases  population
+  &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     
+1 Afghanistan 1999  745    19987071  
+2 Afghanistan 2000  2666   20595360  
+3 Brazil      1999  37737  172006362 
+4 Brazil      2000  80488  174504898 
+5 China       1999  212258 1272915272
+6 China       2000  213766 1280428583</code></pre>
+</div>
+<p>However, the best part is - “separate” is quite intelligent and can detect split-points that aren’t characters or letters automatically. This means that even if your dataset is super messy (football star messy), and different separators such as underscores, slashes, special characters or empty spaces are present, “separate” can still split it like a boss.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>blah</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span><span class='op'>(</span></span>
+<span>  <span class='op'>~</span><span class='va'>ID</span>, <span class='op'>~</span><span class='va'>month</span>,</span>
+<span>  <span class='fl'>1</span>,   <span class='st'>"a_c"</span>,</span>
+<span>  <span class='fl'>2</span>,   <span class='st'>"d/c"</span>,</span>
+<span>  <span class='fl'>3</span>,   <span class='st'>"7 &amp; 8"</span>,</span>
+<span>  <span class='fl'>4</span>,   <span class='st'>"9 10"</span></span>
+<span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>blah</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span><span class='va'>month</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"month 1"</span>, <span class='st'>"month 2"</span><span class='op'>)</span><span class='op'>)</span> </span></code></pre>
+</div>
+<pre><code># A tibble: 4 × 3
+     ID `month 1` `month 2`
+  &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;    
+1     1 a         c        
+2     2 d         c        
+3     3 7         8        
+4     4 9         10       </code></pre>
+</div>
+<p>But wait, there’s more. There are actually <strong>two unique ways to separate</strong> a messy column:</p>
+<ol type="1">
+<li>First, we can create several columns out of one, like we just did. But that’s only half of the story. Because we have some useful tricks that can make your life even easier. For instance, this output shows that two new columns are of the “character” type, put simply - <strong>text</strong>, because they inherited it from the original column. But I’d like them to be what they actually are - <strong>numbers</strong>. For this we can allow the “separate” command to “convert” them to a better format of it’s choice:</li>
+</ol>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table3</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='va'>rate</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cases"</span>, <span class='st'>"population"</span><span class='op'>)</span>, convert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 4
+  country      year  cases population
+  &lt;chr&gt;       &lt;dbl&gt;  &lt;int&gt;      &lt;int&gt;
+1 Afghanistan  1999    745   19987071
+2 Afghanistan  2000   2666   20595360
+3 Brazil       1999  37737  172006362
+4 Brazil       2000  80488  174504898
+5 China        1999 212258 1272915272
+6 China        2000 213766 1280428583</code></pre>
+</div>
+<p>We can also split a column without any separators by specifying where the values should be separated.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>table1</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='va'>country</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"begin"</span>, <span class='st'>"end"</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> </span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 5
+  begin end       year  cases population
+  &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+1 Afgha &quot;nistan&quot;  1999    745   19987071
+2 Afgha &quot;nistan&quot;  2000   2666   20595360
+3 Brazi &quot;l&quot;       1999  37737  172006362
+4 Brazi &quot;l&quot;       2000  80488  174504898
+5 China &quot;&quot;        1999 212258 1272915272
+6 China &quot;&quot;        2000 213766 1280428583</code></pre>
+</div>
+<p><strong>But we have to be careful</strong>. Because, if we have too many pieces of text inside of a column, the automatic separation may leave out <strong>very important</strong> text.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>blah</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span><span class='op'>(</span></span>
+<span>  <span class='op'>~</span><span class='va'>sex</span>, <span class='op'>~</span><span class='va'>joke</span>,</span>
+<span>  <span class='st'>"She"</span>,   <span class='st'>"Darling, tell me something dirty!"</span>,</span>
+<span>  <span class='st'>"He"</span>,   <span class='st'>"Ahhhhh .... kitchen?"</span></span>
+<span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>blah</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='va'>joke</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"part 1"</span>, <span class='st'>"part 2"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 3
+  sex   `part 1` `part 2`
+  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;   
+1 She   Darling  tell    
+2 He    Ahhhhh   kitchen </code></pre>
+</div>
+<p>To prevent this, we can use the “extra” option to “merge” the rest of the text together. And finally, to check the quality of separation, we again should use the “remove = FALSE” option.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>blah</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate.html'>separate</a></span><span class='op'>(</span></span>
+<span>    col    <span class='op'>=</span> <span class='va'>joke</span>, </span>
+<span>    into   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"part 1"</span>, <span class='st'>"part 2"</span><span class='op'>)</span>,</span>
+<span>    extra  <span class='op'>=</span> <span class='st'>"merge"</span>, </span>
+<span>    remove <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> </span></code></pre>
+</div>
+<pre><code># A tibble: 2 × 4
+  sex   joke                              `part 1` `part 2`           
+  &lt;chr&gt; &lt;chr&gt;                             &lt;chr&gt;    &lt;chr&gt;              
+1 She   Darling, tell me something dirty! Darling  tell me something …
+2 He    Ahhhhh .... kitchen?              Ahhhhh   kitchen?           </code></pre>
+</div>
+<ol start="2" type="1">
+<li>So, we now learned how to create several columns out of one. The second way to separate is to <strong>create several rows</strong> out of one. This is useful when messy data violates the third rule of a data set and contains multiple measurements in a single cell. It’s kind of “pivot_longer” on steroids (Arni), because it makes a clean table from a single messy column, instead of multiple tidy columns.</li>
+</ol>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>blah</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tribble.html'>tribble</a></span><span class='op'>(</span></span>
+<span>  <span class='op'>~</span><span class='va'>season</span>,    <span class='op'>~</span><span class='va'>month</span>,</span>
+<span>  <span class='st'>"Winter"</span>,   <span class='st'>"Dez &amp; Jan + Feb"</span>,</span>
+<span>  <span class='st'>"Spring"</span>,   <span class='st'>"Mar | Apr ? Mai"</span></span>
+<span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>blah</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/separate_rows.html'>separate_rows</a></span><span class='op'>(</span><span class='va'>month</span><span class='op'>)</span> </span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 2
+  season month
+  &lt;chr&gt;  &lt;chr&gt;
+1 Winter Dez  
+2 Winter Jan  
+3 Winter Feb  
+4 Spring Mar  
+5 Spring Apr  
+6 Spring Mai  </code></pre>
+</div>
+<h1 id="nested-data">Nested data</h1>
+<p><strong>But get ready for a plot twist!</strong> While storing several values in one cell is bad, storing several columns in one cell can actually be incredibly useful, because it helps to organize complex data and allows for more effective work with multiple sub-tables at once, using functions like “map”. For example, we can create multiple models and store their results for further use with just a few lines of code. I have also created a <a href="https://youtu.be/tQ8dC0oLTnA">tutorial on multiple models</a>, so feel free to check it out later. But for now let’s see how to create a nested data frame.</p>
+<p><img src="nest_data.png" /></p>
+<h2 id="create-nested-data">Create nested data</h2>
+<p>Creating a nested data frame is as easy as just using “group_by” and “nest” functions to move the groups into a list-column. We can also specify the columns we want to “nest”, which can help with large datasets. But what if we already have a nested data frame and need to access the data inside it?</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>storms</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>nest</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 258 × 2
+# Groups:   name [258]
+   name     data              
+   &lt;chr&gt;    &lt;list&gt;            
+ 1 Amy      &lt;tibble [31 × 12]&gt;
+ 2 Blanche  &lt;tibble [20 × 12]&gt;
+ 3 Caroline &lt;tibble [33 × 12]&gt;
+ 4 Doris    &lt;tibble [29 × 12]&gt;
+ 5 Eloise   &lt;tibble [46 × 12]&gt;
+ 6 Faye     &lt;tibble [19 × 12]&gt;
+ 7 Gladys   &lt;tibble [46 × 12]&gt;
+ 8 Hallie   &lt;tibble [14 × 12]&gt;
+ 9 Belle    &lt;tibble [18 × 12]&gt;
+10 Dottie   &lt;tibble [10 × 12]&gt;
+# ℹ 248 more rows</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>storms</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/nest.html'>nest</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>:</span><span class='va'>long</span>, <span class='va'>category</span><span class='op'>:</span><span class='va'>hurricane_force_diameter</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1,035 × 3
+# Groups:   name [258]
+   name     status              data              
+   &lt;chr&gt;    &lt;fct&gt;               &lt;list&gt;            
+ 1 Amy      tropical depression &lt;tibble [8 × 11]&gt; 
+ 2 Amy      tropical storm      &lt;tibble [22 × 11]&gt;
+ 3 Amy      extratropical       &lt;tibble [1 × 11]&gt; 
+ 4 Blanche  tropical depression &lt;tibble [9 × 11]&gt; 
+ 5 Blanche  tropical storm      &lt;tibble [4 × 11]&gt; 
+ 6 Blanche  hurricane           &lt;tibble [5 × 11]&gt; 
+ 7 Blanche  extratropical       &lt;tibble [2 × 11]&gt; 
+ 8 Caroline tropical depression &lt;tibble [22 × 11]&gt;
+ 9 Caroline tropical storm      &lt;tibble [4 × 11]&gt; 
+10 Caroline hurricane           &lt;tibble [7 × 11]&gt; 
+# ℹ 1,025 more rows</code></pre>
+</div>
+<h2 id="reshape-nested-data">Reshape nested data</h2>
+<p><img src="unnest_longer.png" /></p>
+<p>Well, similarly to “separate_rows” which <strong>unpacks</strong> the single cell into several rows, {tidyr} package provides the “unnest_longer” function, which <strong>unpacks nested data</strong> into multiple rows.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>starwars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>films</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>name</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Luke Skywalker"</span>, <span class='st'>"C-3PO"</span>, <span class='st'>"R2-D2"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unnest_longer.html'>unnest_longer</a></span><span class='op'>(</span><span class='va'>films</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 18 × 2
+   name           films                  
+   &lt;chr&gt;          &lt;chr&gt;                  
+ 1 Luke Skywalker The Empire Strikes Back
+ 2 Luke Skywalker Revenge of the Sith    
+ 3 Luke Skywalker Return of the Jedi     
+ 4 Luke Skywalker A New Hope             
+ 5 Luke Skywalker The Force Awakens      
+ 6 C-3PO          The Empire Strikes Back
+ 7 C-3PO          Attack of the Clones   
+ 8 C-3PO          The Phantom Menace     
+ 9 C-3PO          Revenge of the Sith    
+10 C-3PO          Return of the Jedi     
+11 C-3PO          A New Hope             
+12 R2-D2          The Empire Strikes Back
+13 R2-D2          Attack of the Clones   
+14 R2-D2          The Phantom Menace     
+15 R2-D2          Revenge of the Sith    
+16 R2-D2          Return of the Jedi     
+17 R2-D2          A New Hope             
+18 R2-D2          The Force Awakens      </code></pre>
+</div>
+<p>Moreover, we can easily turn each element of a list-column into a regular column via “unnest_wider” function. But interestingly, that creates missing values, which uncovers a new problem.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>starwars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>films</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>name</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Luke Skywalker"</span>, <span class='st'>"C-3PO"</span>, <span class='st'>"R2-D2"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/unnest_wider.html'>unnest_wider</a></span><span class='op'>(</span><span class='va'>films</span>, names_sep <span class='op'>=</span> <span class='st'>"_"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>flextable</span><span class='fu'>::</span><span class='fu'><a href='https://davidgohel.github.io/flextable/reference/regulartable.html'>regulartable</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<div class="tabwid"><style>.cl-82df9e9e{}.cl-82d5a2fe{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-82d9e562{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-82da03ee{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82da03f8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-82da0402{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-82df9e9e'><thead><tr style="overflow-wrap:break-word;"><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">name</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_1</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_2</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_3</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_4</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_5</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_6</span></p></th><th class="cl-82da03ee"><p class="cl-82d9e562"><span class="cl-82d5a2fe">films_7</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Luke Skywalker</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Empire Strikes Back</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Revenge of the Sith</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Return of the Jedi</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">A New Hope</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Force Awakens</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe"></span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">C-3PO</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Empire Strikes Back</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Attack of the Clones</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Phantom Menace</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Revenge of the Sith</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Return of the Jedi</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe">A New Hope</span></p></td><td class="cl-82da03f8"><p class="cl-82d9e562"><span class="cl-82d5a2fe"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">R2-D2</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Empire Strikes Back</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Attack of the Clones</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Phantom Menace</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Revenge of the Sith</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">Return of the Jedi</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">A New Hope</span></p></td><td class="cl-82da0402"><p class="cl-82d9e562"><span class="cl-82d5a2fe">The Force Awakens</span></p></td></tr></tbody></table></div>
+</div>
+<h1 id="expand-and-complete-tables">Expand and complete tables</h1>
+<h2 id="expand">expand</h2>
+<p>The problem is that sometimes we think we have all the data we need, but in reality, we don’t. Let’s take, for example, a study on cars with different transmissions or gears. Before we dive in, we need to make sure we’re aware of how many unique values each variable has.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/xtabs.html'>xtabs</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>am</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>am
+ 0  1 
+19 13 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/xtabs.html'>xtabs</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>gear</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>gear
+ 3  4  5 
+15 12  5 </code></pre>
+</div>
+<p>Having two categories from the transmission variable (“am”), and three from the gearbox (“gear”), you’d think we’d have six different combinations of cars, right? But if we look at the combination of both variables, we actually end up with only four distinct combinations.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>am</span>, <span class='va'>gear</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>               am gear
+Mazda RX4       1    4
+Hornet 4 Drive  0    3
+Merc 240D       0    4
+Porsche 914-2   1    5</code></pre>
+</div>
+<p>And here’s where things get tricky. Even if we have a massive dataset, there are still some combos we might be missing. In our case we have zero cars with an automatic transmission and five gears, and not a single car with a manual transmission and three gears.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/xtabs.html'>xtabs</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>am</span> <span class='op'>+</span> <span class='va'>gear</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>   gear
+am   3  4  5
+  0 15  4  0
+  1  0  8  5</code></pre>
+</div>
+<p>This <strong>is a problem</strong>, because <strong>these missing values are kinda sneaky - they’re implicit</strong>, meaning we don’t even realize we’re missing them. And that’s the dangerous moment when we start to think we have all the data we need, when in reality, we don’t. Fortunately, “expand” function provides a solution for it, by finding all possible combinations of categorical variables we should have:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/expand.html'>expand</a></span><span class='op'>(</span><span class='va'>am</span>, <span class='va'>gear</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 2
+     am  gear
+  &lt;dbl&gt; &lt;dbl&gt;
+1     0     3
+2     0     4
+3     0     5
+4     1     3
+5     1     4
+6     1     5</code></pre>
+</div>
+<p>But wouldn’t it be great if we could add those missing combos to our dataset, even if we don’t have any data for them yet? Well, yes! Why? Because then we could <strong>estimate</strong> what their values could <strong>probably</strong> be.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/complete.html'>complete</a></span><span class='op'>(</span><span class='va'>cyl</span>, <span class='va'>am</span>, <span class='va'>gear</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>d</span></span></code></pre>
+</div>
+<pre><code># A tibble: 40 × 11
+     cyl    am  gear   mpg  disp    hp  drat    wt  qsec    vs  carb
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     4     0     5  NA     NA     NA NA    NA     NA      NA    NA
+ 2     4     1     3  NA     NA     NA NA    NA     NA      NA    NA
+ 3     6     0     5  NA     NA     NA NA    NA     NA      NA    NA
+ 4     6     1     3  NA     NA     NA NA    NA     NA      NA    NA
+ 5     8     0     4  NA     NA     NA NA    NA     NA      NA    NA
+ 6     8     0     5  NA     NA     NA NA    NA     NA      NA    NA
+ 7     8     1     3  NA     NA     NA NA    NA     NA      NA    NA
+ 8     8     1     4  NA     NA     NA NA    NA     NA      NA    NA
+ 9     4     0     3  21.5  120.    97  3.7   2.46  20.0     1     1
+10     4     0     4  24.4  147.    62  3.69  3.19  20       1     2
+# ℹ 30 more rows</code></pre>
+</div>
+<h2 id="complete">complete</h2>
+<p>And if you think that <strong>estimates are too uncertain</strong>, consider this: <strong>even a rough idea is often better than no information at all</strong>. That’s why it’s <strong>essential</strong> to fill in missing data to uncover new opportunities. Because, even when we have <strong>only three</strong> categorical variables from the “mtcars” dataset, we’re missing <strong>eight combinations</strong>. Imagine how much would you miss, if you have 100 categorical variables with several categories each? This highlights the importance of dealing with missing values.</p>
+<p>Luckily for us {tidyr} package provides two ways to deal with missing values. The first is rather radical: we could simply remove all rows containing missing values, doesn’t matter implicit or explicit, using “drop_na” function. But that could eliminate most of our data, because missing values are very common, and we would have missed the opportunity to uncover something new and get a Nobel price.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>d</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 32 × 11
+     cyl    am  gear   mpg  disp    hp  drat    wt  qsec    vs  carb
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     4     0     3  21.5 120.     97  3.7   2.46  20.0     1     1
+ 2     4     0     4  24.4 147.     62  3.69  3.19  20       1     2
+ 3     4     0     4  22.8 141.     95  3.92  3.15  22.9     1     2
+ 4     4     1     4  22.8 108      93  3.85  2.32  18.6     1     1
+ 5     4     1     4  32.4  78.7    66  4.08  2.2   19.5     1     1
+ 6     4     1     4  30.4  75.7    52  4.93  1.62  18.5     1     2
+ 7     4     1     4  33.9  71.1    65  4.22  1.84  19.9     1     1
+ 8     4     1     4  27.3  79      66  4.08  1.94  18.9     1     1
+ 9     4     1     4  21.4 121     109  4.11  2.78  18.6     1     2
+10     4     1     5  26   120.     91  4.43  2.14  16.7     0     2
+# ℹ 22 more rows</code></pre>
+</div>
+<p>The second way is to “fill up” missing values with something useful. What is useful? Well, the average would do the job. So, let’s “fill” the first three columns “mpg, disp and hp” with their averages:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/complete.html'>complete</a></span><span class='op'>(</span><span class='va'>cyl</span>, <span class='va'>am</span>, <span class='va'>gear</span>, </span>
+<span>           fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mpg  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span>, </span>
+<span>                       disp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>disp</span><span class='op'>)</span>, </span>
+<span>                       hp   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>hp</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>wt</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 40 × 11
+     cyl    am  gear   mpg  disp    hp  drat    wt  qsec    vs  carb
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1     4     0     5  20.1  231.  147. NA    NA     NA      NA    NA
+ 2     4     1     3  20.1  231.  147. NA    NA     NA      NA    NA
+ 3     6     0     5  20.1  231.  147. NA    NA     NA      NA    NA
+ 4     6     1     3  20.1  231.  147. NA    NA     NA      NA    NA
+ 5     8     0     4  20.1  231.  147. NA    NA     NA      NA    NA
+ 6     8     0     5  20.1  231.  147. NA    NA     NA      NA    NA
+ 7     8     1     3  20.1  231.  147. NA    NA     NA      NA    NA
+ 8     8     1     4  20.1  231.  147. NA    NA     NA      NA    NA
+ 9     4     0     3  21.5  120.   97   3.7   2.46  20.0     1     1
+10     4     0     4  24.4  147.   62   3.69  3.19  20       1     2
+# ℹ 30 more rows</code></pre>
+</div>
+<p>Hmm, the average may be better then nothing, but it’s far from perfect, right? But that’s not the point. The point is that you can first “discover” your implicit missing values and then turn them into opportunity by filling them out with some sophisticated machine learning method, like chained random forest, which is unfortunately way outside of the scope of today’s topic. But if you want to learn more about imputing missing values with fancy machine learning algorithms, check out <a href="https://youtu.be/Akb401i32Oc">this video</a>.</p>
+<p><strong>Thank you for reading!</strong></p>
+<h1 id="further-readings-and-references">Further readings and references</h1>
+<ul>
+<li><p><a href="https://github.com/rstudio/cheatsheets/blob/main/tidyr.pdf">cheat sheet on {tidyr}</a></p></li>
+<li><p>and the <a href="https://tidyr.tidyverse.org/">official page of {tidyr}</a></p></li>
+</ul>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
