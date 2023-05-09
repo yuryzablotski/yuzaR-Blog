@@ -30,6 +30,7 @@ linkcolor: blue
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T)
+library(magick)
 ```
 
 
@@ -44,3 +45,87 @@ knitr::opts_chunk$set(echo = T)
 
 ![](tidy-1.png)
 
+This picture shows three simple rules which make a dataset tidy[^1]:
+
+[^1]: Amazing and Free Book by Garrett Grolemund and Hadley Wickham: [“R for Data Science”](https://r4ds.had.co.nz/)
+
+1. Each column is a variable
+2. Each row is an observation
+3. Each cell is a single value
+
+But it’s surprising, how rare these three rules are followed.
+    
+
+# This post as a video
+
+To maximize the effect of this post you should definitely work through [Data Wrangling Vol. 1](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/) and [Data Wrangling Vol. 2](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/) before. And I also recommend to watch a video first, because I highlight things I talk about. It's ca. 13 minutes long. 
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("DotnsqCoa7I") 
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+
+
+
+# Reshape data: make then wider or longer
+
+```{r echo=FALSE}
+image_read("tidyr-pivoting.gif")
+```
+
+## pivot_wider & spread
+
+Imagine the situation where various types of information are combined into one column, but you need to "spread" them out into separate columns, because the information they convey cannot coexist, like in columns `type` and `count`. The "cases" and "population" values have nothing in common and therefore, don't belong in the same column. So, we have to broaden our table by taking the column "names from" the "type" and the "values from" the "count" column. Simply put, **we need to make our table wider**. And while it's easy to manually copy and paste the data for two categories, you wouldn't want to do that with 100 categories.
+
+
+![](tidy-8.png)
+
+```{r}
+table2 %>% 
+  pivot_wider(names_from = type, values_from = count)
+```
+
+
+A "pivot_wider" is amazing, but if you work with real-world data (which is often dirty), you'll certainly encounter two common problems. The first one is that "pivot_wider" will eventually produce missing values. For this case, "pivot_wider" has an useful argument that fills in the missing values.
+
+```{r}
+x <- tibble(A = c("a", "b", "c"), B = c("one", "two", "three"), C = c(1, 2, 3) )
+
+x %>% pivot_wider(names_from = B, values_from = C)
+
+x %>% pivot_wider(names_from = B, values_from = C, values_fill = list(C = 0))
+```
+
+The second problem is that widening a table can lead to several values being put into one cell, resulting in a list of values that violates the third principle of tidy data - each cell is a single measurement. 
+
+![](tidy_data.jpg)
+
+To address this problem, you can utilize the "values_fn" argument, which enables you to fill this cell with an aggregation function such as "mean". If there are still missing values after aggregation (because there was nothing to aggregate), you can fill them with a value of your choice using the "values_fill" argument.
+
+```{r}
+mtcars %>% 
+  pivot_wider(
+    id_cols = c(vs, am), 
+    names_from = cyl, 
+    values_from = mpg)
+
+mtcars %>% 
+  pivot_wider(
+    id_cols = c(am, vs), 
+    names_from = cyl, 
+    values_from = mpg, 
+    values_fn = list(mpg = mean),
+    values_fill = list(mpg = 9999) )
+```
+
+A "pivot_wider" is the more intuitive next-generation version of the "spread" command. However, "spread" is still commonly used, so it remains in the package. Knowing how "spread" works can help in understanding older code.
+
+```{r}
+table2 %>% 
+  spread(key = type, value = count) 
+```
