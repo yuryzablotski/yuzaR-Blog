@@ -27,6 +27,8 @@ Create an OpenAI API key to use with the package.
 
 Set the API key up in Rstudio
 
+
+
 # install.packages("pak") # if needed
 # pak::pak("MichelNivard/gptstudio")
 
