@@ -1,5 +1,27 @@
 [
   {
+    "path": "posts/2023-04-18-datawrangling3/",
+    "title": "(in progress) {dplyr} on steroids: 20+ Expert Data Wrangling Techniques!",
+    "description": "Reshaping data in Excel is painful and prone to mistakes. Just remember the time where you needed to quickly (1) turn columns to rows or rows to columns, (2) unite or separate columns\n\n  **80% of work with data is data pre-processing**: cleaning, transforming and wrangling. In this post you'll learn how to (1) combine tables, (2) reformat tables by turning columns to rows or rows to columns, (3) find implicit missing values and complete the table by filling them out, (4) join tables to reduce duplicates, (5) unite and separate them and finally (6) how to manipulate values inside of the table in an easy way. But most importantly, it will prepare your data for a really cool stuff, like visualisations, models and machine learning algorithms. `tidyr` and `dplyr` packages which are both part of `tidyverse` will help with that. And after mastering my **Data Wrangling Trilogy**, you'll be able to manipulate data (in *R*) in 95% of the cases.",
+    "author": [
+      {
+        "name": "Yury Zablotski",
+        "url": "https://yuzar-blog.netlify.app/"
+      }
+    ],
+    "date": "2023-05-09",
+    "categories": [
+      "videos",
+      "statistics",
+      "data wrangling",
+      "R package reviews"
+    ],
+    "contents": "\n\nContents\nThis post as a video\nPrevious topics\nWhy do we need tidy data? What are the benefits?\n\n\nThis post as a video\nI recommend to watch a video first, because I highlight things I talk about. It’s ca. … minutes long.\n\n\n\n\n\n\n\n\n\nlibrary(tidyverse)\n\n\nMost of this article, especially pictures, code and quotes below, stem from “R for Data Science” book by Garrett Grolemund and Hadley Wickham (Chapters 12 and 13).\n“Happy families are all alike; every unhappy family is unhappy in its own way.” \n– Leo Tolstoy\n\n“Tidy datasets are all alike, but every messy dataset is messy in its own way.” \n– Hadley Wickham\n  \nPrevious topics\nTo maximise the effect of this post you should definitely work through Data Wrangling Vol. 1 and Data Wrangling Vol. 2 before.\nWhy do we need tidy data? What are the benefits?\n\n\n\n",
+    "preview": {},
+    "last_modified": "2023-05-09T10:44:24+02:00",
+    "input_file": "datawrangling3.knit.md"
+  },
+  {
     "path": "posts/2023-02-07-datawrangling2/",
     "title": "Advanced {dplyr}: 50+ Data Wrangling Techniques!",
     "description": "Have you ever been frustrated with messy data that seems impossible to analyze? Or have you ever spend hours cleaning and transforming data before you could even start producing results? Well, no worries! In this blog-post, I'll show you >50 Data Wrangling techniques, which will allow you to solve the most of your daily data manipulation challenges like a pro.",
