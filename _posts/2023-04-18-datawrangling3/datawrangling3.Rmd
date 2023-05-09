@@ -1,5 +1,5 @@
 ---
-title: "(in progress) Transform Your Data Like a Pro with {tidyr} and Say Goodbye to Messy Data!"
+title: "Transform Your Data Like a Pro with {tidyr} and Say Goodbye to Messy Data!"
 description: |
   Every data scientist dreams of creating beautiful visualizations, conducting complex modeling, and diving into machine learning methods. However, most of the time, messy data hinders our ability to do really cool stuff. Thus, tidying up the data is the key to unlocking your full potential. Unfortunately, reshaping data in Excel can be a tedious and error-prone task. Do you remember the time when you needed to quickly transform columns to rows or rows to columns, split or combine columns, or handle missing values? With the {tidyr} package, you'll be able to transform your data quickly, accurately, and efficiently, preparing yourself for the stuff that really matters ;) 
 author:
