@@ -15,10 +15,18 @@ ggplot(d %>% filter(year == 2023))+
            stat = "identity", 
            fill = "red", alpha = 0.5)
 
+ggplot(d %>% filter(year == 2023))+
+  geom_bar(aes(x = month, y = projected), 
+           stat = "identity", fill = "black")+
+  geom_bar(aes(x = month, y = total_earnings), 
+           stat = "identity", 
+           fill = "red", alpha = 0.5)
 
-ggplot(d)+
-  geom_bar(aes(x = row_number, y = projected), 
-           stat = "identity", fill = "black")
+
+ggplot(d %>% filter(year %in% c(2023:2025)))+
+  geom_bar(aes(x = month, y = projected), 
+           stat = "identity", fill = "black")+
+  facet_grid(.~year)
 
 
 
