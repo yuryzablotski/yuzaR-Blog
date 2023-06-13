@@ -106,7 +106,7 @@ x2
 bind_cols(x, x2)
 ```
 
-If you want to put two tables below each other, **bind_rows()** is here to help. The tables **need to have the same column names** thought, otherwise **bind_rows()** will produce *NAs* in your new dataset, where column names don't match. The `.id` argument allows you to track to which table particular values belong.
+If you want to put two tables below each other, **bind_rows()** is here to help. The tables **need to have the same column names** thought, otherwise **bind_rows()** will produce *NAs* in your new dataset, where column names don't match. If you have large tables and more than two of them, you might completely lose track of which data belongs to which table. To prevent this, the **.id** argument allows you to track which table particular values belong to.
 
 
 ```{r}
@@ -120,19 +120,52 @@ bind_rows(y, z,  .id = "table")
 
 
 
-<!-- # Intersect and union -->
+# Intersect and union
 
-<!-- If you need to find rows identical in both tables (duplicates), use `intersect`, but if you wish to find rows which differ, use `setdiff`: -->
 
+`bind_rows` simply combines tables without examining them, which might produce duplicates, if there are identical rows appear in both tables. Another command you might encounter which produce the same result is `union all`.
+
+```{r echo=FALSE}
+image_animate(image_read("union-all.gif"))
+```
+
+```{r}
+#union_all(x,y) == bind_rows(x,y)
+```
+
+But in order to remove duplicates while combining two tables, use `union`:
+
+```{r echo=FALSE}
+image_read("union.gif")
+image_read("union-rev.gif")
+```
+
+
+
+```{r echo=FALSE}
+image_animate(image_read("union.gif"))
+```
+
+```{r}
+#union(x,y)
+```
+
+
+
+
+
+
+If you need to find rows identical in both tables (duplicates), use `intersect`, but if you wish to find rows which differ, use `setdiff`:
+
+
+
+```{r}
+image_read("intersect.gif")
+```
 
 
 <!-- ```{r} -->
-<!-- image_read("intersect.gif") -->
-<!-- ``` -->
-
-
-<!-- ```{r} -->
-<!-- intersect(x,y)   # find duplicates -->
+<!-- intersect(y,z)   # find duplicates -->
 <!-- ``` -->
 
 <!-- ```{r} -->
@@ -141,35 +174,8 @@ bind_rows(y, z,  .id = "table")
 <!-- ``` -->
 
 <!-- ```{r} -->
-<!-- setdiff(x,y)     # find rows that appear in x but not y  -->
-<!-- setdiff(y,x)     # find rows that appear in y but not x  -->
-<!-- ``` -->
-
-<!-- `bind_rows` simply combines tables without examining them, which might produce duplicates, if there are identical rows appear in both tables. Another command you might encounter which produce the same result is `union all`.  -->
-
-<!-- ```{r echo=FALSE} -->
-<!-- image_animate(image_read("union-all.gif")) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- union_all(x,y) == bind_rows(x,y) -->
-<!-- ``` -->
-
-<!-- But in order to remove duplicates while combining two tables, use `union`: -->
-
-<!-- ```{r echo=FALSE} -->
-<!-- image_read("union.gif") -->
-<!-- image_read("union-rev.gif") -->
-<!-- ``` -->
-
-
-
-<!-- ```{r echo=FALSE} -->
-<!-- image_animate(image_read("union.gif")) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- union(x,y) -->
+<!-- setdiff(x,y)     # find rows that appear in x but not y -->
+<!-- setdiff(y,x)     # find rows that appear in y but not x -->
 <!-- ``` -->
 
 
