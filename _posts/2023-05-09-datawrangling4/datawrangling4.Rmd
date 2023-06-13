@@ -37,9 +37,8 @@ library(magick)
 
 To maximize the effect of this post you should definitely work through [{dplyr} for beginners](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/), [advanced {dplyr}](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/) and the review about [{tidyr} package](https://yuzar-blog.netlify.app/posts/2023-04-18-datawrangling3/) before 
 
-# This post as a video
+# This post as a ... minutes video
 
-I recommend to watch a video first, because I highlight things I talk about. It's ca. ... minutes long.
 
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("") 
@@ -51,161 +50,155 @@ vembedr::embed_youtube("")
 
 
 
-```{r}
-library(tidyverse) # it's the only package you need
-```
 
 
 Consider following tables:
 
 ```{r}
-x <- tibble(A = c("a", "b", "c"), B = c("one", "two", "three"))
-
-y <- tibble(A = c("a", "b", "d"), B = c("one", "two", "four"),  C = c(3, 2, 1) )
-
-z <- tibble(A = c("a", "b", "d"), B = c("one", "two", "four"),  D = c(3, 2, 1) )
-
-x2 <- tibble(A = c("a", "c"), B = c("one", "three"))
+library(tidyverse) # it's the only package you need
+x <- tibble(A = c("1", "1", "2"), B = c("a", "b", "a"))
+y <- tibble(A = c("1", "2"), B = c("a", "b"))
+z <- tibble(A = c("3", "2", "1"), C = c("a", "b", "c"), D = c("here", "you", "go"))
 ```
 
 
 ```{r message=FALSE, warning=FALSE, echo=F}
 library(gridExtra)
-gridExtra::grid.arrange(tableGrob(x), tableGrob(y), tableGrob(z), tableGrob(x2), ncol = 4)
+gridExtra::grid.arrange(tableGrob(x), tableGrob(y), tableGrob(z), ncol = 3)
 ```
 
 
 # Bind rows and bind columns
 
-Sometimes we just need to combine several tables into one, by either combining their columns or their rows. "bind_cols()" is the most intuitive way to combine columns.
-
-```{r message=FALSE, warning=FALSE, echo=F}
-gridExtra::grid.arrange(tableGrob(x), tableGrob(y), ncol = 2)
-```
-
+Sometimes we just need to combine several tables into one, by either combining their columns or their rows. **bind_cols** function is the most intuitive way to combine columns.
 
 ```{r}
-bind_cols(x, y) 
+bind_cols(x, z) 
 ```
 
-"bind_cols()" even renames identical column-names automatically, so that every column name is unique. But while table can have **different number of columns**, they need to have the **same number of rows**, otherwise it refuses to work and throws a following error message: 
-
-    Error in `bind_cols()`:
-    ! Can't recycle `..1` (size 3) to match `..2` (size 2)
-
-```{r message=FALSE, warning=FALSE, echo=F}
-gridExtra::grid.arrange(tableGrob(x), tableGrob(x2), ncol = 2)
-```
-
-
-```{r}
-x2
-```
+**bind_cols** even renames identical column-names automatically, so that every column name is unique. But while table can have **different number of columns**, they need to have the **same number of rows**, otherwise it refuses to work and throws a following error message: 
 
 ```{r eval=FALSE}
-bind_cols(x, x2)
+bind_cols(x, y)
 ```
 
-If you want to put two tables below each other, **bind_rows()** is here to help. The tables **need to have the same column names** thought, otherwise **bind_rows()** will produce *NAs* in your new dataset, where column names don't match. If you have large tables and more than two of them, you might completely lose track of which data belongs to which table. To prevent this, the **.id** argument allows you to track which table particular values belong to.
+    Error in `bind_cols()`:
+    ! Can't recycle `..1` (size 3) to match `..2` (size 2).
+
+If you want to put two tables below each other, **bind_rows()** is here to help. The tables **need to have the same column names** thought, otherwise **bind_rows()** will produce *NAs* in your new dataset, where column names don't match.  
 
 
 ```{r}
-bind_rows(y, z)
-
-bind_rows(y, z,  .id = "table") 
+bind_rows(x, z)
 ```
 
+If you have large tables and more than two of them, you might completely lose track of which data belongs to which table. To prevent this, the **.id** argument allows you to track which table particular values belong to.
 
-
+```{r}
+bind_rows(x, z,  .id = "table") 
+```
 
 
 
 # Intersect and union
 
-
-`bind_rows` simply combines tables without examining them, which might produce duplicates, if there are identical rows appear in both tables. Another command you might encounter which produce the same result is `union all`.
+However, even though **bind_rows** always delivers, when dealing with sizable tables containing numerous columns, we may end up with an excess of irrelevant columns without even realizing it. That's why I personally lean towards using the **union_all** command. It accomplishes the same task as **bind_rows**, but if my data isn't clean, it throws an informative error message, which often saves me from chaos.
 
 ```{r echo=FALSE}
 image_animate(image_read("union-all.gif"))
 ```
 
-```{r}
-#union_all(x,y) == bind_rows(x,y)
+```{r eval = F}
+union_all(y, z)
 ```
 
-But in order to remove duplicates while combining two tables, use `union`:
-
-```{r echo=FALSE}
-image_read("union.gif")
-image_read("union-rev.gif")
-```
+    Error in `union_all()`:
+    ! `x` and `y` are not compatible.
+    ✖ Different number of columns: 2 vs 3.
 
 
+
+But while combining tables via **bind_rows** or **union_all** is useful, it might produce duplicates 👯‍♀, if identical rows appear in both tables. We usually don't want that! In order to exclude duplicates and keep only one of identical rows while combining tables, we can use **union** command instead of **union_all**.
 
 ```{r echo=FALSE}
 image_animate(image_read("union.gif"))
+#image_read("union-rev.gif")
 ```
 
-```{r}
-#union(x,y)
+But if, for whatever reason, you need only duplicates, use **intersect**.
+
+```{r echo=FALSE}
+image_animate(image_read("intersect.gif"))
 ```
 
-
-
-
-
-
-If you need to find rows identical in both tables (duplicates), use `intersect`, but if you wish to find rows which differ, use `setdiff`:
 
 
 
 ```{r}
-image_read("intersect.gif")
+intersect(x,y)   # find duplicates
+```
+
+However, somethimes we need to find all rows in x that aren't in y, or all rows in y that aren't in x. For that we'll use **setdiff** command, where table which is specified first is the main one. 
+
+
+
+```{r echo=FALSE}
+image_animate(image_read("setdiff.gif"))
+```
+
+```{r}
+setdiff(x,y)     # find rows that appear in x but not y
 ```
 
 
-<!-- ```{r} -->
-<!-- intersect(y,z)   # find duplicates -->
-<!-- ``` -->
+```{r echo=FALSE}
+image_animate(image_read("setdiff-rev.gif"))
+```
 
-<!-- ```{r} -->
-<!-- image_read("setdiff.gif") -->
-<!-- image_read("setdiff-rev.gif") -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- setdiff(x,y)     # find rows that appear in x but not y -->
-<!-- setdiff(y,x)     # find rows that appear in y but not x -->
-<!-- ``` -->
+```{r}
+setdiff(y,x)     # find rows that appear in y but not x
+```
 
 
-<!-- # Join tables -->
-
-<!-- Combining tables is important, but it sometimes leads to a **redundancy**. Consider binding columns of two following tables: -->
-
-<!-- ```{r} -->
-<!-- tidy4a <- table4a %>% -->
-<!--   gather(`1999`, `2000`, key = "year", value = "cases") -->
-<!-- tidy4b <- table4b %>% -->
-<!--   gather(`1999`, `2000`, key = "year", value = "population") -->
-
-<!-- bind_cols(tidy4a,tidy4b) -->
-<!-- ``` -->
-
-<!-- Two of the columns, `country` and `year`, are **identical** in both tables. We'll call them **key** columns. A `bind_cols()` nicely renames them for us to avoid confusion, but it keeps both. Although they don't provide any new information -  they are redundant! If we add a green colour to a green colour, it will still be green. Thus, we would love *R* to recognise those identical - **key** columns and use them to **join** (not to add!) only columns which are different. And that is exactly what **join** commands are for. -->
-
-<!-- The `inner_join` is the most intuitive. It looks inside of the tables, finds identical columns and keeps just one of them and adds all not matching columns behind it. This removes redundancy and delivers a tidy dataset: -->
-
-<!-- ```{r} -->
-<!-- image_read("inner-join.gif") -->
-<!-- ``` -->
 
 
-<!-- ```{r} -->
-<!-- inner_join(tidy4a, tidy4b) -->
-<!-- ``` -->
 
-<!-- But what if columns are not perfectly identical? I am grad you asked :). To answer this question, please, let me explain all the joins visually, beginning with our friend `inner_join`. -->
+
+
+
+
+
+
+
+
+# Join tables
+
+Combining tables is important, but it sometimes leads to a **redundancy**. Consider binding columns of two following tables:
+
+```{r}
+tidy4a <- table4a %>%
+  gather(`1999`, `2000`, key = "year", value = "cases")
+tidy4b <- table4b %>%
+  gather(`1999`, `2000`, key = "year", value = "population")
+
+bind_cols(tidy4a,tidy4b)
+```
+
+Two of the columns, `country` and `year`, are **identical** in both tables. We'll call them **key** columns. A `bind_cols()` nicely renames them for us to avoid confusion, but it keeps both. Although they don't provide any new information -  they are redundant! If we add a green colour to a green colour, it will still be green. Thus, we would love *R* to recognise those identical - **key** columns and use them to **join** (not to add!) only columns which are different. And that is exactly what **join** commands are for.
+
+The `inner_join` is the most intuitive. It looks inside of the tables, finds identical columns and keeps just one of them and adds all not matching columns behind it. This removes redundancy and delivers a tidy dataset:
+
+```{r}
+image_read("inner-join.gif")
+```
+
+
+```{r}
+inner_join(tidy4a, tidy4b)
+```
+
+But what if columns are not perfectly identical? I am grad you asked :). To answer this question, please, let me explain all the joins visually, beginning with our friend `inner_join`.
+
 
 <!-- ## Mutating joins combine columns -->
 
@@ -215,7 +208,7 @@ image_read("intersect.gif")
 
 <!-- ![](join-inner.png) -->
 
-<!-- Below is an example with x and y we have created earlier in the post. Have a look at them in the console, if you forgot them.  -->
+<!-- Below is an example with x and y we have created earlier in the post. Have a look at them in the console, if you forgot them. -->
 
 <!-- If **all** three columns are the **key** columns, `inner_join` looks for a perfect match, where all columns for this row have identical values in both tables. In our example only second row matches perfectly (see the first output below). The first row is different in the column "C" and the third raw have different values in all three columns. -->
 
@@ -229,7 +222,7 @@ image_read("intersect.gif")
 <!-- inner_join(x, y, by = c("A")) -->
 <!-- ``` -->
 
-<!-- The only problem with `inner_join` is that it looses observations. If you are interested in keeping all the observations from one, the other or both tables, you can apply `outer_joins`. There are three of them:  -->
+<!-- The only problem with `inner_join` is that it looses observations. If you are interested in keeping all the observations from one, the other or both tables, you can apply `outer_joins`. There are three of them: -->
 
 <!-- - `left_join`  keeps all observations from the left table, i.e.  *x* for `left_join(x, y)` -->
 <!-- - `right_join` keeps all observations from the right table, i.e. *y* for `left_join(x, y)` -->
@@ -279,7 +272,7 @@ image_read("intersect.gif")
 <!-- ``` -->
 
 
-<!-- *Right join* works in the say way *left join* does, but keeps all the observation from the right table, *y* in our case.  -->
+<!-- *Right join* works in the say way *left join* does, but keeps all the observation from the right table, *y* in our case. -->
 
 <!-- ```{r} -->
 <!-- right_join(x, y, by = c("A", "B", "C")) -->
@@ -303,9 +296,9 @@ image_read("intersect.gif")
 <!-- full_join(x, y, by = c("A")) -->
 <!-- ``` -->
 
-<!-- Returning every mismatch between tables could be a blessing if you want to find inconsistencies in your table, but it also could become a huge headache since it may produce thousands of "new" observations out of nowhere. And if your dataset is big and messy, and the chances are it is, and you have *NAs* in it from the start, you wouldn’t be able to differentiate among original *NAs* and "new" *NAs*. The danger here is that you might continue with your analysis and produce unrealistic results without even knowing about it.  -->
+<!-- Returning every mismatch between tables could be a blessing if you want to find inconsistencies in your table, but it also could become a huge headache since it may produce thousands of "new" observations out of nowhere. And if your dataset is big and messy, and the chances are it is, and you have *NAs* in it from the start, you wouldn’t be able to differentiate among original *NAs* and "new" *NAs*. The danger here is that you might continue with your analysis and produce unrealistic results without even knowing about it. -->
 
-<!-- **Thus, despite the advantages of joins, e.g. reducing redundancy, please, be very careful and always double check the output.**  -->
+<!-- **Thus, despite the advantages of joins, e.g. reducing redundancy, please, be very careful and always double check the output.** -->
 
 <!-- 5. Duplicates -->
 
@@ -372,7 +365,7 @@ image_read("intersect.gif")
 <!-- The `ifelse` command allows you to produce a new column depending on the existing one (like in the first chunk of code below), or simply change the values in the existing variable, if you need to (like in the second). -->
 
 <!-- ```{r} -->
-<!-- table1 %>%  -->
+<!-- table1 %>% -->
 <!--   mutate(population_2 = ifelse(population < mean(population), "low", "high")) -->
 <!-- ``` -->
 
@@ -382,7 +375,7 @@ image_read("intersect.gif")
 
 <!-- ```{r} -->
 
-<!-- table1 %>%  -->
+<!-- table1 %>% -->
 <!--   mutate(country = case_when( -->
 <!--     country == "Afghanistan" ~ "Afgh", -->
 <!--     country == "Brazil"      ~ "Braz", -->
@@ -402,12 +395,12 @@ image_read("intersect.gif")
 
 
 <!-- ```{r} -->
-<!-- who %>%  -->
-<!--   pivot_longer(cols = new_sp_m014:newrel_f65, values_drop_na = T) %>%  -->
-<!--   select(-iso2, -iso3) %>%  -->
-<!--   mutate(name = stringr::str_replace(name, "newrel", "new_rel")) %>%  -->
-<!--   separate(name, into = c("new", "type", "sexage")) %>%  -->
-<!--   separate("sexage", into = c("sex", "age"), sep = 1) %>%  -->
+<!-- who %>% -->
+<!--   pivot_longer(cols = new_sp_m014:newrel_f65, values_drop_na = T) %>% -->
+<!--   select(-iso2, -iso3) %>% -->
+<!--   mutate(name = stringr::str_replace(name, "newrel", "new_rel")) %>% -->
+<!--   separate(name, into = c("new", "type", "sexage")) %>% -->
+<!--   separate("sexage", into = c("sex", "age"), sep = 1) %>% -->
 <!--   mutate(age_2 = case_when( -->
 <!--     age == "014"  ~ "0 – 14 years old", -->
 <!--     age == "1524" ~ "15 - 24 years old", -->
@@ -438,5 +431,5 @@ image_read("intersect.gif")
 <!-- # Further readings and references -->
 
 
-<!-- - Most of this article originate from [“R for Data Science”](https://r4ds.hadley.nz/) book by Garrett Grolemund and Hadley Wickham.  -->
+<!-- - Most of this article originate from [“R for Data Science”](https://r4ds.hadley.nz/) book by Garrett Grolemund and Hadley Wickham. -->
 
