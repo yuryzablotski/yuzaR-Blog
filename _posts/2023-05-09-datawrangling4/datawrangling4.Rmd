@@ -1,7 +1,7 @@
 ---
-title: "(in progress, very!, don't even look inside) {dplyr} on steroids: Handling Data Bases"
+title: "{dplyr} on Steroids: Handling Data Bases"
 description: |
-  If you know how to tidy up data inside of any table you are already a good data scientist! But if you want to take your skills to the next level, you should learn how to handle multiple tables inside of a data base. In this post you'll learn how to (1) combine tables, (2)  join tables to reduce duplicates, (3) unite and separate them and finally (4) how to manipulate values inside of the table in an easy way 
+  If you know how to tidy up data within one table, you're already a skilled data scientist! However, as data continues to grow exponentially, taking your skills to the next level involves mastering the art of working with multiple tables within a database, typically done using SQL. In this post, we'll learn three essential techniques using {dplyr} that will allow you to handle databases with ease: merging multiple tables, reducing redundancy through table joins, and effortlessly modifying values within the resulting table.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -24,18 +24,19 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-#draft: true
+# draft: true
 ---
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T)
 library(magick)
+library(tidyverse) # it's the only package you need
 ```
 
 # Previous topics
 
-To maximize the effect of this post you should definitely work through [{dplyr} for beginners](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/), [advanced {dplyr}](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/) and the review about [{tidyr} package](https://yuzar-blog.netlify.app/posts/2023-04-18-datawrangling3/) before 
+To maximize the effect of this post you can have a look at [{dplyr} for beginners](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/), [advanced {dplyr}](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/) and the review about [{tidyr} package](https://yuzar-blog.netlify.app/posts/2023-04-18-datawrangling3/) before.
 
 # This post as a ... minutes video
 
@@ -67,16 +68,17 @@ library(gridExtra)
 gridExtra::grid.arrange(tableGrob(x), tableGrob(y), tableGrob(z), ncol = 3)
 ```
 
+# Chapter 1: Combine tables
 
-# Bind rows and bind columns
+## Bind columns and bind rows
 
-Sometimes we just need to combine several tables into one, by either combining their columns or their rows. **bind_cols** function is the most intuitive way to combine columns.
+To combine several tables into one, we can combine their columns or rows. The **bind_cols** function is the most intuitive way to combine columns.
 
 ```{r}
 bind_cols(x, z) 
 ```
 
-**bind_cols** even renames identical column-names automatically, so that every column name is unique. But while table can have **different number of columns**, they need to have the **same number of rows**, otherwise it refuses to work and throws a following error message: 
+**bind_cols** even renames identical column names, making sure each column is unique. But here's the catch: the tables can have a different number of columns, but they must have the same number of rows. Otherwise it refuses to work and throws a following error message:
 
 ```{r eval=FALSE}
 bind_cols(x, y)
@@ -85,22 +87,22 @@ bind_cols(x, y)
     Error in `bind_cols()`:
     ! Can't recycle `..1` (size 3) to match `..2` (size 2).
 
-If you want to put two tables below each other, **bind_rows()** is here to help. The tables **need to have the same column names** thought, otherwise **bind_rows()** will produce *NAs* in your new dataset, where column names don't match.  
+Looking to stack two tables vertically? Look no further than **bind_rows**! Just remember, these tables should have the same column names. Otherwise, **bind_rows** will generously populate your new dataset with NAs wherever the column names don't align. 
 
 
 ```{r}
 bind_rows(x, z)
 ```
 
-If you have large tables and more than two of them, you might completely lose track of which data belongs to which table. To prevent this, the **.id** argument allows you to track which table particular values belong to.
+And that can be a problem. Because when dealing with multiple large tables, it's easy to lose track of which data belongs to which table. But no worries! The '.id' argument comes to the rescue. It allows you to easily track and identify which table certain values belong to.
 
 ```{r}
-bind_rows(x, z,  .id = "table") 
+bind_rows(y, z,  .id = "table") 
 ```
 
 
 
-# Intersect and union
+## Union, setdiff and intersect
 
 However, even though **bind_rows** always delivers, when dealing with sizable tables containing numerous columns, we may end up with an excess of irrelevant columns without even realizing it. That's why I personally lean towards using the **union_all** command. It accomplishes the same task as **bind_rows**, but if my data isn't clean, it throws an informative error message, which often saves me from chaos.
 
@@ -117,6 +119,10 @@ union_all(y, z)
     ✖ Different number of columns: 2 vs 3.
 
 
+```{r}
+bind_rows(x, y)
+union_all(x, y)
+```
 
 But while combining tables via **bind_rows** or **union_all** is useful, it might produce duplicates 👯‍♀, if identical rows appear in both tables. We usually don't want that! In order to exclude duplicates and keep only one of identical rows while combining tables, we can use **union** command instead of **union_all**.
 
@@ -131,10 +137,7 @@ union(x, y)
 ```
 
 
-
-
-However, somethimes we need to find all rows in x that aren't in y, or all rows in y that aren't in x. For that we'll use **setdiff** command, where table which is specified first is the main one. 
-
+While the union command excludes duplicates, there are situations where we need to identify the distinct rows in table "x" that do not exist in table "y", or vice versa. This is where the **setdiff** command comes into play. By specifying two tables, we can easily find all the unique rows that belong to the first specified table. 
 
 
 ```{r echo=FALSE}
@@ -145,6 +148,7 @@ image_animate(image_read("setdiff.gif"))
 setdiff(x,y)     # find rows that appear in x but not y
 ```
 
+To obtain unique rows from the "y" table, simply specify "y" as the first table, followed by the "x" table.
 
 ```{r echo=FALSE}
 image_animate(image_read("setdiff-rev.gif"))
@@ -155,7 +159,7 @@ setdiff(y,x)     # find rows that appear in y but not x
 ```
 
 
-But while **setdiff** completely excludes duplicate rows from a dataset, it's sometimes important to isolate them in order to understand the redundancies in our dataset. In order to get only duplicate rows, we can use the **intersect** command.
+But while **setdiff** completely excludes duplicate rows from a dataset, there are times when we actually want to focus on those duplicates to better understand the repetitive patterns in our data. In order to isolate only the duplicate rows, we can use the **intersect** command.
 
 ```{r echo=FALSE}
 image_animate(image_read("intersect.gif"))
@@ -168,113 +172,149 @@ intersect(x,y)   # find duplicates
 
 
 
+# Chapter 2: Join tables
 
-
-
-
-
-
-
-# Join tables
-
-But you might wonder, what if we have duplicate columns? That might happen when we use **bind_cols** command. For example, if we erroneously combine two identical tables with 2 columns each, we'll get 4 columns. The **bind_cols** command nicely renames them for us to avoid confusion, but it keeps both. And since they don't provide any unique information -  they are totally redundant! 
+Being able to handle duplicate rows is fantastic! But you might wonder, what if we have duplicate columns? That can occur when we use the **bind_cols** command. For instance, if we mistakenly combine two identical tables, each with 2 columns, the result will have 4 columns. The **bind_cols** command conveniently renames them to avoid confusion, yet it retains all columns. However, as they do not provide any unique information, they are totally redundant!
 
 ```{r}
 bind_cols(x, x)
 ```
 
-Thus, we would love *R* to recognize those identical - **key** columns and to **join** (not to add!) only columns which are different. And that is exactly what **join** commands are for. There are two kinds of **joins** mutating and filtering. Let's start with 4 mutating **joins**.
+Thus, we would love *R* to recognize duplicate columns, to eliminate redundancy by retaining only one column, but also to merge columns that differ in order to make our final model more informative. For example, we might want to combine data about customer purchases with data about customer demographics in order to understand what factors influence customer behavior. And this is precisely the purpose of join commands - to **allow you to combine data from multiple tables**. There are two types of joins: **mutating and filtering**. Let's begin with the four **mutating** joins.
+
+
 
 ## Mutating joins 
 
-1. **inner_join**
+### 1. inner_join
 
-The `inner_join` is the most intuitive. It finds identical columns, keeps just one of them and adds all not matching columns behind it.
+The `inner_join` is the most intuitive. It finds identical columns, keeps just one of them, adds all not matching columns behind it and ignores the rest.
 
-```{r}
+```{r echo=FALSE}
 image_animate(image_read("inner-join.gif"))
 ```
 
-In the case of two identical tables "x", we'll be left with only two columns, with no redundancy at all! 
+One useful example of applying **inner_join** is when you have two datasets, let's say a "Customers" dataset and an "Orders" dataset. Both datasets have a common column, such as "Customer ID," which serves as a unique identifier for each customer. Such unique identifier is often called **key column**.
+
+By performing an inner_join on the "Customer ID" column, you can merge the two datasets based on matching customer IDs. This operation allows you to create a consolidated dataset that contains information from both datasets but only for customers who have placed orders. In other words, it filters out any customers who have not made any purchases.
 
 ```{r}
-inner_join(x, x, by = c("A", "B"))
+# Load the dplyr package
+library(dplyr)
+
+# Create the Customer Information table
+customer_info <- data.frame(
+  CustomerID = c("001", "002", "003"),
+  Name = c("John", "Sarah", "Michael"),
+  Age = c(25, 30, 28),
+  Email = c("john@example.com", "sarah@example.com", "michael@example.com")
+)
+
+# Create the Purchase History table
+purchase_history <- data.frame(
+  CustomerID = c("001", "002", "004"),
+  PurchaseDate = as.Date(c("2022-07-15", "2022-06-10", "2022-08-20")),
+  Product = c("Laptop", "Phone", "Headphones")
+)
+
+# Perform the inner join
+inner_join(customer_info, purchase_history, by = "CustomerID")
 ```
 
-**However, we have to be very careful here**!!! (Arni) The **inner_join** only keeps observations from one table that have perfectly matching values in the other table. If we take our x and y tables, we'll see that only the first row "1 a" is kept, while "1 b" and "2 a" from table x have no match in table y. 
+This merged dataset can be valuable for analyzing customer behavior, understanding purchasing patterns, or conducting targeted marketing campaigns to specific customer segments.
+
+**But we have to be very careful here**!!! (Arni) The **inner_join** only keeps observations from one table that have perfectly matching values in the other table. If we take our x and y tables, we'll see that only the first row "1 a" is kept, while "1 b" and "2 a" from table x have no match in table y, and the "2 b" from table y has no match in table x. 
+
+```{r}
+# install.packages("gridExtra")
+library(gridExtra)
+grid.arrange(
+  tableGrob(x),
+  tableGrob(y),
+  tableGrob(inner_join(x, y)),
+  ncol = 3)
+```
 
 And that's the most important property of an **inner_join** - **unmatched rows in either table are not included in the result**. This means that generally inner joins are not appropriate in most analyses, because it is **too easy to lose observations**.
 
-```{r}
-inner_join(x, y)
-```
-
-If you want to keep all the observations from "x", or from "y", or from both tables, we need to apply `outer_joins`. There are three of them:
-
-- `full_join`  keeps all observations from both *x* and *y* tables
-- `left_join`  keeps all observations from the left table, i.e.  *x* for `left_join(x, y)`
-- `right_join` keeps all observations from the right table, i.e. *y* for `left_join(x, y)`
-
-
-![](join-outer.png)
-
-To summarise how they all work, have a look at the following diagram:
+If you want to keep all the observations from "x", or from "y", or from both tables, we need to apply `outer_joins`. And there are three of them:
 
 ![](join-venn.png)
 
-4. full_join
+- `left_join`  keeps all observations from the left table
+- `right_join` keeps all observations from the right table
+- `full_join`  keeps all observations from both tables
+
+![](join-outer.png)
+
+
+
+### 2. left_join
+
+```{r echo=FALSE}
+image_animate(image_read("left-join.gif"))
+#image_animate(image_read("left-join-extra.gif"))
+```
+
+While the **inner_join** may be the most intuitive, it is the **left_join** that proves to be most commonly employed join in practice and, actually, the most useful for several reasons:
+
+- first, if one table is more important then other, **left joins** allow us to **preserve all the observations from the left table**, even if there are no matches in the right table. This ensures that no important data is lost during merging;
+
+- secondly, the **new data** from the right table that corresponds to the matching observations in the left table **is added**
+
+- and finally, **left joins** highlight any discrepancies or mismatches between the tables being joined. When a left join introduces empty values (such as NA) for unmatched observations, it serves as an indicator of data inconsistencies or missing values. Detecting these mismatches early on is crucial for ensuring data integrity and avoiding erroneous conclusions.
+
+Let's consider the same example where you have two tables: one containing customer information and another containing purchase history. Here, we want to merge the two tables using a left join to **retain all customer information while incorporating relevant purchase data**. Particularly, customers 001 and 002 had matching records in both tables, so their purchase information was included in to final table. Customer 003, who had no corresponding record in the purchase history table, resulted in NULL values for the purchase-related columns.
 
 ```{r}
-image_read("full-join.gif")
+# Perform the left join
+left_join(customer_info, purchase_history, by = "CustomerID")
+```
+
+The "by = " argument in the "left_join" command is crucial!, because it specifies columns that serve as the matching criterion between the two tables being joined. It determines how the rows from each table will be matched and merged.
+
+If the "by = " argument is not provided, the **left_join** command finds identical columns in both tables and uses them all by default. However, that could result in incorrect matches or cause errors during the merging process if columns having the same information named differently. Therefore, it is crucial to specify the correct column(s) to ensure accurate and meaningful results in the merged table.
+
+
+```{r}
+# Create the first table
+t1 <- data.frame(
+  ID = c(1, 2, 3),
+  Name = c("John", "Sarah", "Michael")
+)
+
+# Create the second table
+t2 <- data.frame(
+  Identifier = c(1, 2, 3),
+  Value = c(10, 20, 30)
+)
+```
+
+For example, let's **left_join** t1 and t2 based on the common ID/Identifier column.
+
+In the first case, when the "by" argument is not specified, the left_join command attempts to automatically match the columns. However, since the columns have different names (ID vs. Identifier), the join does not work, because our tables have no common variables. 
+
+```{r eval=FALSE}
+# Perform the left join without specifying the "by" argument
+left_join(t1, t2)
+```
+
+    Error in `left_join()`:
+    ! `by` must be supplied when `x` and `y` have no common
+      variables.
+
+
+But if the correct "by" argument is used, specifying that the ID column from t1 corresponds to the Identifier column from t2, **left_join** works properly.
+
+```{r}
+left_join(t1, t2, by = c("ID" = "Identifier"))
 ```
 
 
-*Full join* is the most greedy join because it keeps every possible mismatch. Thus, if all columns are **keys**, similarly to the *inner join* finds that only second row matches across all the columns. But, in contrast to inner join, it keeps the first and third rows from both tables. That's how with `full_join` you'll finish up with 5 rows in contrast to only 1 raw returned by the `inner_join`. If not all columns are **keys**, a *full join* acts as a combination of *left* and *right* joins.
-
-(The argument "by" helps to explicitly specify the "key" columns. The "key" columns are important because **joins** the match observations based on the "keys". )
-
-```{r}
-full_join(x, y, by = c("A"))
-full_join(x, y, by = c("B"))
-full_join(x, y, by = c("A", "B"))
-```
-
-Returning every mismatch between tables could be a blessing if you want to find inconsistencies in your table, but it also could become a huge headache since it may produce thousands of "new" observations out of nowhere. And if your dataset is big and messy, and the chances are it is, and you have *NAs* in it from the start, you wouldn’t be able to differentiate among original *NAs* and "new" *NAs*. The danger here is that you might continue with your analysis and produce unrealistic results without even knowing about it.
-
-**Thus, despite the advantages of joins, e.g. reducing redundancy, please, be very careful and always double check the output.**
 
 
-2. left_join
 
-```{r}
-image_read("left-join.gif")
-image_read("left-join-extra.gif")
-```
-
-
-`left_join` keeps all the common / matched observations in the left columns and adds additional data from another table. But as you could see in the graphs above, if I want to keep all the observations from *x*, but there is no match for some of them in *y*, it'll add empty rows - *NA*. It doesn't sound good first, but I actually loved this side effect, because it always showed me a mismatch between tables, which, if not discovered early enough, could lead to crappy results.
-
-Now, let's left-join *x* and *y* considering all columns a **key**. The `left_join` does it by default, so you could actually right `left_join(x, y)` to get the same result, but here for the teaching purposes I prefer to write out the keys explicitly:
-
-```{r}
-left_join(x, y, by = c("A", "B"))
-```
-
-Hmm, interestingly, our result is identical to *x* and there is not a single value from *y*. This is because not a single row in *y* matched a row in *x* in all three **keys**. So, since there is a total mismatch between tables, only *x* table was returned.
-
-Now, if we only have two **keys**, `left_join` finds that second and third rows in both table match for columns "A" and "B". It keeps only one of them to reduce the redundancy. The column "C" was different for first two rows, so `left_join` kept "C" columns from both tables. The third row from *x* does not find any match in *y*, thus it kept its own observation and joined a new-empty cell - *NA*:
-
-```{r}
-left_join(x, y, by = c("A", "B"))
-```
-
-One key shows that column "B" in *y* table also has one unmatching value in the third row, thus, it uncovers the mismatch, which could be useful, if you want to make sure the tables have identical observations. But if you know they are not and you want to get rid of the mismatch, use `inner_join` instead.
-
-```{r}
-left_join(x, y, by = c("A"))
-```
-
-```{r}
+```{r eval=FALSE, include=FALSE}
 # install.packages("gridExtra")
 gridExtra::grid.arrange(
   tableGrob(x),
@@ -288,177 +328,151 @@ gridExtra::grid.arrange(
 
 
 
+### 3. right_join
+
+```{r echo=FALSE}
+image_animate(image_read("right-join.gif"))
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-If only one variable is a key, then you'll simply get more unmatched columns, "B" and "C" in our case, see below. This case is interesting, because it does not reduce the redundancy for "B" columns. This emphasizes the importance of **key** columns, thus you often have to know (and you usually do!) what **keys** are you want to join by.
+**Right_join** works similarly to **left_join** by retaining all observations from the right table, "purchase_history" in our case. In fact, in many cases, a **right_join** can be replaced by a **left_join** by reversing the table order. In this way you can achieve the same outcome and retain the same information. So, to be honest, we can ignore **right_join**, but we can't ignore the **full_join**, and here is why.
 
 ```{r}
-inner_join(x, y, by = c("A", "B"))
-inner_join(x, y, by = c("B"))
-inner_join(x, y, by = c("A"))
+right_join(customer_info, purchase_history)
+left_join(purchase_history, customer_info)
 ```
 
 
 
-3. right_join
+### 4. full_join
+
+```{r echo=FALSE}
+image_animate(image_read("full-join.gif"))
+```
+
+**Full_joins** are extremely useful due to their ability to retain all records from both tables, even if there are mismatches or missing values. In this way **full_joins** ensure that no data is lost during the merging process, which is crucial for thorough data analysis and decision-making. Besides, **full_joins** help to identify and investigate inconsistencies and gaps between the datasets, leading to better data quality and more complete data for analysis.
+
 
 ```{r}
-image_read("right-join.gif")
+full_join(customer_info, purchase_history)
 ```
 
 
-*Right join* works in the say way *left join* does, but keeps all the observation from the right table, *y* in our case.
+Compared to **inner_join** that retains only two matching rows, and compared to **left_join** and **right_join** that retain only three rows, the **full_join** combines all four records from both tables, incorporating *NA* values in the absence of matches. When not all columns act as "keys", a **full join seamlessly combines the functionalities of both left and right joins**, offering a comprehensive merging approach.
 
-```{r}
-right_join(x, y, by = c("A", "B"))
-right_join(x, y, by = c("B"))
-right_join(x, y, by = c("A"))
-```
+However, not everything is rosy here! While returning every mismatch can help identify inconsistencies between tables and potentially fill gaps using [advanced machine learning techniques](https://youtu.be/Akb401i32Oc), it can also pose a significant challenge. The sheer volume of "new" observations generated can quickly become overwhelming. In large and complex datasets, which are often the norm, and when both tables contain NAs from the beginning, distinguishing between original NAs and the "new" NAs becomes nearly impossible. This creates a dangerous situation where you might unknowingly proceed with analysis and produce unrealistic results.
+
+**Therefore, despite the benefits of joins, be very careful and always double check the output.**
 
 
 
-5. Duplicates
-
-When you join duplicated keys, you get all possible combinations, thus try to make a **key** column as unique as possible.
-
-![](join-many-to-many.png)
-
-6. Join tables with different names
-
-If you know that some columns in two different tables are identical but have different names, you don't have to **rename** them (although you can), but use the **equal** sing to tell `dplyr` they are the same:
-
-```{r}
-# left_join(y, z, by = c("A" = "D", "B" = "E"))
-```
 
 
 
 ## Filtering joins combine rows
 
 
-Filtering joins affect only the rows / observations, not the columns / variables. But filtering joins never duplicate rows like mutating joins do.
+Filtering joins affect only the rows (or observations), not the columns (or variables). In contrast to mutating joins, filtering joins never duplicate rows. There are two filtering joins, semi_joins and anti_joins.
 
-1. semi_join
+### 1. semi_join
+
+```{r echo=FALSE}
+image_animate(image_read("semi-join.gif"))
+```
+
+**Semi_joins** help identify and keep matching records between two tables while retaining only the columns from the first (left) table.
+
+![](semi_join.png){width=49%} ![](semi_join_rev.png){width=49%}
+
+The **inner_join** might look similar, but it would keep columns from both tables. By keeping only the desired columns from the left table, **semi_joins** help to reduce data complexity and focus on the essential information needed for analysis. In other words they filter and extract relevant records, resulting in a more concise and targeted dataset. 
+
 
 ```{r}
-image_read("semi-join.gif")
+semi_join(customer_info, purchase_history)
+inner_join(customer_info, purchase_history)
+```
+
+### 2. anti_join
+
+```{r echo=FALSE}
+image_animate(image_read("anti-join.gif"))
+```
+
+**Anti_joins** are used to exclude records that match between two tables, essentially filtering out the common observations.
+
+![](anti_join.png){width=49%} ![](anti_join_rev.png){width=49%}
+
+An **anti_join** retains only unmatched rows, making it useful for identifying discrepancies between tables, and if the anti-join returns no results, it's actually a good thing ;).
+
+
+```{r}
+anti_join(customer_info, purchase_history)
 ```
 
 
-An semi-join keeps only the rows that have a match:
-
-![](join-semi-many.png)
-
-```{r}
-semi_join(x, y, by = c("A", "B"))
-semi_join(x, y, by = c("B"))
-semi_join(x, y, by = c("A"))
-```
-
-2. anti_join
-
-```{r}
-image_read("anti-join.gif")
-```
 
 
-An `anti-join` only keeps the rows that don’t have a match. I often use it to check for discrepancies between tables. If `anti_join` returns nothing - it's a good sign ;).
 
-![](join-anti.png)
+
+# Chapter 3: Conditioning
+
+Having columns and rows in the desired structure is fantastic, and if your table is prepared to embark on the "machine learning wonderland," it's even better. However, sometimes we need to change some values within our tables. Here, I would like to introduce two highly valuable techniques that I use everyday.
+
+## If ... else ...
+
+The first technique is the **ifelse** command, which enables the creation of a new column based on an existing one (as shown in the first line of code below), or the modification of values within an existing variable (as demonstrated in the second line). When working with NAs in your data, it's crucial to specify the "na.rm = TRUE" argument to prevent all new observations from becoming NAs (as illustrated in the third line of code).
 
 ```{r}
-anti_join(x, y, by = c("A", "B"))
-anti_join(x, y, by = c("B"))
-anti_join(x, y, by = c("A"))
+full_join(customer_info, purchase_history) %>%
+  select(CustomerID, Age) %>% 
+  mutate(Age_category = ifelse(Age < mean(Age, na.rm = T), "low", "high")) %>% 
+  mutate(Age = ifelse(Age < median(Age, na.rm = T), "low", "high")) %>% 
+  mutate(Age_NAs = ifelse(Age < mean(Age), "low", "high"))
+```
+
+The only drawback of using **ifelse** is that it becomes cumbersome to write multiple **ifelse** statements when dealing with numerous cases, which is where the **case_when** function comes in handy.
+
+## Case when
+
+Let's consider the "who" dataset 🦉, which is freely available from the World Health Organization Global Tuberculosis (cough 😷) Report. Initially, it may appear messy, but if you're familiar with my previous tutorials on {dplyr} and {tidyr}, you can easily tidy it up and then transform the age categories from the peculiar "014" format to more comprehensible "0 – 14 years old". By using the `TRUE ~ "bla"` clause at the end of the **case_when** command, any categories that do not match the provided ones will be changed to "bla". If there are occurrences of "bla", it indicates that further cleaning is required. However, if no "bla" cases are present, as in our example, it signifies that we have successfully accomplished our task. Let's congratulate ourselves on a job well done! Cheers!
+
+
+```{r}
+d <- who %>%
+  
+  # I have reviewed {dplyr} and {tidyr} for this piece of code.
+  pivot_longer(cols = new_sp_m014:newrel_f65, values_drop_na = T) %>%
+  select(-iso2, -iso3) %>%
+  mutate(name = stringr::str_replace(name, "newrel", "new_rel")) %>%
+  separate(name, into = c("new", "type", "sexage")) %>%
+  separate("sexage", into = c("sex", "age"), sep = 1) %>%
+  
+  # Now use case_when to change values
+  mutate(age_2 = case_when(
+    age == "014"  ~ "0 – 14 years old",
+    age == "1524" ~ "15 - 24 years old",
+    age == "2534" ~ "25 - 34 years old",
+    age == "3544" ~ "35 - 44 years old",
+    age == "4554" ~ "45 - 54 years old",
+    age == "5564" ~ "55 - 64 years old",
+    age == "65"   ~ "65 or older",
+    TRUE          ~ "bla"
+  ))
+
+d
+
+# janitor is an amazing package I also have reviewed ;)
+janitor::tabyl(d$age_2)
 ```
 
 
-<!-- # Conditioning -->
+# Conclusion and what's next?
 
-<!-- Having columns and rows where you want them to be it amazing, and if you have a structure of your table, which is ready to "take off" to the "machine learning wonderland" it's even better. But in order to do some statistics with the data, the perfect structure of the dataset is sometimes not the most important thing. If we want to do something with data, the data itself, meaning the values inside of the cell, is the essence of a good statistical analysis and meaningful results. Thus, we often need to manipulate the values inside our tables. Here I'd like to present two most useful techniques, which I use in everyday professional life. -->
+Now, with your final, stunning table in front of you, the natural inclination is to visualize and explore your data, right? To achieve this in the most effective way possible, check out the [{DataExplorer} package](https://youtu.be/W3xErD6qIzg) next.
 
-<!-- ## If ... else ... -->
+**Thank you for reading!**
 
-<!-- The `ifelse` command allows you to produce a new column depending on the existing one (like in the first chunk of code below), or simply change the values in the existing variable, if you need to (like in the second). -->
+# Further readings and references
 
-<!-- ```{r} -->
-<!-- table1 %>% -->
-<!--   mutate(population_2 = ifelse(population < mean(population), "low", "high")) -->
-<!-- ``` -->
-
-<!-- The only problem with `ifelse` is that, if you have to many **cases**, it will be painful to write multiple `ifelse`s, thus we can use `case_when`: -->
-
-<!-- ## Case when ... -->
-
-<!-- ```{r} -->
-
-<!-- table1 %>% -->
-<!--   mutate(country = case_when( -->
-<!--     country == "Afghanistan" ~ "Afgh", -->
-<!--     country == "Brazil"      ~ "Braz", -->
-<!--     country == "China"       ~ "Chin", -->
-<!--     TRUE                     ~ "Rest of the World" -->
-<!--   )) -->
-<!-- ``` -->
-
-
-<!-- # Bonus peace of code -->
-
-<!-- Have a look at a messy dataset `who`, think about what would you do with it and then check out the code below which is mostly borrowed from the referenced book. -->
-
-<!-- ```{r} -->
-<!-- who -->
-<!-- ``` -->
-
-
-<!-- ```{r} -->
-<!-- who %>% -->
-<!--   pivot_longer(cols = new_sp_m014:newrel_f65, values_drop_na = T) %>% -->
-<!--   select(-iso2, -iso3) %>% -->
-<!--   mutate(name = stringr::str_replace(name, "newrel", "new_rel")) %>% -->
-<!--   separate(name, into = c("new", "type", "sexage")) %>% -->
-<!--   separate("sexage", into = c("sex", "age"), sep = 1) %>% -->
-<!--   mutate(age_2 = case_when( -->
-<!--     age == "014"  ~ "0 – 14 years old", -->
-<!--     age == "1524" ~ "15 - 24 years old", -->
-<!--     age == "2534" ~ "25 - 34 years old", -->
-<!--     age == "3544" ~ "35 - 44 years old", -->
-<!--     age == "4554" ~ "45 - 54 years old", -->
-<!--     age == "5564" ~ "55 - 64 years old", -->
-<!--     age == "65"   ~ "65 or older", -->
-<!--     TRUE          ~ "bla" -->
-<!--   )) -->
-<!-- ``` -->
-
-
-<!-- # Conclusion -->
-
-<!-- In the current age of **big data**, data manipulation is one of the most important skills for any data scientist. It not only allows you to make the best out of your own data in terms of visualisation, statistics and machine learning, but may also help you to reanimate unused or too-messy data and so make exiting discoveries. Mastering my **Data Wrangling Trilogy** ( [Vol. 1](https://yury-zablotski.netlify.com/post/data-wrangling-1/), [Vol. 2](https://yury-zablotski.netlify.com/post/2019-09-22-data-wrangling-2/data-wrangling-2/) and this [Vol. 3]()) will enable you to solve 95% of common data problems in *R*. -->
-
-<!-- # What’s next -->
-
-<!-- After bringing the data to the form you need, it's time to produce some results: -->
-
-<!-- - [Fancy tables: frequency, contingency and pivot](https://yury-zablotski.netlify.com/post/fancy-tables/) -->
-<!-- - [Fancy descriptive statistics](https://yury-zablotski.netlify.com/post/fancy-descriptive-statistics/) -->
-
-
-<!-- **Thank you for reading!** -->
-
-<!-- # Further readings and references -->
-
-
-<!-- - Most of this article originate from [“R for Data Science”](https://r4ds.hadley.nz/) book by Garrett Grolemund and Hadley Wickham. -->
+- Most of this article originate from [“R for Data Science”](https://r4ds.hadley.nz/) book by Garrett Grolemund and Hadley Wickham.
 

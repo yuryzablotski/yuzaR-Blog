@@ -23,7 +23,7 @@ ggplot(d %>% filter(year == 2023))+
            fill = "red", alpha = 0.5)
 
 
-ggplot(d %>% filter(year %in% c(2023:2029)))+
+ggplot(d %>% filter(year %in% c(2023:2025)))+
   geom_bar(aes(x = month, y = projected), 
            stat = "identity", fill = "black")+
   facet_grid(.~year)
