@@ -11,7 +11,7 @@ d <- read_excel("compounding_growth_10_percent.xlsx") %>%
 ggplot(d %>% filter(year == 2023))+
   geom_bar(aes(x = month, y = projected), 
            stat = "identity", fill = "black")+
-  geom_bar(aes(x = month, y = earned), 
+  geom_bar(aes(x = month, y = adds), 
            stat = "identity", 
            fill = "red", alpha = 0.5)
 

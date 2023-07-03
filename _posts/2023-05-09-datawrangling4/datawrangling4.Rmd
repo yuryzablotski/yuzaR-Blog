@@ -38,19 +38,6 @@ library(tidyverse) # it's the only package you need
 
 To maximize the effect of this post you can have a look at [{dplyr} for beginners](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/), [advanced {dplyr}](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/) and the review about [{tidyr} package](https://yuzar-blog.netlify.app/posts/2023-04-18-datawrangling3/) before.
 
-# This post as a ... minutes video
-
-
-```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
-```
-
-
-
-
-
-
-
 
 
 Consider following tables:
@@ -69,6 +56,13 @@ gridExtra::grid.arrange(tableGrob(x), tableGrob(y), tableGrob(z), ncol = 3)
 ```
 
 # Chapter 1: Combine tables
+
+## Chapter 1 as 5 minutes video
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
 
 ## Bind columns and bind rows
 
@@ -145,7 +139,8 @@ image_animate(image_read("setdiff.gif"))
 ```
 
 ```{r}
-setdiff(x,y)     # find rows that appear in x but not y
+# find rows that appear in x but not y
+setdiff(x,y)
 ```
 
 To obtain unique rows from the "y" table, simply specify "y" as the first table, followed by the "x" table.
@@ -155,7 +150,8 @@ image_animate(image_read("setdiff-rev.gif"))
 ```
 
 ```{r}
-setdiff(y,x)     # find rows that appear in y but not x
+# find rows that appear in y but not x
+setdiff(y,x)     
 ```
 
 
@@ -174,7 +170,17 @@ intersect(x,y)   # find duplicates
 
 # Chapter 2: Join tables
 
-Being able to handle duplicate rows is fantastic! But you might wonder, what if we have duplicate columns? That can occur when we use the **bind_cols** command. For instance, if we mistakenly combine two identical tables, each with 2 columns, the result will have 4 columns. The **bind_cols** command conveniently renames them to avoid confusion, yet it retains all columns. However, as they do not provide any unique information, they are totally redundant!
+Combining and merging tables through joins is incredibly useful for data science, as it enables us to unlock valuable insights within complex datasets. While joining tables is usually performed using SQL, this approach comes with numerous limitations. In this video, we'll explore how the intuitive syntax of {dplyr} can revolutionize our ability to join tables, taking our skills to a whole new level of efficiency and flexibility.
+
+## Chapter 2 as 10 minutes video
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+
+Being able to handle duplicate rows, as we did in previous chapter, is fantastic! But you might wonder, what if we have duplicate columns? That can occur when we use the **bind_cols** command. For instance, if we mistakenly combine two identical tables, each with 2 columns, the result will have 4 columns. The **bind_cols** command conveniently renames them to avoid confusion, yet it retains all columns. However, as they do not provide any unique information, they are totally redundant!
 
 ```{r}
 bind_cols(x, x)
@@ -410,11 +416,19 @@ anti_join(customer_info, purchase_history)
 ```
 
 
-
+Now that you have your final table in the desired structure, you probably want to explore and visualize your data, aren't you? If you're looking for a comprehensive video that will teach you how to efficiently explore all the aspects of the data you see on your screen right now, then you definitely don't want to miss out on this one.
 
 
 
 # Chapter 3: Conditioning
+
+## Chapter 3 as 3 minutes video
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
 
 Having columns and rows in the desired structure is fantastic, and if your table is prepared to embark on the "machine learning wonderland," it's even better. However, sometimes we need to change some values within our tables. Here, I would like to introduce two highly valuable techniques that I use everyday.
 
@@ -433,6 +447,8 @@ full_join(customer_info, purchase_history) %>%
 The only drawback of using **ifelse** is that it becomes cumbersome to write multiple **ifelse** statements when dealing with numerous cases, which is where the **case_when** function comes in handy.
 
 ## Case when
+
+![](case_when-allison.jpeg)
 
 Let's consider the "who" dataset 🦉, which is freely available from the World Health Organization Global Tuberculosis (cough 😷) Report. Initially, it may appear messy, but if you're familiar with my previous tutorials on {dplyr} and {tidyr}, you can easily tidy it up and then transform the age categories from the peculiar "014" format to more comprehensible "0 – 14 years old". By using the `TRUE ~ "bla"` clause at the end of the **case_when** command, any categories that do not match the provided ones will be changed to "bla". If there are occurrences of "bla", it indicates that further cleaning is required. However, if no "bla" cases are present, as in our example, it signifies that we have successfully accomplished our task. Let's congratulate ourselves on a job well done! Cheers!
 
