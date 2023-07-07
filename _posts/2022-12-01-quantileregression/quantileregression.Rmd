@@ -403,7 +403,7 @@ plot_model(mr, type = "int")
 
 ## Bayesian median regression
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, eval=FALSE}
 library(brms)
 
 d <- tibble(

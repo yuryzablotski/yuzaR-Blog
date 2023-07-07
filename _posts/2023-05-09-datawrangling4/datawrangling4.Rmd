@@ -57,11 +57,11 @@ gridExtra::grid.arrange(tableGrob(x), tableGrob(y), tableGrob(z), ncol = 3)
 
 # Chapter 1: Combine tables
 
-## Chapter 1 as 5 minutes video
+## Chapter 1 as 4 minutes video
 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("aL7PeNOvAfw") 
 ```
 
 ## Bind columns and bind rows
@@ -170,13 +170,13 @@ intersect(x,y)   # find duplicates
 
 # Chapter 2: Join tables
 
-Combining and merging tables through joins is incredibly useful for data science, as it enables us to unlock valuable insights within complex datasets. While joining tables is usually performed using SQL, this approach comes with numerous limitations. In this video, we'll explore how the intuitive syntax of {dplyr} can revolutionize our ability to join tables, taking our skills to a whole new level of efficiency and flexibility.
+Combining and merging tables through joins is incredibly useful for data science, as it enables us to unlock valuable insights within complex datasets. While joining tables is usually performed using SQL, this approach comes with numerous limitations. In this chapter, we'll explore how the intuitive syntax of {dplyr} can revolutionize our ability to join tables, taking our skills to a whole new level of efficiency and flexibility.
 
 ## Chapter 2 as 10 minutes video
 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("_w6yLNbxabU") 
 ```
 
 
@@ -416,13 +416,13 @@ anti_join(customer_info, purchase_history)
 ```
 
 
-Now that you have your final table in the desired structure, you probably want to explore and visualize your data, aren't you? If you're looking for a comprehensive video that will teach you how to efficiently explore all the aspects of the data you see on your screen right now, then you definitely don't want to miss out on this one.
+Now that you have your final table in the desired structure, you probably want to explore and visualize your data, aren't you? If you're looking for a comprehensive video that will teach you how to efficiently explore all the aspects of the data you see on your screen below right now, then you definitely don't want to miss out on [this one](https://youtu.be/Swcp0_l65lw).
 
-
+![](DEDA.png)
 
 # Chapter 3: Conditioning
 
-## Chapter 3 as 3 minutes video
+## Chapter 3 as 3 minutes video (in progress)
 
 
 ```{r, eval=T, echo=F}
