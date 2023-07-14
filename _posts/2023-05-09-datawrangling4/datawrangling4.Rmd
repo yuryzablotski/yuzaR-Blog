@@ -422,11 +422,11 @@ Now that you have your final table in the desired structure, you probably want t
 
 # Chapter 3: Conditioning
 
-## Chapter 3 as 3 minutes video (in progress)
+## Chapter 3 as 2 minutes video
 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("Qxs2EB9072g") 
 ```
 
 
