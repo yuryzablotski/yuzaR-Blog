@@ -1,125 +1,474 @@
 ---
-title: "{ggplot2} Most Advanced Bar Plots in R"
+title: "Epic Bar Plots with {ggplot2}"
 description: |
-  Get ready to uncover the secrets of producing visually stunning barplots masterpieces like never before, adorned with vibrant colors, captivating themes, and meticulously crafted labels. 
+  Bar charts are useful for visualizing categorical data (percent stacked), group comparisons (means+CIs), and effective data communication through bar labels (basic_plot). In this video we'll learn the secrets of producing visually stunning bar charts using the {ggplot2} package. 
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
-date: 2023-07-10
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+preview: barcharts_in_ggplot.png
 output:
   distill::distill_article:
     self_contained: false
-draft: true
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+# draft: true
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setup, include=F, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = T)
+library(tidyverse)
+```
+
+# This post as ... minutes video
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
 ```
 
 
-# Basic barplots
+# Basic barplots 1: count
 
-## (bourne) Identity
-## () Count
+To start, we need to load the {tidyverse} meta-package since it includes {ggplot2} and other valuable packages. We'll also need some data, such as the Wage dataset from the {ISLR} package. Typical raw data often involves cases that haven't been counted yet. Fortunately, manual counting isn't necessary, as counting is inherently integrated into the default functionality of the geom_bar function. To create our first bar chart using the ggplot() function, we'll only need to specify three elements: the (1) data frame, (2) aesthetics including the categorical variable education on the x-axis, and (3) the geom_bar function with the *stat = "count"* argument. Explicitly specifying *stat = "count"* is unnecessary though since it's the default behavior. In these illustrations, the bar height signifies the case count for each education level.
 
-# Grouped barplots
+```{r}
+library(tidyverse)
 
-# Stacked barplots
+Wage <- ISLR::Wage
+glimpse(Wage)
+
+ggplot(data = Wage, aes(x = education)) +
+  geom_bar(stat = "count")
+
+ggplot(Wage, aes(education)) +
+  geom_bar()
+```
+
+
+
+# Basic barplots 2: (bourne) identity
+
+However, when dealing with preprocessed and summarized data where counts are already categorized, we can utilize *stat = "identity"* within the *geom_bar* function. To demonstrate this, let's create the simplest possible data frame containing only three categories and three corresponding counts.
+
+```{r}
+df <- tibble(
+  category = c("A", "B", "C"),
+  counts = c(10, 20, 30)
+)
+df
+```
+
+The aesthetics will now encompass not only the x-axis with a categorical variable but also the y-axis with readily available counts. The *stat="identity"* (think of the Bourne Identity movie) argument helps to **identify** which counts correspond to which categories. With this straightforward example in hand, let's discover how we can significantly enhance the visual appeal of our plot.
+
+```{r}
+ggplot(data=df, aes(x=category, y=counts)) +
+  geom_bar(stat="identity")
+```
+
+First of all, we can effortlessly adjust the width of our grey bars by employing the width argument, setting it, for instance, to 0.4:
+
+```{r}
+ggplot(data=df, aes(x=category, y=counts)) +
+  geom_bar(stat="identity", width=0.4)
+```
+
+
+But gray bars appear rather dull. Thus, to reduce the monotony, we can inject some colors into the chart. For example, by using the *fill* argument inside of *geom_bar*, we can paint the bars white, while utilizing the *color* argument to give the edges a chocolate shade. It's like a tiramisu – with a chocolate coating on the outside and a creamy white filling on the inside.
+
+```{r}
+ggplot(data=df, aes(x=category, y=counts)) +
+  geom_bar(stat="identity", width=0.4, 
+           fill="white", color = "chocolate4")
+```
+
+
+But if, for whatever reason, we want different colors for different bars, we can put the *fill* and *color* arguments inside of *aesthetics* to make it aesthetically more appealing:
+
+```{r}
+ggplot(data=df, aes(x=category, y=counts, 
+                    fill = category, color = -counts)) +
+  geom_bar(stat="identity")
+```
+
+
+
+By the way, we can save our plot as an object, which not only reduces the need for excessive typing but also enables us to employ this object for subsequent manipulations:
+
+```{r}
+p <- ggplot(data=df, aes(x=category, y=counts, fill = category)) +
+  geom_bar(stat="identity", width=0.777)
+p
+```
+
+
+For example, we can manually fill the bars with a color of our choice, or apply custom color palettes to our object, but, to be honest, I never use them:
+
+```{r}
+p + scale_fill_manual(values=c("#999999", "orange", "violet"))
+
+p + scale_fill_brewer(palette="Dark2") 
+```
+
+
+Instead, I absolutely love and use the minimalistic grey scaled bars in varying appealing shades of gray (50 shades of gray pic ;)
+
+```{r}
+p <- p + scale_fill_grey() 
+p
+```
+
+
+However, what is totally not appealing is this bland, gray background. Fortunately, there's a straightforward solution for it – the use of *themes*! *Themes* allow us to change the plot's design with a single command. Here are examples of minimalistic or classic themes. However, by typing "theme_" and pressing the "tab" button, you'll be presented with multiple themes, enabling you to quickly find your personal favorite.
+
+
+```{r}
+p + theme_minimal()
+
+p <- p + theme_classic()
+p
+```
+
+
+Cool, isn't it? But do you know what's even cooler? The fact that we can easily add labels to our bars. Everyone appreciates labels, right? :) We achieve this using the "geom_text" function and telling our plot-aesthetics from which column we want to extract our labels:
+
+```{r}
+p + geom_text(aes(label=counts))
+```
+
+While labels are indeed useful, the placement of our text is rather peculiar – neither on the bar, nor under the bar. Additionally, they are somewhat small and challenging to discern due to their black color. Therefore, it's necessary to enlarge their size, vertically adjust them and make their color more visible.
+
+```{r}
+p + geom_text(aes(label=counts), 
+              size=10, vjust=2, color="orange")
+```
+
+But wait, there's more – we can actually determine the labels themselves by simply writing them down! And you won't believe this – we can those labels bold! (foto лысого жирного чувака, уже есть :)
+
+
+```{r}
+p + 
+  geom_text(
+    aes(label=c("BLACK", "IS THE NEW", "ORANGE")), 
+    size=7, vjust=2, color="orange", fontface = "bold")
+```
+
+
+
+And when vertical positioning just won't fit all that amazing text, we can use a few tricks to bring our plot to another level:
+
+- first, we can effortlessly flip the entire plot using the *coord_flip* function;
+- then, we'll horizontal adjust our text, ensuring it fits right near the bars;
+- we'll then extend the x-axis to 45 to make sure every bit of text is displayed;
+- and finally, we can even change the order of our discrete categories for a smoother, more reader-friendly flow with a *scale_x_discrete* function
+
+```{r}
+p <- p + 
+  geom_text(
+    aes(label=c("BLACK", "IS THE NEW", "ORANGE")), 
+    size=7, hjust=-0.1, color="orange", fontface = "bold")+
+  coord_flip()+
+  ylim(0, 45)+
+  scale_x_discrete(limits=c("A", "B", "C"))
+p
+```
+
+Now that our main plot is in good shape, let's consider the legend. Well, handling the legend can be pain in the ass. But, no worries, you're in control here. With the *theme* function and the *legend.position* argument, you can adjust the legend's placement – *top, bottom, or no legend* at all. Plus, if you need to, you can change the legend's *name* and *labels* too to whatever you want.
+
+```{r fig.width=9, fig.height=9}
+a <- p + theme(legend.position="top")
+b <- p + theme(legend.position="bottom")
+c <- p + theme(legend.position="none")
+ 
+p <- p + theme(legend.position="bottom")+ 
+  scale_fill_grey(name = "Quarter", 
+                  labels = c("1", "2", "3"))
+
+library(patchwork)
+(a + b) / (c + p)
+```
+
+```{r eval=FALSE}
+theme(
+
+    # Legend title and text labels
+    #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    
+    # Title font color size and face
+    legend.title = element_text(color, size, face),
+    # Title alignment. Number from 0 (left) to 1 (right)
+    legend.title.align = NULL,             
+    # Text label font color size and face
+    legend.text = element_text(color, size, face), 
+    # Text label alignment. Number from 0 (left) to 1 (right)
+    legend.text.align = NULL,
+    
+    # Legend position, margin and background
+    #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Legend position: right, left, bottom, top, none
+    legend.position = "right", 
+    # Margin around each legend
+    legend.margin = margin(0.2, 0.2, 0.2, 0.2, "cm"),
+    # Legend background
+    legend.background = element_rect(fill, color, size, linetype),
+    
+    # Legend direction and justification
+    #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Layout of items in legends ("horizontal" or "vertical")
+    legend.direction = NULL, 
+    # Positioning legend inside or outside plot 
+    # ("center" or two-element numeric vector) 
+    legend.justification = "center", 
+    
+    # Background underneath legend keys
+    #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    legend.key = element_rect(fill, color),  # Key background
+    legend.key.size = unit(1.2, "lines"),    # key size (unit)
+    legend.key.height = NULL,                # key height (unit)
+    legend.key.width = NULL,                 # key width (unit)
+    
+    # Spacing between legends. 
+    #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    legend.spacing = unit(0.4, "cm"), 
+    legend.spacing.x = NULL,                 # Horizontal spacing
+    legend.spacing.y = NULL,                 # Vertical spacing
+    
+    # Legend box
+    #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    # Arrangement of multiple legends ("horizontal" or "vertical")
+    legend.box = NULL, 
+    # Margins around the full legend area
+    legend.box.margin = margin(0, 0, 0, 0, "cm"), 
+    # Background of legend area: element_rect()
+    legend.box.background = element_blank(), 
+    # The spacing between the plotting area and the legend box
+    legend.box.spacing = unit(0.4, "cm")
+)
+```
+
+
+And while we can actually control everything in the legend ('Yes, we can,' Obama), most of the time we don't need to. But what we consistently need is the ability to control *Titles, Subtitles, Captions, and Axes*. Let me introduce you to just two commands that let you achieve exactly that:
+
+- the 'labs' command controls what we see and
+- the 'theme' command controls how different text elements look like
+
+
+```{r}
+p + 
+  labs(
+    title    = "Quarterly TV-show Profit (in million U.S. dollars)",
+    subtitle = "A simple bar chart with gray scaling, on colored issue",
+    caption  = "Source: Secret Data Base Noone Knows About",
+    x        = "Quarter of 2020",
+    y        = "Profit in 2020"
+  )+
+  theme(
+    plot.title    = element_text(color = "#0099f9", size = 15),
+    plot.subtitle = element_text(face = "bold"),
+    plot.caption  = element_text(face = "italic"),
+    axis.title.x  = element_text(color = "#0099f9", size = 14, face = "bold"),
+    axis.title.y  = element_text(size = 14, face = "italic"),
+    axis.text.y   = element_blank(),
+    axis.ticks.y  = element_blank()
+  )
+```
+
+
+Ok, let's summarize what we've learned so far. The first final plot might appear as a huge chunk of code, but it's surprisingly intuitive when broken down step by step. For instance:
+
+- With counts for three categories in our data frame,
+- We can fill the bars with different colors and vary the width of the bars,
+- Apply shades of gray for a consistent appearance,
+- Alter the legend's name, labels, and order,
+- Enhance the plot's overall visual appeal by using different themes,
+- Sort the bars and attach custom labels to them,
+- Rotate the plot 90 degrees and adjust the x-axis length,
+- Revise the legend's position or even remove the legend,
+- Introduce titles, captions and new axes names, and finally,
+- Modify the size and color of titles, caption, and axes – even going bold or italic if needed.
+
+
+```{r}
+df
+ggplot(data=df, aes(x=category, y=counts, fill = category)) +
+  geom_bar(stat="identity", width=0.7)+ 
+  scale_fill_grey(name = "NEW TV SHOW", 
+                  labels = c("ORANGE", "IS THE NEW", "GRAY???"))+
+  theme_classic()+
+  scale_x_discrete(limits=c("C", "B", "A"))+
+  geom_text(
+    aes(label=c("DREAM BIG","START SMALL","ACT NOW")),
+    color="black", size=5, hjust=-0.1)+ # vjust
+  coord_flip()+
+  ylim(0, 45)+ 
+  theme(legend.position="bottom") + 
+  labs(
+    title    = "Quarterly TV-show Profit (in million U.S. dollars)",
+    subtitle = "A simple bar chart with ca. 50 shades of gray",
+    caption  = "Source: Secret Data Base Noone Knows About",
+    x        = "CREATIVITY",
+    y        = "INVEST IN YOURSELF"
+  )+
+  theme(
+    plot.title = element_text(color = "orange", size = 15),
+    plot.subtitle = element_text(face = "bold"),
+    plot.caption = element_text(face = "italic"),
+    axis.title.x = element_text(color = "orange", size = 14, face = "bold"),
+    axis.title.y = element_text(size = 14, face = "italic"),
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+```
+
+And before we loose all these changes, we can save this plot in the format of our choice using *ggsave* command:
+
+```{r eval=FALSE}
+ggsave(
+  filename = "basic_plot.jpg",
+  plot     = last_plot(), 
+  device   = jpeg, 
+  width    = 5, 
+  height   = 3)
+```
+
+# Barplots with multiple groups 
+
+While this stunning bar plot featuring just one categorical variable looks gorgeous, let's get real – most of the time, we're dealing with many categorical variables that need plotting. We might need to stack them, align them side by side, or even fit them into numerous subplots. So, let's get a more realistic dataset with four categorical variables, each having multiple levels, and plot the hell out of them, starting with stacked barplots.
+
+```{r}
+library(ggstats) # for stat_prop
+d <- as.data.frame(Titanic) %>%
+  dplyr::mutate(percentage = Freq/sum(Freq))
+str(d)
+```
+## Stacked barplot
+
+In general, the code remains quite similar, yet it carries two fresh nuances. Firstly, instead of filling the bars along the x-axis as we did before, a method that merely results in distinct colors for x-axis bars, we're now filling a different categorical variable with color. Secondly, we can command the *geom_bar* function to neatly stack the bars we've just filled, via the *position = "stack"* argument.
+
+```{r}
+ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
+  geom_bar(stat="identity", position = "stack")
+```
+
+
+## Dodged barplot
+
+However, that arrangement seems a bit dodgy, doesn't it? The problem is, it hampers our ability to make effective comparisons of survived versus not-survived people on titanic. What we truly want is to have the bars grouped near each other for a clearer contrast. So, we need to change this dodgy positioning for a position_dodge.(машину додж покажи) 
+
+```{r}
+ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
+  geom_bar(stat="identity", position="dodge")
+```
+
+But wait, there's more: we can take it a step further and
+
+- employ the facet_grid function to incorporate two additional categorical variables, such as Age and Sex,
+- attach labels to a dodged barplot, just as we've recently did, and
+- elevate the plot's aesthetics by implementing a fresh colors and new theme.
+
+```{r fig.width=11, fig.height=7}
+ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  facet_grid(Age~Sex, scales = "free")+
+  geom_text(aes(label=Freq), position = position_dodge(0.9),
+            vjust=-.1, color="black", size=3.5)+
+  scale_fill_brewer(palette="Paired")+
+  theme_bw()
+```
+
+Not bad for just a few lines of code, right? However, we're merely scratching the surface. The next thing I'm about to reveal will blow your mind. But before we dive into that, there's something you might consider doing – yet you really shouldn't.
+
+# Barplot With Error Bars: and why you shouldn't use them!
+
+While I generally appreciate barplots, there's one type I genuinely dislike: barplots with error bars, commonly seen in scientific papers. My reservations arise because these bars usually depict average values along with their 95% confidence intervals. Two reasons fuel my disapproval: first, bars are designed to represent counts rather than averages, and secondly, if we're presenting averages as points with confidence intervals anyway, including bars seems superfluous, contributing little beyond the information conveyed by the average points already. With that being said, if you're still inclined to create such plots, the simplest approach in my opinion involves using the stat_summary function with three distinct "geoms": columns, points, and error bars. Through this method, you can calculate 95% confidence intervals either in a normal or bootstrapped manner.
+
+```{r}
+car <- mtcars %>% 
+  rownames_to_column(var = "car_name") %>% 
+  mutate(cylinders = factor(cyl))
+
+ggplot(car, aes(x = cylinders, y = mpg)) +
+  stat_summary(fun = mean, geom = "col", alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", size = 4) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.5) + # mean_cl_boot
+  theme_bw()
+```
+
 
 ## Percent stacked barplots
 
-# Multiple barplots
-
-# Cercular barplots
-
-# Fancy barplots
-
-# Save your plots
+Now, let's get back to real barplots, and make them great again (pic of Trump with his stupid base cap ;). Another intuitive approach to enhance the somewhat lacking information in stacked bars is to ensure each bar group reaches 100%, don't you think? Well, accomplishing that is very easy with the *scale_y_continuous* function and the *percent* option from the {scales} package.
 
 ```{r}
-# install.packages("ggchicklet", repos = "https://cinc.rud.is")
+library(scales)
+ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
+  geom_bar(stat="identity", position="fill")+
+  scale_y_continuous(labels=percent)
 ```
 
-# What's next? Barcharts with Significance Tests
 
-
-
-# Rest
+However, while the percentages on the y-axis appear impressive, having the actual percentage of each category displayed as text within each bar would be far more effective, right? To achieve this, we'll *weight* our Frequency and use the percentage column we've already computed in our data. Instead of relying on the "identify" statistics within *geom_bar*, we'll explicitly opt for the "proportion" statistics within *geom_text*. And by employing the *position_fill* function with 0.5 specified within, our text would be perfectly positioned at the exact center of each category.
 
 ```{r}
-library(ggplot2)
+ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived)) +
+  geom_bar(position="fill")+  # stat="identity" is removed
+  scale_y_continuous(labels=percent)+
+  geom_text(stat = "prop", position = position_fill(0.5))
+```
 
-# Create some data
-data <- data.frame(
-  category = c("A", "B", "C", "D", "E"),
-  count = c(10, 20, 30, 40, 50)
+
+This plot illustrates that 5.5% of all passengers belonged to the 1st class and did not survive. While this representation might be what we want, I more often want each class to be 100% for a clear comparison of survival within each class. This can be achieved using the "by" argument inside of aesthetics, where "by" argument need to have identical variable to one on the x-axes.
+
+```{r}
+ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived, by = Class)) +
+  geom_bar(position="fill")+
+  scale_y_continuous(labels=percent)+
+  geom_text(stat = "prop", position = position_fill(.5))
+```
+
+Now we observe that the survival rate of the rich is the highest at 62.5%, whereas the crew exhibited the highest sacrifice rate of 76% among all classes.
+
+By the way, after weighting our frequencies, we gain the flexibility to create as many groups as needed. For example, let's consider the "Sex" factor. Interestingly, a majority of men did not survive, whereas of women did. Moreover, it's evident that during that period, a person's chances of survival were positively linked to their social status: the wealthier one was, the significantly greater their chances of survival were. Not everyone will make it, but if you've made it so far in this video, consider liking it.
+
+```{r fig.width=14, fig.height=7}
+ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived, by = Class)) +
+  geom_bar(position="fill")+
+  scale_y_continuous(labels=percent)+
+  geom_text(stat = "prop", position = position_fill(.5))+
+  facet_grid(~Sex)+
+  scale_fill_brewer(palette="Paired")+
+  theme_test()
+```
+
+# What's next? Barplots with Significance Tests
+
+And if you're genuinely interested in determining the real statistical significance and wish to add some informative statistics to your visualization, you can conduct a quick Chi-Squared Test for both males and females by utilizing the {ggstatsplot} package.
+
+```{r fig.width=14, fig.height=7}
+library(ggstatsplot)
+grouped_ggbarstats(
+  data = d, 
+  x = Survived,
+  y = Class, 
+  count = Freq, 
+  label = "both",
+  grouping.var = Sex
 )
-
-# Create the bar plot
-ggplot(data, aes(x = category, y = count)) +
-  geom_bar(stat = "identity", fill = "steelblue") +
-  labs(title = "Bar Plot", x = "Category", y = "Count") +
-  theme_classic() +
-  theme(axis.text.x = element_text(size = 10, face = "bold"),
-        axis.text.y = element_text(size = 10, face = "bold"),
-        axis.title.x = element_text(size = 12, face = "bold"),
-        axis.title.y = element_text(size = 12, face = "bold"))
-
-geom_bar(stat = "identity", position = "dodge") +
-  labs(x = "\n Cause Of Death", y = "Count \n", fill = "Age Group \n",
-       title = "Suicide Method Data From The UK Results \n") +
-  scale_x_discrete(labels = c("Drug", "Gas", "Gun", "Hang", "Jump", "Other")) +
-  scale_fill_discrete(labels=c("Middle Aged", "Old", "Young")) +
-  theme(plot.title = element_text(hjust = 0.5), 
-        axis.title.x = element_text(face="bold", colour="blue", size = 12),
-        axis.title.y = element_text(face="bold", colour="blue", size = 12),
-        legend.title = element_text(face="bold", size = 10))
 ```
 
-```{r}
-# Load required packages
-library(ggplot2)
 
-# Create sample data
-data <- data.frame(
-  Category = c("A", "B", "C", "D"),
-  Value = c(10, 15, 7, 12)
-)
-
-# Create the bar plot
-plot <- ggplot(data, aes(x = Category, y = Value)) +
-  geom_bar(stat = "identity", fill = "steelblue", width = 0.5) +
-  labs(title = "Bar Plot", x = "Category", y = "Value") +
-  theme_minimal()
-
-# Customize plot features
-plot <- plot +
-  theme(
-    axis.title.x = element_text(size = 12, face = "bold", color = "black"),
-    axis.title.y = element_text(size = 12, face = "bold", color = "black"),
-    axis.text.x = element_text(size = 10, color = "black"),
-    axis.text.y = element_text(size = 10, color = "black"),
-    plot.title = element_text(size = 14, face = "bold", color = "black"),
-    panel.background = element_rect(fill = "white", color = "black"),
-    panel.grid.major = element_line(color = "gray80", linetype = "dashed"),
-    panel.grid.minor = element_line(color = "gray90", linetype = "dashed"),
-    legend.title = element_blank(),
-    legend.position = "none"
-  )
-
-# Adjust axis ticks
-plot <- plot +
-  scale_y_continuous(
-    breaks = seq(0, max(data$Value), by = 2),
-    limits = c(0, max(data$Value)),
-    expand = c(0, 0),
-    labels = function(x) format(x, scientific = FALSE)
-  )
-
-# Display the plot
-print(plot)
-
-```
+However, as I've already produced an extra video covering the interpretation of similar Chi-Square tests, I won't elaborate on these numbers here. Instead, I'll display a [link to this video on the screen for your convenience](https://youtu.be/8Tj0-yMPO64).
 
 
