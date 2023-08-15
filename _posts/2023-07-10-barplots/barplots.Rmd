@@ -1,5 +1,5 @@
 ---
-title: "Epic Bar Plots with {ggplot2}"
+title: "(in progress) Epic Bar Plots with {ggplot2}"
 description: |
   Bar charts are useful for visualizing categorical data (percent stacked), group comparisons (means+CIs), and effective data communication through bar labels (basic_plot). In this video we'll learn the secrets of producing visually stunning bar charts using the {ggplot2} package. 
 author:
@@ -10,7 +10,7 @@ categories:
   - videos
   - statistics
   - visualization
-preview: barcharts_in_ggplot.png
+preview: thumbnail_barplots.png
 output:
   distill::distill_article:
     self_contained: false
@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = T)
 library(tidyverse)
 ```
 
-# This post as ... minutes video
+# This post as ... minutes video. (in progress)
 
 
 ```{r, eval=T, echo=F}
@@ -399,11 +399,12 @@ car <- mtcars %>%
   rownames_to_column(var = "car_name") %>% 
   mutate(cylinders = factor(cyl))
 
+library(ggstatsplot)
 ggplot(car, aes(x = cylinders, y = mpg)) +
-  stat_summary(fun = mean, geom = "col", alpha = 0.5) +
-  stat_summary(fun = mean, geom = "point", size = 4) +
+  stat_summary(fun = mean, geom = "col", fill = "orange") +
+  stat_summary(fun = mean, geom = "point", size = 5) +
   stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.5) + # mean_cl_boot
-  theme_bw()
+  theme_ggstatsplot()
 ```
 
 
@@ -435,7 +436,9 @@ This plot illustrates that 5.5% of all passengers belonged to the 1st class and 
 ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived, by = Class)) +
   geom_bar(position="fill")+
   scale_y_continuous(labels=percent)+
-  geom_text(stat = "prop", position = position_fill(.5))
+  geom_text(stat = "prop", position = position_fill(.5))+
+  scale_fill_manual(values = c("orange", "grey"))+
+  theme_minimal()
 ```
 
 Now we observe that the survival rate of the rich is the highest at 62.5%, whereas the crew exhibited the highest sacrifice rate of 76% among all classes.
