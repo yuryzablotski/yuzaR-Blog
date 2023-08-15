@@ -155,7 +155,7 @@ p + geom_text(aes(label=counts),
               size=10, vjust=2, color="orange")
 ```
 
-But wait, there's more – we can actually determine the labels themselves by simply writing them down! And you won't believe this – we can those labels bold! (foto лысого жирного чувака, уже есть :)
+But wait, there's more – we can actually determine the labels themselves by simply writing them down! And you won't believe this – we can make those labels bold! (foto лысого жирного чувака, уже есть :)
 
 
 ```{r}
@@ -170,7 +170,7 @@ p +
 And when vertical positioning just won't fit all that amazing text, we can use a few tricks to bring our plot to another level:
 
 - first, we can effortlessly flip the entire plot using the *coord_flip* function;
-- then, we'll horizontal adjust our text, ensuring it fits right near the bars;
+- then, we'll horizontally adjust our text, ensuring it fits right near the bars;
 - we'll then extend the x-axis to 45 to make sure every bit of text is displayed;
 - and finally, we can even change the order of our discrete categories for a smoother, more reader-friendly flow with a *scale_x_discrete* function
 
@@ -443,7 +443,7 @@ ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived, by = Class)) +
 
 Now we observe that the survival rate of the rich is the highest at 62.5%, whereas the crew exhibited the highest sacrifice rate of 76% among all classes.
 
-By the way, after weighting our frequencies, we gain the flexibility to create as many groups as needed. For example, let's consider the "Sex" factor. Interestingly, a majority of men did not survive, whereas of women did. Moreover, it's evident that during that period, a person's chances of survival were positively linked to their social status: the wealthier one was, the significantly greater their chances of survival were. Not everyone will make it, but if you've made it so far in this video, consider liking it.
+By the way, after weighting our frequencies, we gain the flexibility to create as many groups as needed. For example, let's consider the "Sex" factor. Interestingly, a majority of men did not survive, whereas the majority of women did. Moreover, it's evident that during that period, a person's chances of survival were positively linked to their social status: the wealthier one was, the significantly greater their chances of survival were. Not everyone will make it, but if you've made it so far in this video, consider liking it.
 
 ```{r fig.width=14, fig.height=7}
 ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived, by = Class)) +
