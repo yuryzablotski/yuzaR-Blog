@@ -10,23 +10,117 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-# Classic statistical tests
+# Classic Statistical Tests
+
+- [One-sample Student’s t-test and One-sample Wilcoxon test](https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/)
 
 - [Two-Samples Student’s t-Test & Two-Samples  Welch’s t-Test](https://yuzar-blog.netlify.app/posts/2022-03-11-ttest/)
 
-# Data and Model Visualisation
+- [Two-Samples Mann-Whitney U Test = Wilcoxon **Rank Sum** Test](https://yuzar-blog.netlify.app/posts/2022-03-16-mwutest/)
 
-- [Visualize Data And Model Results](https://yuzar-blog.netlify.app/posts/2022-08-01-sjplot/)
+- [Paired Samples t-Test](https://yuzar-blog.netlify.app/posts/2022-01-22-pairedsamplesttestinr/)
+
+- [Paired Samples Wilcoxon **Signed Rank** Test](https://yuzar-blog.netlify.app/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/)
+
+- [Correlation Analysis: Pearson, Spearman, Robust, Bayesian](https://yuzar-blog.netlify.app/posts/2021-12-29-correlationinr/)
+
+- [Correlation Matrix](https://yuzar-blog.netlify.app/posts/2022-01-05-correlationmatrixinr/)
+
+- [One-Way ANOVA: Fisher’s, Welch’s, Bayesian, Robust](https://yuzar-blog.netlify.app/posts/2022-04-03-anova/)
+
+- [Kruskal-Wallis test: Non-Parametric Alternative to ANOVA](https://yuzar-blog.netlify.app/posts/2022-04-13-kw/)
+
+- [One-Way Repeated Measures ANOVA](https://yuzar-blog.netlify.app/posts/2022-01-30-rmanova/)
+
+- [Friedman Test: Non-Parametric Alternative to RM ANOVA](https://yuzar-blog.netlify.app/posts/2022-02-08-friedman/)
+
+- [Chi-Square Test + pairwise post-hoc tests](https://yuzar-blog.netlify.app/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/)
+
+- [McNemar Test: Dependend Samples Alternative for Chi-Square](https://yuzar-blog.netlify.app/posts/2022-02-20-mcnemar/)
+
+- [Cochran’s Q Test + Pairwise McNemar Tests (post-hoc)](https://yuzar-blog.netlify.app/posts/2022-03-04-cochran/)
+
+
+
+
+
+
+
+
 
 # Data Wrangling and Pre-Processing
 
+- [Learn What Tidy Data Is](https://yuzar-blog.netlify.app/posts/2022-04-22-tidydata/)
+
+- [Clean Your Data Lightly with {janitor}](https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/)
+
+- [Basic Data Wrangling  with {dplyr}](https://yuzar-blog.netlify.app/posts/2023-01-31-datawrangling1/)
+
+- [Advanced Data Wrangling  with {dplyr}](https://yuzar-blog.netlify.app/posts/2023-02-07-datawrangling2/)
+
 - [Tidy Up Data](https://yuzar-blog.netlify.app/posts/2023-04-18-datawrangling3/)
+
+- [{dplyr} on Steroids: Handling Data Bases](https://yuzar-blog.netlify.app/posts/2023-05-09-datawrangling4/)
+
+
+
+
+# Exploratory Data Analysis
+
+- [Quick Exploratory Data Analysis with {DataExplorer}](https://yuzar-blog.netlify.app/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/)
+
+- [Diagnose, Explore and Repair Your Data with {dlookr}](https://yuzar-blog.netlify.app/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/)
+
+- [DEEP! Exploratory Data Analysis in R](https://yuzar-blog.netlify.app/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/)
+
+
+
+
+
+
+# Data Visualisation 
+
+- [Bar Plots with {ggplot2}](https://yuzar-blog.netlify.app/posts/2023-07-10-barplots/)
+
+- [Visualize Data And Model Results](https://yuzar-blog.netlify.app/posts/2022-08-01-sjplot/)
+
+
+
+
 
 # Statistical Modelling
 
-- [Find The Best Model](https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti/)
+- [Robust Regression: don’t depend on outliers!](https://yuzar-blog.netlify.app/posts/2022-09-02-robustregression/)
 
-# Machine learning and Artificial Intelligence
+- [Conduct Many Models with Nested (Grouped) Data](https://yuzar-blog.netlify.app/posts/2022-09-12-manymodels/)
+
+- [Non-Parametric Bootstrapped Regression: Alternative for Ordinary Linear Regression](https://yuzar-blog.netlify.app/posts/2022-08-31-bootstrappingregressions/)
+
+- [Quantile Regression as the most useful Alternative for Ordinary Linear Regression](https://yuzar-blog.netlify.app/posts/2022-12-01-quantileregression/)
+
+- [Squeeze Hidden Knowledge out of Models with Game-Changing {emmeans}](https://yuzar-blog.netlify.app/posts/2022-11-29-emmeans/)
+
+- [Model Interactions: Two-Way (bivariable) Analysis](https://yuzar-blog.netlify.app/posts/2022-12-29-emmeans2interactions/)
+
+
+- [Check Quality And Assumptions of Your Model](https://yuzar-blog.netlify.app/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/)
+
+- [Publication-Ready Tables of Data, Stat-Tests and Models](https://yuzar-blog.netlify.app/posts/2022-10-31-gtsummary/) + [Tables of Individual Tests & Models](https://yuzar-blog.netlify.app/posts/2022-11-25-gtsummary2/#emmeans---or-sort-of---simply-pairwise-tests)
+
+- [Visualize Model Results and Assumptions](https://yuzar-blog.netlify.app/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/)
+
+- [Report (interpret) Results of Statistical Tests & Models](https://yuzar-blog.netlify.app/posts/2022-06-18-report/)
+
+- [Find The Best Model: Automated Model Selection and Multimodel Inference as Alternative to Stepwise (backwards) Selection ](https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti/)
+
+- [Survival Analysis 1: Kaplan-Meier Curves](https://yuzar-blog.netlify.app/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/)
+
+- [Survival Analysis 2: parametric survival models](https://yuzar-blog.netlify.app/posts/2021-01-06-survival-analysis-2-parametric-survival-models/)
+
+
+# Machine Learning and Artificial Intelligence
 
 - [Impute Missing Values](https://yuzar-blog.netlify.app/posts/2021-03-04-how-to-impute-missing-values-in-r/)
+
+- [Effective Resampling for Machine Learning with {rsample}](https://yuzar-blog.netlify.app/posts/2022-10-27-rsample/)
 
