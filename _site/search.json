@@ -6,14 +6,22 @@
       "description": "Welcome to my blog about Data Science! I love to play with data and try to understand the world through the lens of Statistics, Machine Learning and Artificial Intelligence. I also love to learn, to teach and to create. Having a personal blog optimally combines these three passions. And all of this is possible with R and RStudio. That's why I love R! ",
       "author": [],
       "contents": "\n\n\n\n\n\n\n",
-      "last_modified": "2023-08-15T10:23:06+02:00"
+      "last_modified": "2023-08-15T10:54:15+02:00"
+    },
+    {
+      "path": "consulting.html",
+      "title": "Consulting and Tutoring in R",
+      "description": "If you're seeking statistical assistance for any of the topics listed below, take a moment to explore the provided links and ensure they match your requirements. If you can, attempt to implement the analyses on your own. Should you find yourself still in need of support, feel free to reach out to me here: yzablotski@icloud.com\n",
+      "author": [],
+      "contents": "\n\nContents\nClassic statistical tests\nData and Model Visualisation\nData Wrangling and Pre-Processing\nStatistical Modelling\nMachine learning and Artificial Intelligence\n\nClassic statistical tests\nTwo-Samples Student’s t-Test & Two-Samples Welch’s t-Test\nData and Model Visualisation\nVisualize Data And Model Results\nData Wrangling and Pre-Processing\nTidy Up Data\nStatistical Modelling\nFind The Best Model\nMachine learning and Artificial Intelligence\nImpute Missing Values\n\n\n\n",
+      "last_modified": "2023-08-15T10:54:15+02:00"
     },
     {
       "path": "index.html",
       "title": "Latest posts",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2023-08-15T10:23:08+02:00"
+      "last_modified": "2023-08-15T10:54:16+02:00"
     }
   ],
   "collections": ["posts/posts.json"]
