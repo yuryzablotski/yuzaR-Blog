@@ -1,7 +1,7 @@
 ---
 title: "Consulting and Tutoring in R"
 description: |
-   If you're seeking statistical assistance for any of the topics listed below, take a moment to explore the provided links and ensure they match your requirements. If you can, attempt to implement the analyses on your own. Should you find yourself still in need of support, feel free to reach out to me here: yzablotski@icloud.com
+   If you're seeking statistical assistance for any of the topics listed below, take a moment to explore the provided links and ensure they match your requirements. If you can, attempt to implement the analyses on your own. Should you find yourself still in need of support, feel free to reach out to me per Email with a Subject "CONSULTING IN R": yzablotski@icloud.com
    
 ---
 
