@@ -16,11 +16,15 @@ navbar:
       href: about.html
     - text: "POSTS"
       href: index.html
-    # - text: "TOPICS"
+    # - text: "CONSULTING"
     #   menu:
-    #     - text: "(in progress) Package reviews" 
+    #     - text: "Classic statistical tests" 
     #       href: welcome.html
-    #     - text: "(in progress) Visualisation"
+    #     - text: "Data and Model Visualisation"
+    #       href: welcome.html
+    #     - text: "Data Wrangling and Pre-Processing"
+    #       href: welcome.html
+    #     - text: "Statistical Modelling"
     #       href: welcome.html
     - icon: fa fa-github
       href: https://github.com/yuryzablotski/yuzaR-Blog
@@ -30,10 +34,8 @@ navbar:
       href: https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA
     - text: "LEAVE A TIP" 
       href: https://koji.to/yuzaR
-    # text: "R-bloggers"
-    # href: https://www.r-bloggers.com/
-    # - icon: fa fa-linkedin
-    #   href: https://www.linkedin.com/in/lisa-lendway-68a00b63/
+    - icon: fa fa-linkedin
+      href: https://www.linkedin.com/in/dr-yury-zablotski-3765b378/
 output: 
   distill::distill_article:
     toc: true
