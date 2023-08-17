@@ -1,5 +1,5 @@
 ---
-title: "(in progress) Epic Bar Plots with {ggplot2}"
+title: "Epic Bar Plots with {ggplot2}"
 description: |
   Bar charts are useful for visualizing categorical data (percent stacked), group comparisons (means+CIs), and effective data communication through bar labels (basic_plot). In this video we'll learn the secrets of producing visually stunning bar charts using the {ggplot2} package. 
 author:
@@ -59,7 +59,7 @@ ggplot(Wage, aes(education)) +
 
 
 
-# Basic barplots 2: (bourne) identity
+# Basic barplots 2: identity
 
 However, when dealing with preprocessed and summarized data where counts are already categorized, we can utilize *stat = "identity"* within the *geom_bar* function. To demonstrate this, let's create the simplest possible data frame containing only three categories and three corresponding counts.
 
@@ -74,33 +74,33 @@ df
 The aesthetics will now encompass not only the x-axis with a categorical variable but also the y-axis with readily available counts. The *stat="identity"* (think of the Bourne Identity movie) argument helps to **identify** which counts correspond to which categories. With this straightforward example in hand, let's discover how we can significantly enhance the visual appeal of our plot.
 
 ```{r}
-ggplot(data=df, aes(x=category, y=counts)) +
-  geom_bar(stat="identity")
+ggplot(data = df, aes(x = category, y = counts)) +
+  geom_bar(stat = "identity")
 ```
 
 First of all, we can effortlessly adjust the width of our grey bars by employing the width argument, setting it, for instance, to 0.4:
 
 ```{r}
-ggplot(data=df, aes(x=category, y=counts)) +
-  geom_bar(stat="identity", width=0.4)
+ggplot(data = df, aes(x = category, y = counts)) +
+  geom_bar(stat = "identity", width = 0.4)
 ```
 
 
 But gray bars appear rather dull. Thus, to reduce the monotony, we can inject some colors into the chart. For example, by using the *fill* argument inside of *geom_bar*, we can paint the bars white, while utilizing the *color* argument to give the edges a chocolate shade. It's like a tiramisu – with a chocolate coating on the outside and a creamy white filling on the inside.
 
 ```{r}
-ggplot(data=df, aes(x=category, y=counts)) +
-  geom_bar(stat="identity", width=0.4, 
-           fill="white", color = "chocolate4")
+ggplot(data = df, aes(x = category, y = counts)) +
+  geom_bar(stat = "identity", width = 0.4, 
+           fill = "white", color = "chocolate4")
 ```
 
 
 But if, for whatever reason, we want different colors for different bars, we can put the *fill* and *color* arguments inside of *aesthetics* to make it aesthetically more appealing:
 
 ```{r}
-ggplot(data=df, aes(x=category, y=counts, 
+ggplot(data = df, aes(x = category, y = counts, 
                     fill = category, color = -counts)) +
-  geom_bar(stat="identity")
+  geom_bar(stat = "identity")
 ```
 
 
@@ -108,8 +108,8 @@ ggplot(data=df, aes(x=category, y=counts,
 By the way, we can save our plot as an object, which not only reduces the need for excessive typing but also enables us to employ this object for subsequent manipulations:
 
 ```{r}
-p <- ggplot(data=df, aes(x=category, y=counts, fill = category)) +
-  geom_bar(stat="identity", width=0.777)
+p <- ggplot(data = df, aes(x = category, y = counts, fill = category)) +
+  geom_bar(stat = "identity", width = 0.777)
 p
 ```
 
@@ -117,9 +117,9 @@ p
 For example, we can manually fill the bars with a color of our choice, or apply custom color palettes to our object, but, to be honest, I never use them:
 
 ```{r}
-p + scale_fill_manual(values=c("#999999", "orange", "violet"))
+p + scale_fill_manual(values = c("#999999", "orange", "violet"))
 
-p + scale_fill_brewer(palette="Dark2") 
+p + scale_fill_brewer(palette = "Dark2") 
 ```
 
 
@@ -161,8 +161,8 @@ But wait, there's more – we can actually determine the labels themselves by si
 ```{r}
 p + 
   geom_text(
-    aes(label=c("BLACK", "IS THE NEW", "ORANGE")), 
-    size=7, vjust=2, color="orange", fontface = "bold")
+    aes(label = c("BLACK", "IS THE NEW", "ORANGE")), 
+    size = 7, vjust = 2, color = "orange", fontface = "bold")
 ```
 
 
@@ -177,22 +177,22 @@ And when vertical positioning just won't fit all that amazing text, we can use a
 ```{r}
 p <- p + 
   geom_text(
-    aes(label=c("BLACK", "IS THE NEW", "ORANGE")), 
-    size=7, hjust=-0.1, color="orange", fontface = "bold")+
+    aes(label = c("BLACK", "IS THE NEW", "ORANGE")), 
+    size = 7, hjust = -0.1, color = "orange", fontface = "bold")+
   coord_flip()+
   ylim(0, 45)+
-  scale_x_discrete(limits=c("A", "B", "C"))
+  scale_x_discrete(limits = c("A", "B", "C"))
 p
 ```
 
 Now that our main plot is in good shape, let's consider the legend. Well, handling the legend can be pain in the ass. But, no worries, you're in control here. With the *theme* function and the *legend.position* argument, you can adjust the legend's placement – *top, bottom, or no legend* at all. Plus, if you need to, you can change the legend's *name* and *labels* too to whatever you want.
 
 ```{r fig.width=9, fig.height=9}
-a <- p + theme(legend.position="top")
-b <- p + theme(legend.position="bottom")
-c <- p + theme(legend.position="none")
+a <- p + theme(legend.position = "top")
+b <- p + theme(legend.position = "bottom")
+c <- p + theme(legend.position = "none")
  
-p <- p + theme(legend.position="bottom")+ 
+p <- p + theme(legend.position = "bottom")+ 
   scale_fill_grey(name = "Quarter", 
                   labels = c("1", "2", "3"))
 
@@ -302,18 +302,18 @@ Ok, let's summarize what we've learned so far. The first final plot might appear
 
 ```{r}
 df
-ggplot(data=df, aes(x=category, y=counts, fill = category)) +
-  geom_bar(stat="identity", width=0.7)+ 
+ggplot(data = df, aes(x = category, y = counts, fill = category)) +
+  geom_bar(stat = "identity", width = 0.7)+ 
   scale_fill_grey(name = "NEW TV SHOW", 
                   labels = c("ORANGE", "IS THE NEW", "GRAY???"))+
   theme_classic()+
-  scale_x_discrete(limits=c("C", "B", "A"))+
+  scale_x_discrete(limits = c("C", "B", "A"))+
   geom_text(
-    aes(label=c("DREAM BIG","START SMALL","ACT NOW")),
-    color="black", size=5, hjust=-0.1)+ # vjust
+    aes(label = c("DREAM BIG","START SMALL","ACT NOW")),
+    color = "black", size = 5, hjust = -0.1)+ # vjust
   coord_flip()+
   ylim(0, 45)+ 
-  theme(legend.position="bottom") + 
+  theme(legend.position = "bottom") + 
   labs(
     title    = "Quarterly TV-show Profit (in million U.S. dollars)",
     subtitle = "A simple bar chart with ca. 50 shades of gray",
@@ -322,13 +322,13 @@ ggplot(data=df, aes(x=category, y=counts, fill = category)) +
     y        = "INVEST IN YOURSELF"
   )+
   theme(
-    plot.title = element_text(color = "orange", size = 15),
+    plot.title    = element_text(color = "orange", size = 15),
     plot.subtitle = element_text(face = "bold"),
-    plot.caption = element_text(face = "italic"),
-    axis.title.x = element_text(color = "orange", size = 14, face = "bold"),
-    axis.title.y = element_text(size = 14, face = "italic"),
-    axis.text.y  = element_blank(),
-    axis.ticks.y = element_blank()
+    plot.caption  = element_text(face = "italic"),
+    axis.title.x  = element_text(color = "orange", size = 14, face = "bold"),
+    axis.title.y  = element_text(size = 14, face = "italic"),
+    axis.text.y   = element_blank(),
+    axis.ticks.y  = element_blank()
   )
 ```
 
@@ -358,8 +358,8 @@ str(d)
 In general, the code remains quite similar, yet it carries two fresh nuances. Firstly, instead of filling the bars along the x-axis as we did before, a method that merely results in distinct colors for x-axis bars, we're now filling a different categorical variable with color. Secondly, we can command the *geom_bar* function to neatly stack the bars we've just filled, via the *position = "stack"* argument.
 
 ```{r}
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position = "stack")
+ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
+  geom_bar(stat = "identity", position = "stack")
 ```
 
 
@@ -368,8 +368,8 @@ ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
 However, that arrangement seems a bit dodgy, doesn't it? The problem is, it hampers our ability to make effective comparisons of survived versus not-survived people on titanic. What we truly want is to have the bars grouped near each other for a clearer contrast. So, we need to change this dodgy positioning for a position_dodge.(машину додж покажи) 
 
 ```{r}
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position="dodge")
+ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
+  geom_bar(stat = "identity", position = "dodge")
 ```
 
 But wait, there's more: we can take it a step further and
@@ -379,9 +379,9 @@ But wait, there's more: we can take it a step further and
 - elevate the plot's aesthetics by implementing a fresh colors and new theme.
 
 ```{r fig.width=11, fig.height=7}
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position=position_dodge())+
-  facet_grid(Age~Sex, scales = "free")+
+ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
+  geom_bar(stat = "identity", position = position_dodge())+
+  facet_grid(Age ~ Sex, scales = "free")+
   geom_text(aes(label=Freq), position = position_dodge(0.9),
             vjust=-.1, color="black", size=3.5)+
   scale_fill_brewer(palette="Paired")+
@@ -414,19 +414,20 @@ Now, let's get back to real barplots, and make them great again (pic of Trump wi
 
 ```{r}
 library(scales)
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position="fill")+
-  scale_y_continuous(labels=percent)
+ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
+  geom_bar(stat = "identity", position = "fill")+
+  scale_y_continuous(labels = percent)
 ```
 
 
 However, while the percentages on the y-axis appear impressive, having the actual percentage of each category displayed as text within each bar would be far more effective, right? To achieve this, we'll *weight* our Frequency and use the percentage column we've already computed in our data. Instead of relying on the "identify" statistics within *geom_bar*, we'll explicitly opt for the "proportion" statistics within *geom_text*. And by employing the *position_fill* function with 0.5 specified within, our text would be perfectly positioned at the exact center of each category.
 
 ```{r}
-ggplot(data=d, aes(x=Class, weight=Freq, fill=Survived)) +
-  geom_bar(position="fill")+  # stat="identity" is removed
-  scale_y_continuous(labels=percent)+
-  geom_text(stat = "prop", position = position_fill(0.5))
+ggplot(data = d, aes(x = Class, weight = Freq, fill = Survived)) +
+  geom_bar(position = "fill")+  # stat="identity" is removed
+  scale_y_continuous(labels = percent)+
+  geom_text(stat = "prop", position = position_fill(0.5))+ 
+  theme_test()
 ```
 
 
@@ -474,4 +475,9 @@ grouped_ggbarstats(
 
 However, as I've already produced an extra video covering the interpretation of similar Chi-Square tests, I won't elaborate on these numbers here. Instead, I'll display a [link to this video on the screen for your convenience](https://youtu.be/8Tj0-yMPO64).
 
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
 
