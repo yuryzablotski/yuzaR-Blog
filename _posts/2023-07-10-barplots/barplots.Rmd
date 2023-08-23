@@ -1,7 +1,7 @@
 ---
 title: "Epic Bar Plots with {ggplot2}"
 description: |
-  Bar charts are useful for visualizing categorical data (percent stacked), group comparisons (means+CIs), and effective data communication through bar labels (basic_plot). In this video we'll learn the secrets of producing visually stunning bar charts using the {ggplot2} package. 
+  Bar charts are useful for visualizing categorical data, group comparisons, and effective data communication through bar labels. In this video we'll learn the secrets of producing visually stunning bar charts using the {ggplot2} package. 
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -32,11 +32,11 @@ knitr::opts_chunk$set(echo = T)
 library(tidyverse)
 ```
 
-# This post as ... minutes video. (in progress)
+# This post as 14 minutes video
 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("PENijodRDXc") 
 ```
 
 
@@ -71,14 +71,14 @@ df <- tibble(
 df
 ```
 
-The aesthetics will now encompass not only the x-axis with a categorical variable but also the y-axis with readily available counts. The *stat="identity"* (think of the Bourne Identity movie) argument helps to **identify** which counts correspond to which categories. With this straightforward example in hand, let's discover how we can significantly enhance the visual appeal of our plot.
+The aesthetics will now encompass not only the x-axis with a categorical variable but also the y-axis with readily available counts. The *stat = "identity"* (think of the Bourne Identity movie) argument helps to **identify** which counts correspond to which categories. With this straightforward example in hand, let's discover how we can significantly enhance the visual appeal of our plot.
 
 ```{r}
 ggplot(data = df, aes(x = category, y = counts)) +
   geom_bar(stat = "identity")
 ```
 
-First of all, we can effortlessly adjust the width of our grey bars by employing the width argument, setting it, for instance, to 0.4:
+First of all, we can effortlessly adjust the width of our grey bars by employing the width argument, setting it, for example, to 0.4:
 
 ```{r}
 ggplot(data = df, aes(x = category, y = counts)) +
@@ -155,7 +155,7 @@ p + geom_text(aes(label=counts),
               size=10, vjust=2, color="orange")
 ```
 
-But wait, there's more – we can actually determine the labels themselves by simply writing them down! And you won't believe this – we can make those labels bold! (foto лысого жирного чувака, уже есть :)
+But wait, there's more – we can actually determine the labels themselves by simply writing them down! And you won't believe this – we can make those labels bold!
 
 
 ```{r}
@@ -353,6 +353,7 @@ d <- as.data.frame(Titanic) %>%
   dplyr::mutate(percentage = Freq/sum(Freq))
 str(d)
 ```
+
 ## Stacked barplot
 
 In general, the code remains quite similar, yet it carries two fresh nuances. Firstly, instead of filling the bars along the x-axis as we did before, a method that merely results in distinct colors for x-axis bars, we're now filling a different categorical variable with color. Secondly, we can command the *geom_bar* function to neatly stack the bars we've just filled, via the *position = "stack"* argument.
@@ -365,7 +366,7 @@ ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
 
 ## Dodged barplot
 
-However, that arrangement seems a bit dodgy, doesn't it? The problem is, it hampers our ability to make effective comparisons of survived versus not-survived people on titanic. What we truly want is to have the bars grouped near each other for a clearer contrast. So, we need to change this dodgy positioning for a position_dodge.(машину додж покажи) 
+However, that arrangement seems a bit dodgy, doesn't it? The problem is, it hampers our ability to make effective comparisons of survived versus not-survived people on titanic. What we truly want is to have the bars grouped near each other for a clearer contrast. So, we need to change this dodgy positioning for a position_dodge.
 
 ```{r}
 ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
@@ -420,7 +421,7 @@ ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
 ```
 
 
-However, while the percentages on the y-axis appear impressive, having the actual percentage of each category displayed as text within each bar would be far more effective, right? To achieve this, we'll *weight* our Frequency and use the percentage column we've already computed in our data. Instead of relying on the "identify" statistics within *geom_bar*, we'll explicitly opt for the "proportion" statistics within *geom_text*. And by employing the *position_fill* function with 0.5 specified within, our text would be perfectly positioned at the exact center of each category.
+However, while the percentages on the y-axis appear impressive, having the actual percentage of each category displayed as text within each bar would be far more effective, right? To achieve this, we'll *weight* our Frequency and, instead of relying on the "identify" statistics within *geom_bar*, we'll explicitly opt for the "proportion" statistics within *geom_text*. And by employing the *position_fill* function with 0.5 specified within, our text would be perfectly positioned at the exact center of each category.
 
 ```{r}
 ggplot(data = d, aes(x = Class, weight = Freq, fill = Survived)) +

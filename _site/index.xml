@@ -7,7 +7,7 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>2023-08-16</lastBuildDate>
+    <lastBuildDate>2023-08-22</lastBuildDate>
     <item>
       <title>Epic Bar Plots with {ggplot2}</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -15,11 +15,11 @@
       <description>
 
 
-&lt;h1 id="this-post-as-minutes-video.-in-progress"&gt;This post as … minutes
-video. (in progress)&lt;/h1&gt;
+&lt;h1 id="this-post-as-14-minutes-video"&gt;This post as 14 minutes
+video&lt;/h1&gt;
 &lt;div class="vembedr"&gt;
 &lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;iframe src="https://www.youtube.com/embed/PENijodRDXc" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h1 id="basic-barplots-1-count"&gt;Basic barplots 1: count&lt;/h1&gt;
@@ -55,10 +55,10 @@ $ logwage    &amp;lt;dbl&amp;gt; 4.318063, 4.255273, 4.875061, 5.041393, 4.31806
 $ wage       &amp;lt;dbl&amp;gt; 75.04315, 70.47602, 130.98218, 154.68529, 75.0431…&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = Wage, aes(x = education)) +
   geom_bar(stat = &amp;quot;count&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(education)) +
   geom_bar()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-2-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-2-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="basic-barplots-2-identity"&gt;Basic barplots 2: identity&lt;/h1&gt;
 &lt;p&gt;However, when dealing with preprocessed and summarized data where
 counts are already categorized, we can utilize &lt;em&gt;stat =
@@ -78,19 +78,19 @@ df&lt;/code&gt;&lt;/pre&gt;
 3 C            30&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The aesthetics will now encompass not only the x-axis with a
 categorical variable but also the y-axis with readily available counts.
-The &lt;em&gt;stat=“identity”&lt;/em&gt; (think of the Bourne Identity movie)
+The &lt;em&gt;stat = “identity”&lt;/em&gt; (think of the Bourne Identity movie)
 argument helps to &lt;strong&gt;identify&lt;/strong&gt; which counts correspond to
 which categories. With this straightforward example in hand, let’s
 discover how we can significantly enhance the visual appeal of our
 plot.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = df, aes(x = category, y = counts)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;First of all, we can effortlessly adjust the width of our grey bars
-by employing the width argument, setting it, for instance, to 0.4:&lt;/p&gt;
+by employing the width argument, setting it, for example, to 0.4:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = df, aes(x = category, y = counts)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;, width = 0.4)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But gray bars appear rather dull. Thus, to reduce the monotony, we
 can inject some colors into the chart. For example, by using the
 &lt;em&gt;fill&lt;/em&gt; argument inside of &lt;em&gt;geom_bar&lt;/em&gt;, we can paint the
@@ -100,33 +100,33 @@ on the outside and a creamy white filling on the inside.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = df, aes(x = category, y = counts)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;, width = 0.4, 
            fill = &amp;quot;white&amp;quot;, color = &amp;quot;chocolate4&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But if, for whatever reason, we want different colors for different
 bars, we can put the &lt;em&gt;fill&lt;/em&gt; and &lt;em&gt;color&lt;/em&gt; arguments inside
 of &lt;em&gt;aesthetics&lt;/em&gt; to make it aesthetically more appealing:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = df, aes(x = category, y = counts, 
                     fill = category, color = -counts)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;By the way, we can save our plot as an object, which not only reduces
 the need for excessive typing but also enables us to employ this object
 for subsequent manipulations:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p &amp;lt;- ggplot(data = df, aes(x = category, y = counts, fill = category)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;, width = 0.777)
 p&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;For example, we can manually fill the bars with a color of our
 choice, or apply custom color palettes to our object, but, to be honest,
 I never use them:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p + scale_fill_manual(values = c(&amp;quot;#999999&amp;quot;, &amp;quot;orange&amp;quot;, &amp;quot;violet&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p + scale_fill_brewer(palette = &amp;quot;Dark2&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-9-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Instead, I absolutely love and use the minimalistic grey scaled bars
 in varying appealing shades of gray (50 shades of gray pic ;)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p &amp;lt;- p + scale_fill_grey() 
 p&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;However, what is totally not appealing is this bland, gray
 background. Fortunately, there’s a straightforward solution for it – the
 use of &lt;em&gt;themes&lt;/em&gt;! &lt;em&gt;Themes&lt;/em&gt; allow us to change the plot’s
@@ -135,16 +135,16 @@ classic themes. However, by typing “theme_” and pressing the “tab”
 button, you’ll be presented with multiple themes, enabling you to
 quickly find your personal favorite.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p + theme_minimal()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p &amp;lt;- p + theme_classic()
 p&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-11-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-11-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Cool, isn’t it? But do you know what’s even cooler? The fact that we
 can easily add labels to our bars. Everyone appreciates labels, right?
 :) We achieve this using the “geom_text” function and telling our
 plot-aesthetics from which column we want to extract our labels:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p + geom_text(aes(label=counts))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;While labels are indeed useful, the placement of our text is rather
 peculiar – neither on the bar, nor under the bar. Additionally, they are
 somewhat small and challenging to discern due to their black color.
@@ -152,15 +152,15 @@ Therefore, it’s necessary to enlarge their size, vertically adjust them
 and make their color more visible.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p + geom_text(aes(label=counts), 
               size=10, vjust=2, color=&amp;quot;orange&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But wait, there’s more – we can actually determine the labels
 themselves by simply writing them down! And you won’t believe this – we
-can make those labels bold! (foto лысого жирного чувака, уже есть :)&lt;/p&gt;
+can make those labels bold!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;p + 
   geom_text(
     aes(label = c(&amp;quot;BLACK&amp;quot;, &amp;quot;IS THE NEW&amp;quot;, &amp;quot;ORANGE&amp;quot;)), 
     size = 7, vjust = 2, color = &amp;quot;orange&amp;quot;, fontface = &amp;quot;bold&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And when vertical positioning just won’t fit all that amazing text,
 we can use a few tricks to bring our plot to another level:&lt;/p&gt;
 &lt;ul&gt;
@@ -182,7 +182,7 @@ for a smoother, more reader-friendly flow with a
   ylim(0, 45)+
   scale_x_discrete(limits = c(&amp;quot;A&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;C&amp;quot;))
 p&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Now that our main plot is in good shape, let’s consider the legend.
 Well, handling the legend can be pain in the ass. But, no worries,
 you’re in control here. With the &lt;em&gt;theme&lt;/em&gt; function and the
@@ -200,7 +200,7 @@ p &amp;lt;- p + theme(legend.position = &amp;quot;bottom&amp;quot;)+
 
 library(patchwork)
 (a + b) / (c + p)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-16-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-16-1.png" width="864" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;theme(
 
     # Legend title and text labels
@@ -283,7 +283,7 @@ like&lt;/li&gt;
     axis.text.y   = element_blank(),
     axis.ticks.y  = element_blank()
   )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Ok, let’s summarize what we’ve learned so far. The first final plot
 might appear as a huge chunk of code, but it’s surprisingly intuitive
 when broken down step by step. For instance:&lt;/p&gt;
@@ -337,7 +337,7 @@ bold or italic if needed.&lt;/li&gt;
     axis.text.y   = element_blank(),
     axis.ticks.y  = element_blank()
   )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And before we loose all these changes, we can save this plot in the
 format of our choice using &lt;em&gt;ggsave&lt;/em&gt; command:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(
@@ -375,17 +375,16 @@ we can command the &lt;em&gt;geom_bar&lt;/em&gt; function to neatly stack the ba
 we’ve just filled, via the &lt;em&gt;position = “stack”&lt;/em&gt; argument.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;, position = &amp;quot;stack&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-22-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="dodged-barplot"&gt;Dodged barplot&lt;/h2&gt;
 &lt;p&gt;However, that arrangement seems a bit dodgy, doesn’t it? The problem
 is, it hampers our ability to make effective comparisons of survived
 versus not-survived people on titanic. What we truly want is to have the
 bars grouped near each other for a clearer contrast. So, we need to
-change this dodgy positioning for a position_dodge.(машину додж
-покажи)&lt;/p&gt;
+change this dodgy positioning for a position_dodge.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;, position = &amp;quot;dodge&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-23-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-23-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;But wait, there’s more: we can take it a step further and&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;employ the facet_grid function to incorporate two additional
@@ -402,7 +401,7 @@ theme.&lt;/li&gt;
             vjust=-.1, color=&amp;quot;black&amp;quot;, size=3.5)+
   scale_fill_brewer(palette=&amp;quot;Paired&amp;quot;)+
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-24-1.png" width="1056" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-24-1.png" width="1056" /&gt;&lt;/p&gt;
 &lt;p&gt;Not bad for just a few lines of code, right? However, we’re merely
 scratching the surface. The next thing I’m about to reveal will blow
 your mind. But before we dive into that, there’s something you might
@@ -432,7 +431,7 @@ ggplot(car, aes(x = cylinders, y = mpg)) +
   stat_summary(fun = mean, geom = &amp;quot;point&amp;quot;, size = 5) +
   stat_summary(fun.data = mean_cl_normal, geom = &amp;quot;errorbar&amp;quot;, width = 0.5) + # mean_cl_boot
   theme_ggstatsplot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-25-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="percent-stacked-barplots"&gt;Percent stacked barplots&lt;/h2&gt;
 &lt;p&gt;Now, let’s get back to real barplots, and make them great again (pic
 of Trump with his stupid base cap ;). Another intuitive approach to
@@ -444,12 +443,11 @@ is very easy with the &lt;em&gt;scale_y_continuous&lt;/em&gt; function and the
 ggplot(data = d, aes(x = Class, y = Freq, fill = Survived)) +
   geom_bar(stat = &amp;quot;identity&amp;quot;, position = &amp;quot;fill&amp;quot;)+
   scale_y_continuous(labels = percent)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-26-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-26-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;However, while the percentages on the y-axis appear impressive,
 having the actual percentage of each category displayed as text within
 each bar would be far more effective, right? To achieve this, we’ll
-&lt;em&gt;weight&lt;/em&gt; our Frequency and use the percentage column we’ve
-already computed in our data. Instead of relying on the “identify”
+&lt;em&gt;weight&lt;/em&gt; our Frequency and, instead of relying on the “identify”
 statistics within &lt;em&gt;geom_bar&lt;/em&gt;, we’ll explicitly opt for the
 “proportion” statistics within &lt;em&gt;geom_text&lt;/em&gt;. And by employing the
 &lt;em&gt;position_fill&lt;/em&gt; function with 0.5 specified within, our text
@@ -459,7 +457,7 @@ would be perfectly positioned at the exact center of each category.&lt;/p&gt;
   scale_y_continuous(labels = percent)+
   geom_text(stat = &amp;quot;prop&amp;quot;, position = position_fill(0.5))+ 
   theme_test()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-27-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-27-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;This plot illustrates that 5.5% of all passengers belonged to the 1st
 class and did not survive. While this representation might be what we
 want, I more often want each class to be 100% for a clear comparison of
@@ -472,7 +470,7 @@ variable to one on the x-axes.&lt;/p&gt;
   geom_text(stat = &amp;quot;prop&amp;quot;, position = position_fill(.5))+
   scale_fill_manual(values = c(&amp;quot;orange&amp;quot;, &amp;quot;grey&amp;quot;))+
   theme_minimal()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-28-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-28-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Now we observe that the survival rate of the rich is the highest at
 62.5%, whereas the crew exhibited the highest sacrifice rate of 76%
 among all classes.&lt;/p&gt;
@@ -491,7 +489,7 @@ it so far in this video, consider liking it.&lt;/p&gt;
   facet_grid(~Sex)+
   scale_fill_brewer(palette=&amp;quot;Paired&amp;quot;)+
   theme_test()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-29-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-29-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;h1 id="whats-next-barplots-with-significance-tests"&gt;What’s next?
 Barplots with Significance Tests&lt;/h1&gt;
 &lt;p&gt;And if you’re genuinely interested in determining the real
@@ -507,7 +505,7 @@ grouped_ggbarstats(
   label = &amp;quot;both&amp;quot;,
   grouping.var = Sex
 )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec33370c68163_files/figure-html/unnamed-chunk-30-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769527e442a_files/figure-html/unnamed-chunk-30-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;p&gt;However, as I’ve already produced an extra video covering the
 interpretation of similar Chi-Square tests, I won’t elaborate on these
 numbers here. Instead, I’ll display a &lt;a
@@ -523,7 +521,7 @@ improve this tutorial.&lt;/p&gt;
       <category>statistics</category>
       <category>visualization</category>
       <guid>https://yuzar-blog.netlify.app/posts/2023-07-10-barplots</guid>
-      <pubDate>2023-08-16</pubDate>
+      <pubDate>2023-08-22</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2023-07-10-barplots/thumbnail_barplots.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
@@ -874,7 +872,7 @@ plotting &lt;em&gt;education&lt;/em&gt; shows that around 9% of people in our da
 did not finish a high school, while around 14% have a PhD.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
   plot_frq(education)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-4-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Since {sjPlot} package works with tidyverse 🥳, we can easily group
 the data by any other categorical variable, let’s take &lt;em&gt;race&lt;/em&gt;,
 and get frequencies and percentages for every group.
@@ -887,7 +885,7 @@ surpriiise … &lt;code&gt;save_plot&lt;/code&gt; command.&lt;/p&gt;
   group_by(race) %&amp;gt;% 
   plot_frq(education) %&amp;gt;%
     plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-5-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-5-1.png" width="1344" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;save_plot(filename = &amp;quot;race_vs_education.jpg&amp;quot;, fig = p, width = 30, height = 19)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;quartz_off_screen 
                 2 &lt;/code&gt;&lt;/pre&gt;
@@ -901,7 +899,7 @@ folks with higher &lt;em&gt;education&lt;/em&gt; degrees work with
 &lt;pre class="r"&gt;&lt;code&gt;plot_grpfrq(
   var.cnt = Wage$education, 
   var.grp = Wage$jobclass)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-or-display-cross-pivot-tables"&gt;Plot or display cross
 (pivot) tables&lt;/h2&gt;
 &lt;p&gt;This IS already useful, however, &lt;code&gt;plot_xtab&lt;/code&gt; function goes
@@ -923,7 +921,7 @@ plot_xtab(
   bar.pos = &amp;quot;stack&amp;quot;,
   show.summary = TRUE,
   coord.flip   = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;So, &lt;code&gt;plot_xtab&lt;/code&gt; essentially visualizes &lt;strong&gt;cross
 tables&lt;/strong&gt;, also known as &lt;strong&gt;pivot tables&lt;/strong&gt;. And if for
 some reason you want an actual table with the results of a statistical
@@ -1084,7 +1082,7 @@ intuitive)&lt;/h2&gt;
 &lt;p&gt;The p-values are based on chisq.test of x and y for each grp.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;Wage %&amp;gt;% 
   plot_gpt(x = health_ins, y = jobclass, grp = education) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-histograms-of-salaries-and-display-averages-sd"&gt;Plot
 histograms of salaries and display averages + SD&lt;/h2&gt;
 &lt;p&gt;But enough about counting, since our dataset is about salaries, let’s
@@ -1100,7 +1098,7 @@ gets 17 thousand more.&lt;/p&gt;
   group_by(jobclass) %&amp;gt;% 
   plot_frq(wage, type = &amp;quot;histogram&amp;quot;, show.mean = TRUE, normal.curve = TRUE) %&amp;gt;% 
   plot_grid()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-likert-scales-as-centered-stacked-bars"&gt;Plot likert scales
 as centered stacked bars&lt;/h2&gt;
 &lt;p&gt;The last thing I’d like to share with you before we visualize models,
@@ -1253,7 +1251,7 @@ month&lt;br&gt;Several times a month&lt;br&gt;Several times a week
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_likert(d) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="plot-model-results"&gt;Plot model results&lt;/h1&gt;
 &lt;p&gt;Visualizing data is quite, but let’s get to the really cool
 visualization stuff!&lt;/p&gt;
@@ -1269,7 +1267,7 @@ increasing salaries. &lt;strong&gt;So, education matters!&lt;/strong&gt;&lt;/p&g
 &lt;pre class="r"&gt;&lt;code&gt;m &amp;lt;- lm(wage ~ education, data = Wage)
 plot_model(m, type = &amp;quot;pred&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;$education&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-coefficients"&gt;Plot coefficients&lt;/h2&gt;
 &lt;p&gt;The only thing we can’t see from this plot is whether this increase
 is significant or not. We could use a well known &lt;code&gt;summary&lt;/code&gt;
@@ -1307,7 +1305,7 @@ indicate that those increases in &lt;em&gt;salary&lt;/em&gt; are significant.&lt
 position 1 for most glm’s and position 0 for most linear models)&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m, show.values = TRUE, width = 0.1)+
   ylab(&amp;quot;Increase in salary as compared to no education&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;plot_model1.jpg&amp;quot;, device = jpeg, plot = last_plot(), width = 5, height = 4)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="table-with-coeffitients-95-cis-p-values-more"&gt;Table with
 coeffitients, 95% CIs, p-values &amp;amp; more&lt;/h2&gt;
@@ -1461,7 +1459,7 @@ random effect of education&lt;/strong&gt;.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;m.nb &amp;lt;- glmer.nb(age ~ wage * jobclass * health + (1|education), data = Wage)
 
 plot_model(m.nb, type = &amp;quot;int&amp;quot;)[[4]]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggsave(&amp;quot;plot_model2.jpg&amp;quot;, device = jpeg, plot = last_plot(), width = 5, height = 3)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;This interactions show that industrial workers with a very good
 health earn 50 thousand dollars already at the age of 31, while IT crowd
@@ -1478,7 +1476,7 @@ values from the numeric predictor. For instance, let’s take three salary
 values 50, 150 &amp;amp; 300 as we just talked about them and display our
 results in a different way.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m.nb, type = &amp;quot;pred&amp;quot;, terms = c(&amp;quot;health&amp;quot;, &amp;quot;jobclass&amp;quot;, &amp;quot;wage [50, 150, 300]&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-18-1.png" width="1056" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-18-1.png" width="1056" /&gt;&lt;/p&gt;
 &lt;p&gt;Moreover, &lt;code&gt;type&lt;/code&gt; argument allows to create various plot
 types. For example, we can easily visualize random effects if we want
 to.&lt;/p&gt;
@@ -1486,7 +1484,7 @@ to.&lt;/p&gt;
            type  = &amp;quot;re&amp;quot;, 
            width = .5, 
            show.values = T) + ylim(0.9,1.1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-19-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="plot-multiple-models"&gt;Plot multiple models&lt;/h2&gt;
 &lt;p&gt;It only gets better from now. If we want to explore several dependent
 variables with the same predictors, we can use &lt;code&gt;plot_models&lt;/code&gt;
@@ -1500,13 +1498,13 @@ fit2 &amp;lt;- lm(wage ~ education + jobclass + health_ins, data = Wage)
 
 # plot multiple models
 plot_models(fit1, fit2, show.values = T, grid = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;In the second example we avoid clutter by simply not using
 &lt;code&gt;show.values&lt;/code&gt;, since we can kind of read them from the
 x-axes, and we’ll use &lt;code&gt;p.shape = TRUE&lt;/code&gt; argument instead, in
 order to display p-values as shapes instead of significance stars.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_models(fit1, fit2, p.shape = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="filec3334c615fdd_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file1769552c716e0_files/figure-html/unnamed-chunk-21-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h2 id="more-than-one-model"&gt;More than one model&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;tab_model&lt;/code&gt; can also easily display multiple models. Here,
 &lt;code&gt;collapse.ci = TRUE&lt;/code&gt; argument conveniently puts confidence
