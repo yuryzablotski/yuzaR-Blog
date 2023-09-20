@@ -1,0 +1,221 @@
+---
+title: "Epic Histograms & Density plots with {ggplot2}"
+description: |
+  A short description of the post.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+preview: thumbnail_hist_dens.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+draft: true
+---
+
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = T)
+library(tidyverse)
+```
+
+
+# Basic histogram
+
+Histograms visualize the distribution of a numeric variable as a series of bars. Each bar covers a range of numeric values called a "bin", while a bar’s height indicates the number of data points within the corresponding bin. 
+
+```{r}
+library(tidyverse) # for ggplot2 & co. packages
+library(ISLR)      # for Wage dataset
+
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram()
+```
+
+To create a histogram in {ggplot2}, you can use the "geom_histogram()" function. The geom_histogram() function takes only two arguments: the data and the x-axis variable. A warning message only informs us that the default of 30 bins is taken by default. But we can easily change it with a "bin" argument. The number of bins is important. Namely, if you have too many bins, then the data distribution will look rough, and it will be difficult to discern the signal from the noise. On the other hand, with too few bins, the histogram will lack the details needed to discern any useful pattern from the data.
+
+# Change the number of bins
+
+```{r}
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 4)
+
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 100)
+
+library(patchwork)
+a + b
+```
+
+
+However, the problem with the bin is - that we don't exactly know what range of values do we have, so that the "binwidth" argument is much better, because we can determine the range of values inside of every bin.
+
+```{r}
+# Change the width of bins
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(binwidth = 10)
+
+library(plotly)
+ggplotly(a)
+
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(binwidth = 50)
+
+ggplotly(b)
+
+table(between(Wage$wage, 75, 125))
+
+b + stat_bin(binwidth = 50, geom='text', color = "red",
+             aes(label=..count..), 
+             position=position_stack(vjust=0.5))
+```
+
+
+
+# The usefulness of histograms and density plots
+
+But why would we need histograms in the first place? Well, **the shape of the distribution** can be **symmetrical or skewed**, which helps to decide which statistical test is appropriate for our data. Histograms also help to **identify outliers**, which is useful for cleaning the data. Besides, a simple statistics like mean and standard deviation, might misrepresent reality if our distribution have two or more peaks.
+
+
+
+
+
+# How to create beautiful histograms and density plots in R using ggplot2
+
+
+
+
+
+
+
+
+
+
+A histogram takes as input a numeric variable and cuts it into several bins. Playing with the bin size is a very important step, since its value can have a big impact on the histogram appearance and thus on the message you’re trying to convey.
+
+Je höher die Säulen, desto mehr Häufigkeiten wurden für die Ausprägung gezählt. R entscheidet auf Basis der Verteilung, wo auf der x-Achse Anfang und Ende gesetzt werden. Gleichzeitig werden die Abstände von R automatisch gesetzt. Die Abstände meinen die Säulenbreiten, also in welchem Bereich die Häufigkeiten gezählt werden. The default is 30 bins. We can change that by having 4 bins, to split the salaries into 4 quartiles, or having 100 bins.
+
+## bins
+
+```{r fig.width=9}
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 4)
+
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 100)
+
+library(patchwork)
+a + b
+```
+
+## binwidth
+
+```{r}
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(binwidth = 10)
+
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 100)
+
+library(patchwork)
+a + b
+```
+
+## Compare distribution of several groups
+
+If the number of group or variable you have is relatively low, you can display all of them on the same axis, using a bit of transparency to make sure you do not hide any data.
+
+```{r}
+ggplot(Wage, aes(x = wage, fill = jobclass)) +
+  geom_histogram(alpha=0.6)+
+  facet_wrap(~ education)
+```
+
+## Central tendency
+
+You can also add a line for the mean using the function geom_vline.
+
+```{r}
+
+```
+
+## add density curve
+
+However, histograms can be misleading if the data is not evenly distributed across the intervals. Density plots are a more accurate way to visualize the distribution of a data set. They are also less sensitive to outliers than histograms.
+
+- Histograms can be misleading if the data is not evenly distributed across the intervals.
+- Density plots can be more difficult to interpret, especially if the data is not evenly distributed.
+
+Density plots are a smooth curve that represents the distribution of a data set. The curve is drawn so that the area under the curve is equal to the total number of data points.
+
+## Pimp your plot
+
+You can customize the appearance of the histogram by using the theme() function.
+
+To create a density plot in ggplot2, you can use the geom_density() function. The geom_density() function takes a number of arguments, including the data and the x-axis variable.
+
+
+```{r}
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 5)+
+  theme_bw()
+```
+
+This code will create a basic density plot of the mpg variable. You can customize the appearance of the density plot by using the theme() function.
+
+Here are some additional tips for creating beautiful histograms and density plots in ggplot2:
+
+- Use the binwidth argument to control the width of the bars in the histogram.
+- Use the fill argument to change the color of the bars in the histogram.
+- Use the alpha argument to change the transparency of the bars in the histogram.
+- Use the theme() function to customize the appearance of the plot.
+
+# Density charts
+
+A density plot is a representation of the distribution of a numeric variable. Comparing the distribution of 2 variables is a common challenge that can be tackled with the mirror density chart: 2 density charts are put face to face what allows to efficiently compare them. Here is how to build it with ggplot2 library.
+
+
+```{r}
+# Libraries
+library(ggplot2)
+library(hrbrthemes)
+
+# Dummy data
+data <- data.frame(
+  var1 = rnorm(1000),
+  var2 = rnorm(1000, mean=2)
+)
+
+# Chart
+p <- ggplot(data, aes(x=x) ) +
+  # Top
+  geom_density( aes(x = var1, y = ..density..), fill="#69b3a2" ) +
+  geom_label( aes(x=4.5, y=0.25, label="variable1"), color="#69b3a2") +
+  # Bottom
+  geom_density( aes(x = var2, y = -..density..), fill= "#404080") +
+  geom_label( aes(x=4.5, y=-0.25, label="variable2"), color="#404080") +
+  xlab("value of x")
+
+p
+```
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+

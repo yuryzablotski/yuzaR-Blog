@@ -8,12 +8,16 @@ d <- read_excel("compounding_growth_10_percent.xlsx") %>%
                                    "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"))) %>% 
   mutate(projected = round(projected))
 
-ggplot(d %>% filter(year == 2023))+
+ggplot(d %>% 
+         filter(year == 2023) %>% 
+         mutate(adds = round(adds, 1)), 
+       aes(x = month, y = adds))+
+  geom_bar(stat = "identity", fill = "black")+
+  geom_text(aes(label = adds), vjust = -.1) +
   geom_bar(aes(x = month, y = projected), 
-           stat = "identity", fill = "black")+
-  geom_bar(aes(x = month, y = adds), 
            stat = "identity", 
-           fill = "red", alpha = 0.5)
+           fill = "red", alpha = 0.7)
+
 
 ggplot(d %>% filter(year == 2023))+
   geom_bar(aes(x = month, y = projected), 
@@ -23,7 +27,7 @@ ggplot(d %>% filter(year == 2023))+
            fill = "red", alpha = 0.5)
 
 
-ggplot(d %>% filter(year %in% c(2023:2025)))+
+ggplot(d %>% filter(year %in% c(2023:2027)))+
   geom_bar(aes(x = month, y = projected), 
            stat = "identity", fill = "black")+
   facet_grid(.~year)

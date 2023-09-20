@@ -1,201 +1,151 @@
-# ggplot2 is part of tidyverse
 library(tidyverse)
+library(ISLR)
 
-Wage <- ISLR::Wage
-glimpse(Wage)
+theme_set(theme_test())
 
-# Basic barplots 1: count
-ggplot(data = Wage, aes(x = education)) +
-  geom_bar()
+# Basic histogram
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram()
 
-# Basic barplots 2: identity
-df <- tibble(
-  category = c("A", "B", "C"),
-  counts = c(10, 20, 30)
-)
+# Change the number of bins
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 4)
 
-df
-
-ggplot(data = df, aes(x = category, y = counts)) +
-  geom_bar(stat = "identity", width = 0.4,
-           fill = "white", color = "chocolate4")
-
-# Color different bars
-p <- ggplot(data = df, aes(x = category, y = counts, 
-                      fill = category, color = -counts))+
-  geom_bar(stat = "identity", width = 0.777)
-p
-
-p + scale_fill_manual(
-  values = c("#999999", "orange", "violet") )
-
-p + scale_fill_brewer(palette = "Dark2") 
-
-p <- ggplot(data = df, aes(x = category, y = counts, 
-                           fill = category))+
-  geom_bar(stat = "identity", width = 0.777) + 
-  scale_fill_grey() 
-p
-
-p + theme_minimal()
-
-p <- p + theme_classic()
-p
-p + theme_
-
-# Add labels
-p + geom_text(aes(label=counts))
-
-# Pimp labels
-p + geom_text(aes(label=counts), 
-              size=10, vjust=2, color="orange")
-
-# Determine labels
-p + 
-  geom_text(
-    aes(label = c("BLACK", "IS THE NEW", "ORANGE")), 
-    size = 7, vjust = 2, 
-    color = "orange", fontface = "bold")
-
-# Pimp the plot
-p <- p + 
-  geom_text(
-    aes(label = c("BLACK", "IS THE NEW", "ORANGE")), 
-    size = 7, hjust = -0.1, 
-    color = "orange", fontface = "bold")+
-  coord_flip()+
-  ylim(0, 45)+
-  scale_x_discrete(limits = c("A", "B", "C"))
-p
-
-# Move the legend, change it's name and labels
-a <- p + theme(legend.position = "top")
-b <- p + theme(legend.position = "bottom")
-c <- p + theme(legend.position = "none")
-
-p <- p + theme(legend.position = "bottom")+ 
-  scale_fill_grey(name = "Quarter", 
-                  labels = c("1", "2", "3"))
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 100)
 
 library(patchwork)
-(a + b) / (c + p)
+a + b
 
-# labs & theme
-p + 
+# Change the width of bins
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(binwidth = 10)
+
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(binwidth = 50)
+
+library(patchwork)
+a + b
+
+# Add central tendency, SD, IQR, CIs
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram() + 
+  geom_vline(aes(xintercept=100))
+
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram(color = "blue") + 
+  geom_vline(aes(xintercept=mean(wage)), color = "red")
+
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = "blue", color = "white") + 
+  geom_vline(aes(xintercept=mean(wage)), color = "red",
+             size = 1, linetype="dashed")
+
+wage_stats <- Wage %>% 
+  summarise(
+    mean_wage = mean(wage),
+    SD_wage   = sd(wage),
+    med_est   = median(wage),
+    conf.25   = quantile(wage, 0.25 ),
+    conf.75   = quantile(wage, 0.75 ),
+    conf.low  = quantile(wage, 0.025),
+    conf.high = quantile(wage, 0.975))
+
+# 68.26% of the data are located between -1 and +1 SD
+# 95.44% of the data are located between -2 and +2 SD
+
+a <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = "blue", color = "white") + 
+  # mean + SD + 95% CI
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage), 
+             size=1, color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage),
+             linetype="dashed", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage),
+             linetype="dashed", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage*2),
+             linetype="dotted", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage*2),
+             linetype="dotted", color = "red")
+
+b <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = "blue", color = "white") + 
+  # median + IQR + 95% quantiles
+  geom_vline(data = wage_stats,         
+             aes(xintercept=med_est),
+             size=1, color = "black")+
+  geom_rect(aes(x = med_est, xmin = conf.low, 
+                xmax = conf.high, ymin = 0, ymax = Inf), 
+            data = wage_stats, alpha = 0.2, fill = "green") +
+  geom_rect(aes(x = med_est, xmin = conf.25, 
+                xmax = conf.75, ymin = 0, ymax = Inf), 
+            data = wage_stats, alpha = 0.4, fill = "green") 
+
+a + b
+
+# Annotations
+a + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                label = paste("Mean:", round(wage_stats$mean_wage) )))
+
+b + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                label = paste("Median:", round(wage_stats$med_est) )))
+
+
+# Change colors and opacity
+p <- ggplot(Wage, aes(x = wage, fill = health_ins)) +
+  geom_histogram(color = "black", alpha = 0.4)
+p
+
+
+
+
+
+
+# Combine histogram and density plots
+meds <- iris %>% 
+  group_by(Species) %>% 
+  summarise(medians = median(Sepal.Length))
+
+ggplot(iris, aes(x=Sepal.Length, color = Species)) + 
+  geom_histogram(aes(y=..density..), fill = "white")+
+  geom_density(aes(color = Species, fill = Species), alpha = .4)+ 
+  geom_vline(data = meds,
+             aes(xintercept=medians, color = Species),
+             linetype="dashed", size=1)
+
+
+
+# Pimp your plot
+wage_stats <- Wage %>% 
+  group_by(jobclass, education, health_ins) %>% 
+  summarize(mean_wage  = mean(wage))
+
+ggplot(Wage, aes(x=wage, color = jobclass)) + 
+  geom_histogram(aes(y=..density..), fill = "white")+
+  geom_density(aes(color = jobclass), size = 1)+ 
+  geom_vline(data = wage_stats,
+             aes(xintercept=mean_wage, color = jobclass),
+             linetype="dashed", size=1)+
+  facet_grid(health_ins~education)+
+  theme_test()+
+  xlim(0, 345)+ 
+  theme(legend.position = "top") + 
   labs(
-    title    = "Quarterly TV-show Profit 
-                (in million U.S. dollars)",
-    subtitle = "A simple bar chart with gray scaling,
-                on colored issue",
-    caption  = "Source: Secret Data Base Noone 
-                Knows About",
-    x        = "Quarter of 2020",
-    y        = "Profit in 2020"
+    title    = "American Salaries",
+    subtitle = "Money Business",
+    caption  = "Source: Secret Data Base Noone Knows About",
+    x        = "Salary (in U.S. dollars)",
+    y        = "Density"
   )+
   theme(
-    plot.title    = element_text(color = "#0099f9", 
-                                 size = 15),
+    plot.title    = element_text(color = "red", size = 15),
     plot.subtitle = element_text(face = "bold"),
     plot.caption  = element_text(face = "italic"),
-    axis.title.x  = element_text(color = "#0099f9", 
-                                 size = 14, 
-                                 face = "bold"),
-    axis.title.y  = element_text(size = 14, 
-                                 face = "italic"),
-    axis.text.y   = element_blank(),
-    axis.ticks.y  = element_blank()
+    axis.title.x  = element_text(color = "red", size = 14, face = "bold"),
+    axis.title.y  = element_text(size = 14, face = "italic")
   )
-
-# Let's summarize everything we've learned so far
-ggplot(df, aes(category, y = counts, fill = category))+
-  geom_bar(stat = "identity", width = 0.7)+ 
-  scale_fill_grey(name = "NEW TV SHOW", labels = 
-                    c("ORANGE", "IS THE NEW", "GRAY?"))+
-  theme_classic()+
-  scale_x_discrete(limits = c("C", "B", "A"))+
-  geom_text(
-    aes(label = c("DREAM BIG","START SMALL","ACT NOW")),
-    color = "black", size = 5, hjust = -0.1)+ # vjust
-  coord_flip() + ylim(0, 45)+ 
-  theme(legend.position = "bottom") + 
-  labs(
-    title    = "Quarterly TV-show Profit (in MLN US $)",
-    subtitle = "A simple bar chart with gray scaling",
-    caption  = "Source: Secret Data Noone Knows About",
-    x        = "Quarter of 2020",
-    y        = "Profit in 2020"
-  )+
-  theme(
-    plot.title = element_text(color = "blue", size = 15),
-    plot.subtitle = element_text(face = "bold"),
-    plot.caption = element_text(face = "italic"),
-    axis.title.x = element_text(color = "blue", size=9),
-    axis.title.y = element_text(size = 14),
-    axis.text.y  = element_blank(),
-    axis.ticks.y = element_blank())
-
-# Save the plot in any format
-ggsave(
-  filename = "basic_plot.jpg",
-  plot     = last_plot(), 
-  device   = jpeg, 
-  width    = 5, 
-  height   = 3)
-
-# Plot multiple categorical variables
-library(ggstats) # for stat_prop
-d <- as.data.frame(Titanic) %>%
-  dplyr::mutate(percentage = Freq/sum(Freq))
-str(d)
-
-# Stacked barplot
-ggplot(data=d, aes(x=Class, y=Freq, fill = Survived)) +
-  geom_bar(stat = "identity", position = "stack")
-
-# Dodged barplot
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position="dodge")
-
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position=position_dodge())+
-  facet_grid(Age~Sex, scales = "free")+
-  geom_text(aes(label=Freq), position=position_dodge(0.9),
-            vjust=-.1, color="black", size=3.5)+
-  scale_fill_brewer(palette="Paired")+
-  theme_bw()
-
-# Barplot With Error Bars: don't use them!
-car <- mtcars %>% 
-  rownames_to_column(var = "car_name") %>% 
-  mutate(cylinders = factor(cyl))
-
-library(ggstatsplot) # for the theme_...
-ggplot(car, aes(x = cylinders, y = mpg)) +
-  stat_summary(fun = mean, geom = "col", fill ="orange")+
-  stat_summary(fun = mean, geom = "point", size = 5) +
-  stat_summary(fun.data = mean_cl_normal, # mean_cl_boot
-               geom = "errorbar", width = 0.5) + 
-  theme_ggstatsplot()
-
-# Percent stacked barplots
-library(scales)
-ggplot(data=d, aes(x=Class, y=Freq, fill=Survived)) +
-  geom_bar(stat="identity", position="fill")+
-  scale_y_continuous(labels=percent)
-
-ggplot(data=d, aes(x=Class, weight=Freq, 
-                   fill=Survived, by = Class))+
-  geom_bar(position="fill")+  # stat="identity" removed
-  scale_y_continuous(labels=percent)+
-  facet_grid(~Sex)+
-  geom_text(stat = "prop", position=position_fill(0.5))+
-  theme_test()
-
-grouped_ggbarstats(
-  data = d, 
-  x = Survived,
-  y = Class, 
-  count = Freq, 
-  label = "both",
-  grouping.var = Sex
-)
