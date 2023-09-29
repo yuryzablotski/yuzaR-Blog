@@ -7,7 +7,319 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>2023-08-23</lastBuildDate>
+    <lastBuildDate>2023-09-28</lastBuildDate>
+    <item>
+      <title>Epic Histograms &amp; Density plots with {ggplot2}</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2023-08-23-histogramsdensityplots</link>
+      <description>
+
+
+&lt;h1 id="this-post-as-9-minutes-video"&gt;This post as 9 minutes video&lt;/h1&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="basic-histogram"&gt;Basic histogram&lt;/h1&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2023-08-23-histogramsdensityplots/2.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;To create a histogram, we’ll first load the {tidyverse} meta-package,
+which includes {ggplot2}. Additionally, we’ll load the {ISLR} package to
+get the “Wage” dataset containing information about American salaries.
+Next, we’ll use the ‘ggplot()’ function with just two arguments: the
+“data” and “aesthetics”. The variable we want to visualize will be
+assigned to the x-axis. And finally, we’ll add the ‘geom_histogram()’
+function to get the histogram itself.&lt;/p&gt;
+&lt;p&gt;A histogram divides a numeric variable into multiple bars. The width
+of every bar covers a range of numeric values called a “bin”, while a
+bar’s height indicates the number of data points within the
+corresponding bin.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse) # for ggplot2 &amp;amp; co. packages
+library(ISLR)      # for Wage dataset
+theme_set(theme_test()) # for nicer looking plots
+
+ggplot(data = Wage, aes(x = wage)) +
+  geom_histogram()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;A warning message only informs us that 30 equal bins are used by
+default. But we can easily change the number of bins with a ‘bin’
+argument. The number of bins is important; because having many bins
+allows us to see the precise distribution of the data. However, if there
+are too many bins, it can become challenging to distinguish the signal
+from the noise. On the other hand, with only a few bins, the histogram
+may lack the level of detail needed to discern any useful patterns or
+trends in the data.&lt;/p&gt;
+&lt;h1 id="change-the-number-of-bins"&gt;Change the number of bins&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;a &amp;lt;- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 4)
+
+b &amp;lt;- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(bins = 100)
+
+library(patchwork)
+a + b&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;The only issue with the bin is that we don’t precisely know the range
+of values it represents. That’s why the “binwidth” argument is much
+better; it allows us to specify the range of values within each bin. For
+example, if we set the “binwidth” to 50, we’ll get 1702 values between
+75 and 125.&lt;/p&gt;
+&lt;h1 id="change-the-width-of-bins"&gt;Change the width of bins&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;a &amp;lt;- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(binwidth = 50)
+
+library(plotly)
+ggplotly(a)&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-44f1afed1bc79432f0aa" style="width:672px;height:480px;"&gt;&lt;/div&gt;
+&lt;script type="application/json" data-for="htmlwidget-44f1afed1bc79432f0aa"&gt;{"x":{"data":[{"orientation":"v","width":[50,50,50,50,50,50,50],"base":[0,0,0,0,0,0,0],"x":[0,50,100,150,200,250,300],"y":[6,424,1702,682,106,35,45],"text":["count:    6&lt;br /&gt;wage:   0","count:  424&lt;br /&gt;wage:  50","count: 1702&lt;br /&gt;wage: 100","count:  682&lt;br /&gt;wage: 150","count:  106&lt;br /&gt;wage: 200","count:   35&lt;br /&gt;wage: 250","count:   45&lt;br /&gt;wage: 300"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.228310502283108,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-42.5,342.5],"tickmode":"array","ticktext":["0","100","200","300"],"tickvals":[0,100,200.00000000000003,300],"categoryorder":"array","categoryarray":["0","100","200","300"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"wage","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-85.100000000000009,1787.0999999999999],"tickmode":"array","ticktext":["0","500","1000","1500"],"tickvals":[0,500,999.99999999999989,1500],"categoryorder":"array","categoryarray":["0","500","1000","1500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"count","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176002,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"107c27cbc9e17":{"x":{},"type":"bar"}},"cur_data":"107c27cbc9e17","visdat":{"107c27cbc9e17":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}&lt;/script&gt;
+&lt;pre class="r"&gt;&lt;code&gt;table(between(Wage$wage, 75, 125))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+FALSE  TRUE 
+ 1298  1702 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;a + stat_bin(binwidth = 50, geom=&amp;#39;text&amp;#39;, color = &amp;quot;red&amp;quot;,
+             aes(label=..count..), 
+             position=position_stack(vjust=0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-4-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="add-central-tendency-sd-iqr-cis"&gt;Add central tendency, SD, IQR,
+CIs&lt;/h1&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2023-08-23-histogramsdensityplots/1.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;Since the purpose of the histogram is to help us understand whether
+the distribution is symmetric or skewed, adding central tendency lines
+such as the mean or median can be even more helpful. We can easily
+include a mean line by using the ‘geom_vline()’ function with the
+‘xintercept’ argument within the aesthetics.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = wage)) +
+  geom_histogram() + 
+  geom_vline(aes(xintercept = mean(wage)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;We can enhance the visual appeal of this plot by filling the bars
+with a blue color, outlining the bars in white, and making the line more
+prominent by using a red color, increasing its size, and using a dashed
+linetype. Now, we can clearly see that the distribution is skewed, and
+the Shapiro-Wilk normality test confirms that our wages are not normally
+distributed. Moreover, this histogram identifies a few outliers, which
+represent wealthy individuals which fall outside the main body of the
+salary distribution. So, histograms serve as data traffic lights,
+signaling when it’s time to stop and take a closer look.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = &amp;quot;blue&amp;quot;, color = &amp;quot;white&amp;quot;) + 
+  geom_vline(aes(xintercept = mean(wage)), color = &amp;quot;red&amp;quot;,
+             size = 1, linetype=&amp;quot;dashed&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;shapiro.test(Wage$wage)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+    Shapiro-Wilk normality test
+
+data:  Wage$wage
+W = 0.87957, p-value &amp;lt; 2.2e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And while any measure of central tendency, whether it’s the mean or
+median, is indeed useful, what enhances our understanding even further
+is the addition of more vertical lines to display standard deviations or
+quantiles. These lines help us visualize where the majority of the data
+falls within the distribution. To achieve this, we begin by calculating
+the standard deviation, as approximately 68.26% of the data falls within
+one standard deviation from the mean, and about 95.44% falls within two
+standard deviations.&lt;/p&gt;
+&lt;p&gt;Additionally, we can calculate the 25th percentile (also known as the
+1st Quartile) and the 75th percentile (also known as the 3rd Quartile)
+to depict the Interquartile Range (IQR), which encompasses the middle
+50% of the salary values. Moreover, we can consider more extreme
+percentiles to identify where 95% of the salaries are located.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;wage_stats &amp;lt;- Wage %&amp;gt;% 
+  summarise(
+    mean_wage = mean(wage),
+    med_est   = median(wage),
+    SD_wage   = sd(wage),
+    conf.25   = quantile(wage, 0.25 ),
+    conf.75   = quantile(wage, 0.75 ),
+    conf.low  = quantile(wage, 0.025),
+    conf.high = quantile(wage, 0.975))
+
+wage_stats&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  mean_wage  med_est SD_wage  conf.25  conf.75 conf.low conf.high
+1  111.7036 104.9215 41.7286 85.38394 128.6805 52.40079  267.9011&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Afterward, we can utilize these values to draw four vertical lines,
+enhancing the descriptive power of our distribution.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;a &amp;lt;- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = &amp;quot;blue&amp;quot;, color = &amp;quot;white&amp;quot;) + 
+  # mean + SD + 95% CI
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage), 
+             size=1, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage),
+             linetype=&amp;quot;dashed&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage),
+             linetype=&amp;quot;dashed&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage*2),
+             linetype=&amp;quot;dotted&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage*2),
+             linetype=&amp;quot;dotted&amp;quot;, color = &amp;quot;red&amp;quot;)
+
+b &amp;lt;- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = &amp;quot;blue&amp;quot;, color = &amp;quot;white&amp;quot;) + 
+  # median + IQR + 95% quantiles
+  geom_rect(aes(x = med_est, xmin = conf.low, 
+                xmax = conf.high, ymin = 0, ymax = Inf), 
+            data = wage_stats, alpha = 0.2, fill = &amp;quot;green&amp;quot;) +
+  geom_rect(aes(x = med_est, xmin = conf.25, 
+                xmax = conf.75, ymin = 0, ymax = Inf), 
+            data = wage_stats, alpha = 0.4, fill = &amp;quot;green&amp;quot;) +
+  geom_vline(data = wage_stats,         
+             aes(xintercept=med_est),
+             size=1, color = &amp;quot;red&amp;quot;)
+
+a + b&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-8-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;h1 id="annotations"&gt;Annotations&lt;/h1&gt;
+&lt;p&gt;And of course, it’s sometimes beneficial to annotate these lines. To
+do this, we’ll employ the ‘geom_label’ command with specified x and y
+coordinates to precisely position the annotation box. Additionally,
+we’ll utilize the ‘label’ argument, which allows us to include both
+plain text and any of the calculated values:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;c &amp;lt;- a + geom_label(aes(x = 110, y = 450, size = 3, fontface = &amp;quot;bold&amp;quot;, 
+                label = paste(&amp;quot;Mean:&amp;quot;, round(wage_stats$mean_wage) )))
+
+d &amp;lt;- b + geom_label(aes(x = 110, y = 450, size = 3, fontface = &amp;quot;bold&amp;quot;, 
+                label = paste(&amp;quot;Median:&amp;quot;, round(wage_stats$med_est) )))
+
+c + d&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-9-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;bla &amp;lt;- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = &amp;quot;blue&amp;quot;, color = &amp;quot;white&amp;quot;) + 
+  # mean + SD + 95% CI
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage), 
+             size=1, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage),
+             linetype=&amp;quot;dashed&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage),
+             linetype=&amp;quot;dashed&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage*2),
+             linetype=&amp;quot;dotted&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage*2),
+             linetype=&amp;quot;dotted&amp;quot;, color = &amp;quot;red&amp;quot;)+
+  theme_void()+ 
+  geom_label(aes(x = 110, y = 450, size = 3, fontface = &amp;quot;bold&amp;quot;, 
+                label = paste(&amp;quot;Mean:&amp;quot;, round(wage_stats$mean_wage) )))
+
+ggsave(&amp;quot;histogram.jpg&amp;quot;,
+       plot = bla,
+       device = jpeg, 
+       dpi = 999,
+       width = 4,
+       height = 3
+       )&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="compare-distribution-of-several-groups"&gt;Compare distribution of
+several groups&lt;/h1&gt;
+&lt;p&gt;But that was just the beginning. Histograms also enable us to compare
+the distributions of several groups. We can display them either on the
+same plot using the ‘fill’ argument, which fills the bars with different
+colors, or on different subplots, using “facet_wrap” or “facet_grid”
+functions, or even both.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = wage, fill = jobclass)) +
+  geom_histogram(alpha=0.6)+
+  facet_wrap(~ education)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="add-density-curves"&gt;Add density curves&lt;/h1&gt;
+&lt;p&gt;But we can take it one step further by adding a density curve to the
+plot. Density plots are smooth curves that represent the distribution of
+a data set. They provide a more accurate way to visualize the
+distribution and are less sensitive to outliers compared to
+histograms.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2023-08-23-histogramsdensityplots/density_curves.png" /&gt;&lt;/p&gt;
+&lt;p&gt;To create a density plot in {ggplot2}, we first need to plot the
+histogram in terms of relative frequency rather than absolute frequency.
+Absolute frequency counts the natural occurrences in each bin, while
+relative frequency represents the proportion of occurrences in each bin.
+We can achieve this by using the ‘after_stat’ function to calculate
+proportions. By dividing the counts in each bin by the sum of all
+counts, we obtain the height of each bar, which represents the
+proportion or percentage of values falling within that bin.&lt;/p&gt;
+&lt;p&gt;We can use the ‘geom_density()’ function to fit a density curve on
+top of the histogram because the density curve is already expressed in
+proportions or percentages by default. If necessary, we can also display
+the percentages in the middle of our bars using the ‘stat_bin’ function
+and the ‘position’ argument. Finally, the ‘scale_y_continuous’ function
+allows us to label the y-axis with percentages, for example, ‘40%’
+instead of ‘0.4’.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(iris, aes(x=Sepal.Length)) + 
+  geom_histogram(aes(y = after_stat(count / sum(count))), 
+                 binwidth = 1)+
+  geom_density() +
+  stat_bin(aes(y = after_stat(count / sum(count)), 
+        label = scales::percent(after_stat(count / sum(count)))),
+    position = position_stack(vjust = 0.5),
+    binwidth = 1, geom = &amp;quot;text&amp;quot;, color = &amp;quot;white&amp;quot;
+  )+
+  scale_y_continuous(labels = scales::percent)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="pimp-your-plot"&gt;Pimp your plot&lt;/h1&gt;
+&lt;p&gt;Finally, we can enhance the appearance of our plot by:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dividing our data into multiple groups,&lt;/li&gt;
+&lt;li&gt;utilizing the “labs()” function to specify titles, captions, and
+axis labels, and&lt;/li&gt;
+&lt;li&gt;employing the “theme()” function to adjust the legend placement and
+format the text on the plot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;wage_stats &amp;lt;- Wage %&amp;gt;% 
+  group_by(jobclass, education, health_ins) %&amp;gt;% 
+  summarize(mean_wage  = mean(wage))
+
+ggplot(Wage, aes(x=wage, color = jobclass)) + 
+  geom_histogram(aes(y=..density..), fill = &amp;quot;white&amp;quot;)+
+  geom_density(aes(color = jobclass), size = 1)+ 
+  geom_vline(data = wage_stats,
+             aes(xintercept=mean_wage, color = jobclass),
+             linetype=&amp;quot;dashed&amp;quot;, size=1)+
+  facet_grid(health_ins ~ education, scales = &amp;quot;free&amp;quot;)+
+ # theme(legend.position = &amp;quot;top&amp;quot;) + 
+  labs(
+    title    = &amp;quot;American Salaries: March 2011&amp;quot;,
+    subtitle = &amp;quot;Money Business&amp;quot;,
+    caption  = &amp;quot;Source: Secret Data Base Noone Knows About&amp;quot;,
+    x        = &amp;quot;Salary (in U.S. dollars)&amp;quot;,
+    y        = &amp;quot;Density&amp;quot;
+  )+
+  theme(
+    legend.position = &amp;quot;top&amp;quot;,
+    plot.title    = element_text(color = &amp;quot;red&amp;quot;, size = 15),
+    plot.subtitle = element_text(face = &amp;quot;bold&amp;quot;),
+    plot.caption  = element_text(face = &amp;quot;italic&amp;quot;),
+    axis.title.x  = element_text(color = &amp;quot;red&amp;quot;, size = 14, face = &amp;quot;bold&amp;quot;),
+    axis.title.y  = element_text(size = 14, face = &amp;quot;italic&amp;quot;)
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-12-1.png" width="1056" /&gt;&lt;/p&gt;
+&lt;h1 id="whats-next"&gt;What’s next?&lt;/h1&gt;
+&lt;p&gt;I hope you now see that displaying data in the form of histograms,
+density curves, and central tendencies is a useful tool for making
+decisions. For example, we could test our mean (in blue) against the
+mean of other people (in red) using a one-sample t-test to determine if
+our result significantly differs. However, one-sample t-tests open up a
+completely new chapter, and you can explore all the intricacies right
+here in this video.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file107c211bbd354_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>8e70580ca77bd81d2145b25e478d3e75</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2023-08-23-histogramsdensityplots</guid>
+      <pubDate>2023-09-28</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2023-08-23-histogramsdensityplots/thumbnail_hist_dens.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>Epic Bar Plots with {ggplot2}</title>
       <dc:creator>Yury Zablotski</dc:creator>

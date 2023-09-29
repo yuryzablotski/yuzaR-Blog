@@ -1,7 +1,7 @@
 ---
 title: "Epic Histograms & Density plots with {ggplot2}"
 description: |
-  A short description of the post.
+  Histograms display the shape of the distribution of continuous numeric data. The distribution can be symmetrical, right-skewed, left-skewed, unimodal, or multimodal? Knowing the shape of the distribution helps us decide which statistical test is appropriate. For example, if the distribution is symmetrical, we could use a t-test or linear regression. However, if the distribution is skewed, we'd need to use the Mann-Whitney test or median regression. Moreover, when the data has several peaks, we might need to transform the data before analyzing it. Otherwise, when we calculate central tendencies like the average, we will heavily misrepresent reality. Histograms also help to identify outliers, which is very useful for cleaning the data. So, visualizing the distribution with histograms and density plots helps us avoid these pitfalls.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -23,29 +23,44 @@ bibliography: /Users/zablotski/Documents/library.bib
 biblio-style: apalike
 link-citations: yes
 linkcolor: blue
-draft: true
+#draft: true
 ---
 
 
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = T)
-library(tidyverse)
 ```
+
+
+# This post as 9 minutes video
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+
 
 
 # Basic histogram
 
-Histograms visualize the distribution of a numeric variable as a series of bars. Each bar covers a range of numeric values called a "bin", while a bar’s height indicates the number of data points within the corresponding bin. 
+![](2.jpg)
+
+To create a histogram, we'll first load the {tidyverse} meta-package, which includes {ggplot2}. Additionally, we'll load the {ISLR} package to get the "Wage" dataset containing information about American salaries. Next, we'll use the 'ggplot()' function with just two arguments: the "data" and "aesthetics". The variable we want to visualize will be assigned to the x-axis. And finally, we'll add the 'geom_histogram()' function to get the histogram itself.
+
+A histogram divides a numeric variable into multiple bars. The width of every bar covers a range of numeric values called a "bin", while a bar’s height indicates the number of data points within the corresponding bin. 
 
 ```{r}
 library(tidyverse) # for ggplot2 & co. packages
 library(ISLR)      # for Wage dataset
+theme_set(theme_test()) # for nicer looking plots
 
-ggplot(Wage, aes(x = wage)) +
+ggplot(data = Wage, aes(x = wage)) +
   geom_histogram()
 ```
 
-To create a histogram in {ggplot2}, you can use the "geom_histogram()" function. The geom_histogram() function takes only two arguments: the data and the x-axis variable. A warning message only informs us that the default of 30 bins is taken by default. But we can easily change it with a "bin" argument. The number of bins is important. Namely, if you have too many bins, then the data distribution will look rough, and it will be difficult to discern the signal from the noise. On the other hand, with too few bins, the histogram will lack the details needed to discern any useful pattern from the data.
+
+A warning message only informs us that 30 equal bins are used by default. But we can easily change the number of bins with a 'bin' argument. The number of bins is important; because having many bins allows us to see the precise distribution of the data. However, if there are too many bins, it can become challenging to distinguish the signal from the noise. On the other hand, with only a few bins, the histogram may lack the level of detail needed to discern any useful patterns or trends in the data.
 
 # Change the number of bins
 
@@ -61,82 +76,155 @@ a + b
 ```
 
 
-However, the problem with the bin is - that we don't exactly know what range of values do we have, so that the "binwidth" argument is much better, because we can determine the range of values inside of every bin.
+The only issue with the bin is that we don't precisely know the range of values it represents. That's why the "binwidth" argument is much better; it allows us to specify the range of values within each bin. For example, if we set the "binwidth" to 50,  we'll get 1702 values between 75 and 125.
+
+# Change the width of bins
 
 ```{r}
-# Change the width of bins
 a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 50)
 
 library(plotly)
 ggplotly(a)
 
-b <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(binwidth = 50)
-
-ggplotly(b)
-
 table(between(Wage$wage, 75, 125))
 
-b + stat_bin(binwidth = 50, geom='text', color = "red",
+a + stat_bin(binwidth = 50, geom='text', color = "red",
              aes(label=..count..), 
              position=position_stack(vjust=0.5))
 ```
 
+# Add central tendency, SD, IQR, CIs
 
+![](1.jpg)
 
-# The usefulness of histograms and density plots
-
-But why would we need histograms in the first place? Well, **the shape of the distribution** can be **symmetrical or skewed**, which helps to decide which statistical test is appropriate for our data. Histograms also help to **identify outliers**, which is useful for cleaning the data. Besides, a simple statistics like mean and standard deviation, might misrepresent reality if our distribution have two or more peaks.
-
-
-
-
-
-# How to create beautiful histograms and density plots in R using ggplot2
-
-
-
-
-
-
-
-
-
-
-A histogram takes as input a numeric variable and cuts it into several bins. Playing with the bin size is a very important step, since its value can have a big impact on the histogram appearance and thus on the message you’re trying to convey.
-
-Je höher die Säulen, desto mehr Häufigkeiten wurden für die Ausprägung gezählt. R entscheidet auf Basis der Verteilung, wo auf der x-Achse Anfang und Ende gesetzt werden. Gleichzeitig werden die Abstände von R automatisch gesetzt. Die Abstände meinen die Säulenbreiten, also in welchem Bereich die Häufigkeiten gezählt werden. The default is 30 bins. We can change that by having 4 bins, to split the salaries into 4 quartiles, or having 100 bins.
-
-## bins
-
-```{r fig.width=9}
-a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(bins = 4)
-
-b <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(bins = 100)
-
-library(patchwork)
-a + b
-```
-
-## binwidth
+Since the purpose of the histogram is to help us understand whether the distribution is symmetric or skewed, adding central tendency lines such as the mean or median can be even more helpful. We can easily include a mean line by using the 'geom_vline()' function with the 'xintercept' argument within the aesthetics.
 
 ```{r}
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram() + 
+  geom_vline(aes(xintercept = mean(wage)))
+```
+
+
+We can enhance the visual appeal of this plot by filling the bars with a blue color, outlining the bars in white, and making the line more prominent by using a red color, increasing its size, and using a dashed linetype. Now, we can clearly see that the distribution is skewed, and the Shapiro-Wilk normality test confirms that our wages are not normally distributed. Moreover, this histogram identifies a few outliers, which represent wealthy individuals which fall outside the main body of the salary distribution. So, histograms serve as data traffic lights, signaling when it's time to stop and take a closer look.
+
+```{r}
+ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = "blue", color = "white") + 
+  geom_vline(aes(xintercept = mean(wage)), color = "red",
+             size = 1, linetype="dashed")
+
+shapiro.test(Wage$wage)
+```
+
+And while any measure of central tendency, whether it's the mean or median, is indeed useful, what enhances our understanding even further is the addition of more vertical lines to display standard deviations or quantiles. These lines help us visualize where the majority of the data falls within the distribution. To achieve this, we begin by calculating the standard deviation, as approximately 68.26% of the data falls within one standard deviation from the mean, and about 95.44% falls within two standard deviations.
+
+Additionally, we can calculate the 25th percentile (also known as the 1st Quartile) and the 75th percentile (also known as the 3rd Quartile) to depict the Interquartile Range (IQR), which encompasses the middle 50% of the salary values. Moreover, we can consider more extreme percentiles to identify where 95% of the salaries are located.
+
+```{r}
+wage_stats <- Wage %>% 
+  summarise(
+    mean_wage = mean(wage),
+    med_est   = median(wage),
+    SD_wage   = sd(wage),
+    conf.25   = quantile(wage, 0.25 ),
+    conf.75   = quantile(wage, 0.75 ),
+    conf.low  = quantile(wage, 0.025),
+    conf.high = quantile(wage, 0.975))
+
+wage_stats
+```
+
+Afterward, we can utilize these values to draw four vertical lines, enhancing the descriptive power of our distribution.
+
+```{r fig.width = 9}
 a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(binwidth = 10)
+  geom_histogram(fill = "blue", color = "white") + 
+  # mean + SD + 95% CI
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage), 
+             size=1, color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage),
+             linetype="dashed", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage),
+             linetype="dashed", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage*2),
+             linetype="dotted", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage*2),
+             linetype="dotted", color = "red")
 
 b <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(bins = 100)
+  geom_histogram(fill = "blue", color = "white") + 
+  # median + IQR + 95% quantiles
+  geom_rect(aes(x = med_est, xmin = conf.low, 
+                xmax = conf.high, ymin = 0, ymax = Inf), 
+            data = wage_stats, alpha = 0.2, fill = "green") +
+  geom_rect(aes(x = med_est, xmin = conf.25, 
+                xmax = conf.75, ymin = 0, ymax = Inf), 
+            data = wage_stats, alpha = 0.4, fill = "green") +
+  geom_vline(data = wage_stats,         
+             aes(xintercept=med_est),
+             size=1, color = "red")
 
-library(patchwork)
 a + b
 ```
 
-## Compare distribution of several groups
 
-If the number of group or variable you have is relatively low, you can display all of them on the same axis, using a bit of transparency to make sure you do not hide any data.
+# Annotations
+
+And of course, it's sometimes beneficial to annotate these lines. To do this, we'll employ the 'geom_label' command with specified x and y coordinates to precisely position the annotation box. Additionally, we'll utilize the 'label' argument, which allows us to include both plain text and any of the calculated values:
+
+
+```{r fig.width=9}
+c <- a + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                label = paste("Mean:", round(wage_stats$mean_wage) )))
+
+d <- b + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                label = paste("Median:", round(wage_stats$med_est) )))
+
+c + d
+
+bla <- ggplot(Wage, aes(x = wage)) +
+  geom_histogram(fill = "blue", color = "white") + 
+  # mean + SD + 95% CI
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage), 
+             size=1, color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage),
+             linetype="dashed", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage),
+             linetype="dashed", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage + SD_wage*2),
+             linetype="dotted", color = "red")+
+  geom_vline(data = wage_stats,         
+             aes(xintercept=mean_wage - SD_wage*2),
+             linetype="dotted", color = "red")+
+  theme_void()+ 
+  geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                label = paste("Mean:", round(wage_stats$mean_wage) )))
+
+ggsave("histogram.jpg",
+       plot = bla,
+       device = jpeg, 
+       dpi = 999,
+       width = 4,
+       height = 3
+       )
+```
+
+
+
+# Compare distribution of several groups
+
+But that was just the beginning. Histograms also enable us to compare the distributions of several groups. We can display them either on the same plot using the 'fill' argument, which fills the bars with different colors, or on different subplots, using "facet_wrap" or "facet_grid" functions, or even both.
 
 ```{r}
 ggplot(Wage, aes(x = wage, fill = jobclass)) +
@@ -144,73 +232,96 @@ ggplot(Wage, aes(x = wage, fill = jobclass)) +
   facet_wrap(~ education)
 ```
 
-## Central tendency
 
-You can also add a line for the mean using the function geom_vline.
+# Add density curves
 
-```{r}
+But we can take it one step further by adding a density curve to the plot. Density plots are smooth curves that represent the distribution of a data set. They provide a more accurate way to visualize the distribution and are less sensitive to outliers compared to histograms.
 
-```
+![](density_curves.png)
 
-## add density curve
+To create a density plot in {ggplot2}, we first need to plot the histogram in terms of relative frequency rather than absolute frequency. Absolute frequency counts the natural occurrences in each bin, while relative frequency represents the proportion of occurrences in each bin. We can achieve this by using the 'after_stat' function to calculate proportions. By dividing the counts in each bin by the sum of all counts, we obtain the height of each bar, which represents the proportion or percentage of values falling within that bin.
 
-However, histograms can be misleading if the data is not evenly distributed across the intervals. Density plots are a more accurate way to visualize the distribution of a data set. They are also less sensitive to outliers than histograms.
-
-- Histograms can be misleading if the data is not evenly distributed across the intervals.
-- Density plots can be more difficult to interpret, especially if the data is not evenly distributed.
-
-Density plots are a smooth curve that represents the distribution of a data set. The curve is drawn so that the area under the curve is equal to the total number of data points.
-
-## Pimp your plot
-
-You can customize the appearance of the histogram by using the theme() function.
-
-To create a density plot in ggplot2, you can use the geom_density() function. The geom_density() function takes a number of arguments, including the data and the x-axis variable.
+We can use the 'geom_density()' function to fit a density curve on top of the histogram because the density curve is already expressed in proportions or percentages by default. If necessary, we can also display the percentages in the middle of our bars using the 'stat_bin' function and the 'position' argument. Finally, the 'scale_y_continuous' function allows us to label the y-axis with percentages, for example, '40%' instead of '0.4'.
 
 
 ```{r}
-ggplot(mtcars, aes(x = mpg)) +
-  geom_histogram(binwidth = 5)+
-  theme_bw()
+ggplot(iris, aes(x=Sepal.Length)) + 
+  geom_histogram(aes(y = after_stat(count / sum(count))), 
+                 binwidth = 1)+
+  geom_density() +
+  stat_bin(aes(y = after_stat(count / sum(count)), 
+        label = scales::percent(after_stat(count / sum(count)))),
+    position = position_stack(vjust = 0.5),
+    binwidth = 1, geom = "text", color = "white"
+  )+
+  scale_y_continuous(labels = scales::percent)
 ```
 
-This code will create a basic density plot of the mpg variable. You can customize the appearance of the density plot by using the theme() function.
+# Pimp your plot
 
-Here are some additional tips for creating beautiful histograms and density plots in ggplot2:
+Finally, we can enhance the appearance of our plot by:
 
-- Use the binwidth argument to control the width of the bars in the histogram.
-- Use the fill argument to change the color of the bars in the histogram.
-- Use the alpha argument to change the transparency of the bars in the histogram.
-- Use the theme() function to customize the appearance of the plot.
-
-# Density charts
-
-A density plot is a representation of the distribution of a numeric variable. Comparing the distribution of 2 variables is a common challenge that can be tackled with the mirror density chart: 2 density charts are put face to face what allows to efficiently compare them. Here is how to build it with ggplot2 library.
+- dividing our data into multiple groups,
+- utilizing the "labs()" function to specify titles, captions, and axis labels, and
+- employing the "theme()" function to adjust the legend placement and format the text on the plot
 
 
-```{r}
-# Libraries
-library(ggplot2)
-library(hrbrthemes)
+```{r fig.width=11, fig.height=7}
+wage_stats <- Wage %>% 
+  group_by(jobclass, education, health_ins) %>% 
+  summarize(mean_wage  = mean(wage))
 
-# Dummy data
-data <- data.frame(
-  var1 = rnorm(1000),
-  var2 = rnorm(1000, mean=2)
-)
-
-# Chart
-p <- ggplot(data, aes(x=x) ) +
-  # Top
-  geom_density( aes(x = var1, y = ..density..), fill="#69b3a2" ) +
-  geom_label( aes(x=4.5, y=0.25, label="variable1"), color="#69b3a2") +
-  # Bottom
-  geom_density( aes(x = var2, y = -..density..), fill= "#404080") +
-  geom_label( aes(x=4.5, y=-0.25, label="variable2"), color="#404080") +
-  xlab("value of x")
-
-p
+ggplot(Wage, aes(x=wage, color = jobclass)) + 
+  geom_histogram(aes(y=..density..), fill = "white")+
+  geom_density(aes(color = jobclass), size = 1)+ 
+  geom_vline(data = wage_stats,
+             aes(xintercept=mean_wage, color = jobclass),
+             linetype="dashed", size=1)+
+  facet_grid(health_ins ~ education, scales = "free")+
+ # theme(legend.position = "top") + 
+  labs(
+    title    = "American Salaries: March 2011",
+    subtitle = "Money Business",
+    caption  = "Source: Secret Data Base Noone Knows About",
+    x        = "Salary (in U.S. dollars)",
+    y        = "Density"
+  )+
+  theme(
+    legend.position = "top",
+    plot.title    = element_text(color = "red", size = 15),
+    plot.subtitle = element_text(face = "bold"),
+    plot.caption  = element_text(face = "italic"),
+    axis.title.x  = element_text(color = "red", size = 14, face = "bold"),
+    axis.title.y  = element_text(size = 14, face = "italic")
+  )
 ```
+
+
+# What's next?
+
+I hope you now see that displaying data in the form of histograms, density curves, and central tendencies is a useful tool for making decisions. For example, we could test our mean (in blue) against the mean of other people (in red) using a one-sample t-test to determine if our result significantly differs. However, one-sample t-tests open up a completely new chapter, and you can explore all the intricacies right here in this video.
+
+
+
+```{r echo=FALSE}
+library(ggstatsplot)
+
+set.seed(1)  # stabilizes random output, so you always get the same result
+my_to_dos <- round(rnorm(n = 21, mean = 7, sd = 3)) 
+
+gghistostats(
+    data       = my_to_dos %>% as_tibble,
+    x          = value,
+    test.value = 6, ## default value is 0
+    type       = "p", 
+    normal.curve = T
+    )+ 
+  geom_vline(aes(xintercept = 6), color = "red", size = 1, linetype = "dashed")
+```
+
+
+
+
 
 
 ---

@@ -19,26 +19,25 @@ a + b
 
 # Change the width of bins
 a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(binwidth = 10)
-
-b <- ggplot(Wage, aes(x = wage)) +
   geom_histogram(binwidth = 50)
 
-library(patchwork)
-a + b
+library(plotly)
+ggplotly(a)
+
+table(between(Wage$wage, 75, 125))
+
+a + stat_bin(binwidth = 50, geom='text', color = "red",
+             aes(label=..count..), 
+             position=position_stack(vjust=0.5))
 
 # Add central tendency, SD, IQR, CIs
 ggplot(Wage, aes(x = wage)) +
   geom_histogram() + 
-  geom_vline(aes(xintercept=100))
-
-ggplot(Wage, aes(x = wage)) +
-  geom_histogram(color = "blue") + 
-  geom_vline(aes(xintercept=mean(wage)), color = "red")
+  geom_vline(aes(xintercept = mean(wage)), color = "red")
 
 ggplot(Wage, aes(x = wage)) +
   geom_histogram(fill = "blue", color = "white") + 
-  geom_vline(aes(xintercept=mean(wage)), color = "red",
+  geom_vline(aes(xintercept = mean(wage)), color = "red",
              size = 1, linetype="dashed")
 
 wage_stats <- Wage %>% 
@@ -89,21 +88,13 @@ b <- ggplot(Wage, aes(x = wage)) +
 a + b
 
 # Annotations
-a + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
-                label = paste("Mean:", round(wage_stats$mean_wage) )))
+c <- a + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                        label = paste("Mean:", round(wage_stats$mean_wage) )))
 
-b + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
-                label = paste("Median:", round(wage_stats$med_est) )))
+d <- b + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
+                        label = paste("Median:", round(wage_stats$med_est) )))
 
-
-# Change colors and opacity
-p <- ggplot(Wage, aes(x = wage, fill = health_ins)) +
-  geom_histogram(color = "black", alpha = 0.4)
-p
-
-
-
-
+c + d
 
 
 # Combine histogram and density plots
