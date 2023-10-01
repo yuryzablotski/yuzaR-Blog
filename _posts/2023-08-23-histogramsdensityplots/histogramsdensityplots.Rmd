@@ -1,7 +1,7 @@
 ---
 title: "Epic Histograms & Density plots with {ggplot2}"
 description: |
-  Histograms display the shape of the distribution of continuous numeric data. The distribution can be symmetrical, right-skewed, left-skewed, unimodal, or multimodal? Knowing the shape of the distribution helps us decide which statistical test is appropriate. For example, if the distribution is symmetrical, we could use a t-test or linear regression. However, if the distribution is skewed, we'd need to use the Mann-Whitney test or median regression. Moreover, when the data has several peaks, we might need to transform the data before analyzing it. Otherwise, when we calculate central tendencies like the average, we will heavily misrepresent reality. Histograms also help to identify outliers, which is very useful for cleaning the data. So, visualizing the distribution with histograms and density plots helps us avoid these pitfalls.
+  Histograms display the shape of the distribution of continuous numeric data. The distribution can be symmetrical, right-skewed, left-skewed, unimodal, or multimodal. Knowing the shape of the distribution helps us decide which statistical test is appropriate. For example, if the distribution is symmetrical, we could use a t-test or linear regression. However, if the distribution is skewed, we'd need to use the Mann-Whitney test or median regression. Moreover, when the data has several peaks, we might need to transform the data before analyzing it. Otherwise, when we calculate central tendencies like the average, we will heavily misrepresent reality. Histograms also help to identify outliers, which is very useful for cleaning the data. So, visualizing the distribution with histograms and density plots helps us avoid these pitfalls.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = T)
 
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("VJoP0_TONrc") 
 ```
 
 
@@ -125,11 +125,15 @@ Additionally, we can calculate the 25th percentile (also known as the 1st Quarti
 ```{r}
 wage_stats <- Wage %>% 
   summarise(
+    # 68.26% of data = mean ± 1 SD
+    # 95.44% of data = mean ± 2 SD = 95% CIs
     mean_wage = mean(wage),
-    med_est   = median(wage),
     SD_wage   = sd(wage),
+    # 50% of data = IQR
+    med_est   = median(wage),
     conf.25   = quantile(wage, 0.25 ),
     conf.75   = quantile(wage, 0.75 ),
+    # 95% of data
     conf.low  = quantile(wage, 0.025),
     conf.high = quantile(wage, 0.975))
 
@@ -142,20 +146,15 @@ Afterward, we can utilize these values to draw four vertical lines, enhancing th
 a <- ggplot(Wage, aes(x = wage)) +
   geom_histogram(fill = "blue", color = "white") + 
   # mean + SD + 95% CI
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage), 
+  geom_vline(data = wage_stats, aes(xintercept=mean_wage), 
              size=1, color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage + SD_wage),
+  geom_vline(data = wage_stats, aes(xintercept=mean_wage + SD_wage),
              linetype="dashed", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage - SD_wage),
+  geom_vline(data = wage_stats, aes(xintercept=mean_wage - SD_wage),
              linetype="dashed", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage + SD_wage*2),
+  geom_vline(data = wage_stats, aes(xintercept=mean_wage + SD_wage*2),
              linetype="dotted", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage - SD_wage*2),
+  geom_vline(data = wage_stats, aes(xintercept=mean_wage - SD_wage*2),
              linetype="dotted", color = "red")
 
 b <- ggplot(Wage, aes(x = wage)) +
@@ -188,36 +187,6 @@ d <- b + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold",
                 label = paste("Median:", round(wage_stats$med_est) )))
 
 c + d
-
-bla <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(fill = "blue", color = "white") + 
-  # mean + SD + 95% CI
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage), 
-             size=1, color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage + SD_wage),
-             linetype="dashed", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage - SD_wage),
-             linetype="dashed", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage + SD_wage*2),
-             linetype="dotted", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage - SD_wage*2),
-             linetype="dotted", color = "red")+
-  theme_void()+ 
-  geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
-                label = paste("Mean:", round(wage_stats$mean_wage) )))
-
-ggsave("histogram.jpg",
-       plot = bla,
-       device = jpeg, 
-       dpi = 999,
-       width = 4,
-       height = 3
-       )
 ```
 
 
@@ -278,7 +247,6 @@ ggplot(Wage, aes(x=wage, color = jobclass)) +
              aes(xintercept=mean_wage, color = jobclass),
              linetype="dashed", size=1)+
   facet_grid(health_ins ~ education, scales = "free")+
- # theme(legend.position = "top") + 
   labs(
     title    = "American Salaries: March 2011",
     subtitle = "Money Business",
@@ -299,7 +267,7 @@ ggplot(Wage, aes(x=wage, color = jobclass)) +
 
 # What's next?
 
-I hope you now see that displaying data in the form of histograms, density curves, and central tendencies is a useful tool for making decisions. For example, we could test our mean (in blue) against the mean of other people (in red) using a one-sample t-test to determine if our result significantly differs. However, one-sample t-tests open up a completely new chapter, and you can explore all the intricacies right here in this video.
+I hope you now see that displaying data in the form of histograms, density curves, and central tendencies is a useful tool for making decisions. For example, we could test our mean (in blue) against the mean of other people (in red) using a one-sample t-test to determine if our result significantly differs. However, one-sample t-tests open up a completely new chapter, and you can explore all the intricacies right here in [this video](https://youtu.be/x5RcZlc-w4A) or [this blog-article](https://yuzar-blog.netlify.app/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/).
 
 
 
