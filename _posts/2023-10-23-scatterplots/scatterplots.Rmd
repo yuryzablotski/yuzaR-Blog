@@ -1,0 +1,370 @@
+---
+title: "7 Reasons to Master Scatter Plots in {ggplot2} with World Happiness Data"
+description: |
+  Today, we'll explore happiness data and uncover seven compelling reasons why scatter plots are indispensable for data analysis. You’ll learn about (1) whether money can actually make you happy, (2) how wealth has changed in the USA, Germany, India, and Venezuela over the past 20 years, (3) whether happy people live longer, and much more. The results might surprise you 😉
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+preview: thumbnail_scatter.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+# draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+# This post as 14 minutes video (in progress)
+
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+# [Click here to get World Happiness Dataset](https://worldhappiness.report/data/)
+
+![](happy_data2.png)
+
+![](happy_data1.png)
+
+# 1: Identifying relationships between variables
+
+
+
+The first reason scatter plots are useful is that scatter plots show the relationship between two continuous variables. For instance, let's take the freely available [World Happiness Dataset](https://worldhappiness.report/data/) and generate a scatter plot illustrating the relationship between happiness and wealth:
+
+```{r}
+library(readxl)         # to read the excel file
+library(janitor)        # to clean names
+library(tidyverse)      # for {ggplot2} and Co. packages
+theme_set(theme_test()) # for beautiful plot design
+
+happy_data <- read_excel("DataForTable2.1WHR2023.xls") %>% 
+  clean_names() %>% 
+  rename(happiness = life_ladder,
+         wealth    = log_gdp_per_capita,
+         country   = country_name,
+         choise    = freedom_to_make_life_choices,
+         life_expectancy = healthy_life_expectancy_at_birth) 
+```
+
+
+
+
+After loading packages and data and renaming some variables for our convenience, we can create the scatter plot by employing the ‘ggplot()’ function. This function requires two arguments: the ‘data’ and the ‘aesthetic’ mappings. These aesthetic mappings determine the variables to be mapped onto the x- and y-axes of the plot. Lastly, we’ll utilize the ‘geom_point()’ function to display points that connect wealth on the x- with happiness on the y-axes.
+
+
+```{r}
+ggplot(data = happy_data, aes(x = wealth, y = happiness)) +
+  geom_point()
+```
+
+
+This scatter plot reveals that wealth has a positive relationship with happiness: the wealthier people get, the happier they seem to be. So, all those memes about "money doesn't make you happy" are only true if you don't have any money. The only problem with this plot is that some counties clearly stand out from the trend. This brings us to the second obvious advantage of using scatter plots: they help to identify outliers immediately.
+
+# 2. Identifying Outliers Interactively
+
+Outliers are data points that significantly differ from the rest of the data. These outliers may represent errors or anomalies in the data, unusual events, or even interesting findings. In any case, they can skew our results, so it's important to clearly identify them. And there's a simple way to achieve that - by making this plot interactive. For that, we’ll: 
+
+- load the {plotly} library, 
+- group our data by country inside of aesthetics so that the country will be displayed on the plot, 
+- and wrap our plot inside of "ggplotly" command.
+
+
+```{r}
+library(plotly)
+
+pic <- ggplot(happy_data, aes(x = wealth, y = happiness, group = country)) +
+  geom_point()
+
+ggplotly(pic)
+
+ggsave(
+  "scatter1.png", 
+  plot = pic,
+  device = png,
+  dpi = 1000,
+  width = 9, 
+  height = 5)
+```
+
+Here we can identify countries with both low wealth and low happiness scores, such as the Central African Republic or Burundi, as well as the happiest and wealthiest countries, like Luxembourg or Switzerland. But the most interesting countries are the outliers, such as happy countries with not much money, like Venezuela. 
+
+However, this plot has two issues: firstly, it appears quite crowded, and secondly, it fails to indicate whether this relationship changes over time. This brings us to the third reason why scatter plots are useful: their capability to identify patterns and trends over time, commonly referred to as time series analysis.
+
+# 3. Identifying patterns and trends over time (aka time series)
+
+To declutter our plot, let's focus on just a few countries: the US, Germany, India, and, for fun, Venezuela, as it stands out as an interesting outlier. We'll explore whether the wealth of these countries has changed over time. To do this, we only need to add one more argument to the aesthetic mappings: 'color'.
+
+
+```{r}
+d <- happy_data %>%
+  filter(country %in% c("United States", "Germany", "India", "Venezuela"))
+
+pic <- ggplot(d, aes(x = year, y = wealth, color = country)) +
+  geom_point()
+
+ggplotly(pic)
+```
+
+And voila, the plot reveals that India has experienced the highest GDP per capita growth in the last 20 years, while the wealth of the US and Germany has seen minimal increases. These three trends are quite neat and linear, allowing us to make short-term predictions about the future of these countries. However, the wealth dynamics of Venezuela are much more dramatic and far from linear. This leads us to the fourth reason why scatter plots are useful: they help us assess linearity in our data.
+
+# 4. Assessing Linearity
+
+Assessing linearity is crucial for selecting appropriate statistical models. For example, if we were to apply a classic linear model in some statistical software without examining the scatter plot, we might mistakenly conclude that Venezuela's wealth rapidly decreased over the last 20 years. However, when we use a non-linear model, which is the default inside the 'geom_smooth' function (that's why we don't need to specify anything inside), we realize that there are actually two linear trends: one depicts linear growth from 2005 to 2012, and the other illustrates a linear decline after 2012.
+
+```{r fig.width=9}
+a <- pic + geom_smooth(method = lm) 
+b <- pic + geom_smooth() 
+
+library(patchwork)
+a + b
+```
+
+These two trends separate data into two clear distinct groups, which, if overlooked, may lead to opposite results. This brings us to the next advantage that scatter plots offer: recognizing clusters within data.
+
+# 5. Recognise clusters of data 
+
+The significance of paying attention to grouping patterns is best explained by Simpson's Paradox (imagine Homer Simpson). Simpson's Paradox is a statistical phenomenon where a trend may initially appear within individual data groups but disappears or even reverses when these groups are combined. To enhance the distinction between these groups visually, you can make use of the 'stat_ellipse' function.
+
+
+```{r fig.width=9}
+a <- ggplot(d, aes(x = life_expectancy, y = happiness)) +
+  geom_point()+
+  geom_smooth(method = lm)+ 
+  stat_ellipse()
+
+b <- ggplot(d, aes(x = life_expectancy, y = happiness, color = country)) +
+  geom_point()+
+  geom_smooth(method = lm)+ 
+  stat_ellipse() 
+
+library(patchwork)
+a + b
+```
+
+```{r}
+bla <- ggpubr::ggarrange(a, b)
+
+ggsave(
+  "scatter2.png", 
+  plot = bla,
+  device = png,
+  dpi = 1000,
+  width = 9, 
+  height = 5)
+```
+
+In our example, the overall trend shows that happiness increases with life expectancy. However, as we delve into these trends within groups, we see that happiness increases only for Americans and Venezuelans. For Germans, the trend disappears as they remain similarly happy regardless of life expectancy. In the case of Indians, the longer they live, the less happy they become. Could this really be true? If you have any insights into why this might be the case, please share them in the comments below. This genuinely puzzles me.
+
+# 6. Multivariate Exploratory Analysis (MEA Ziegengeschrei ;) to tell a compalling story
+
+Now, since "color" provided completely new information to our two-dimensional plot, we could see "color" argument as a third dimension. Similarly, we can introduce five additional dimensions, which will transform a simple scatter plot into a captivating narrative. Think of it as a form of Multivariate Exploratory Analysis (MEA Ziegengeschrei ;), but without the complexity of hardcore statistics. And here is how.
+
+To incorporate first three additional dimensions, we will start by adding the "shape" and "size" arguments to the aesthetic settings along with already existing "color". Then, we'll add "years" as labels for each plot using "geom_label_repel" function from {ggrepel} package. Here, we can use "max.overlaps" argument to reduce the overlapping of labels.
+
+
+```{r}
+set.seed(1) 
+pic <- ggplot(d, aes(x = life_expectancy, y = happiness, 
+                shape = country, 
+                size  = wealth,
+                color = perceptions_of_corruption))+
+  geom_point()+
+  # install.packages("ggrepel") if needed
+  ggrepel::geom_label_repel(aes(label = year), size = 1, max.overlaps = 100)
+
+pic
+```
+
+The third dimension, "shape", now represents different countries.
+
+The dimension of wealth, which is represented by "size", underscores that Venezuela undergoes the most significant fluctuations in wealth between years, while other countries maintain relatively consistent wealth levels over time.
+
+In terms of the perception of corruption, indicated by the blue color (where darker shades represent less corruption), Germans tend to believe that corruption in government and business is not a significant issue, especially in recent years. Interestingly, in years before 2012, when Germans perceived more corruption, both the happiness score and life expectancy were lower compared to later years when they became more relaxed about corruption and became happier.
+
+In contrast, both Indians and Venezuelans became less happy after 2015. Interestingly, both of these groups believe that politicians and businesses in their countries are corrupt. However, it's intriguing to note that while Venezuelans react similarly to Germans – associating more corruption with lower happiness – the opposite seems true in India. In India, darker colors (indicating lower perceived corruption) correspond to lower happiness scores and higher life expectancy.
+
+Once again, India presents a unique pattern in this regard, and I'm intrigued by the reasons behind this.
+
+To introduce two more dimensions, we'll start by categorizing the "social_support" and "generosity" variables. We'll divide them based on whether they fall below or above the median. For "social_support," which signifies having someone to rely on in times of need, such as relatives or friends, we'll categorize individuals as either "lonely" or those who "have loved ones." As for "generosity," which pertains to donating money to a charity in the past month, we'll classify individuals as either "greedy" or "generous."
+
+To visualize these two categorical variables as two additional dimensions of information, we'll use the "facet_grid" or "facet_wrap" functions. This will generate four distinct subplots, each representing different combinations of these categorical variables. Additionally, the "position_jitter" argument inside the "geom_point" function will help reduce the overlapping of points.
+
+```{r}
+mea <- d %>% 
+  mutate(social_support = case_when(
+    social_support > median(social_support, na.rm = T) ~ "have loved ones", 
+    TRUE ~ "lonely")) %>% 
+  mutate(generosity = case_when(
+    generosity > median(generosity, na.rm = T) ~ "generous", 
+    TRUE ~ "greedy"))
+
+set.seed(1)
+pic2 <- ggplot(mea, aes(x = life_expectancy, y = happiness, 
+                shape = country, 
+                size  = wealth,
+                color = perceptions_of_corruption)) + 
+  facet_grid(generosity ~ social_support)+
+  geom_point(position = position_jitter(width = .5, height = .5))+
+  ggrepel::geom_label_repel(aes(label = year), size = 1, max.overlaps = 100)
+
+pic2
+```
+
+```{r eval = F}
+set.seed(2)
+ggplot(mea %>% filter(country %in% c("United States", "Venezuela") & year %in% c(2015:2023)), aes(x = life_expectancy, y = happiness, 
+                                                                                                  
+ggplot(d %>% 
+         filter(country %in% c("United States", "Venezuela") & year %in% c(2015:2023)), aes(x = life_expectancy, y = happiness, color = country)) +
+  geom_point()+
+  geom_smooth(method = lm)+ 
+  stat_ellipse()+
+  geom_label(aes(label = year), size = 1)
+```
+
+
+This adds an even more intriguing layer to our story. Specifically, only the Germans appear in every subplot. What's the common thread? Well, it turns out that most Germans have someone they can rely on in times of trouble. However, when it comes to generosity, they're split right down the middle – with half of them displaying a generous spirit and the other half leaning toward thriftiness. Having spent half of my life in Germany, I can certainly relate to this.
+
+As for Americans, there are no individuals classified as both greedy and lonely at the same time. In fact, most U.S. citizens are happy and generous.
+
+In contrast, the majority of Venezuelans are categorized as greedy, and there are no generous Venezuelans who have someone they can rely on, indicating a lack of trust and economical troubles in the country. Interestingly, two data points where Venezuelans are generous coincide with low wealth. This suggests a positive correlation between high generosity and low wealth :). 
+
+And then there's India. The data suggests that many Indians fall into the "lonely" category, lacking someone they can truly rely on in times of need. This is surprising, especially considering that India has recently become the most populated country.
+
+These patterns paint a fascinating picture, raising many questions about culture, societal values, and the complex relationship between wealth, generosity, corruption and social support. With the inclusion of eight variables instead of just two, what started as a simple scatter plot has transformed into a Multidimensional Exploratory Machine, offering deeper insights from complex datasets. I personally find it fascinating, but I'd like to hear what you guys think, so definitely let me know in the comments section below.
+
+
+## Pimp your plot
+
+Before we delve into the seventh and final advantage of scatter plots, let me demonstrate a quick way to enhance the appearance of your plot:
+
+- To begin with, you can control the appearance of the regression line. You can make it dashed, change its color, or eliminate confidence intervals.
+
+- Titles, captions, and axis labels are easily customizable via "labs" command.
+
+- You can manually adjust shapes, colors, sizes, and more.
+
+- The "theme" argument provides extensive customization options. For me, the most valuable ones include the ability to position the legend and specify colors, sizes, and fonts for titles, captions, and axes.
+
+- What's even more exciting is that you can easily transform your plot's overall design by applying pre-designed themes. For example, you can utilize the "Cleveland" theme from the {ggpubr} package.
+
+- Additionally, incorporating horizontal or vertical lines can effectively highlight significant thresholds.
+
+```{r}
+pic3 <- pic2 + 
+  geom_smooth(method = lm, linetype="dashed", color = "red", se = T)+ 
+  # control titles, captions and axis labels
+  labs(
+    title    = "World Happiness: 2005 - 2022",
+    subtitle = "Example of 4 countries",
+    caption  = "Source: https://worldhappiness.report/data/",
+    x        = "Healthy Life Expectancy (years)",
+    y        = "Happiness score or subjective well-being")+
+  # control shape, color and size
+  scale_shape_manual(values=c(15, 16, 17, 18))+ 
+  # format the text
+  theme(
+    legend.position = "left",
+    plot.title   = element_text(color = "blue", size = 15),
+    plot.subtitle= element_text(face  = "bold"),
+    plot.caption = element_text(face  = "italic"),
+    axis.title.x = element_text(color = "blue", size = 14, 
+                                face = "bold"),
+    axis.title.y = element_text(size  = 14, face="italic"))+
+  # control scales
+  scale_x_continuous(breaks = c(55, 60, 65, 70)) +
+  scale_y_continuous(breaks = seq(2, 8, by = 1)) +
+  # change plot design
+  ggpubr::theme_cleveland()+
+  # set some threshold
+  geom_hline(yintercept = median(happy_data$happiness, na.rm = T) , linetype = "dashed", color = "green")
+
+pic3
+```
+
+
+I understand that the plot may appear crowded and overwhelming, but the good news is - you won't often need all these options at the same time, but you'll find them valuable for different projects. Here, I've showcased what's possible to include in a scatter plot, but it's your choice to decide which elements to use.
+
+Finally, once you're satisfied with your visualization, you can save it using the "ggsave" command in your preferred format, quality, and size. And if you are satisfied with this video so far, please consider hitting a like button, it helps the channel a lot. 
+
+```{r}
+ggsave(
+  "fancy_plot.png", 
+  plot = pic3,
+  # "pdf", "jpeg", "tiff", "png", "bmp", 
+  # "svg", "eps", "ps", "tex" or "wmf"
+  device = png, 
+  dpi = 1000,
+  width = 9, 
+  height = 7)
+```
+
+
+# 7. Correlation Analysis, or what's next?
+
+
+```{r echo=FALSE}
+library(ggstatsplot)
+ggscatterstats(
+    data = mea, 
+    x = positive_affect,
+    y = happiness
+)
+```
+
+
+Finally, any scatter plot with correlation lines should answer the question of whether this correlation is statistically significant! And if you want to learn how to create such plot with all these statistical details in just a single line of code and how to interpret all these numbers, be sure to check out my video on correlation.
+
+
+# Conclusion
+
+Overall, scatter plots are a versatile and powerful tool that can be used by data scientists to explore the data, identify relationships, identify outliers, identify patterns and trends, visualize data in a multidimensional space, validate models, and communicate findings effectively.
+
+
+<!-- Excelennt for quick data exploration. -->
+
+```{r eval=FALSE, fig.height=11, fig.width=11, include=FALSE}
+# install.packages("GGally")
+library(GGally)
+ggpairs(happy_data,
+        columns = 3:11,
+        lower = list(continuous = "smooth"),
+        upper = list(continuous = "smooth"))
+```
+
+```{r fig.width=11, fig.height=11, eval = F, eval = F, include=F}
+# install.packages("GGally")
+library(GGally)
+ggpairs(d,
+        columns = 2:11,
+        aes(colour=country),
+        lower = list(continuous = "smooth"),
+        upper = list(continuous = "smooth"))
+```
+
+
+
+---
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
