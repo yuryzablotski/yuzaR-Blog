@@ -33,7 +33,6 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
 # This post as 14 minutes video (in progress)
 
-
 ```{r, eval=T, echo=F}
 vembedr::embed_youtube("") 
 ```
@@ -44,9 +43,8 @@ vembedr::embed_youtube("")
 
 ![](happy_data1.png)
 
-# 1: Identifying relationships between variables
 
-
+# 1. Identifying relationships between variables
 
 The first reason scatter plots are useful is that scatter plots show the relationship between two continuous variables. For instance, let's take the freely available [World Happiness Dataset](https://worldhappiness.report/data/) and generate a scatter plot illustrating the relationship between happiness and wealth:
 
@@ -64,8 +62,6 @@ happy_data <- read_excel("DataForTable2.1WHR2023.xls") %>%
          choise    = freedom_to_make_life_choices,
          life_expectancy = healthy_life_expectancy_at_birth) 
 ```
-
-
 
 
 After loading packages and data and renaming some variables for our convenience, we can create the scatter plot by employing the ‘ggplot()’ function. This function requires two arguments: the ‘data’ and the ‘aesthetic’ mappings. These aesthetic mappings determine the variables to be mapped onto the x- and y-axes of the plot. Lastly, we’ll utilize the ‘geom_point()’ function to display points that connect wealth on the x- with happiness on the y-axes.
@@ -95,14 +91,6 @@ pic <- ggplot(happy_data, aes(x = wealth, y = happiness, group = country)) +
   geom_point()
 
 ggplotly(pic)
-
-ggsave(
-  "scatter1.png", 
-  plot = pic,
-  device = png,
-  dpi = 1000,
-  width = 9, 
-  height = 5)
 ```
 
 Here we can identify countries with both low wealth and low happiness scores, such as the Central African Republic or Burundi, as well as the happiest and wealthiest countries, like Luxembourg or Switzerland. But the most interesting countries are the outliers, such as happy countries with not much money, like Venezuela. 
@@ -140,7 +128,7 @@ a + b
 
 These two trends separate data into two clear distinct groups, which, if overlooked, may lead to opposite results. This brings us to the next advantage that scatter plots offer: recognizing clusters within data.
 
-# 5. Recognise clusters of data 
+# 5. Recognize clusters of data 
 
 The significance of paying attention to grouping patterns is best explained by Simpson's Paradox (imagine Homer Simpson). Simpson's Paradox is a statistical phenomenon where a trend may initially appear within individual data groups but disappears or even reverses when these groups are combined. To enhance the distinction between these groups visually, you can make use of the 'stat_ellipse' function.
 
@@ -160,23 +148,12 @@ library(patchwork)
 a + b
 ```
 
-```{r}
-bla <- ggpubr::ggarrange(a, b)
-
-ggsave(
-  "scatter2.png", 
-  plot = bla,
-  device = png,
-  dpi = 1000,
-  width = 9, 
-  height = 5)
-```
 
 In our example, the overall trend shows that happiness increases with life expectancy. However, as we delve into these trends within groups, we see that happiness increases only for Americans and Venezuelans. For Germans, the trend disappears as they remain similarly happy regardless of life expectancy. In the case of Indians, the longer they live, the less happy they become. Could this really be true? If you have any insights into why this might be the case, please share them in the comments below. This genuinely puzzles me.
 
-# 6. Multivariate Exploratory Analysis (MEA Ziegengeschrei ;) to tell a compalling story
+# 6. Multivariate Exploratory Analysis (MEA 🐐) to tell a compelling story
 
-Now, since "color" provided completely new information to our two-dimensional plot, we could see "color" argument as a third dimension. Similarly, we can introduce five additional dimensions, which will transform a simple scatter plot into a captivating narrative. Think of it as a form of Multivariate Exploratory Analysis (MEA Ziegengeschrei ;), but without the complexity of hardcore statistics. And here is how.
+Now, since "color" provided completely new information to our two-dimensional plot, we could see "color" argument as a third dimension. Similarly, we can introduce five additional dimensions, which will transform a simple scatter plot into a captivating narrative. Think of it as a form of Multivariate Exploratory Analysis (MEA 🐐), but without the complexity of hardcore statistics. And here is how.
 
 To incorporate first three additional dimensions, we will start by adding the "shape" and "size" arguments to the aesthetic settings along with already existing "color". Then, we'll add "years" as labels for each plot using "geom_label_repel" function from {ggrepel} package. Here, we can use "max.overlaps" argument to reduce the overlapping of labels.
 
@@ -338,29 +315,6 @@ Finally, any scatter plot with correlation lines should answer the question of w
 # Conclusion
 
 Overall, scatter plots are a versatile and powerful tool that can be used by data scientists to explore the data, identify relationships, identify outliers, identify patterns and trends, visualize data in a multidimensional space, validate models, and communicate findings effectively.
-
-
-<!-- Excelennt for quick data exploration. -->
-
-```{r eval=FALSE, fig.height=11, fig.width=11, include=FALSE}
-# install.packages("GGally")
-library(GGally)
-ggpairs(happy_data,
-        columns = 3:11,
-        lower = list(continuous = "smooth"),
-        upper = list(continuous = "smooth"))
-```
-
-```{r fig.width=11, fig.height=11, eval = F, eval = F, include=F}
-# install.packages("GGally")
-library(GGally)
-ggpairs(d,
-        columns = 2:11,
-        aes(colour=country),
-        lower = list(continuous = "smooth"),
-        upper = list(continuous = "smooth"))
-```
-
 
 
 ---
