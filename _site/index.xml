@@ -7,7 +7,582 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 30 Oct 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 04 Nov 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R package reviews {glmulti} find the best model!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti</link>
+      <description>
+
+
+&lt;h2 id="this-post-as-a-video"&gt;This post as a video&lt;/h2&gt;
+&lt;p&gt;I recommend to watch a video first, because I highlight things I talk
+about. It’s less then 14 minutes long.&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/Im293ClFen4" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="why-do-we-need-glmulti"&gt;Why do we need {glmulti}?&lt;/h2&gt;
+&lt;p&gt;The goal of ANY model is to explain a dependent variable by several
+independent variables, sometimes called predictors. But which predictors
+are useful(?) and how many should we include into our model(?), is
+usually unknown. These questions are important, because if we take to
+many predictors, we’ll overfit the model and explain the noise in the
+data instead of uncovering true relationships. While, if we include only
+a few predictors into our model, we’ll underfit the model and probably
+miss some potentially important relationships. Thus, we need to find
+&lt;strong&gt;THE BEST&lt;/strong&gt; model, with an &lt;strong&gt;optimal set of
+predictors which explains maximum of our dependent variable, without
+explaining the noise&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-05-31-glmulti/fit.png" /&gt;&lt;/p&gt;
+&lt;h2 id="stepwise-variable-selection-approach"&gt;Stepwise variable
+selection approach&lt;/h2&gt;
+&lt;p&gt;One of the most common solutions for finding &lt;strong&gt;THE
+BEST&lt;/strong&gt; model is &lt;strong&gt;a stepwise variable selection.&lt;/strong&gt;
+But it’s not the best solution out there, and here is why. Stepwise
+selection applies two main techniques: forwards and backwards selection.
+Forwards selection starts with an empty model, adds one predictor,
+compares two models, one with and another without this predictor, takes
+the best model of the two, adds another predictor etc… Backwards
+selection starts with the most complicated model, which includes all
+predictors and interactions, and reduces the number of terms one by one.
+But there are two problems with it. First, &lt;strong&gt;forwards and
+backwards approaches would often not converge to the same
+model&lt;/strong&gt;, like in our example. And secondly, even if they converge
+to the same model, this model might not be the optimal one (gray circle
+on the picture below). These problems occur simply because stepwise
+selection doesn’t look at &lt;strong&gt;all possible models at the same
+time&lt;/strong&gt;. They just remove or add terms one by one, compare two
+models, take the best model of the two, remove or add another term
+etc..&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-05-31-glmulti/stepwise_problem.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Load all needed packages at once, to avoid interruptions.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(car)        # extracts model results
+library(MASS)       # provides &amp;quot;birthwt&amp;quot; dataset
+library(ISLR)       # provides &amp;quot;Wage&amp;quot; dataset
+library(tictoc)     # checks running time
+library(sjPlot)     # visualizes model results
+library(glmulti)    # finds the BEST model
+library(flextable)  # beautifies tables
+library(tidyverse)  # provides a lot of useful stuff !!! 
+library(performance)# checks and compares quality of models
+
+theme_set(theme_light(base_size = 12)) # beautifies plots
+theme_update(panel.grid.minor = element_blank())&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# prepare selection
+full_model &amp;lt;- glm(mpg ~ (hp + drat + wt + qsec + gear)^2, 
+                 data = mtcars, family = gaussian)
+
+null_model &amp;lt;- glm(mpg ~ 1, data = mtcars, family = gaussian)
+
+# run stepwise selection
+optimal_model_backward &amp;lt;- step(full_model, direction = &amp;quot;backward&amp;quot;,
+                        scope = list(upper = full_model, lower = null_model))
+
+optimal_model_forward &amp;lt;- step(null_model, direction = &amp;quot;forward&amp;quot;,
+                        scope = list(upper = full_model, lower = null_model))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# compare two final models
+anova(optimal_model_backward, optimal_model_forward, test = &amp;quot;Chisq&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Analysis of Deviance Table
+
+Model 1: mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
+    hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
+Model 2: mpg ~ wt + hp + qsec + gear + wt:hp
+  Resid. Df Resid. Dev Df Deviance Pr(&amp;gt;Chi)   
+1        18      51.32                        
+2        26     112.06 -8  -60.743  0.00638 **
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;compare_performance(optimal_model_backward, optimal_model_forward)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Comparison of Model Performance Indices
+
+Name                   | Model | AIC (weights) | AICc (weights) | BIC (weights) |    R2 |  RMSE | Sigma
+-------------------------------------------------------------------------------------------------------
+optimal_model_backward |   glm | 135.9 (0.989) |  165.9 (&amp;lt;.001) | 157.9 (0.203) | 0.954 | 1.266 | 1.689
+optimal_model_forward  |   glm | 144.9 (0.011) |  149.6 (&amp;gt;.999) | 155.2 (0.797) | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="brute-force-approach-with-glmulti"&gt;“Brute force” approach with
+{glmulti}&lt;/h2&gt;
+&lt;p&gt;In contrast, {glmulti} R package builds &lt;strong&gt;all possible models
+with all possible combinations of predictors and, optionally, even their
+pairwise interactions&lt;/strong&gt;. Such approach was called “brute
+force”.&lt;/p&gt;
+&lt;p&gt;{glmulti} then compares the amount of useful information models
+provide. Such model comparison is done with the help of information
+criteria (IC), for example Akaike’s IC (aic) or Bayesian IC (bic).
+Information criteria are used instead of other metrics, such as &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;, because they show the “fitness” of
+the model, where this fitness is penalized by the number of predictors a
+model incorporates. In contrast to information criteria, &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt; will always increase with the
+increasing number of terms and will eventually overfit the model. And as
+mentioned before, an overfitted model is bad, because it describes the
+noise rather than genuine relationships between variables. Consequently,
+we can’t trust the coefficients and p-values of overfitted models.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yuzar-blog.netlify.app//posts/2022-05-31-glmulti/bic_vs_r_squared.jpeg" style="width:50.0%" /&gt;&lt;/p&gt;
+&lt;p&gt;This picture originates from &lt;a
+href="https://www.igi-global.com/gateway/chapter/235052"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;But that’s not all, overfitting produces another problem. Each sample
+has its own unique quirks. Consequently, overfitted model that fits the
+random quirks of one sample is unlikely to fit the random quirks of
+another sample. That makes overfitted model less generalizable outside
+the original dataset, and therefore less useful.&lt;/p&gt;
+&lt;p&gt;That’s why we need to create &lt;strong&gt;all possible models&lt;/strong&gt;,
+instead of using stepwise selection, and we need to compare models using
+&lt;strong&gt;Information Criteria&lt;/strong&gt;, instead of &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;. And while “Brute force” approach is
+great, the number of models to be considered can easily become
+exorbitant. However, there are several possibilities to reduce the
+number of models and to decrease calculation time. Let’s get into the
+Code and see how to do that.&lt;/p&gt;
+&lt;h2 id="how-to-compute-glmulti-to-find-the-best-model"&gt;How to compute
+glmulti to find the best model&lt;/h2&gt;
+&lt;p&gt;The code is similar to any other model, you use in R:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;first you have the &lt;strong&gt;formula&lt;/strong&gt; with the dependent
+variable on the left side of the tilde (~), and all possible predictors
+on the right side of the tilde. For this example we’ll study the salary
+of 3000 american workers with 5 predictors: jobclass, education, age,
+health and health-insurance&lt;/li&gt;
+&lt;li&gt;then we’ll tell R which &lt;strong&gt;dataset&lt;/strong&gt; to use. In this
+case we’ll use the “Wage” dataset from ISLR package&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;crit&lt;/strong&gt; specifies the &lt;strong&gt;Information
+Criterion&lt;/strong&gt; to be used. Default is the Akaike IC (aic). Other
+options are the Bayesian IC (bic), quasi-AIC for overdispersed or count
+data (qaic and qaicc) and the small-sample corrected AIC (aicc), which I
+personally prefer, because for big samples it always gets the same
+result as Akaike’s IC, while with small samples it performs better&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;level&lt;/strong&gt; - argument is important! It specifies weather
+all possible models supposed to be build without interactions (level =
+1) or with interactions (level = 2)&lt;/li&gt;
+&lt;li&gt;argument - &lt;strong&gt;method&lt;/strong&gt; - explores the candidate set of
+models. Method = “d” counts the number of candidate models without
+calculating anything. For our example of 5 predictors we’ll have 32
+models without interactions and 1921 models with interactions. If method
+= “h”, an &lt;strong&gt;exhaustive screening&lt;/strong&gt; is undertaken, which
+means that all possible models will be created. If method = “g”, the
+genetic algorithm is employed (recommended for large candidate
+sets)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;glmulti(wage   ~ jobclass + education + age + health + health_ins,
+        data   = Wage, 
+        crit   = aicc,       # AICC corrected AIC for small samples
+        level  = 1,          # 2 with interactions, 1 without  
+        method = &amp;quot;d&amp;quot;,        # &amp;quot;d&amp;quot;, or &amp;quot;h&amp;quot;, or &amp;quot;g&amp;quot;
+        family = gaussian, 
+        fitfunction = glm,   # Type of model (LM, GLM etc.)
+        confsetsize = 100)   # Keep 100 best models&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Initialization...
+TASK: Diagnostic of candidate set.
+Sample size: 3000
+4 factor(s).
+1 covariate(s).
+0 f exclusion(s).
+0 c exclusion(s).
+0 f:f exclusion(s).
+0 c:c exclusion(s).
+0 f:c exclusion(s).
+Size constraints: min =  0 max = -1
+Complexity constraints: min =  0 max = -1
+Your candidate set contains 32 models.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 32&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;glmulti(wage   ~ jobclass + education + age + health + health_ins,
+        data   = Wage, 
+        crit   = aicc,       # AICC corrected AIC for small samples
+        level  = 2,          # 2 with interactions, 1 without  
+        method = &amp;quot;d&amp;quot;,        # &amp;quot;d&amp;quot;, or &amp;quot;h&amp;quot;, or &amp;quot;g&amp;quot;
+        family = gaussian, 
+        fitfunction = glm,   # Type of model (LM, GLM, GLMER etc.)
+        confsetsize = 100)   # Keep 100 best models&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Initialization...
+TASK: Diagnostic of candidate set.
+Sample size: 3000
+4 factor(s).
+1 covariate(s).
+0 f exclusion(s).
+0 c exclusion(s).
+0 f:f exclusion(s).
+0 c:c exclusion(s).
+0 f:c exclusion(s).
+Size constraints: min =  0 max = -1
+Complexity constraints: min =  0 max = -1
+Your candidate set contains 1921 models.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 1921&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;you then specify the distribution &lt;strong&gt;family&lt;/strong&gt; and
+the&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fitfunction&lt;/strong&gt;, where any function similar to
+&lt;strong&gt;lm, glm or glmer&lt;/strong&gt; can be used&lt;/li&gt;
+&lt;li&gt;lastly, &lt;strong&gt;confsetsize&lt;/strong&gt; argument allows you to keep a
+particular number of the best models, so called - &lt;strong&gt;confident set
+of best models&lt;/strong&gt;. One hundred - is a default value.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, now let’s run the exhaustive algorithm and see how much time it
+takes to compute 1921 regressions and to find the BEST model for our 5
+predictors with interactions. “tic()” and “toc()” functions from
+{tictoc} package would record running time for us.&lt;/p&gt;
+&lt;p&gt;Fortunately, the exhaustive method took only 19 seconds. Not bad at
+all, if you ask me. However, I usually have way more then five
+predictors, which could cause performance problems. That’s why we need
+to talk about the…&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tic()
+
+h_model &amp;lt;- glmulti(wage ~ jobclass + education + age + health + health_ins,
+          data   = Wage, 
+          crit   = aicc,       # AICC corrected AIC for small samples
+          level  = 2,          # 2 with interactions, 1 without  
+          method = &amp;quot;h&amp;quot;,        # &amp;quot;d&amp;quot;, or &amp;quot;h&amp;quot;, or &amp;quot;g&amp;quot;
+          family = gaussian, 
+          fitfunction = glm,   # Type of model (LM, GLM, GLMER etc.)
+          confsetsize = 100)   # Keep 100 best models
+
+toc() # 19 sec elapsed: 1921 models &lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="performance-impovement-techniques"&gt;Performance impovement
+techniques&lt;/h2&gt;
+&lt;h3 id="remove-unnecessary-terms"&gt;1. Remove unnecessary terms&lt;/h3&gt;
+&lt;p&gt;And the first one is to remove all unnecessary predictors or
+interactions. For example a &lt;em&gt;weight&lt;/em&gt; and &lt;em&gt;body mass index
+(BMI)&lt;/em&gt; provide very similar information - the statisticians would
+say - they are highly multicollinear. Anyway, if both, &lt;em&gt;weight&lt;/em&gt;
+and &lt;em&gt;BMI&lt;/em&gt; are included, they would dramatically increase the
+number of models without providing any value. Check this out, adding
+only two additional categorical predictors (maritl &amp;amp; region) into
+the Wage model above increases the number of models to over 2.5 millions
+(2604485 to be exact, see below). And while it’s unimaginable to run so
+many models in our life time, &lt;strong&gt;genetic algorithm&lt;/strong&gt;
+provides a solution for it.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;glmulti(wage ~ jobclass + education + age + health + health_ins + maritl + region,
+        data   = Wage, 
+        crit   = aicc,       # AICC corrected AIC for small samples
+        level  = 2,          # 2 with interactions, 1 without  
+        method = &amp;quot;d&amp;quot;,        # &amp;quot;d&amp;quot;, or &amp;quot;h&amp;quot;, or &amp;quot;g&amp;quot;
+        family = gaussian, 
+        fitfunction = glm,   # Type of model (LM, GLM, GLMER etc.)
+        confsetsize = 100,
+        plotty=FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Initialization...
+TASK: Diagnostic of candidate set.
+Sample size: 3000
+6 factor(s).
+1 covariate(s).
+0 f exclusion(s).
+0 c exclusion(s).
+0 f:f exclusion(s).
+0 c:c exclusion(s).
+0 f:c exclusion(s).
+Size constraints: min =  0 max = -1
+Complexity constraints: min =  0 max = -1
+Your candidate set contains 2604485 models.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 2604485&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="use-genetic-algorithm"&gt;2. Use genetic algorithm&lt;/h3&gt;
+&lt;p&gt;Particularly, having 6 numeric predictors with interactions, the
+“brute force” approach needs almost 3 hours, while genetic algorithm
+runs only 40-80 seconds and produces almost identical results (with
+sometimes slightly worse IC value).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tic()
+
+test_h &amp;lt;- glmulti(mpg ~ hp + drat + wt + qsec + gear, 
+                 data   = mtcars, 
+                 method = &amp;quot;h&amp;quot;,       # Exhaustive approach
+                 crit   = aic,      # AICC corrected AIC for small samples
+                 level  = 2,         # 2 with interactions, 1 without
+                 family = gaussian,
+                 fitfunction = glm,  # Type of model (LM, GLM, GLMER etc.)
+                 confsetsize = 100)  # Keep 100 best models
+
+toc() # 32768 models &amp;quot;h&amp;quot; takes 104-109 seconds
+# 6 numeric predictors with interactions produces 2.097.152 models, and &amp;quot;h&amp;quot; method takes 9715.466 seconds or ca. 2.7 hours
+
+tic()
+
+test_g &amp;lt;- glmulti(mpg ~ hp + drat + wt + qsec + gear, 
+                 data   = mtcars, 
+                 method = &amp;quot;g&amp;quot;,       # genetic algorithm approach
+                 crit   = aic,      # AICC corrected AIC for small samples
+                 level  = 2,         # 2 with interactions, 1 without
+                 family = gaussian,
+                 fitfunction = glm,  # Type of model (LM, GLM, GLMER etc.)
+                 confsetsize = 100)  # Keep 100 best models
+
+toc() # 32768 models &amp;quot;g&amp;quot; takes 40-59 seconds
+# 6 numeric predictors with interactions produces 2.097.152 models, and &amp;quot;g&amp;quot; method takes 40-80 seconds or ca. 1 minute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, if genetic algorithm is sooo cool, why not use genetic algorithm
+all the time? Well, interestingly enough, with categorical predictors,
+having a lot of categories, genetic algorithms may perform slower as
+compared to the exhaustive one. For instance, our Wage-model, which has
+lots of categorical predictors took only 19 second with the exhaustive
+screening, while needed 117 seconds till genetic algorithm converged,
+so, almost 6 times longer. Moreover, genetic algorithm might have
+convergence problem and might run indefinitely long, without you having
+any idea of WHEN, or IF it ever stops. And lastly, exhaustive method
+almost always delivers better IC values. That’s why I’d recommend to
+&lt;strong&gt;produce all possible models (aka. using exhaustive screening,
+aka. applying “brute force” approach) whenever possible&lt;/strong&gt; and
+only use genetic algorithm for a high number of numeric predictors.&lt;/p&gt;
+&lt;h3 id="specify-marginality-and-exclude-arguments-optional"&gt;3. Specify
+“marginality” and “exclude” arguments (optional) –&amp;gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;marginality = TRUE&lt;/strong&gt;, argument considers only
+marginal models. That would reduce the number of model from 2604485 to
+2350602. I did not really understand what the martinality exactly does,
+that is why I just prefer to leave it out.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Argument &lt;strong&gt;exclude&lt;/strong&gt; excludes (main effects or
+interactions) from the candidate models, e.g. c(“mass:height”) … it
+somehow did not work in my code and I could not find out why. I hope it
+will work on your machine!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;using multiple cores while computing might help.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="what-the-hell-is-the-best-model-then"&gt;What the hell is THE BEST
+model then ???&lt;/h2&gt;
+&lt;p&gt;By the way, remember, in the beginning of the video I said, that
+stepwise selection is not the best method, implying that {glmulti}
+approach is better? Well, let’s compare the results of exhaustive and
+genetic algorithms, to the results of forward and backwards selections
+and see which is a &lt;strong&gt;TRULY BEST&lt;/strong&gt; model:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive &amp;lt;- test_h@objects[[1]]
+optimal_model_glmulti_genetic    &amp;lt;- test_g@objects[[1]]
+compare_performance(optimal_model_glmulti_exhaustive, optimal_model_glmulti_genetic, optimal_model_backward, optimal_model_forward)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Comparison of Model Performance Indices
+
+Name                             | Model | AIC (weights) | AICc (weights) | BIC (weights) |    R2 |  RMSE | Sigma
+-----------------------------------------------------------------------------------------------------------------
+optimal_model_glmulti_exhaustive |   glm | 134.7 (0.391) |  141.0 (0.497) | 146.5 (0.496) | 0.932 | 1.547 | 1.750
+optimal_model_glmulti_genetic    |   glm | 134.7 (0.391) |  141.0 (0.497) | 146.5 (0.496) | 0.932 | 1.547 | 1.750
+optimal_model_backward           |   glm | 135.9 (0.215) |  165.9 (&amp;lt;.001) | 157.9 (0.002) | 0.954 | 1.266 | 1.689
+optimal_model_forward            |   glm | 144.9 (0.002) |  149.6 (0.007) | 155.2 (0.006) | 0.900 | 1.871 | 2.076&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_exhaustive$formula&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
+&amp;lt;environment: 0x7fdbb62092e0&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;optimal_model_glmulti_genetic$formula&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ 1 + wt + qsec + gear + drat:hp + qsec:wt + gear:wt
+&amp;lt;environment: 0x7fdb75a334e8&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;optimal_model_backward$formula&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ hp + drat + wt + qsec + gear + hp:drat + hp:wt + hp:qsec + 
+    hp:gear + drat:wt + drat:qsec + wt:qsec + wt:gear
+&amp;lt;environment: 0x7fdbb21d6278&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;optimal_model_forward$formula&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;mpg ~ wt + hp + qsec + gear + wt:hp
+&amp;lt;environment: 0x7fdbb21d6278&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see {glmulti} approach produced lower AIC and much lower
+BIC Information criteria, and interestingly enough, the &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt; produced by {glmulti} is right in
+between the &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt;s of forwards and
+backwards selections, suggesting that {glmulti} models are neither
+underfitted not overfitted. Moreover, in our example both exhaustive and
+genetic algorithms have identical result (will not always be the case)
+and showed three interactions (drat:hp + qsec:wt + gear:wt) to be
+important, while backwards selection found 8 interactions to be
+important, which to me sound like overfitting, which is in line with
+it’s highest &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt;, and forwards
+selection found only one interaction, which looks like underfitting,
+which is in line with it’s lowest &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;So, I hope I could convince you that &lt;strong&gt;{glmulti} approach is
+superior to the stepwise selection&lt;/strong&gt; approach and produces a
+&lt;strong&gt;truly BEST model&lt;/strong&gt;.&lt;/p&gt;
+&lt;!-- ```{r eval=FALSE} --&gt;
+&lt;!-- tic() --&gt;
+&lt;!-- g_model &lt;- glmulti(wage ~ jobclass + education + age + health + health_ins, --&gt;
+&lt;!--           data   = Wage,  --&gt;
+&lt;!--           crit   = aicc,       # AICC corrected AIC for small samples --&gt;
+&lt;!--           level  = 2,          # 2 with interactions, 1 without   --&gt;
+&lt;!--           method = "g",        # "d", or "h", or "g" --&gt;
+&lt;!--           family = gaussian,  --&gt;
+&lt;!--           fitfunction = glm,   # Type of model (LM, GLM, GLMER etc.) --&gt;
+&lt;!--           confsetsize = 100)   # Keep 100 best models --&gt;
+&lt;!-- toc() # 117 sec elapsed: After 440 generations:  --&gt;
+&lt;!-- ``` --&gt;
+&lt;h2 id="some-exotic-applications-glmer-or-multinom"&gt;Some exotic
+applications: GLMER or multinom&lt;/h2&gt;
+&lt;p&gt;And while {glmulti} works fine with the classic functions like LM and
+GLM, it can also fit some exotic models, such as “multinomial” models
+via Neural Networks from {nnet} package.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(nnet)
+
+multinom_glmulti &amp;lt;- glmulti(
+  education ~ wage + jobclass + health, 
+  data   = Wage, 
+  level  = 2, 
+  method = &amp;quot;h&amp;quot;
+  fitfunction = multinom)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here are the predictions of the best multinomial model:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot(effects::allEffects(multinom_glmulti@objects[[1]]),
+     lines = list(multiline = T),
+     confint = list(style = &amp;quot;auto&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file81213ffc108c_files/figure-html/unnamed-chunk-14-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;And lastly, despite the fact there is no straightforward fitting
+function for the mixed-effects models, such as GLMER from {lme4}
+package, we can easily write our own wrapper-function and use it inside
+of {glmulti}:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;glmer.glmulti&amp;lt;-function(formula, data, random = &amp;quot;&amp;quot;, ...){
+   glmer(paste(deparse(formula),random),
+         data    = data, REML = F, ...)
+}
+
+mixed_model &amp;lt;- glmulti(
+  y = response ~ predictor_1 + predictor_2 + predictor_3,
+  random  = &amp;quot;+(1|random_effect)&amp;quot;,
+  crit    = aicc,
+  data    = data,
+  family  = binomial,
+  method  = &amp;quot;h&amp;quot;,
+  fitfunc = glmer.glmulti,
+  marginality = F,
+  level   = 2 )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, let’s have a look at the results of our BEST model and interpret
+them.&lt;/p&gt;
+&lt;h2 id="extract-results"&gt;Extract results&lt;/h2&gt;
+&lt;p&gt;The output of a {glmulti} analysis is an object containing the
+&lt;strong&gt;confidence set of models (100 best models by default)&lt;/strong&gt;.
+Standard R regression functions like “summary()”, “coef()” or “plot()”
+can all be used to make a multi-model inference. But let’s start with
+the brief summary of the results which can be obtained with via
+“print()” command:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;print(h_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;glmulti.analysis
+Method: h / Fitting: glm / IC used: aicc
+Level: 2 / Marginality: FALSE
+From 100 models:
+Best IC: 29793.4306133546
+Best model:
+[1] &amp;quot;wage ~ 1 + jobclass + education + health + health_ins + age + &amp;quot;  
+[2] &amp;quot;    education:jobclass + health_ins:education + education:age + &amp;quot;
+[3] &amp;quot;    health:age + health_ins:age&amp;quot;                                 
+Evidence weight: 0.0786680339413549
+Worst IC: 29801.3206286612
+6 models within 2 IC units.
+74 models to reach 95% of evidence weight.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;… were we see the most important information, such as fitting
+function, the information criteria used to rank the models, the formula
+of the best model and even the number of models which as good as the
+best model. There are 6 models, which we can also see if we plot our
+object:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot(h_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file81213ffc108c_files/figure-html/unnamed-chunk-18-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;This plot shows the IC values for all 100 models from the confidence
+set. A horizontal line separates 6 best models, that are less than 2 IC
+units away from &lt;strong&gt;THE BEST&lt;/strong&gt; model. But what predictors and
+interactions do those 6 models contain? Using {weightable} function, we
+can easily display them:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;weightable(h_model)[1:6,] %&amp;gt;% 
+  regulartable() %&amp;gt;%       # beautifying tables
+  autofit()&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="tabwid"&gt;&lt;style&gt;.cl-cfe47d92{}.cl-cfddcede{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cfe0d110{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cfe0d11a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cfe0e38a{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e394{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e395{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e39e{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e39f{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e3a8{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e3a9{width:12.024in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e3b2{width:0.965in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cfe0e3bc{width:1.092in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}&lt;/style&gt;&lt;table data-quarto-disable-processing='true' class='cl-cfe47d92'&gt;&lt;thead&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;th class="cl-cfe0e38a"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;model&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-cfe0e394"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;aicc&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;th class="cl-cfe0e395"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;weights&lt;/span&gt;&lt;/p&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cfe0e39e"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e39f"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;29,793.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3a8"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;0.07866803&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cfe0e39e"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e39f"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;29,793.68&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3a8"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;0.06952606&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cfe0e39e"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e39f"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;29,794.40&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3a8"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;0.04836431&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cfe0e39e"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;wage ~ 1 + jobclass + education + health_ins + age + education:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e39f"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;29,794.43&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3a8"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;0.04776916&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cfe0e39e"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:education + jobclass:age + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e39f"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;29,795.31&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3a8"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;0.03070167&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style="overflow-wrap:break-word;"&gt;&lt;td class="cl-cfe0e3a9"&gt;&lt;p class="cl-cfe0d110"&gt;&lt;span class="cl-cfddcede"&gt;wage ~ 1 + jobclass + education + health + health_ins + age + education:jobclass + health_ins:jobclass + health_ins:education + education:age + health:age + health_ins:age&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3b2"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;29,795.36&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td class="cl-cfe0e3bc"&gt;&lt;p class="cl-cfe0d11a"&gt;&lt;span class="cl-cfddcede"&gt;0.02990738&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;Here we see the formulas, Information Criteria and the Akaike weights
+of our 6 best models. The Akaike weight for a particular model shows the
+probability that the model is the best model out of all models
+considered. To say it in a simple lingo - the model with the highest
+weight minimizes the loss of information. So, while the “best” model has
+the highest weight, its weight in this example is not substantially
+larger than that of the second model (and also the third, fourth, and so
+on). So, we shouldn’t be all too certain here that the top model is
+really &lt;strong&gt;the best model&lt;/strong&gt; in the set. Several models are
+almost equally plausible. So, &lt;strong&gt;which model should we take
+then?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If all 6 models are great, but have different combinations of
+predictors and interactions, figuring out which terms are important may
+help to choose the best model. Fortunately for us, the
+&lt;code&gt;plot()&lt;/code&gt; command with &lt;code&gt;type="s"&lt;/code&gt; argument displays
+the relative importance of model terms across all models. The importance
+value for a particular predictor or interaction is equal to the sum of
+the weights for the models in which the variable appears. So, &lt;strong&gt;a
+variable that shows up in lots of models with large weights will receive
+a high importance value&lt;/strong&gt;. A vertical line is drawn at 80% (where
+terms to the right of the line are part of 80% of the models), which is
+sometimes used as a cutoff to differentiate between very important and
+less important variables. This threshold is somewhat arbitrary though,
+so that we are free to set it at … let’s say 50% and include all the
+predictors and interactions with the importance above 50% into the final
+model.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot(h_model, type = &amp;quot;s&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file81213ffc108c_files/figure-html/unnamed-chunk-20-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, the very first model contains the
+&lt;em&gt;age:health_ins&lt;/em&gt; interaction, which has ca. 50% importance. And
+it would be totally fine to go with that. But, since we have so many
+terms with the importance around 80%, I am happy to use only those,
+including &lt;em&gt;education:health_insurance&lt;/em&gt; interaction and predictor
+&lt;em&gt;health&lt;/em&gt;, because they are far enough from the rest. And if I
+look at 6 best models, I’ll see that the second model has exactly those
+terms. The third model is a bit worse because it does not contain
+variable health, but since health is part of the most important
+interaction - &lt;em&gt;age:health&lt;/em&gt;, I’d prefer to include it. So, now we
+did not blindly trust the algorithm and took it’s &lt;strong&gt;BEST
+MODEL&lt;/strong&gt;, but examined the results carefully and made a grounded
+decision to take the second model as &lt;strong&gt;OUR BEST
+MODEL&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Now, we can easily interpret and visualize and check assumptions of
+&lt;strong&gt;OUR BEST&lt;/strong&gt; model as we always do:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;best_model &amp;lt;- h_model@objects[[2]]
+
+car::Anova(best_model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Analysis of Deviance Table (Type II tests)
+
+Response: wage
+                     LR Chisq Df Pr(&amp;gt;Chisq)    
+jobclass                 4.91  1   0.026764 *  
+education              626.21  4  &amp;lt; 2.2e-16 ***
+health                  28.16  1  1.117e-07 ***
+health_ins             158.79  1  &amp;lt; 2.2e-16 ***
+age                     90.94  1  &amp;lt; 2.2e-16 ***
+jobclass:education      16.14  4   0.002838 ** 
+education:health_ins    10.22  4   0.036890 *  
+education:age           12.11  4   0.016572 *  
+health:age              10.13  1   0.001459 ** 
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_model(best_model, type = &amp;quot;int&amp;quot;) %&amp;gt;% 
+  plot_grid()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file81213ffc108c_files/figure-html/unnamed-chunk-21-1.png" width="1440" /&gt;&lt;/p&gt;
+&lt;p&gt;And if you want to learn &lt;strong&gt;how to test ALL model-assumptions
+using only one function&lt;/strong&gt;, check out {performance} package:&lt;/p&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/BNTn_f43U04" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id="problems"&gt;Problems&lt;/h2&gt;
+&lt;p&gt;So, while {glmulti} is an amazing package, but it is not perfect and
+here are three things I found challenging:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;rJava package needed. If you can’t easily install rJava package
+from RStudio, chances are your computed does not have Java installed.
+Doing this can take some time and nerves.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;some arguments are poorly described (e.g. “marginality”), or
+simply do not work (e.g. “exclude”). Please, let me know in the comments
+below, if you managed to use “exclude”.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;and while the &lt;code&gt;coef()&lt;/code&gt; and &lt;code&gt;predict()&lt;/code&gt;
+commands are useful multi-model inference tools for models without
+interactions and only with numeric predictors and could provide
+multi-model averaged estimates, confidence intervals and predictions, I
+find them less intuitive for the models with several interactions and
+with many categorical predictors.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="further-readings-and-references"&gt;Further readings and
+references&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://www.jstatsoft.org/article/view/v034i12"
+class="uri"&gt;https://www.jstatsoft.org/article/view/v034i12&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a
+href="https://cran.r-project.org/web/packages/glmulti/glmulti.pdf"
+class="uri"&gt;https://cran.r-project.org/web/packages/glmulti/glmulti.pdf&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://www.igi-global.com/gateway/chapter/235052"
+class="uri"&gt;https://www.igi-global.com/gateway/chapter/235052&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>e293af68b10d93947ec753cf0794c593</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>machine learning</category>
+      <category>R package reviews</category>
+      <category>models</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti</guid>
+      <pubDate>Sat, 04 Nov 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti/thumbnail_glmulti.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
     <item>
       <title>7 Reasons to Master Scatter Plots in {ggplot2} with World Happiness Data</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -247,20 +822,6 @@
       <guid>https://yuzar-blog.netlify.app/posts/2022-06-18-report</guid>
       <pubDate>Mon, 11 Jul 2022 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2022-06-18-report/thumbnail_report.png" medium="image" type="image/png" width="1920" height="1080"/>
-    </item>
-    <item>
-      <title>R package reviews {glmulti} find the best model!</title>
-      <dc:creator>Yury Zablotski</dc:creator>
-      <link>https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti</link>
-      <description>“All models are wrong, some are useful” - said a statistician George Box. And he was right. Thus, in this post we'll find the set of very useful models from the set of all possible models and will be able to choose THE MOST USEFUL model which adressed all our questions.</description>
-      <category>videos</category>
-      <category>statistics</category>
-      <category>machine learning</category>
-      <category>R package reviews</category>
-      <category>models</category>
-      <guid>https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti</guid>
-      <pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2022-05-31-glmulti/thumbnail_glmulti.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>Tidy Data and Why We Need It!</title>
