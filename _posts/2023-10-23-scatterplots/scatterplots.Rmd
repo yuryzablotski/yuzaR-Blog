@@ -206,18 +206,6 @@ pic2 <- ggplot(mea, aes(x = life_expectancy, y = happiness,
 pic2
 ```
 
-```{r eval = F}
-set.seed(2)
-ggplot(mea %>% filter(country %in% c("United States", "Venezuela") & year %in% c(2015:2023)), aes(x = life_expectancy, y = happiness, 
-                                                                                                  
-ggplot(d %>% 
-         filter(country %in% c("United States", "Venezuela") & year %in% c(2015:2023)), aes(x = life_expectancy, y = happiness, color = country)) +
-  geom_point()+
-  geom_smooth(method = lm)+ 
-  stat_ellipse()+
-  geom_label(aes(label = year), size = 1)
-```
-
 
 This adds an even more intriguing layer to our story. Specifically, only the Germans appear in every subplot. What's the common thread? Well, it turns out that most Germans have someone they can rely on in times of trouble. However, when it comes to generosity, they're split right down the middle – with half of them displaying a generous spirit and the other half leaning toward thriftiness. Having spent half of my life in Germany, I can certainly relate to this.
 
@@ -281,7 +269,7 @@ pic3
 
 I understand that the plot may appear crowded and overwhelming, but the good news is - you won't often need all these options at the same time, but you'll find them valuable for different projects. Here, I've showcased what's possible to include in a scatter plot, but it's your choice to decide which elements to use.
 
-Finally, once you're satisfied with your visualization, you can save it using the "ggsave" command in your preferred format, quality, and size. And if you are satisfied with this video so far, please consider hitting a like button, it helps the channel a lot. 
+Finally, once you're satisfied with your visualization, you can save it using the "ggsave" command in your preferred format, quality, and size. And if you are satisfied with this article so far, consider to subscribe to my YouTube channel, where you'll find more useful topics. 
 
 ```{r}
 ggsave(
