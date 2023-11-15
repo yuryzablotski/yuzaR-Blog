@@ -1,5 +1,5 @@
 ---
-title: "10 Ways to bring Box-Violin Plots in {ggplot2} to the Next Level"
+title: "Master Box-Violin Plots in {ggplot2} and Discover 10 Reasons Why They Are Useful"
 description: |
   Boxplots display a wealth of useful information about the dataset. Let’s start with the most basic boxplot, build every part of this notched box-violin plot in {ggplot2} step by step, and understand why every detail matters 😉
 author:
@@ -332,7 +332,7 @@ What information is it, you might wonder? Well, let's check this out by making t
 ... reporting the average salary of $143,000 on skewed data will overpromise and disappoint. That's why I personally get a bit skeptical when any source reports averages instead of medians. But I'd be interested to know what you think, so feel free to let me know in the comments section below.
 
 
-```{r fig.width=9}
+```{r fig.width=11}
 ggplotly(p3)
 ```
 
