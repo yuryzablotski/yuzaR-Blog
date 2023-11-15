@@ -478,7 +478,7 @@ Details_. doi: 10.5281/zenodo.2074621 (URL:
 https://doi.org/10.5281/zenodo.2074621), <URL:
 https://CRAN.R-project.org/package=ggstatsplot>.
 
-```{r fig.height=7}
+```{r echo=FALSE, fig.height=7}
 library(ggstatsplot)
 ggbetweenstats(d, education, wage)
 ```
