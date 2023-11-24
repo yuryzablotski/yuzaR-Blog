@@ -31,10 +31,10 @@ linkcolor: blue
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
-# This post as ... minutes video (in progress)
+# This post as ca. 17 minutes video
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("rvm94zcoKT0") 
 ```
 
 
@@ -64,11 +64,17 @@ The five-number summary (from bottom to top) is represented by the:
 
 - **minimum** wage, which is the end of the lowest whisker
 - **first quartile (Q1)**, or the lowest horizontal line (hinge) of the box. It’s also called 25th percentile, because 25% of all the data is located between the minimum and the lowest line of the box
-- **median** is the thick horizontal line in the middle of the box, which splits all the data in half and also the data in the box in half, so that both sub-boxes have 25% of the data even if they don’t look even. The median is sometimes called **second quartile (Q2)**, or 50th percentile
+- **median** is the thick horizontal line in the middle of the box, which splits all the data in half and also the data in the box in half, so that both sub-boxes have 25% of the data even if they don’t look completely uneven. The median is sometimes called **second quartile (Q2)**, or 50th percentile
 - **third quartile (Q3)** is the highest horizontal line (hinge) of the box. It’s also called a 75th percentile, because 75% of all the data is located between the minimum and the highest line of the box, and finally the
 - **maximum** wage, as the end of the highest whisker
 
 ![](boxplot_5_number_summary.png)
+By the way, there is the whole Nature paper dedicated to visualizing box plots, so, if you are interested what really smart people have to say about it, have a look at their work: "Krzywinski, M., Altman, N. Visualizing samples with box plots. Nat Methods 11, 119–120 (2014). https://doi.org/10.1038/nmeth.2813".  Here I'll just use some of their fantastic plots: 
+
+![](nature_boxplot1.png)
+
+
+
 
 The **box** itself covers the middle 50% of the salaries. It goes from the 1st to the 3rd quartile, that's why we call it the interquartile range (IQR). The whiskers stretch the box to the lowest and highest values, but exclude outliers, giving us a really good idea of what we could generally earn. However, salaries of folks with different education levels, professions, etc. would differ, right? That leads us to the second benefit of box plots…
 
@@ -156,9 +162,14 @@ $$Median \pm \frac{1.57*IQR}{\sqrt n}$$
 
 ![](notch.png)
 
-So, if the notch stays inside the box, our sample size is sufficiently big, and we can trust our data, being confident in our median. But if the notch goes outside the box, we can not trust our data because our sample size is too small. By the way, a small sample size is the reason the notches in box plots are rarely shown in scientific studies. I am also guilty of that. So, if YOU display notches, your box plots will be much better than those of most scientific studies. And since sample size is so crucial, displaying it will make your box plot even more informative. And there are two ways to add sample size to every plot: implicitly and explicitly.
+So, if the notch stays inside the box, our sample size is sufficiently big, and we can trust our data, being confident in our median. But if the notch goes outside the box, we can not trust our data because our sample size is too small. 
+
+![](nature_boxplot2.png)
+
+By the way, a small sample size is the reason the notches in box plots are rarely shown in scientific studies. I am also guilty of that. So, if YOU display notches, your box plots will be much better than those of most scientific studies. And since sample size is so crucial, displaying it will make your box plot even more informative. And there are two ways to add sample size to every plot: implicitly and explicitly.
 
 # 5. Add sample size
+
 
 ## Implicit 
 
@@ -225,7 +236,7 @@ p
 
 
 
-# 6. Display distribution vio the violin plot
+# 6. Display distribution via the violin plot
 
 For example, we could use "p" to add the violin plot. Why violins? Well, violin plots might be even more informative than box plots because they show the distribution of data along both the horizontal and vertical axes, revealing its shape, symmetry, and spread.
 
@@ -310,7 +321,9 @@ Adding the average with 95% confidence intervals makes any box plot even more in
 
 "Box plots may be combined with sample mean and 95% CI error bars to communicate more information about samples in roughly the same amount of space." [^3]
 
-[^3]: https://www.nature.com/articles/nmeth.2813.pdf?proof=true
+![](nature_boxplot3.png)
+
+[^3]: Krzywinski, M., Altman, N. Visualizing samples with box plots. Nat Methods 11, 119–120 (2014). https://doi.org/10.1038/nmeth.2813 https://www.nature.com/articles/nmeth.2813.pdf?proof=true
 
 
 ```{r fig.width=9}
