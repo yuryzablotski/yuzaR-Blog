@@ -39,7 +39,7 @@ library(bstfun)
 # This post as ca. 10 minutes video
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("8EMwnqtEHZk") 
 ```
 
 
