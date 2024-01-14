@@ -1,0 +1,881 @@
+---
+title: "Unleash Quantile Regression Results"
+description: |
+  In the previous episode, I presented four reasons why Quantile Regression (QR) is a better alternative to classic linear regression. However, I discovered that reporting QR results can be quite demanding. To make the process easier, I created better plots for model estimates and predictions, a comprehensive table of model results, including contrasts between groups and p-values. I found this code so useful that I thought you guys might benefit from it too. Besides, I really enjoyed programming it :)
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+preview: thumbnail_QR2.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+#csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+#draft: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)    
+library(patchwork)    
+library(sjPlot)       
+library(gtsummary)
+library(quantreg)
+library(ISLR) 
+library(broom)
+library(effectsize)
+library(emmeans)
+library(flextable)
+```
+
+# This post as ca. 18 minutes video
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("4nJD2tpZFDs") 
+```
+
+
+
+# Get 3 most importance quantiles
+
+We'll use the Wage dataset from the ISLR package to study the influence of job type, age, and education on American salaries. We first create four simple models: one classic linear regression that calculates average wages, and three quantile regressions. The low quantile (tau = 0.1) calculates wages of low earners, the median quantile (tau = 0.5) gets median wages, and the high quantile (tau = 0.9) describes wages of top 10% earners. We will then use the {sjPlot} package to plot estimates of these four models for all predictors at the same time.
+
+```{r}
+library(tidyverse)      # use & thank me later ;)
+library(ISLR)           # provides Wage dataset
+theme_set(theme_test()) # beautifies plots
+
+library(quantreg) # extra video on my channel
+lr   <- lm(wage ~ jobclass + age, Wage)
+qr10 <- rq(wage ~ jobclass + age, Wage, tau = 0.1)
+qr50 <- rq(wage ~ jobclass + age, Wage, tau = 0.5)
+qr90 <- rq(wage ~ jobclass + age, Wage, tau = 0.9)
+
+library(sjPlot)   # extra video on my channel
+plot_models(lr, qr10, qr50, qr90, 
+            show.values = TRUE,
+            m.labels = c("LR", "QR 10%", "QR 50%", "QR 90%"), 
+            legend.title = "Model type")
+```
+
+
+While this plot allows us to compare results among models, different predictors usually have very different magnitudes of estimates. High estimates are displayed in a better way, while low estimates are underrepresented and hard to see. This problem could be solved with a single line of code by using the “rm.terms” (remove terms) argument. However, when we have many predictors and many categories per predictor, this solution becomes very inconvenient. To be honest, it can become a huge pain in the neck.
+
+```{r}
+plot_models(lr, qr10, qr50, qr90, 
+            rm.terms = "jobclass [2. Information]",
+            show.values = TRUE,
+            m.labels = c("LR", "QR 10%", "QR 50%", "QR 90%"), 
+            legend.title = "Model type")
+```
+
+
+
+So, if you are only interested in a few important quantiles and have models with a low number of predictors, then the plot_model() function is the way to go. However, if you want to explore the entire distribution of quantiles, creating a new model for every quantile would be necessary. This approach would result in too much code and the plot might look cluttered with too many estimates.
+
+
+
+# Get all quantiles
+
+
+A more elegant solution for obtaining more quantiles is to use the "tau" argument with a sequence of quantiles of your choice. This way, we can easily create multiple models at once, say 20. Using the "summary" and "plot" functions would allow us to plot all predictors for all quantiles simultaneously. However, this visualization is hardly customizable and we cannot include estimates or p-values like {sjPlot} did.
+
+
+```{r fig.height=7}
+qr_all <- rq(wage ~ jobclass + age, Wage, 
+             tau  = seq(.05, .95, by = 0.05))
+
+summary(qr_all) %>% plot()
+```
+
+
+To address this issue, I developed the idea of combining the visual results of {sjPlot} and {quantreg} in order to create beautiful and highly customizable plot. To do that, we need two tidy datasets – one containing the quantile regression model results and the other comprising the linear regression model results. This approach is necessary because, despite the fact that the linear regression results are plotted in red by the {quantreg} package, which means that they have been calculated, I could not extract them from the model. If you know how, please put the solution in the comments below for the whole community.
+
+
+```{r echo=FALSE, fig.height=3, layout="l-screen", fig.width=19}
+a <- plot_models(lr, qr10, qr50, qr90, 
+            rm.terms = "jobclass [2. Information]",
+            show.values = TRUE,
+            m.labels = c("LR", "QR 10%", "QR 50%", "QR 90%"), 
+            legend.title = "Model type")
+
+ggsave("sjPlot_age.png", device = png, plot = a, dpi =999)
+
+library(grid)
+library(png)
+
+b_pre <-  readPNG("qr_all_age.png")
+b <- rasterGrob(b_pre, interpolate=TRUE)
+
+c_pre <-  readPNG("age.png")
+c <- rasterGrob(c_pre, interpolate=TRUE)
+
+library(figpatch)
+a + grid::textGrob("+") + b + grid::textGrob("=") + c +
+  plot_layout( 
+    ncol = 5, nrow = 1,
+    widths  = c(1, .1, 1, .1, 1))
+
+```
+
+
+# Get tidy results of multivariable models
+
+
+
+```{r}
+summary(lr)
+```
+
+
+We need to tidy up model results because the classic summary() function of any model does not produce them. For that, we will use, suprise suprise, the tidy() function from the {rstatix} package. Here, it is important to use the se.type = "nid" argument because otherwise, the default option of tidy() (se.type = "rank") would produce slightly different confidence intervals (CIs) compared to {sjPlot} CIs, which would then not match on the plot. Having only Standard-Error will allow us to calculate 95% CIs on our terms! So, we would feel more powerful and in control. (some ironic picture of powerful personality, like Held in unterhose)
+
+
+
+```{r warning=FALSE, message=FALSE}
+lr_preds <- lr %>% 
+  rstatix::tidy(se.type = "nid") %>% # se.type = "rank"
+  mutate(LCL = estimate - 1.96 * std.error, 
+         UCL = estimate + 1.96 * std.error) %>% 
+  rstatix::add_significance("p.value") %>% 
+  filter(term != "(Intercept)") %>% 
+  select(-std.error, -statistic) %>%
+  rename(p = p.value.signif)
+
+qr_preds <- qr_all %>% 
+  rstatix::tidy(se.type = "nid") %>% 
+  mutate(LCL = estimate - 1.96 * std.error, 
+         UCL = estimate + 1.96 * std.error) %>% 
+  filter(!grepl("Intercept", term)) %>% 
+  rstatix::add_significance("p.value") %>% 
+  select(-std.error, -statistic) %>%
+  rename(p = p.value.signif)
+```
+
+We then remove the intercept because there is a better way to deal with it and we'll come to it in a moment. To do so, we can filter the intercept out using the exclamation mark. However, intercepts are often written in a strange way, with brackets for example, which can be confusing. Therefore, we can use the “grepl” function to get rid of it. The “grepl” function searches for matches to the pattern we specify. In our case, the word “intercept” itself is the pattern. (Note that “grepl” also takes missing values in our variable “term” as not matching a non-missing pattern.)
+
+Finally, we can use the “add_significance” function from the {rstatix} package to add significance stars as a new column. Here’s a quick interpretation of the stars:
+
+```{r echo=FALSE}
+tribble(
+  ~Stars, ~`P-value Interpretation`,
+  "ns", "p ≥ 0.05",
+  "*" , "p < 0.05",
+  "**", "p < 0.01",
+  "***","p < 0.001",
+  "****", "p = 0"
+) %>% flextable::as_flextable()
+```
+
+By the way, the double colon is a convenient way to use only one particular function from a specific package. For instance, in this case, I don’t need to use the {rstatix} package anymore. Using the double colon takes less memory on a computer and produces fewer conflicts. For example, the “tidy” function is present in three different packages. But I digress, so, let’s get back to the topic at hand.
+
+```{r}
+?tidy()
+```
+
+
+Finally, we remove unnecessary columns from our tidy dataset and rename the p-value column. We are now ready to produce our beautiful and informative plot.
+
+
+
+# Create a fancy plot step by step
+
+To ensure maximum clarity and learning, let’s program that fancy plot step-by-step.
+
+## 1. Filter out one predictor
+
+First, we’ll focus on one predictor at a time. Let’s filter out the predictor ‘age’ and produce two smaller tidy datasets, one for linear regression and another for quantile regression. 
+
+
+```{r}
+data_lm = lr_preds %>% filter(term == "age")
+data_qr = qr_preds %>% filter(term == "age")
+```
+
+
+## 2. Plot all quantiles
+
+To plot the estimates of QR and their 95% CIs, we’ll use a “ggplot” command with classic “geom_point”, “geom_line” and “geom_ribbon” functions. We’ll display all possible tau values on the x axis and finally, we’ll flip the coordinates in order to make this plot similar to {sjPlots} solution. It looks much nicer than the grey plot, doesn’t it? :)
+
+
+
+```{r}
+q_plot <- ggplot(data = data_qr, aes(x = tau, y = estimate))+
+  geom_point(color = "green", size = 3)+  
+  geom_line( color = "green", size = 1)+ 
+  geom_ribbon(aes(ymin = LCL, ymax = UCL), fill = "green", alpha = 0.25)+
+  scale_x_reverse(breaks = seq(from = 0, to = 1, by = 0.1))+
+  coord_flip()
+
+q_plot
+```
+
+
+## 3. Put intercept on top of the plot
+
+Another disadvantage of the grey plot is that it sometimes doesn’t show the intercept for some predictors. For example, it doesn’t show the intercept for “age,” but it does for “jobclass.” We’ll fix this by using the “geom_hline” function to always put the Intercept on our plot. This will display the strength of the evidence against the null hypothesis. The further our estimates are from the intercept, the stronger evidence we have against the null hypothesis.
+
+```{r}
+# yintercept instead of xintercept because the plot is flipped
+q_plot2 <- q_plot +
+  geom_hline(yintercept = 0, alpha = .3, size = 1)
+
+q_plot2
+```
+
+
+## 4. Put linear model results on the plot
+
+The next step is to put linear model results on our plot with “geom_line” and “annotate” functions. Here, we could have used the numbers from the dataset directly. But imagine that you need to do this for 10 or 20 predictors, and you’ll see that we need to somehow automate the process of putting estimates on the plot. That’s what we do next.
+
+
+```{r}
+data_lm
+```
+
+
+Namely, we use our small dataset with only “age” predictor and:
+
+- First, we use the estimate as a line.
+- Then, we use the “annotate” function to create a rectangle with Lower and Upper Confidence Limits for y-coordinates and Infinity for x-coordinates.
+- The opacity, color, and size of our lines would allow us to make our plot more appealing than the {quantreg} plot.
+- Finally, we’ll put the estimate and the p-value stars as a piece of text on our plot in the location of our choice. We can control the location via “x” and “y” arguments and adjust it horizontally via “hjust” or vertically via “vjust” when we need to. The “paste” command helps us to combine a real text with a number and significance stars into a single piece of information.
+
+
+```{r}
+# OLS
+q_plot3 <- q_plot2 +
+  geom_hline(yintercept = data_lm$estimate, 
+             alpha = .2, color = "red", size = 1)+
+  annotate(geom = "rect", alpha = .1, fill="red",
+           ymin = data_lm$LCL, ymax = data_lm$UCL, 
+           xmin = -Inf,        xmax = Inf)+
+  annotate(geom = "text", color="red",
+           x = 0, y = data_lm$estimate, hjust = -.1,
+           label = paste("OLS = ", round(data_lm$estimate, 2), data_lm$p ))
+
+q_plot3
+```
+
+
+## 5. Put three most important quantiles on the plot
+
+```{r}
+data_qr
+```
+
+
+Similar to the results of linear regression, we can easily put the results of the three most important quantiles on our plot. There are only two small differences:
+
+- First, we use "geom_pointrange" instead of "geom_line" and "geom_rect".
+- Secondly, since our dataset for age now contains 19 different quantiles, we need to specify which line of the estimate or confidence intervals we should use. In our case, we’d use 2 for the first quantile (tau = 0.1), 10 for the median regression (tau = 0.5), and 18 for the ninth quantile (tau = 0.9).
+
+
+```{r}
+  # tau = .1
+q_plot4 <- q_plot3 +
+  annotate(geom = "pointrange", 
+           x    = .1, color = "black", size = 1, linewidth = 1,
+           y    = data_qr$estimate[2], 
+           ymin = data_qr$LCL[2], 
+           ymax = data_qr$UCL[2])+
+  annotate(geom = "text", 
+           x = .1 - 0.05, 
+           y = data_qr$estimate[2], hjust = -.14, 
+           label = paste( round(data_qr$estimate[2], 2), data_qr$p[2] ))+
+  
+  # tau = .5
+  annotate(geom = "pointrange", 
+           x    = .5, color = "black", size = 1, linewidth = 1,
+           y    = data_qr$estimate[10], 
+           ymin = data_qr$LCL[10], 
+           ymax = data_qr$UCL[10])+
+  annotate(geom = "text", 
+           x = .5 - 0.05, 
+           y =  data_qr$estimate[10], hjust = -.14, 
+           label = paste( round(data_qr$estimate[10], 2), data_qr$p[10] ))+
+  
+  # tau = .9
+  annotate(geom = "pointrange", 
+           x    = .9, color = "black", size = 1, linewidth = 1,
+           y    = data_qr$estimate[18], 
+           ymin = data_qr$LCL[18], 
+           ymax = data_qr$UCL[18])+
+  annotate(geom="text", 
+           x = .9 - 0.05, 
+           y = data_qr$estimate[18], hjust = -.14,
+           label = paste( round(data_qr$estimate[18], 2), data_qr$p[18] ))
+  
+q_plot4
+```
+
+Putting more than 3 quantiles on this plot would unnecessarily clutter it. But using the 3 most important ones seems optimal to me. And while estimates are useful, since we don't need to stair at the axis below, we don’t really need the significance stars. And here’s why: a simple trick to quickly extract inference from this plot is to look whether the confidence intervals cross the grey line. If they do, we usually can’t reject the Null Hypothesis. If they don’t, we can. Interestingly, the trick with confidence intervals works for comparing models too. So, when red and green CIs don’t overlap, the models differ significantly. In this concrete example, that would mean that the classic linear regression, which says that an increase in age of one year would increase the salary by $640 on average, overpromises wage rise for low earners and underpromises for folks who started their career with high salary from the very beginning. Despite the fact that {quantreg} package doesn’t compare the taus among each other, even when different quantile models don’t overlap, I would see them as significantly different.
+
+So, this picture combines the capabilities of {sjPlot} and of {quantreg} packages (halliluja!). But that is just a beginning, because we now can put all the building blocks together and create a function that automates this procedure for any predictor in a multivariable model.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+# Create a function to automate plot creation
+
+If you’re wondering why I didn’t give you the function at the very beginning, the answer is simple: you might have learned less! Besides, copy-pasting functions, which I have often done, can create problems later because I don’t understand every part of the code well enough. And finally, it wouldn’t fit on the screen :)
+
+To create a function, we simply combine the 5 steps we just coded. We only need to make a few changes to the already existing code, namely:
+
+- The first line, where we name our function and put the arguments we need. We only need three arguments: the first one is the predictor we want to visualize, and the other two are just pieces of text which we would put on the axis.
+
+- Tidying up datasets goes without any change.
+
+- Using the “predictor” argument instead of the name of the concrete predictor “age” will allow us to choose predictors we want to see in the plot.
+
+- Plotting estimates, Intercept, OLS, and Quantiles also goes without any change.
+
+- and finally, those two arguments of our function, “intercept” and “estimates”, allow us to automate labeling. And that’s it!
+
+```{r}
+cool_QR_plot = function(predictor, intercept, estimates) {
+  
+# tidy up results
+lr_preds <- lr %>% 
+  rstatix::tidy(se.type = "nid") %>% # se.type = "rank"
+  mutate(LCL = estimate - 1.96 * std.error, 
+         UCL = estimate + 1.96 * std.error) %>% 
+  filter(term != "(Intercept)") %>% 
+  rstatix::add_significance("p.value") %>% 
+  select(-std.error, -statistic) %>%
+  rename(p = p.value.signif)
+
+qr_preds <- qr_all %>% 
+  rstatix::tidy(se.type = "nid") %>% 
+  mutate(LCL = estimate - 1.96 * std.error, 
+         UCL = estimate + 1.96 * std.error) %>% 
+  filter(!grepl("Intercept", term)) %>% 
+  rstatix::add_significance("p.value") %>% 
+  select(-std.error, -statistic) %>%
+  rename(p = p.value.signif)
+  
+# isolate one predictor
+data_lm = lr_preds %>% filter(term == predictor)
+data_qr = qr_preds %>% filter(term == predictor)
+
+# plot them
+ggplot(data = data_qr, aes(x = tau, y = estimate))+
+  geom_point(color = "green", size = 3)+  # color #27408b
+  geom_line( color = "green", size = 1)+ 
+  geom_ribbon(aes(ymin = LCL, ymax = UCL), alpha = 0.25, fill = "green")+
+  coord_flip()+
+  scale_x_reverse(breaks = seq(from = 0, to = 1, by = 0.1))+
+  
+  # Intercept
+  geom_hline(yintercept = 0, alpha = .3, size = 1)+
+  
+  # OLS
+  geom_hline(yintercept = data_lm$estimate, alpha = .2, color = "red", size = 1)+
+  annotate(geom = "rect", alpha = .1, fill="red",
+           ymin = data_lm$LCL, ymax = data_lm$UCL, 
+           xmin = -Inf,        xmax = Inf)+
+  annotate(geom = "text", color = "red",
+           x = 0, y = data_lm$estimate, hjust = -.1,
+          label = paste("OLS = ", round(data_lm$estimate, 2), data_lm$p ))+
+  
+  # tau = .1
+  annotate(geom = "pointrange",  
+           x    = .1, color = "black", size = 1, linewidth = 1,
+           y    = data_qr$estimate[2], 
+           ymin = data_qr$LCL[2], 
+           ymax = data_qr$UCL[2])+
+  annotate(geom = "text", 
+           x = .1 - 0.05, 
+           y = data_qr$estimate[2], hjust = -.14, 
+           label = paste( round(data_qr$estimate[2], 2), data_qr$p[2] ))+
+  
+  # tau = .5
+  annotate(geom = "pointrange",  
+           x    = .5, color = "black", size = 1, linewidth = 1,
+           y    = data_qr$estimate[10], 
+           ymin = data_qr$LCL[10], 
+           ymax = data_qr$UCL[10])+
+  annotate(geom = "text", 
+           x = .5 - 0.05, 
+           y =  data_qr$estimate[10], hjust = -.14, 
+           label = paste( round(data_qr$estimate[10], 2), data_qr$p[10] ))+
+  
+  # tau = .9
+  annotate(geom = "pointrange", 
+           x    = .9, color = "black", size = 1, linewidth = 1,
+           y    = data_qr$estimate[18], 
+           ymin = data_qr$LCL[18], 
+           ymax = data_qr$UCL[18])+
+  annotate(geom="text", 
+           x = .9 - 0.05, 
+           y = data_qr$estimate[18], hjust = -.14,
+           label = paste( round(data_qr$estimate[18], 2), data_qr$p[18] ))+
+  
+  # labels
+  labs(y = paste( "Wage change:", intercept, "(gray) and", estimates, "(colored)"),
+       x = "Quantile (tau)")
+
+}
+```
+
+
+
+
+## Use this function 
+
+Now that we have this function, we're able to produce these plots for all our numerical predictors or for each category of our categorical predictor.
+
+```{r}
+cool_QR_plot("age", "age = 0", "increasing age")
+
+cool_QR_plot("jobclass2. Information", "jobclass = Industrial", "IT")
+```
+
+
+To demonstrate how efficiently we can generate comprehensive multi-plots from complex multivariable models, consider this example. We'll first enhance our models by incorporating the "education" predictor with its five distinct categories.
+
+```{r}
+lr   <- lm(wage ~ jobclass + age + education, Wage)
+qr10 <- rq(wage ~ jobclass + age + education, Wage, tau = 0.1)
+qr50 <- rq(wage ~ jobclass + age + education, Wage, tau = 0.5)
+qr90 <- rq(wage ~ jobclass + age + education, Wage, tau = 0.9)
+
+qr_all <- rq(wage ~ jobclass + age + education, Wage, 
+             tau  = seq(.05, .95, by = 0.05))
+```
+
+Next, we produce separate plots for each numerical predictor and each category of our categorical predictors and save them into separate objects.
+
+```{r}
+job <- cool_QR_plot("jobclass2. Information", "jobclass = Industrial", "IT")
+
+age <- cool_QR_plot("age", "age = 0", "increasing age")
+
+edu_hs <- cool_QR_plot("education2. HS Grad", "Educ. = < HS Grad", "HS")
+
+edu_sc <- cool_QR_plot("education3. Some College", "Educ. = < HS", "≈ College")
+
+edu_coll <- cool_QR_plot("education4. College Grad", "Educ. = < HS", "College")
+
+edu_high <- cool_QR_plot("education5. Advanced Degree", "Educ. = < HS", "Uni | PhD")
+```
+
+
+And finally, we put together all the individual plots into a comprehensive multiplot using the {patchwork} package. I will not go into the code here, since I just published a video on using the {patchwork} package. Instead, I'd like to highlight the "job" plot, which now presents a completely different perspective compared to the original one.
+
+
+
+```{r fig.width=14, fig.height=7}
+library(patchwork) # extra video on my channel
+
+job + age + edu_hs + edu_sc + edu_coll + edu_high +
+  plot_layout(ncol = 3, nrow = 2) +
+  plot_annotation(
+    title    = "Salaries predicted by profession, age and education",
+    subtitle = "Should you invest in yourself?",
+    caption  = "Data source: ISLR package",
+    tag_levels = "A",  # 'a', '1', ⁠'i⁠, or 'I'
+  )
+```
+
+## Effect size of all concfounders
+
+
+The impact of the "job" predictor on the response variable changed significantly because we introduced a much stronger predictor for "wage" – "education". The {effectsize} package and the "eta_squared" function demonstrate that the effect of "education" is 4 times stronger than the effect of "jobclass". Thus, education matters. (Like, whaaattt???) This phenomenon often arises due to a confounding factor, a topic that deserves a separate discussion. On that note, I'd be curious to know how many of you guys are familiar with the concept of confounding. Please share your thoughts in the comments section below.
+
+
+
+```{r}
+library(effectsize)
+eta_squared(lr, alternative = "two.sided")
+```
+
+Now, when we look at our fancy multiplot, we'll see four distinct subplots dedicated to the "education" predictor, each comparing a unique education category to the reference level, namely "no high school education". While comparing solely to the reference level may sufficient in some cases, I personally prefer to conduct pairwise comparisons between all categories to extract the maximum amount of information from the model. This can be easily done with one of my absolute favorite R packages, the {emmeans} package.
+
+
+# Unleash the power of contrasts with {emmeans}
+
+## Get table of predictions for every tau
+
+What the {emmeans} package does is that it enables us to compare education categories pairwisely for **every tau** in the quantile regression. However, since seeing so many results can be overwhelming, we can restrict the taus to only the most important ones through the user-friendly "tau" argument. If you prefer to have the 95% confidence intervals instead of standard errors, you can add the "infer = T" argument to the "emmeans" function.
+
+```{r, layout="l-screen-inset"}
+library(emmeans) # extra video on my channel ... it's really useful!
+
+emmeans(qr_all, 
+        pairwise ~ education, 
+        by  = "tau", 
+        tau = c(.1, .9),
+        weights = "prop") # infer = T
+```
+
+The output of the "emmeans" function consists of two tables. The upper table provides predicted values for every group of the categorical predictor and for every tau. The second table provides contrasts or differences between groups for every tau. To make these tables even more useful, let’s first visualize the predicted values and then produce the best table of contrasts. 
+
+## Plot predictions of every tau
+
+Visualizing **predictions for each quantile** is remarkably straightforward with the {emmeans} package and the "emmip" function. All we need are 1) the fitted model, 2) the predictor of interest, 3) the inclusion of confidence intervals (via "CIs = TRUE"), and 4) the specification of the quantiles we aim to plot. In practice, plotting all quantiles is often unnecessary and will just clutter our visualization. That's why I often go for a maximum of 3 quantiles. For numeric variables, we must also provide a list of values for which we want to see predictions; otherwise, the "emmip" function will only plot the predictions for the average "age" for each quantile. 
+
+
+```{r, layout="l-screen", fig.width=19}
+emmip(qr_all, tau ~ education, CIs = T, tau = c(.1, .5, .9)) +
+
+emmip(qr_all, tau ~ age, CIs = T, tau = c(.1, .5, .9),
+      at = list(age = c(25, 45, 65))) +
+  
+emmip(qr_all, tau ~ age, CIs = T) 
+```
+
+The three taus are more than enough to tell a compelling story. Namely, common people without education earn similarly to the lowest 10% earners with a college degree, but still less than the lowest 10% of earners with the highest education. But even without education, you can be successful and earn more than some highly educated folks in the lowest quantile. However, education opens more doors to growth in salary, as can be seen by the difference between the lowest and highest quantiles. The difference between the lowest and highest salaries without education is much smaller than the difference between the lowest and highest salaries with the highest education. The classic linear regression would never have been able to deliver so much inference, so that quantile regression simply rocks! And if you also find it as useful as me, consider hitting the like button.
+
+## Interactions also work (not part of the video, since too much)
+
+
+```{r}
+qr_all_int <- rq(wage ~ jobclass*education, Wage, tau = seq(.25, .75, by = 0.25))
+
+emmeans(qr_all_int, pairwise ~ education | jobclass, type = "response", by = "tau", tau = c(.25, .75)) #  infer = T for 95% CIs
+
+emmip(qr_all_int, tau ~ education | jobclass, type = "response", CIs = T, tau = c(.25, .75))
+```
+
+
+## Prepare predictions of all models to add OLS results
+
+
+Speaking of classic linear regression. The only downside to these predictions is that they don't include the comparison to linear regression. But we can easily fix this by again using the "emmeans" package to extract predictions from each model for each predictor and each "tau" separately, and then combine them into a new data frame called, let's say, "preds".
+
+
+```{r}
+preds <- bind_rows(
+
+  bind_rows(
+    
+    # OLS
+    emmeans(lr, ~ education, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "education") %>% 
+      rename(strata = education),
+    
+    emmeans(lr, ~ jobclass, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "jobclass") %>% 
+      rename(strata = jobclass),
+    
+    emmeans(lr, ~ age, weights = "prop", at = list(age = c(25, 50, 75))) %>% 
+      as_tibble() %>% 
+      mutate(predictor = "age") %>% 
+      rename(strata = age) %>% 
+      mutate(strata = factor(strata))
+    ) %>% 
+      mutate(model = "OLS"),
+  
+  
+  bind_rows(
+    
+    # QR = 10%
+    emmeans(qr10, ~ education, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "education") %>% 
+      rename(strata = education),
+    
+    emmeans(qr10, ~ jobclass, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "jobclass") %>% 
+      rename(strata = jobclass),
+    
+    emmeans(qr10, ~ age, weights = "prop", at = list(age = c(25, 50, 75))) %>% 
+      as_tibble() %>% 
+      mutate(predictor = "age") %>% 
+      rename(strata = age) %>% 
+      mutate(strata = factor(strata))
+    ) %>% 
+      mutate(model = "QR 10%"),
+  
+  bind_rows(
+    
+    # QR = 50%
+    emmeans(qr50, ~ education, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "education") %>% 
+      rename(strata = education),
+    
+    emmeans(qr50, ~ jobclass, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "jobclass") %>% 
+      rename(strata = jobclass),
+    
+    emmeans(qr50, ~ age, weights = "prop", at = list(age = c(25, 50, 75))) %>% 
+      as_tibble() %>% 
+      mutate(predictor = "age") %>% 
+      rename(strata = age) %>% 
+      mutate(strata = factor(strata))
+    ) %>% 
+      mutate(model = "QR 50%"),
+  
+  
+  bind_rows(
+    
+    # QR = 90%
+    emmeans(qr90, ~ education, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "education") %>% 
+      rename(strata = education),
+    
+    emmeans(qr90, ~ jobclass, weights = "prop") %>% 
+      as_tibble() %>% 
+      mutate(predictor = "jobclass") %>% 
+      rename(strata = jobclass),
+    
+    emmeans(qr90, ~ age, weights = "prop", at = list(age = c(25, 50, 75))) %>% 
+      as_tibble() %>% 
+      mutate(predictor = "age") %>% 
+      rename(strata = age) %>% 
+      mutate(strata = factor(strata))
+    ) %>% 
+      mutate(model = "QR 90%")
+  
+) %>% 
+  select(-SE, -df) %>% 
+  rename(`Predicted wage` = emmean)
+```
+
+## Plot predictions of all models OLS & QR
+
+We can then use a classic "ggplot" function with "geom_errorbar" and "geom_point" to:
+
+- first, create individual plots containing all 4 models for each predictor,
+
+- then, combine these plots into a single figure using {patchwork}, 
+
+- and finally, save this multi-plot for publication in a format, quality, and size of our choice.
+
+Cool, right?
+
+```{r, layout="l-screen", fig.width=19}
+a <- ggplot(preds %>% filter(predictor == "education"), 
+       aes(x = strata, y = `Predicted wage`, color = model))+
+  geom_errorbar(
+  aes(ymin = lower.CL, ymax = upper.CL), 
+  position = position_dodge(0.5), width = 0.5
+)+
+  geom_point(position = position_dodge(0.5), width = 0.5, size=1, shape=21, fill="white")+
+  theme(legend.position = "top")+
+  labs(x = "Education")
+
+b <- ggplot(preds %>% filter(predictor == "jobclass"), 
+       aes(x = strata, y = `Predicted wage`, color = model))+
+  geom_errorbar(
+  aes(ymin = lower.CL, ymax = upper.CL), 
+  position = position_dodge(0.3), width = 0.5
+)+
+  geom_point(position = position_dodge(0.3), width = 0.5, size=1, shape=21, fill="white")+
+  theme(legend.position = "top")+
+  labs(x = "Job Type")
+
+c <- ggplot(preds %>% filter(predictor == "age"), 
+       aes(x = strata, y = `Predicted wage`, color = model))+
+  geom_errorbar(
+  aes(ymin = lower.CL, ymax = upper.CL), 
+  position = position_dodge(0.5), width = 0.5
+)+
+  geom_point(position = position_dodge(0.5), width = 0.5, size=1, shape=21, fill="white")+
+  theme(legend.position = "top")+
+  labs(x = "Age")
+
+a + b + c + plot_annotation(tag_levels = "A")
+
+ggsave(
+  "preds_all_models.png",
+  device = png,
+  plot = last_plot(),
+  dpi = 999,
+  width = 16,
+  height = 5
+)
+```
+
+## Get fancy table for your publication
+
+
+But despite all the coolness of prediction plots, we sometimes need tables with pairwise comparisons to provide p-values. Putting p-values on plots would clutter them, so tables are sometimes a better option. And the best way to get such tables in my opinion is to use the "tbl_regression" function from the {gtsummary} package. Using just a few simple arguments inside the "tbl_regression" function will produce a perfect table for any model. For example, we can create four tables, one for the classic linear regression and three for the quantile regressions. Then, we can easily put them side by side using the "tbl_merge" function and save them in either Microsoft Word or PNG format for our publication. Isn't that amazing?"
+
+
+```{r}
+library(gtsummary) # extra video on my channel
+
+qr90_table <- tbl_regression(
+        qr90, 
+        add_pairwise_contrasts = T,
+        emmeans_args = list(tau = .90),
+        pvalue_fun   = ~style_pvalue(.x, digits = 3),
+        estimate_fun = ~style_number(.x, digits = 2)) %>% 
+        bold_p(t = 0.05)
+
+qr90_table
+
+qr50_table <- tbl_regression(
+        qr50, 
+        add_pairwise_contrasts = T,
+        emmeans_args = list(tau = .50),
+        pvalue_fun   = ~style_pvalue(.x, digits = 3),
+        estimate_fun = ~style_number(.x, digits = 2)) %>% 
+        bold_p(t = 0.05)
+
+qr10_table <- tbl_regression(
+        qr10, 
+        add_pairwise_contrasts = T,
+        emmeans_args = list(tau = .10),
+        pvalue_fun   = ~style_pvalue(.x, digits = 3),
+        estimate_fun = ~style_number(.x, digits = 2)) %>% 
+        bold_p(t = 0.05)
+
+lr_table <- tbl_regression(
+        lr, 
+        add_pairwise_contrasts = T,
+        pvalue_fun   = ~style_pvalue(.x, digits = 3),
+        estimate_fun = ~style_number(.x, digits = 2)) %>% 
+        bold_p(t = 0.05)
+```
+
+
+```{r}
+fancy_table <- tbl_merge(
+    tbls = list(
+      lr_table, qr10_table, qr50_table, qr90_table
+    ),
+    tab_spanner = c("OLS", "QR 10%", "QR 50%", "QR 90%")
+  )
+```
+
+
+```{r}
+theme_gtsummary_compact()
+
+library(flextable)
+fancy_table %>%
+  as_flex_table() %>% 
+  save_as_docx(path = "fancy_table.docx")
+
+reset_gtsummary_theme()
+
+fancy_table %>%
+  as_flex_table() %>% 
+  save_as_image(path = "fancy_table.png", res = 999)
+```
+
+
+```{r echo=FALSE, layout="l-screen"}
+knitr::include_graphics("fancy_table.png")
+```
+
+
+
+
+
+# What's nest
+
+
+Additionally, you can also utilize those {gtsummary} tables directly in your writing, where you can report any result inside of the body of text. This works for both, numeric predictors, like our "age" `r inline_text(qr90_table, variable = age)` and categorical variables, for example the first education contrast of the highest quantile `r inline_text(qr90_table, variable = education, level = "2. HS Grad - 1. < HS Grad")`. This approach saves you from typos and ensures consistent reporting. And there are actually so many cool things the {gtsummary} package can do, that I dedicated an [entire video to it](https://youtu.be/hyP3Hx_1kTM), so, feel free to check it out if you're interested.
+
+- Input:
+
+"r inline_text(qr90_table, variable = education, level = "2. HS Grad - 1. < HS Grad")"
+
+- Output: 
+
+`r inline_text(qr90_table, variable = education, level = "2. HS Grad - 1. < HS Grad")`
+
+# Visualizing contrasts (it might be an overkill, so, it's not part of the video, but why not?)
+
+And since adding pairwise contrasts provides a huge benefit, we can quickly visualize those contrasts with {emmeans} package.
+
+```{r fig.width=14, fig.height=14}
+ref_grid(qr_all) %>%
+  emmeans(~ education|tau) %>%
+  pairs(weights="prop") %>%
+    emmip(~ tau|contrast, CIs = T) +
+  labs(x = "Quantile (tau)", y = "Education difference")+
+  coord_flip()
+```
+
+Re-scaling all the facets of the plot and not using annotations.
+
+```{r fig.width=14, fig.height=14}
+plot_contrasts <- ref_grid(qr_all) %>% 
+  emmeans(~ education|tau) %>% 
+  pairs(weights="prop", infer = c(T,T)) %>% 
+  data.table::as.data.table() %>% 
+  rstatix::add_significance("p.value") %>% 
+  rename(p = p.value.signif) %>% 
+  select(-SE, -df, -t.ratio, -p.value) %>% 
+  rename(LCL = lower.CL, UCL = upper.CL)
+
+# without annotations
+ggplot(data = plot_contrasts, aes(x = tau, y = estimate))+
+  geom_point(color = "green", size = 3)+  # color #27408b
+  geom_line( color = "green", size = 1)+
+  facet_wrap(~contrast, scales = "free")+ 
+  geom_ribbon(aes(ymin = LCL, ymax = UCL), alpha = 0.25, fill = "green")+
+  coord_flip()+
+  scale_x_reverse(breaks = seq(from = 0, to = 1, by = 0.1))+
+
+  # Intercept
+  geom_hline(yintercept = 0, alpha = .3, size = 1)
+```
+
+Plotting separate contrasts with annotations by without facets.
+
+```{r}
+# with annotations by without facets
+contrats_1 <- plot_contrasts %>% 
+  filter(contrast == "1. < HS Grad - 2. HS Grad")
+
+ggplot(data = contrats_1, aes(x = tau, y = estimate))+
+  geom_point(color = "green", size = 3)+  # color #27408b
+  geom_line( color = "green", size = 1)+
+  geom_ribbon(aes(ymin = LCL, ymax = UCL), alpha = 0.25, fill = "green")+
+  coord_flip()+
+  scale_x_reverse(breaks = seq(from = 0, to = 1, by = 0.1))+
+
+  # Intercept
+  geom_hline(yintercept = 0, alpha = .3, size = 1)+
+  
+  # annotate
+  annotate(geom = "text", 
+           x = contrats_1$tau, 
+           y = contrats_1$estimate, hjust = -.19, 
+           label = paste( round(contrats_1$estimate, 2), contrats_1$p ))
+```
+
+
+-----------------------------
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+
+
+
+
