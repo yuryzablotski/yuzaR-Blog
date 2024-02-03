@@ -51,9 +51,10 @@ vembedr::embed_youtube("")
 
 
 
+
 # Visualize the data
 
-when possible, we'll see some outliers, may be they are not technically outliers, but visually
+when possible, we'll see some outliers, may be they are not technically outliers, but visually. 
 
 ```{r echo=FALSE}
 ggstatsplot::ggscatterstats(Wage, age, wage)
