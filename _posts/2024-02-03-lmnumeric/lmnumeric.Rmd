@@ -1,0 +1,135 @@
+---
+title: "(in progress) Simple Linear Regression with Numeric Predictor"
+description: |
+  Here is the intro :)
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+preview: thumbnail_QR2.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+# csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+# draft: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)    
+# library(patchwork)    
+# library(sjPlot)       
+# library(gtsummary)
+# library(quantreg)
+# library(ISLR) 
+# library(broom)
+# library(effectsize)
+# library(emmeans)
+# library(flextable)
+library(ISLR)
+```
+
+# This post as ca. ... minutes video
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+
+
+
+# Visualize the data
+
+when possible, we'll see some outliers, may be they are not technically outliers, but visually
+
+```{r echo=FALSE}
+ggstatsplot::ggscatterstats(Wage, age, wage)
+```
+
+
+# Why do we need linear model
+
+
+# Clean the data, otherwise shit in shit out
+
+
+
+linearity almost ok, I would not log-transform the data because it will decrease the interpretability, and you have no problem with log-transformation, think about normal people, not statisticians, who has not idea about it and run away from it.
+
+```{r}
+library(tidyverse)
+library(ISLR)
+theme_set(theme_test())
+
+# clean the data
+d <- Wage %>% 
+  filter(wage < 200 & age < 67)
+
+# build the model
+m <- lm(formula = wage ~ age, data = d)
+
+# check model assumptions visually
+library(performance)
+check_model(m)
+# don't trust statistical test to much
+check_normality(m)
+check_heteroscedasticity(m)
+
+# visualize predictions
+library(ggeffects)
+ggeffect(m) %>% 
+  plot() 
+
+# visualize estimates
+library(sjPlot)
+plot_model(m, show.values = TRUE)
+tab_model(m)
+
+# get effect sizes
+library(effectsize)
+interpret_r2(0.057)
+?interpret_r2
+
+library(report)
+report(m)
+
+# get particular predictions
+predict(m, data.frame(age = c(20, 30, 40)) )
+
+library(emmeans)
+emmeans(m, pairwise ~ age, at = list(age = c(20, 30, 40)))
+
+library(ggstatsplot)
+ggscatterstats(d, age, wage)
+```
+
+
+the x and y can not be changed. the regression of x on y is different then the regression of y on x. The regression method tells us something about the nature of the relationship between two variables, how one changes with the other, but it does not tell us how close that relationship is. To do this we need a different coefficient, correlation coefficient.
+
+
+
+
+# Interpretation
+
+- Numerical predictor: increasing the numerical predictor by one unit (usually on the x-axes) changes the estimated outcome by its estimate. An increase of the temperature by 1 degree Celsius increases the predicted number of bicycles by 110.7.
+
+test [@Calcagno2020]
+
+
+
+
+
+
