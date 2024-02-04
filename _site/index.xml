@@ -12,7 +12,196 @@
       <title>(in progress) Simple Linear Regression with Numeric Predictor</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric</link>
-      <description>Here is the intro :)</description>
+      <description>
+
+
+&lt;h1 id="this-post-as-ca.-minutes-video"&gt;This post as ca. … minutes
+video&lt;/h1&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="visualize-the-data"&gt;Visualize the data&lt;/h1&gt;
+&lt;p&gt;when possible, we’ll see some outliers, may be they are not
+technically outliers, but visually.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="why-do-we-need-linear-model"&gt;Why do we need linear model&lt;/h1&gt;
+&lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
+otherwise shit in shit out&lt;/h1&gt;
+&lt;p&gt;linearity almost ok, I would not log-transform the data because it
+will decrease the interpretability, and you have no problem with
+log-transformation, think about normal people, not statisticians, who
+has not idea about it and run away from it.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(ISLR)
+theme_set(theme_test())
+
+# clean the data
+d &amp;lt;- Wage %&amp;gt;% 
+  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 67)
+
+# build the model
+m &amp;lt;- lm(formula = wage ~ age, data = d)
+
+# check model assumptions visually
+library(performance)
+check_model(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# don&amp;#39;t trust statistical test to much
+check_normality(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;check_heteroscedasticity(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Heteroscedasticity (non-constant error variance) detected (p = 0.003).&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# visualize predictions
+library(ggeffects)
+ggeffect(m) %&amp;gt;% 
+  plot() &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
+library(sjPlot)
+plot_model(m, show.values = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-3.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tab_model(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;
+ 
+&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;
+wage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;
+Predictors
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+Estimates
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+CI
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+p
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+(Intercept)
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+78.62
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+74.27 – 82.97
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+age
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+0.67
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+0.57 – 0.77
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;
+Observations
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;
+2850
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;
+R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;
+0.057 / 0.056
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# get effect sizes
+library(effectsize)
+interpret_r2(0.057)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;weak&amp;quot;
+(Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;?interpret_r2
+
+library(report)
+report(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;We fitted a linear model (estimated using OLS) to predict wage with
+age (formula: wage ~ age). The model explains a statistically
+significant and weak proportion of variance (R2 = 0.06, F(1, 2848) =
+171.45, p &amp;lt; .001, adj. R2 = 0.06). The model&amp;#39;s intercept,
+corresponding to age = 0, is at 78.62 (95% CI [74.27, 82.97], t(2848)
+= 35.44, p &amp;lt; .001). Within this model:
+
+  - The effect of age is statistically significant and positive (beta =
+0.67, 95% CI [0.57, 0.77], t(2848) = 13.09, p &amp;lt; .001; Std. beta =
+0.24, 95% CI [0.20, 0.27])
+
+Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs)
+and p-values were computed using a Wald t-distribution approximation.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# get particular predictions
+predict(m, data.frame(age = c(20, 30, 40)) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;        1         2         3 
+ 92.07424  98.80301 105.53178 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(emmeans)
+emmeans(m, pairwise ~ age, at = list(age = c(20, 30, 40)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ age emmean    SE   df lower.CL upper.CL
+  20   92.1 1.252 2848     89.6     94.5
+  30   98.8 0.827 2848     97.2    100.4
+  40  105.5 0.572 2848    104.4    106.7
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast      estimate    SE   df t.ratio p.value
+ age20 - age30    -6.73 0.514 2848 -13.094  &amp;lt;.0001
+ age20 - age40   -13.46 1.028 2848 -13.094  &amp;lt;.0001
+ age30 - age40    -6.73 0.514 2848 -13.094  &amp;lt;.0001
+
+P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)
+ggscatterstats(d, age, wage)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-4.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;the x and y can not be changed. the regression of x on y is different
+then the regression of y on x. The regression method tells us something
+about the nature of the relationship between two variables, how one
+changes with the other, but it does not tell us how close that
+relationship is. To do this we need a different coefficient, correlation
+coefficient.&lt;/p&gt;
+&lt;h1 id="interpretation"&gt;Interpretation&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Numerical predictor: increasing the numerical predictor by one unit
+(usually on the x-axes) changes the estimated outcome by its estimate.
+An increase of the temperature by 1 degree Celsius increases the
+predicted number of bicycles by 110.7.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;test &lt;span class="citation"&gt;(&lt;a href="#ref-Calcagno2020"&gt;Calcagno
+2020&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div id="refs" class="references csl-bib-body hanging-indent"&gt;
+&lt;div id="ref-Calcagno2020" class="csl-entry"&gt;
+Calcagno, Vincent. 2020. &lt;span&gt;“&lt;span class="nocase"&gt;glmulti: Model
+Selection and Multimodel Inference Made Easy&lt;/span&gt;.”&lt;/span&gt; &lt;a
+href="https://cran.r-project.org/package=glmulti"&gt;https://cran.r-project.org/package=glmulti&lt;/a&gt;.
+&lt;/div&gt;
+&lt;/div&gt;</description>
+      <distill:md5>fe90eb946da98201ebb6d83c3792e8cf</distill:md5>
       <category>videos</category>
       <category>statistics</category>
       <category>visualization</category>
