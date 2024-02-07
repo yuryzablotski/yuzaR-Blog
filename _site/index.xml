@@ -7,7 +7,7 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 03 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate>
     <item>
       <title>(in progress) Simple Linear Regression with Numeric Predictor</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -25,43 +25,89 @@ video&lt;/h1&gt;
 &lt;h1 id="visualize-the-data"&gt;Visualize the data&lt;/h1&gt;
 &lt;p&gt;when possible, we’ll see some outliers, may be they are not
 technically outliers, but visually.&lt;/p&gt;
-&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h1 id="why-do-we-need-linear-model"&gt;Why do we need linear model&lt;/h1&gt;
+&lt;p&gt;&lt;img src="filed7a25227e7af_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
 otherwise shit in shit out&lt;/h1&gt;
-&lt;p&gt;linearity almost ok, I would not log-transform the data because it
-will decrease the interpretability, and you have no problem with
-log-transformation, think about normal people, not statisticians, who
-has not idea about it and run away from it.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
 library(ISLR)
-theme_set(theme_test())
+theme_set(theme_bw())
 
 # clean the data
 d &amp;lt;- Wage %&amp;gt;% 
-  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 67)
-
-# build the model
-m &amp;lt;- lm(formula = wage ~ age, data = d)
-
-# check model assumptions visually
+  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 60)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="build-the-model-for-linear-equation"&gt;Build the model for linear
+equation&lt;/h1&gt;
+&lt;p&gt;we use an equation to describe the straight line relationship between
+x and y. This equation defines a particular mathematical model which, in
+general terms, is a simplified representation of a real-world situation
+or process that occurs in the population. If we imagine that, for each
+value of x, there is a population of y values, the equation would be:
+&lt;span class="math display"&gt;\[ y =α+βx \]&lt;/span&gt; where: • Ypop is the
+predicted, expected, fitted or mean value of y for a given value of x. •
+α is the constant term that represents the inter-
+ceptoftheline;itisthevalueofywhenxis equal to zero. • β is the slope or
+gradient of the line and repre- sents the mean change in y for a unit
+change in x, i.e. it describes by how much y changes on average when x
+increases by one unit.&lt;/p&gt;
+&lt;p&gt;α and β are the parameters that define the line. They are both called
+regression coefficients although, frequently, you may find that this
+description is reserved only for β. We have to estimate the two
+parameters α and β (by a and b, respectively) from our random sample of
+n pairs of observations, {(x1, y1), (x2, y2), (x3, y3), . . . , (xn,
+yn)}, in such a way that the line ‘fits’ the points as closely as
+possible.&lt;/p&gt;
+&lt;p&gt;Each deviation, the difference between an observed value of y and its
+predicted or fitted value for a given value of x, is called a
+residual&lt;/p&gt;
+&lt;p&gt;… sum of the squared deviations is as small as possible (i.e. is
+minimized) - that’s why least (sum of) squared (residuals). Remember,
+the square of both negative and positive numbers is always posi- tive.
+Hence the terminology, the method of least squares, to describe the
+technique for estimating α and β.&lt;/p&gt;
+&lt;p&gt;Then we estimate the best fitting line, called the regression
+equation of y on x, from our sample of observations as Y = a + bx&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Y is the estimated predicted (fitted) or mean value of y for a given
+value of x.&lt;/li&gt;
+&lt;li&gt;a is the estimated intercept of the line.&lt;/li&gt;
+&lt;li&gt;b is the estimated slope.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By substituting these values of x in the equation of the line, we can
+calculate the corresponding predicted Y values. We plot these points on
+the scatter diagram and join them by a straight line. &lt;em&gt;The line must
+not be extrapolated beyond the limits of the data.&lt;/em&gt; Extrapolation
+makes no sense.&lt;/p&gt;
+&lt;p&gt;Y = −46.04 + 1.04x The estimated slope indicates that a sheep’s live
+weight increases on average by 1.04 kg as its chest girth increases by
+1cm.This estimated regres- sion line is valid only in the specified
+range of values of chest girth (i.e. 60–90 cm) and should not be
+extrapolated beyond these limits.We have drawn the line by substituting
+three values of chest girth (65, 75 and 85 cm) into the equation to
+obtain the three corresponding values of live weight (21.56, 31.96 and
+42.36 kg, respectively), plotting these points and joining them (Figure
+10.6b).&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# build the model
+m &amp;lt;- lm(formula = wage ~ age, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="check-model-assumptions-visually"&gt;Check model assumptions
+visually&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# check model assumptions visually
 library(performance)
 check_model(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed7a25227e7af_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# don&amp;#39;t trust statistical test to much
 check_normality(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;check_heteroscedasticity(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Warning: Heteroscedasticity (non-constant error variance) detected (p = 0.003).&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Heteroscedasticity (non-constant error variance) detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="visualize-predictions"&gt;visualize predictions&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize predictions
-library(ggeffects)
-ggeffect(m) %&amp;gt;% 
-  plot() &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-2.png" width="672" /&gt;&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
 library(sjPlot)
+plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filed7a25227e7af_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;h1 id="visualize-estimates"&gt;visualize estimates&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
 plot_model(m, show.values = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-3.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="filed7a25227e7af_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;tab_model(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;table style="border-collapse:collapse; border:none;"&gt;
 &lt;tr&gt;
@@ -91,10 +137,10 @@ p
 (Intercept)
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-78.62
+74.02
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-74.27 – 82.97
+69.34 – 78.71
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
 &lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
@@ -105,10 +151,10 @@ p
 age
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-0.67
+0.80
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-0.57 – 0.77
+0.69 – 0.91
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
 &lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
@@ -119,7 +165,7 @@ age
 Observations
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;
-2850
+2700
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -127,86 +173,75 @@ Observations
 R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;
-0.057 / 0.056
+0.068 / 0.068
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
+&lt;h1 id="get-effect-sizes"&gt;Get effect sizes&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# get effect sizes
 library(effectsize)
-interpret_r2(0.057)&lt;/code&gt;&lt;/pre&gt;
+interpret_r2(0.068)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;[1] &amp;quot;weak&amp;quot;
 (Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;?interpret_r2
-
-library(report)
+&lt;pre class="r"&gt;&lt;code&gt;?interpret_r2&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="report-and-interpret-the-model"&gt;Report and interpret the
+model&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(report)
 report(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;We fitted a linear model (estimated using OLS) to predict wage with
 age (formula: wage ~ age). The model explains a statistically
-significant and weak proportion of variance (R2 = 0.06, F(1, 2848) =
-171.45, p &amp;lt; .001, adj. R2 = 0.06). The model&amp;#39;s intercept,
-corresponding to age = 0, is at 78.62 (95% CI [74.27, 82.97], t(2848)
-= 35.44, p &amp;lt; .001). Within this model:
+significant and weak proportion of variance (R2 = 0.07, F(1, 2698) =
+196.78, p &amp;lt; .001, adj. R2 = 0.07). The model&amp;#39;s intercept,
+corresponding to age = 0, is at 74.02 (95% CI [69.34, 78.71], t(2698)
+= 30.99, p &amp;lt; .001). Within this model:
 
   - The effect of age is statistically significant and positive (beta =
-0.67, 95% CI [0.57, 0.77], t(2848) = 13.09, p &amp;lt; .001; Std. beta =
-0.24, 95% CI [0.20, 0.27])
+0.80, 95% CI [0.69, 0.91], t(2698) = 14.03, p &amp;lt; .001; Std. beta =
+0.26, 95% CI [0.22, 0.30])
 
 Standardized parameters were obtained by fitting the model on a
 standardized version of the dataset. 95% Confidence Intervals (CIs)
 and p-values were computed using a Wald t-distribution approximation.&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# get particular predictions
-predict(m, data.frame(age = c(20, 30, 40)) )&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;        1         2         3 
- 92.07424  98.80301 105.53178 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(emmeans)
-emmeans(m, pairwise ~ age, at = list(age = c(20, 30, 40)))&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;$emmeans
- age emmean    SE   df lower.CL upper.CL
-  20   92.1 1.252 2848     89.6     94.5
-  30   98.8 0.827 2848     97.2    100.4
-  40  105.5 0.572 2848    104.4    106.7
-
-Confidence level used: 0.95 
-
-$contrasts
- contrast      estimate    SE   df t.ratio p.value
- age20 - age30    -6.73 0.514 2848 -13.094  &amp;lt;.0001
- age20 - age40   -13.46 1.028 2848 -13.094  &amp;lt;.0001
- age30 - age40    -6.73 0.514 2848 -13.094  &amp;lt;.0001
-
-P value adjustment: tukey method for comparing a family of 3 estimates &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)
-ggscatterstats(d, age, wage)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file64343f475428_files/figure-html/unnamed-chunk-3-4.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;the x and y can not be changed. the regression of x on y is different
-then the regression of y on x. The regression method tells us something
-about the nature of the relationship between two variables, how one
-changes with the other, but it does not tell us how close that
-relationship is. To do this we need a different coefficient, correlation
-coefficient.&lt;/p&gt;
-&lt;h1 id="interpretation"&gt;Interpretation&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Numerical predictor: increasing the numerical predictor by one unit
 (usually on the x-axes) changes the estimated outcome by its estimate.
 An increase of the temperature by 1 degree Celsius increases the
 predicted number of bicycles by 110.7.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;test &lt;span class="citation"&gt;(&lt;a href="#ref-Calcagno2020"&gt;Calcagno
-2020&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;
-&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="refs" class="references csl-bib-body hanging-indent"&gt;
-&lt;div id="ref-Calcagno2020" class="csl-entry"&gt;
-Calcagno, Vincent. 2020. &lt;span&gt;“&lt;span class="nocase"&gt;glmulti: Model
-Selection and Multimodel Inference Made Easy&lt;/span&gt;.”&lt;/span&gt; &lt;a
-href="https://cran.r-project.org/package=glmulti"&gt;https://cran.r-project.org/package=glmulti&lt;/a&gt;.
-&lt;/div&gt;
-&lt;/div&gt;</description>
+&lt;h1 id="make-predictions"&gt;Make predictions&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# get particular predictions
+predict(m, data.frame(age = c(20, 30, 40)) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;        1         2         3 
+ 90.03246  98.03650 106.04054 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(emmeans)
+emmeans(m, ~ age, at = list(age = c(20, 30, 40)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; age emmean    SE   df lower.CL upper.CL
+  20     90 1.311 2698     87.5     92.6
+  30     98 0.838 2698     96.4     99.7
+  40    106 0.580 2698    104.9    107.2
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="whats-next"&gt;What’s next?&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)
+ggscatterstats(d, age, wage)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="filed7a25227e7af_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;the x and y can not be changed. the regression of x on y is different
+then the regression of y on x. The regression method tells us something
+about the nature of the relationship between two variables, how one
+changes with the other, but it does not tell us how close that
+relationship is. To do this we need a different coefficient, correlation
+coefficient.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
       <distill:md5>fe90eb946da98201ebb6d83c3792e8cf</distill:md5>
       <category>videos</category>
       <category>statistics</category>
       <category>visualization</category>
       <guid>https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric</guid>
-      <pubDate>Sat, 03 Feb 2024 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric/lmnumeric_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
