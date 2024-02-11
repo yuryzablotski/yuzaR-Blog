@@ -69,7 +69,7 @@ theme_set(theme_test()) # beautifies plots
 
 # clean the data
 d <- Wage %>% 
-  filter(wage < 200 & age < 60)
+  filter(wage < 200 & age < 60 & jobclass == "1. Industrial")
 ```
 
 # Build the model for linear equation
@@ -86,7 +86,7 @@ m <- lm(formula = wage ~ age, data = d)
 
 After the model is build we need to make sure the assumptions are satisfied. The "check_model()" function from performace package is sooo intuitive and sooo powerful than having used it ones, you can not unlearn it! Believe me! I use it daily. 
 
-```{r}
+```{r fig.height= 9}
 # check model assumptions visually
 library(performance)   # extra video on my channel
 check_model(m)
@@ -94,12 +94,12 @@ check_model(m)
 
 Looking at the assumptions I could say that the model fit is great, the linearity assumption is ok-ish, the line is not completely straight, but nothing is dramatic, the variance is homogen, there are no ingluential points or outliers and the residuals are inside of the confidence intervals, which means the data is normally distributed. 
 
-Oh, by the way, if you have a lot of data, it's important to check assumptions visually instead of conducting statistical tests, because for a lot of data the tests would often show significant results, meaning that assumptions would be not satisfied, while they are satisfied. Here are some examples:
+Oh, by the way, if you have a lot of data, it’s important to check assumptions visually instead of conducting statistical tests, because for a lot of data the tests would often show significant results, meaning that assumptions would be not satisfied, while they are satisfied. Here are some examples:
 
 ```{r}
-# don't trust statistical test to much
-check_normality(m)
+# don't trust statistical tests to much
 check_heteroscedasticity(m)
+check_normality(m)
 ```
 
 - the Shapiro-Wilk normality test find non-normally distributed residuals, while they are fine
@@ -119,8 +119,10 @@ For that we'll also use a very intuitive function "plot_model()" from {sjPlot} p
 ```{r}
 # visualize predictions
 library(sjPlot)   # extra video on my channel
-plot_model(m, type = "eff", terms = "age")
+
+plot_model(m, type = "eff", terms = "age") # show.data = T
 ```
+
 
 And woula, our plot shows that salary increases with age. These plot is nice, but we don't see two important details: we don't exactly how quick it increases and sometimes we don't see whether this increase is significant. 
 
@@ -169,11 +171,17 @@ The estimated slope indicates that a sheep’s live weight increases on average 
 ```{r}
 # get effect sizes
 library(effectsize)
-interpret_r2(0.068)
+interpret_r2(0.102)
 ?interpret_r2
 ```
 
-It's weak because age is not the most important predictor for salary ;). Education is, which we'll see in the next video on this series, where I show how to model a categorical predictor with linear model.
+It's weak because age is not the most important predictor for salary ;). Education is, but we'll see more in the next video on this series, where I show how to model a categorical predictor with linear model. Here, we can quickly visualize linear models for every education group with the help of the "geom_smooth()" function. Namely, the folks with "Advanced Degree" start with the salary of ca 120K while people without High-School start at 70K. 
+
+```{r}
+ggplot(d, aes(x = age, y = wage, color = education))+
+  geom_smooth(method = "lm")
+```
+
 
 # Report and interpret the model
 
@@ -182,6 +190,7 @@ It's weak because age is not the most important predictor for salary ;). Educati
 library(report)   # extra video on my channel
 report(m)
 ```
+
 - Numerical predictor: increasing the numerical predictor by one unit (usually on the x-axes) changes the estimated outcome by its estimate. An increase of the temperature by 1 degree Celsius increases the predicted number of bicycles by 110.7.
 
 # Make predictions

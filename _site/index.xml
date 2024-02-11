@@ -24,7 +24,7 @@ video&lt;/h1&gt;
 &lt;/div&gt;
 &lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
 otherwise shit in shit out&lt;/h1&gt;
-&lt;p&gt;&lt;img src="file795569533b4e_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;The data on this picture come from the Wage dataset in the ISLR
 package. It clearlys shows, that real world data usually has influential
 observations and contaminations. Here for example, I would clean the
@@ -37,7 +37,7 @@ theme_set(theme_test()) # beautifies plots
 
 # clean the data
 d &amp;lt;- Wage %&amp;gt;% 
-  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 60)&lt;/code&gt;&lt;/pre&gt;
+  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 60 &amp;amp; jobclass == &amp;quot;1. Industrial&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id="build-the-model-for-linear-equation"&gt;Build the model for linear
 equation&lt;/h1&gt;
 &lt;p&gt;We’ll them use the intuitive “LM” (show pack of cigarettes ;)
@@ -61,7 +61,7 @@ unlearn it! Believe me! I use it daily.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# check model assumptions visually
 library(performance)   # extra video on my channel
 check_model(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file795569533b4e_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Looking at the assumptions I could say that the model fit is great,
 the linearity assumption is ok-ish, the line is not completely straight,
 but nothing is dramatic, the variance is homogen, there are no
@@ -72,11 +72,11 @@ assumptions visually instead of conducting statistical tests, because
 for a lot of data the tests would often show significant results,
 meaning that assumptions would be not satisfied, while they are
 satisfied. Here are some examples:&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# don&amp;#39;t trust statistical test to much
-check_normality(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;check_heteroscedasticity(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# don&amp;#39;t trust statistical tests to much
+check_heteroscedasticity(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Warning: Heteroscedasticity (non-constant error variance) detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;check_normality(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;the Shapiro-Wilk normality test find non-normally distributed
 residuals, while they are fine&lt;/p&gt;&lt;/li&gt;
@@ -96,8 +96,9 @@ predictions.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize predictions
 library(sjPlot)   # extra video on my channel
-plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file795569533b4e_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
+
+plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;) # show.data = T&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And woula, our plot shows that salary increases with age. These plot
 is nice, but we don’t see two important details: we don’t exactly how
 quick it increases and sometimes we don’t see whether this increase is
@@ -107,7 +108,7 @@ significant.&lt;/p&gt;
 the model and show.values = TRUE instead of “type =”eff”.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
 plot_model(m, show.values = TRUE, terms = &amp;quot;age&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file795569533b4e_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;
+&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;
 It tells us that we have 800$ increase per year and this increase is
 significant. But sometime we need an exact p-value. To get this, we’ll
 use the “tab_model()” fucntion:&lt;/p&gt;
@@ -140,10 +141,10 @@ p
 (Intercept)
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-74.02
+64.61
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-69.34 – 78.71
+58.78 – 70.44
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
 &lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
@@ -154,10 +155,10 @@ p
 age
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-0.80
+0.92
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-0.69 – 0.91
+0.78 – 1.06
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
 &lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
@@ -168,7 +169,7 @@ age
 Observations
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;
-2700
+1432
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -176,7 +177,7 @@ Observations
 R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;
-0.068 / 0.068
+0.102 / 0.101
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -232,27 +233,34 @@ obtain the three corresponding values of live weight (21.56, 31.96 and
 &lt;h1 id="get-effect-sizes"&gt;Get effect sizes&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# get effect sizes
 library(effectsize)
-interpret_r2(0.068)&lt;/code&gt;&lt;/pre&gt;
+interpret_r2(0.102)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;[1] &amp;quot;weak&amp;quot;
 (Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;?interpret_r2&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;It’s weak because age is not the most important predictor for salary
-;). Education is, which we’ll see in the next video on this series,
-where I show how to model a categorical predictor with linear model.&lt;/p&gt;
+;). Education is, but we’ll see more in the next video on this series,
+where I show how to model a categorical predictor with linear model.
+Here, we can quickly visualize linear models for every education group
+with the help of the “geom_smooth()” function. Namely, the folks with
+“Advanced Degree” start with the salary of ca 120K while people without
+High-School start at 70K.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(d, aes(x = age, y = wage, color = education))+
+  geom_smooth(method = &amp;quot;lm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;h1 id="report-and-interpret-the-model"&gt;Report and interpret the
 model&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(report)   # extra video on my channel
 report(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;We fitted a linear model (estimated using OLS) to predict wage with
 age (formula: wage ~ age). The model explains a statistically
-significant and weak proportion of variance (R2 = 0.07, F(1, 2698) =
-196.78, p &amp;lt; .001, adj. R2 = 0.07). The model&amp;#39;s intercept,
-corresponding to age = 0, is at 74.02 (95% CI [69.34, 78.71], t(2698)
-= 30.99, p &amp;lt; .001). Within this model:
+significant and weak proportion of variance (R2 = 0.10, F(1, 1430) =
+161.61, p &amp;lt; .001, adj. R2 = 0.10). The model&amp;#39;s intercept,
+corresponding to age = 0, is at 64.61 (95% CI [58.78, 70.44], t(1430)
+= 21.72, p &amp;lt; .001). Within this model:
 
   - The effect of age is statistically significant and positive (beta =
-0.80, 95% CI [0.69, 0.91], t(2698) = 14.03, p &amp;lt; .001; Std. beta =
-0.26, 95% CI [0.22, 0.30])
+0.92, 95% CI [0.78, 1.06], t(1430) = 12.71, p &amp;lt; .001; Std. beta =
+0.32, 95% CI [0.27, 0.37])
 
 Standardized parameters were obtained by fitting the model on a
 standardized version of the dataset. 95% Confidence Intervals (CIs)
@@ -267,19 +275,19 @@ predicted number of bicycles by 110.7.&lt;/li&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# get particular predictions
 predict(m, data.frame(age = c(20, 30, 40)) )&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;        1         2         3 
- 90.03246  98.03650 106.04054 &lt;/code&gt;&lt;/pre&gt;
+ 82.96905  92.14836 101.32766 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(emmeans)   # extra 2 videos on my channel ;)
 emmeans(m, ~ age, at = list(age = c(20, 30, 40)))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt; age emmean    SE   df lower.CL upper.CL
-  20     90 1.311 2698     87.5     92.6
-  30     98 0.838 2698     96.4     99.7
-  40    106 0.580 2698    104.9    107.2
+  20   83.0 1.618 1430     79.8     86.1
+  30   92.1 1.034 1430     90.1     94.2
+  40  101.3 0.751 1430     99.9    102.8
 
 Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id="whats-next"&gt;What’s next?&lt;/h1&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)   # extra video on my channel
 ggscatterstats(d, age, wage)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file795569533b4e_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;the x and y can not be changed. the regression of x on y is different
 then the regression of y on x. The regression method tells us something
 about the nature of the relationship between two variables, how one
