@@ -1,7 +1,7 @@
 ---
 title: "(in progress) Simple Linear Regression with Numeric Predictor"
 description: |
-  If you want to know how your salary change when you are getting older, or check, whether there is a relationship between any other numeric predictor and numeric outcome, simple linear model is the way to go.
+  Simple linear regression shows how one numeric predictor influences a numeric outcome. For example, whether age really translates to bigger paychecks? So, let’s learn (1) how to build linear regression in R, (2) how to check all model assumptions with one simple and intuivive command, (3) how to visualize and interpret results and much more.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -34,7 +34,7 @@ library(tidyverse)
 # library(sjPlot)       
 # library(gtsummary)
 # library(quantreg)
-# library(ISLR) 
+# library(ISLR)
 # library(broom)
 # library(effectsize)
 # library(emmeans)
@@ -50,22 +50,22 @@ vembedr::embed_youtube("")
 
 
 
-# Visualize the data
 
-when possible, we'll see some outliers, may be they are not technically outliers, but visually. 
-
-```{r echo=FALSE}
-ggstatsplot::ggscatterstats(Wage, age, wage)
-```
 
 
 # Clean the data, otherwise shit in shit out
 
 
+```{r echo=FALSE}
+ggstatsplot::ggscatterstats(Wage, age, wage)
+```
+
+The data on this picture come from the Wage dataset in the ISLR package. It clearlys shows, that real world data usually has influential observations and contaminations. Here for example, I would clean the data from the rich people, earning over 200K per year, and from older folks, who is almost retired, because their salaries kind of decline.
+
 ```{r}
-library(tidyverse)
-library(ISLR)
-theme_set(theme_bw())
+library(tidyverse)      # use & thank me later ;)
+library(ISLR)           # provides Wage dataset
+theme_set(theme_test()) # beautifies plots
 
 # clean the data
 d <- Wage %>% 
@@ -73,6 +73,70 @@ d <- Wage %>%
 ```
 
 # Build the model for linear equation
+
+We'll them use the intuitive "LM" (show pack of cigarettes ;) function, to build our linear model. Inside of "lm" we only need two arguments: the formula and the data. On the left side of the formula we place the variable we are interested in. This variable unfortunately has several names: response variable, outcome, dependent variable, target etc., it's soo confusing. On the right side of the equation we'll place the predictor. Predictors also have some synonyms: independent variable, explanatory variable, regressor (in linear regression), covariate, feature (in Machine Learning), Risk factor (in epidemiology) etc. I really hate these synonyms! 
+
+
+```{r}
+# build the model
+m <- lm(formula = wage ~ age, data = d)
+```
+
+# Check model assumptions visually
+
+After the model is build we need to make sure the assumptions are satisfied. The "check_model()" function from performace package is sooo intuitive and sooo powerful than having used it ones, you can not unlearn it! Believe me! I use it daily. 
+
+```{r}
+# check model assumptions visually
+library(performance)   # extra video on my channel
+check_model(m)
+```
+
+Looking at the assumptions I could say that the model fit is great, the linearity assumption is ok-ish, the line is not completely straight, but nothing is dramatic, the variance is homogen, there are no ingluential points or outliers and the residuals are inside of the confidence intervals, which means the data is normally distributed. 
+
+Oh, by the way, if you have a lot of data, it's important to check assumptions visually instead of conducting statistical tests, because for a lot of data the tests would often show significant results, meaning that assumptions would be not satisfied, while they are satisfied. Here are some examples:
+
+```{r}
+# don't trust statistical test to much
+check_normality(m)
+check_heteroscedasticity(m)
+```
+
+- the Shapiro-Wilk normality test find non-normally distributed residuals, while they are fine
+
+- and the Breusch-Pagan test determine heteroscedasticity in the data, while the plot show perfectly constant errot variance
+
+Now, since I think that the assumptions of our model are satisfied suffitiently, we can visualize model results, namely, visualize predictions.
+
+# Visualize predictions
+
+For that we'll also use a very intuitive function "plot_model()" from {sjPlot} package and provide 3 argumaents: 
+
+- the model
+- type of predictions, we'll use "effect" and 
+- the name of a predictor we want to visualize
+
+```{r}
+# visualize predictions
+library(sjPlot)   # extra video on my channel
+plot_model(m, type = "eff", terms = "age")
+```
+
+And woula, our plot shows that salary increases with age. These plot is nice, but we don't see two important details: we don't exactly how quick it increases and sometimes we don't see whether this increase is significant. 
+
+# visualize estimates
+
+The "plot_model()" function solves these two problems when we provide the model and show.values = TRUE instead of "type = "eff".
+
+```{r}
+# visualize estimates
+plot_model(m, show.values = TRUE, terms = "age")
+```
+It tells us that we have 800$ increase per year and this increase is significant. But sometime we need an exact p-value. To get this, we'll use the "tab_model()" fucntion:
+
+```{r}
+tab_model(m)
+```
 
 we use an equation to describe the straight line relationship between x and y. This equation defines a particular mathematical model which, in general terms, is a simplified representation of a real-world situation or process that occurs in the population. If we imagine that, for each value of x, there is a population of y values, the equation would be:
 $$ y =α+βx $$
@@ -100,39 +164,6 @@ By substituting these values of x in the equation of the line, we can calculate 
 Y = −46.04 + 1.04x
 The estimated slope indicates that a sheep’s live weight increases on average by 1.04 kg as its chest girth increases by 1cm.This estimated regres- sion line is valid only in the specified range of values of chest girth (i.e. 60–90 cm) and should not be extrapolated beyond these limits.We have drawn the line by substituting three values of chest girth (65, 75 and 85 cm) into the equation to obtain the three corresponding values of live weight (21.56, 31.96 and 42.36 kg, respectively), plotting these points and joining them (Figure 10.6b).
 
-```{r}
-# build the model
-m <- lm(formula = wage ~ age, data = d)
-```
-
-# Check model assumptions visually
-
-```{r}
-# check model assumptions visually
-library(performance)
-check_model(m)
-# don't trust statistical test to much
-check_normality(m)
-check_heteroscedasticity(m)
-```
-
-# visualize predictions
-
-```{r}
-# visualize predictions
-library(sjPlot)
-plot_model(m, type = "eff", terms = "age")
-```
-
-# visualize estimates
-
-```{r}
-# visualize estimates
-plot_model(m, show.values = TRUE)
-tab_model(m)
-```
-
-
 # Get effect sizes
 
 ```{r}
@@ -142,11 +173,13 @@ interpret_r2(0.068)
 ?interpret_r2
 ```
 
+It's weak because age is not the most important predictor for salary ;). Education is, which we'll see in the next video on this series, where I show how to model a categorical predictor with linear model.
+
 # Report and interpret the model
 
 
 ```{r}
-library(report)
+library(report)   # extra video on my channel
 report(m)
 ```
 - Numerical predictor: increasing the numerical predictor by one unit (usually on the x-axes) changes the estimated outcome by its estimate. An increase of the temperature by 1 degree Celsius increases the predicted number of bicycles by 110.7.
@@ -157,14 +190,14 @@ report(m)
 # get particular predictions
 predict(m, data.frame(age = c(20, 30, 40)) )
 
-library(emmeans)
+library(emmeans)   # extra 2 videos on my channel ;)
 emmeans(m, ~ age, at = list(age = c(20, 30, 40)))
 ```
 
 # What's next?
 
 ```{r}
-library(ggstatsplot)
+library(ggstatsplot)   # extra video on my channel
 ggscatterstats(d, age, wage)
 ```
 
