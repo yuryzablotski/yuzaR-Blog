@@ -1,7 +1,7 @@
 ---
-title: "(in progress) Simple Linear Regression with Numeric Predictor"
+title: "Master Simple Linear Regression with Numeric Predictor in R"
 description: |
-  Simple linear regression shows how one numeric predictor influences a numeric outcome. For example, whether age really translates to bigger paychecks? So, let’s learn (1) how to build linear regression in R, (2) how to check all model assumptions with one simple and intuivive command, (3) how to visualize and interpret results and much more.
+  Simple linear regression demonstrates how one numeric predictor affects a numeric outcome. For example, it can reveal whether age actually translates to higher paychecks. So, let's learn (1) how to build a linear regression in R, (2) how to check ALL model assumptions with a ONE simple and intuitive command, (3) how to visualize and interpret the results, and much more.
 author:
   - name: Yury Zablotski
     url: https://yuzar-blog.netlify.app/
@@ -10,7 +10,7 @@ categories:
   - videos
   - statistics
   - visualization
-preview: thumbnail_QR2.png
+preview: thumbnail_lmnp.png
 output:
   distill::distill_article:
     self_contained: false
@@ -53,28 +53,40 @@ vembedr::embed_youtube("")
 
 
 
-# Clean the data, otherwise shit in shit out
+# Clean the data, otherwise: shit in shit out!
 
 
 ```{r echo=FALSE}
-ggstatsplot::ggscatterstats(Wage, age, wage)
+#ggstatsplot::ggscatterstats(Wage, age, wage, type = "p")
+ggplot(Wage, aes(age, wage))+
+  geom_point()+
+  geom_smooth(method = "lm")
 ```
 
-The data on this picture come from the Wage dataset in the ISLR package. It clearlys shows, that real world data usually has influential observations and contaminations. Here for example, I would clean the data from the rich people, earning over 200K per year, and from older folks, who is almost retired, because their salaries kind of decline.
+The data in this picture comes from the Wage dataset in the ISLR package. It clearly shows that real-world data often contains contaminations 💩. Therefore, it’s crucial to look at the data first before rushing into modeling. For instance, in this scenario, I would clean the data by removing the high-income individuals earning over 200K per year, because they are outliers, and totally not because I am jealous! 😉 Additionally, I’d exclude older individuals who are nearing retirement, as their salaries tend to decline. The data-cleaning step is vital and often overlooked. Remember the phrase: ‘Garbage in, garbage out’? If we skip data cleaning, our model’s performance could be seriously compromised, and we'll see it in a moment. For now let's take 100 random people form the industry and build our linear model in R.
 
 ```{r}
-library(tidyverse)      # use & thank me later ;)
+library(tidyverse)      # laod & thank me later ;)
 library(ISLR)           # provides Wage dataset
 theme_set(theme_test()) # beautifies plots
 
-# clean the data
+set.seed(1)             # for reproducibility
 d <- Wage %>% 
-  filter(wage < 200 & age < 60 & jobclass == "1. Industrial")
+  filter(wage < 200 & age < 60 & jobclass == "1. Industrial") %>% 
+  sample_n(100)
 ```
 
-# Build the model for linear equation
 
-We'll them use the intuitive "LM" (show pack of cigarettes ;) function, to build our linear model. Inside of "lm" we only need two arguments: the formula and the data. On the left side of the formula we place the variable we are interested in. This variable unfortunately has several names: response variable, outcome, dependent variable, target etc., it's soo confusing. On the right side of the equation we'll place the predictor. Predictors also have some synonyms: independent variable, explanatory variable, regressor (in linear regression), covariate, feature (in Machine Learning), Risk factor (in epidemiology) etc. I really hate these synonyms! 
+# Build linear equation
+
+
+To build our linear model, we’ll use the intuitive ‘lm’ (show pack of cigarettes ; с рекламой импотенции :) function. Within ‘lm’, we only need two arguments: the formula and the data. Here’s how it breaks down:
+
+- On the left side of the formula, we'll place the variable we're interested in predicting. Unfortunately, this variable goes by several names: response variable, outcome, dependent variable, target, and more. It can get confusing!
+
+- On the fright side, we'll place the predictor variable. Predictors also have various synonyms: independent variable, explanatory variable, regressor or covariate (in linear regression), feature (in Machine Learning), and even risk factor (in epidemiology).
+
+Ugh, so many names for the same thing! Drives me nuts. Makes stats seem way harder than it actually is.
 
 
 ```{r}
@@ -82,139 +94,178 @@ We'll them use the intuitive "LM" (show pack of cigarettes ;) function, to build
 m <- lm(formula = wage ~ age, data = d)
 ```
 
-# Check model assumptions visually
 
-After the model is build we need to make sure the assumptions are satisfied. The "check_model()" function from performace package is sooo intuitive and sooo powerful than having used it ones, you can not unlearn it! Believe me! I use it daily. 
+# Check all model assumptions visually
 
-```{r fig.height= 9}
+After building the model, we need to make sure the assumptions are satisfied. Otherwise, we couldn’t trust our model! The "check_model()" function from the {performance} package is so intuitive and powerful that, once you’ve used it, you cannot unlearn it! Believe me! I use it **every time** I model.
+
+```{r fig.height = 9, fig.width=9}
 # check model assumptions visually
 library(performance)   # extra video on my channel
 check_model(m)
 ```
 
-Looking at the assumptions I could say that the model fit is great, the linearity assumption is ok-ish, the line is not completely straight, but nothing is dramatic, the variance is homogen, there are no ingluential points or outliers and the residuals are inside of the confidence intervals, which means the data is normally distributed. 
+Looking at the assumptions, I could say that the model fits the data pretty well! The linearity assumption looks fine; the line is not completely straight, but there is no dramatic non-linearity to see. The variance is homogeneous. There are no influential points or outliers. And finally, the residuals are normally distributed since they are inside the confidence intervals, which means our data is normally distributed.
 
-Oh, by the way, if you have a lot of data, it’s important to check assumptions visually instead of conducting statistical tests, because for a lot of data the tests would often show significant results, meaning that assumptions would be not satisfied, while they are satisfied. Here are some examples:
+Now, when we model uncleaned data, the model fit would be far from reality, and we’ll even get a warning that our model misses the maximum values — you know, those rich folks I am totally not jealous about ;). Besides, the normality of residuals would also be compromised, so I would stop trusting my model. Therefore, it’s really important to clean the data before modeling.
+
+```{r warning=TRUE}
+m2 <- lm(formula = wage ~ age, data = Wage)
+library(patchwork)
+check_posterior_predictions(m2)
+a <- check_posterior_predictions(m2) %>% plot() 
+b <- check_normality(m2) %>% plot()
+
+a + b
+```
+
+
+Oh, by the way, if you have a lot of data, it’s important to check assumptions visually, like we just did, instead of conducting statistical tests. For a lot of data, the tests would often show significant results, meaning that assumptions seemingly would not be satisfied, while they are actually satisfied. Here is an example of the Shapiro-Wilk normality test, which magically finds non-normally distributed residuals, even though they are totally fine!
 
 ```{r}
 # don't trust statistical tests to much
-check_heteroscedasticity(m)
 check_normality(m)
 ```
 
-- the Shapiro-Wilk normality test find non-normally distributed residuals, while they are fine
 
-- and the Breusch-Pagan test determine heteroscedasticity in the data, while the plot show perfectly constant errot variance
-
-Now, since I think that the assumptions of our model are satisfied suffitiently, we can visualize model results, namely, visualize predictions.
+Now, since the assumptions of our model are satisfied, we can visualize model results, and by results, I mean visualize model predictions.
 
 # Visualize predictions
 
-For that we'll also use a very intuitive function "plot_model()" from {sjPlot} package and provide 3 argumaents: 
+For that, we’ll use another very intuitive function called "plot_model()" from the {sjPlot} package and provide three arguments:
 
-- the model
-- type of predictions, we'll use "effect" and 
-- the name of a predictor we want to visualize
+- the model name,
+- the type of predictions — we’ll use “effect” to get an effect plot, and
+- the name of a predictor we want to visualize.
 
 ```{r}
 # visualize predictions
-library(sjPlot)   # extra video on my channel
+library(sjPlot)    # extra video on my channel
 
 plot_model(m, type = "eff", terms = "age") # show.data = T
 ```
 
+And if we really want to, we could easily **show the data** on our plot:
 
-And woula, our plot shows that salary increases with age. These plot is nice, but we don't see two important details: we don't exactly how quick it increases and sometimes we don't see whether this increase is significant. 
+```{r}
+plot_model(m, type = "eff", terms = "age",  show.data = TRUE)
+```
 
-# visualize estimates
+And voilà, our plot shows that salaries increase with age. This plot is nice, but it misses two important details: it doesn’t exactly show how quickly the salary grows, and it doesn’t demonstrate whether this increase is significant.
 
-The "plot_model()" function solves these two problems when we provide the model and show.values = TRUE instead of "type = "eff".
+# Visualize estimates
+
+The "plot_model()" function solves both problems, when we use "show.values = TRUE" instead of "type = "eff".
 
 ```{r}
 # visualize estimates
 plot_model(m, show.values = TRUE, terms = "age")
 ```
-It tells us that we have 800$ increase per year and this increase is significant. But sometime we need an exact p-value. To get this, we'll use the "tab_model()" fucntion:
+
+Namely, it tells us that we have a 1080\$ increase in salary per year, and this increase is highly significant because the estimate doesn’t cross zero. And while the significance stars are often enough, sometimes we need an exact p-value. To obtain this, we’ll use the "tab_model()" function from the same {sjPlot} package. This function produces a nice, publication-ready table that not only provides exact p-values but also reveals the equation of our linear model:
 
 ```{r}
 tab_model(m)
 ```
 
-we use an equation to describe the straight line relationship between x and y. This equation defines a particular mathematical model which, in general terms, is a simplified representation of a real-world situation or process that occurs in the population. If we imagine that, for each value of x, there is a population of y values, the equation would be:
-$$ y =α+βx $$
-where:
-• Ypop is the predicted, expected, fitted or mean value of y for a given value of x.
-• α is the constant term that represents the inter- ceptoftheline;itisthevalueofywhenxis equal to zero.
-• β is the slope or gradient of the line and repre- sents the mean change in y for a unit change in x, i.e. it describes by how much y changes on average when x increases by one unit.
 
-α and β are the parameters that define the line. They are both called regression coefficients although, frequently, you may find that this description is reserved only for β.
-We have to estimate the two parameters α and β (by a and b, respectively) from our random sample of n pairs of observations, {(x1, y1), (x2, y2), (x3, y3), . . . , (xn, yn)}, in such a way that the line ‘fits’ the points as closely as possible.
+This equation describes the straight-line relationship between the x-axis and the y-axis:
 
-Each deviation, the difference between an observed value of y and its predicted or fitted value for a given value of x, is called a residual 
+$$ y = α + βx $$
+Or, in our case, between "age" and "salary":
 
-... sum of the squared deviations is as small as possible (i.e. is minimized) - that's why least (sum of) squared (residuals). Remember, the square of both negative and positive numbers is always posi- tive. Hence the terminology, the method of least squares, to describe the technique for estimating α and β.
+$$ wage = Estimate_{(Intercept)} + Estimate_{age} * age $$
 
-Then we estimate the best fitting line, called the regression equation of y on x, from our sample of observations as
-Y = a + bx
+... and it helps us to interpret our model. Specifically, an increase in age of one year results in an average salary increase of 1080\$. It’s important to note that this increase can vary — sometimes it’s as low as 540\$, and other times as high as 1620\$, depending on people’s job roles. The model indicates that there is a 95% chance that the salary increase falls within this interval. That's why it's called - the 95% Confidence Interval.
+  
+If this average annual increase of 1080\$ occurs consistently, we obtain the slope of the line, represented by the beta (β) coefficient in the model formula. Put simply, the slope indicates the average change in "y" for every one-unit increase in "x". As with any slope, it needs a starting point. And the best start of any slope is usually zero. When our line crosses the y-axis (zero on the x-axis), we find the intercept (α) in the model output. In our case, this implies an unrealistic scenario where our salary would be 57,500\$ at birth, which doesn't make any sense, and that's why the intercept of a model is often not interpreted. 
 
-- Y is the estimated predicted (fitted) or mean value of y for a given value of x.
-- a is the estimated intercept of the line. 
-- b is the estimated slope.
+The true value of the formula lies in its ability to predict future salaries. By plugging any "age" value (x) into the model equation, we can estimate the corresponding "salary" value (y). This means we can ask the model to tell us how much we'll earn when we're 40 or 50. 
 
-By substituting these values of x in the equation of the line, we can calculate the corresponding predicted Y values. We plot these points on the scatter diagram and join them by a straight line. *The line must not be extrapolated beyond the limits of the data.* Extrapolation makes no sense. 
 
-Y = −46.04 + 1.04x
-The estimated slope indicates that a sheep’s live weight increases on average by 1.04 kg as its chest girth increases by 1cm.This estimated regres- sion line is valid only in the specified range of values of chest girth (i.e. 60–90 cm) and should not be extrapolated beyond these limits.We have drawn the line by substituting three values of chest girth (65, 75 and 85 cm) into the equation to obtain the three corresponding values of live weight (21.56, 31.96 and 42.36 kg, respectively), plotting these points and joining them (Figure 10.6b).
+
+# Make specific predictions
+
+For that we'll simply replace our alpha with the value of the Intercept 57.5 and the age with 40 or 50: 
+
+57.50 + 1.08 * 40 = 100.7
+
+57.50 + 1.08 * 50 = 111.5
+
+
+Assuming our lives remain relatively stable, at 40 years old, we could be earning over 100,000\$, and by 50, our paychecks could exceed 111,000\$. Essentially, we've just forecast our future salaries based on the available data. Naturally, R provides several convenient functions for making such predictions, the most well-known being the "predict" function. This function allows you to input your model and a data frame containing the variable you want predictions for. However, I personally find this function somewhat unintuitive.
+
+```{r}
+# get particular predictions
+predict(m, data.frame(age = c(40, 50, 60)) )
+```
+
+A much better choice is the "emmeans" function from the very powerful {emmeans} package. It not only provides predictions for any age you desire, but also reports 95% confidence intervals and offers a wide range of additional capabilities.
+
+```{r}
+library(emmeans)   # extra 2 videos on my channel ;)
+emmeans(m, ~ age, at = list(age = c(40, 50, 60)))
+```
+
+Asking for predictions beyond 60 years old isn't recommended, as we intentionally limited our data to include only individuals up to 60. Here, it's crucial to differentiate between interpolation and extrapolation. Interpolation means - predicting values within existing data points, and it is very useful. However, extrapolation, which means going beyond the data range, is risky and unreliable. Predicting salary at birth (age zero) is a perfect example for a nonsensical extrapolation, because at the age of zero we can't earn anything. 
+
 
 # Get effect sizes
+
+Now, that we understand how to interpret our model, the next crucial question we need to address is - how good our model is. Your clients or scientific reviewers will definetely ask this question. What they typically want to know is - how well our model fits the data, which is summarized by the coefficient of determination, denoted as $R^2$.
+
+$R^2$ quantifies how much variance in the data our model explains. It ranges from 0 to 1, with a simple rule: the higher the value, the better the fit. However, interpreting $R^2$ is context-dependent. For instance:
+
+- in physics, a model with $R^2$ near 1 is usually desirable, while
+- in biology, even an $R^2$ of 0.2 might indicate a good model fit.
+
+Despite this context sensitivity, some guidelines proposed by smart individuals (such as Cohen) exist. And we can ask the {effectsize} package to interpret any value of $R^2$ for us.
 
 ```{r}
 # get effect sizes
 library(effectsize)
-interpret_r2(0.102)
 ?interpret_r2
+
+interpret_r2(0.139, rules = "cohen1988") 
+# rules = "cohen1988" is a default
 ```
 
-It's weak because age is not the most important predictor for salary ;). Education is, but we'll see more in the next video on this series, where I show how to model a categorical predictor with linear model. Here, we can quickly visualize linear models for every education group with the help of the "geom_smooth()" function. Namely, the folks with "Advanced Degree" start with the salary of ca 120K while people without High-School start at 70K. 
+
+In our case, the $R^2$ value of 0.139 indicates a moderate relationship between age and salary. But why moderate and not strong? Well, that could be because age is most likely not the most crucial predictor for salary 😉. I mean, when I sit on the sofa, do nothing, and just get older, my salary won’t grow! So, what is an important predictor? Education is! 
 
 ```{r}
-ggplot(d, aes(x = age, y = wage, color = education))+
+ggplot(Wage, aes(x = age, y = wage, color = education))+
   geom_smooth(method = "lm")
 ```
 
+Specifically, folks without a High School diploma start at 70,000\$ as early as 18 years old, while those with an “Advanced Degree” begin with a salary of approximately 140,000\$ at the age of 25, after completing their studies. However, I'll cover it in a separate video in this series, where I demonstrate how to interpret a model with a categorical predictor. Until then if you’re enjoying the video so far, please, consider hitting the like button!
 
-# Report and interpret the model
+# Report model results
 
+Finally, the last thing I found difficult was **accurately describing the model with sufficient detail** for others to understand and reproduce my results. If you have similar problem, the {report} package solves it — even if you only use one function to literally “report” your model.
+
+Namely, the “report” function:
+
+- identifies the type of model you used,
+- shows how well the model fits the data ($R^2$),
+- interprets effect sizes,
+- describes whether predictors are significant and which direction the slopes go and
+- even reports how 95% confidence intervals (CIs) and p-values were calculated.
+
+I personally found it very useful, but I’d love to know what you think? So, feel free to share your thoughts in the comments section below. 
 
 ```{r}
 library(report)   # extra video on my channel
 report(m)
 ```
 
-- Numerical predictor: increasing the numerical predictor by one unit (usually on the x-axes) changes the estimated outcome by its estimate. An increase of the temperature by 1 degree Celsius increases the predicted number of bicycles by 110.7.
-
-# Make predictions
-
-```{r}
-# get particular predictions
-predict(m, data.frame(age = c(20, 30, 40)) )
-
-library(emmeans)   # extra 2 videos on my channel ;)
-emmeans(m, ~ age, at = list(age = c(20, 30, 40)))
-```
-
 # What's next?
 
+Moreover, the {report} package can help you correctly describe most classic statistical tests and models. It can even describe your entire dataset, so make sure to check it out.
+
 ```{r}
-library(ggstatsplot)   # extra video on my channel
-ggscatterstats(d, age, wage)
+report(d)
 ```
-
-
-the x and y can not be changed. the regression of x on y is different then the regression of y on x. The regression method tells us something about the nature of the relationship between two variables, how one changes with the other, but it does not tell us how close that relationship is. To do this we need a different coefficient, correlation coefficient.
-
-
-
 
 
 

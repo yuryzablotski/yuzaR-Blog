@@ -1,142 +1,68 @@
-library(tidyverse)
-library(ISLR)
+library(tidyverse)      # laod & thank me later ;)
+library(ISLR)           # provides Wage dataset
+theme_set(theme_test()) # beautifies plots
 
-theme_set(theme_test())
+# get and clean the data
+set.seed(1)             # for reproducibility
+d <- Wage %>% 
+  filter(wage < 200 & 
+         age  < 60 & 
+         jobclass == "1. Industrial") %>% 
+  sample_n(100)
 
-# Basic histogram
-ggplot(Wage, aes(x = wage)) +
-  geom_histogram()
+# build the model
+m <- lm(formula = wage ~ age, data = d)
 
-# Change the number of bins
-a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(bins = 4)
+# check model assumptions visually
+library(performance)    # extra video on my channel
+check_model(m)
 
-b <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(bins = 100)
+# uncleaned data
+m2 <- lm(formula = wage ~ age, data = Wage)
+library(patchwork)      # extra video on my channel
+check_posterior_predictions(m2)
+a <- check_posterior_predictions(m2) %>% plot() 
+b <- check_normality(m2) %>% plot()
 
-library(patchwork)
-a + b
+a / b
 
-# Change the width of bins
-a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(binwidth = 50)
+# don't trust statistical tests to much
+check_normality(m)
 
-library(plotly)
-ggplotly(a)
+# visualize predictions
+library(sjPlot)         # extra video on my channel
+plot_model(m, type = "eff", terms = "age", show.data = T)
 
-table(between(Wage$wage, 75, 125))
+# visualize estimates
+plot_model(m, show.values = TRUE, terms = "age")
 
-a + stat_bin(binwidth = 50, geom='text', color = "red",
-             aes(label=..count..), 
-             position=position_stack(vjust=0.5))
+# get model results
+tab_model(m)
 
-# Add central tendency, SD, IQR, CIs
-ggplot(Wage, aes(x = wage)) +
-  geom_histogram() + 
-  geom_vline(aes(xintercept = mean(wage)), color = "red")
+plot_model(m, type = "eff", terms = "age [0:70]", 
+           show.data = T, jitter = T)
 
-ggplot(Wage, aes(x = wage)) +
-  geom_histogram(fill = "blue", color = "white") + 
-  geom_vline(aes(xintercept = mean(wage)), color = "red",
-             size = 1, linetype="dashed")
+57.50 + 1.08 * 40
 
-wage_stats <- Wage %>% 
-  summarise(
-    mean_wage = mean(wage),
-    SD_wage   = sd(wage),
-    med_est   = median(wage),
-    conf.25   = quantile(wage, 0.25 ),
-    conf.75   = quantile(wage, 0.75 ),
-    conf.low  = quantile(wage, 0.025),
-    conf.high = quantile(wage, 0.975))
+57.50 + 1.08 * 50
 
-# 68.26% of the data are located between -1 and +1 SD
-# 95.44% of the data are located between -2 and +2 SD
+# get particular predictions
+predict(m, data.frame(age = c(40, 50, 60)) )
 
-a <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(fill = "blue", color = "white") + 
-  # mean + SD + 95% CI
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage), 
-             size=1, color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage + SD_wage),
-             linetype="dashed", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage - SD_wage),
-             linetype="dashed", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage + SD_wage*2),
-             linetype="dotted", color = "red")+
-  geom_vline(data = wage_stats,         
-             aes(xintercept=mean_wage - SD_wage*2),
-             linetype="dotted", color = "red")
+library(emmeans)       # extra 2 videos on my channel ;)
+emmeans(m, ~ age, at = list(age = c(40, 50, 60)))
 
-b <- ggplot(Wage, aes(x = wage)) +
-  geom_histogram(fill = "blue", color = "white") + 
-  # median + IQR + 95% quantiles
-  geom_vline(data = wage_stats,         
-             aes(xintercept=med_est),
-             size=1, color = "black")+
-  geom_rect(aes(x = med_est, xmin = conf.low, 
-                xmax = conf.high, ymin = 0, ymax = Inf), 
-            data = wage_stats, alpha = 0.2, fill = "green") +
-  geom_rect(aes(x = med_est, xmin = conf.25, 
-                xmax = conf.75, ymin = 0, ymax = Inf), 
-            data = wage_stats, alpha = 0.4, fill = "green") 
+# get effect sizes
+library(effectsize)
+?interpret_r2
+# rules = "cohen1988" is a default
 
-a + b
+interpret_r2(0.139, rules = "cohen1988") 
 
-# Annotations
-c <- a + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
-                        label = paste("Mean:", round(wage_stats$mean_wage) )))
+ggplot(Wage, aes(x = age, y = wage, color = education))+
+  geom_smooth(method = "lm")
 
-d <- b + geom_label(aes(x = 110, y = 450, size = 3, fontface = "bold", 
-                        label = paste("Median:", round(wage_stats$med_est) )))
+library(report)   # extra video on my channel
+report(m)
 
-c + d
-
-
-# Combine histogram and density plots
-meds <- iris %>% 
-  group_by(Species) %>% 
-  summarise(medians = median(Sepal.Length))
-
-ggplot(iris, aes(x=Sepal.Length, color = Species)) + 
-  geom_histogram(aes(y=..density..), fill = "white")+
-  geom_density(aes(color = Species, fill = Species), alpha = .4)+ 
-  geom_vline(data = meds,
-             aes(xintercept=medians, color = Species),
-             linetype="dashed", size=1)
-
-
-
-# Pimp your plot
-wage_stats <- Wage %>% 
-  group_by(jobclass, education, health_ins) %>% 
-  summarize(mean_wage  = mean(wage))
-
-ggplot(Wage, aes(x=wage, color = jobclass)) + 
-  geom_histogram(aes(y=..density..), fill = "white")+
-  geom_density(aes(color = jobclass), size = 1)+ 
-  geom_vline(data = wage_stats,
-             aes(xintercept=mean_wage, color = jobclass),
-             linetype="dashed", size=1)+
-  facet_grid(health_ins~education)+
-  theme_test()+
-  xlim(0, 345)+ 
-  theme(legend.position = "top") + 
-  labs(
-    title    = "American Salaries",
-    subtitle = "Money Business",
-    caption  = "Source: Secret Data Base Noone Knows About",
-    x        = "Salary (in U.S. dollars)",
-    y        = "Density"
-  )+
-  theme(
-    plot.title    = element_text(color = "red", size = 15),
-    plot.subtitle = element_text(face = "bold"),
-    plot.caption  = element_text(face = "italic"),
-    axis.title.x  = element_text(color = "red", size = 14, face = "bold"),
-    axis.title.y  = element_text(size = 14, face = "italic")
-  )
+report(d)

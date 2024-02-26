@@ -7,9 +7,9 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 10 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 25 Feb 2024 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>(in progress) Simple Linear Regression with Numeric Predictor</title>
+      <title>Master Simple Linear Regression with Numeric Predictor in R</title>
       <dc:creator>Yury Zablotski</dc:creator>
       <link>https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric</link>
       <description>
@@ -23,95 +23,132 @@ video&lt;/h1&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
-otherwise shit in shit out&lt;/h1&gt;
-&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;The data on this picture come from the Wage dataset in the ISLR
-package. It clearlys shows, that real world data usually has influential
-observations and contaminations. Here for example, I would clean the
-data from the rich people, earning over 200K per year, and from older
-folks, who is almost retired, because their salaries kind of
-decline.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)      # use &amp;amp; thank me later ;)
+otherwise: shit in shit out!&lt;/h1&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;The data in this picture comes from the Wage dataset in the ISLR
+package. It clearly shows that real-world data often contains
+contaminations 💩. Therefore, it’s crucial to look at the data first
+before rushing into modeling. For instance, in this scenario, I would
+clean the data by removing the high-income individuals earning over 200K
+per year, because they are outliers, and totally not because I am
+jealous! 😉 Additionally, I’d exclude older individuals who are nearing
+retirement, as their salaries tend to decline. The data-cleaning step is
+vital and often overlooked. Remember the phrase: ‘Garbage in, garbage
+out’? If we skip data cleaning, our model’s performance could be
+seriously compromised, and we’ll see it in a moment. For now let’s take
+100 random people form the industry and build our linear model in R.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)      # laod &amp;amp; thank me later ;)
 library(ISLR)           # provides Wage dataset
 theme_set(theme_test()) # beautifies plots
 
-# clean the data
+set.seed(1)             # for reproducibility
 d &amp;lt;- Wage %&amp;gt;% 
-  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 60 &amp;amp; jobclass == &amp;quot;1. Industrial&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id="build-the-model-for-linear-equation"&gt;Build the model for linear
-equation&lt;/h1&gt;
-&lt;p&gt;We’ll them use the intuitive “LM” (show pack of cigarettes ;)
-function, to build our linear model. Inside of “lm” we only need two
-arguments: the formula and the data. On the left side of the formula we
-place the variable we are interested in. This variable unfortunately has
-several names: response variable, outcome, dependent variable, target
-etc., it’s soo confusing. On the right side of the equation we’ll place
-the predictor. Predictors also have some synonyms: independent variable,
-explanatory variable, regressor (in linear regression), covariate,
-feature (in Machine Learning), Risk factor (in epidemiology) etc. I
-really hate these synonyms!&lt;/p&gt;
+  filter(wage &amp;lt; 200 &amp;amp; age &amp;lt; 60 &amp;amp; jobclass == &amp;quot;1. Industrial&amp;quot;) %&amp;gt;% 
+  sample_n(100)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="build-linear-equation"&gt;Build linear equation&lt;/h1&gt;
+&lt;p&gt;To build our linear model, we’ll use the intuitive ‘lm’ (show pack of
+cigarettes ; с рекламой импотенции :) function. Within ‘lm’, we only
+need two arguments: the formula and the data. Here’s how it breaks
+down:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;On the left side of the formula, we’ll place the variable we’re
+interested in predicting. Unfortunately, this variable goes by several
+names: response variable, outcome, dependent variable, target, and more.
+It can get confusing!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On the fright side, we’ll place the predictor variable.
+Predictors also have various synonyms: independent variable, explanatory
+variable, regressor or covariate (in linear regression), feature (in
+Machine Learning), and even risk factor (in epidemiology).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ugh, so many names for the same thing! Drives me nuts. Makes stats
+seem way harder than it actually is.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# build the model
 m &amp;lt;- lm(formula = wage ~ age, data = d)&lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id="check-model-assumptions-visually"&gt;Check model assumptions
-visually&lt;/h1&gt;
-&lt;p&gt;After the model is build we need to make sure the assumptions are
-satisfied. The “check_model()” function from performace package is sooo
-intuitive and sooo powerful than having used it ones, you can not
-unlearn it! Believe me! I use it daily.&lt;/p&gt;
+&lt;h1 id="check-all-model-assumptions-visually"&gt;Check all model
+assumptions visually&lt;/h1&gt;
+&lt;p&gt;After building the model, we need to make sure the assumptions are
+satisfied. Otherwise, we couldn’t trust our model! The “check_model()”
+function from the {performance} package is so intuitive and powerful
+that, once you’ve used it, you cannot unlearn it! Believe me! I use it
+&lt;strong&gt;every time&lt;/strong&gt; I model.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# check model assumptions visually
 library(performance)   # extra video on my channel
 check_model(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-5-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;Looking at the assumptions I could say that the model fit is great,
-the linearity assumption is ok-ish, the line is not completely straight,
-but nothing is dramatic, the variance is homogen, there are no
-ingluential points or outliers and the residuals are inside of the
-confidence intervals, which means the data is normally distributed.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-5-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the assumptions, I could say that the model fits the data
+pretty well! The linearity assumption looks fine; the line is not
+completely straight, but there is no dramatic non-linearity to see. The
+variance is homogeneous. There are no influential points or outliers.
+And finally, the residuals are normally distributed since they are
+inside the confidence intervals, which means our data is normally
+distributed.&lt;/p&gt;
+&lt;p&gt;Now, when we model uncleaned data, the model fit would be far from
+reality, and we’ll even get a warning that our model misses the maximum
+values — you know, those rich folks I am totally not jealous about ;).
+Besides, the normality of residuals would also be compromised, so I
+would stop trusting my model. Therefore, it’s really important to clean
+the data before modeling.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m2 &amp;lt;- lm(formula = wage ~ age, data = Wage)
+library(patchwork)
+check_posterior_predictions(m2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Maximum value of original data is not included in the
+  replicated data.
+  Model may not capture the variation of the data.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;a &amp;lt;- check_posterior_predictions(m2) %&amp;gt;% plot() 
+b &amp;lt;- check_normality(m2) %&amp;gt;% plot()
+
+a + b&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-6-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Oh, by the way, if you have a lot of data, it’s important to check
-assumptions visually instead of conducting statistical tests, because
-for a lot of data the tests would often show significant results,
-meaning that assumptions would be not satisfied, while they are
-satisfied. Here are some examples:&lt;/p&gt;
+assumptions visually, like we just did, instead of conducting
+statistical tests. For a lot of data, the tests would often show
+significant results, meaning that assumptions seemingly would not be
+satisfied, while they are actually satisfied. Here is an example of the
+Shapiro-Wilk normality test, which magically finds non-normally
+distributed residuals, even though they are totally fine!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# don&amp;#39;t trust statistical tests to much
-check_heteroscedasticity(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Warning: Heteroscedasticity (non-constant error variance) detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;check_normality(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p &amp;lt; .001).&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the Shapiro-Wilk normality test find non-normally distributed
-residuals, while they are fine&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;and the Breusch-Pagan test determine heteroscedasticity in the
-data, while the plot show perfectly constant errot variance&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Now, since I think that the assumptions of our model are satisfied
-suffitiently, we can visualize model results, namely, visualize
+check_normality(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p = 0.019).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, since the assumptions of our model are satisfied, we can
+visualize model results, and by results, I mean visualize model
 predictions.&lt;/p&gt;
 &lt;h1 id="visualize-predictions"&gt;Visualize predictions&lt;/h1&gt;
-&lt;p&gt;For that we’ll also use a very intuitive function “plot_model()” from
-{sjPlot} package and provide 3 argumaents:&lt;/p&gt;
+&lt;p&gt;For that, we’ll use another very intuitive function called
+“plot_model()” from the {sjPlot} package and provide three
+arguments:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;the model&lt;/li&gt;
-&lt;li&gt;type of predictions, we’ll use “effect” and&lt;/li&gt;
-&lt;li&gt;the name of a predictor we want to visualize&lt;/li&gt;
+&lt;li&gt;the model name,&lt;/li&gt;
+&lt;li&gt;the type of predictions — we’ll use “effect” to get an effect plot,
+and&lt;/li&gt;
+&lt;li&gt;the name of a predictor we want to visualize.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize predictions
-library(sjPlot)   # extra video on my channel
+library(sjPlot)    # extra video on my channel
 
 plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;) # show.data = T&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-7-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;And woula, our plot shows that salary increases with age. These plot
-is nice, but we don’t see two important details: we don’t exactly how
-quick it increases and sometimes we don’t see whether this increase is
-significant.&lt;/p&gt;
-&lt;h1 id="visualize-estimates"&gt;visualize estimates&lt;/h1&gt;
-&lt;p&gt;The “plot_model()” function solves these two problems when we provide
-the model and show.values = TRUE instead of “type =”eff”.&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;And if we really want to, we could easily &lt;strong&gt;show the
+data&lt;/strong&gt; on our plot:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;,  show.data = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;And voilà, our plot shows that salaries increase with age. This plot
+is nice, but it misses two important details: it doesn’t exactly show
+how quickly the salary grows, and it doesn’t demonstrate whether this
+increase is significant.&lt;/p&gt;
+&lt;h1 id="visualize-estimates"&gt;Visualize estimates&lt;/h1&gt;
+&lt;p&gt;The “plot_model()” function solves both problems, when we use
+“show.values = TRUE” instead of “type =”eff”.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
 plot_model(m, show.values = TRUE, terms = &amp;quot;age&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;
-It tells us that we have 800$ increase per year and this increase is
-significant. But sometime we need an exact p-value. To get this, we’ll
-use the “tab_model()” fucntion:&lt;/p&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Namely, it tells us that we have a 1080$ increase in salary per year,
+and this increase is highly significant because the estimate doesn’t
+cross zero. And while the significance stars are often enough, sometimes
+we need an exact p-value. To obtain this, we’ll use the “tab_model()”
+function from the same {sjPlot} package. This function produces a nice,
+publication-ready table that not only provides exact p-values but also
+reveals the equation of our linear model:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;tab_model(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;table style="border-collapse:collapse; border:none;"&gt;
 &lt;tr&gt;
@@ -141,10 +178,10 @@ p
 (Intercept)
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-64.61
+57.50
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-58.78 – 70.44
+35.24 – 79.76
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
 &lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
@@ -155,10 +192,10 @@ p
 age
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-0.92
+1.08
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
-0.78 – 1.06
+0.54 – 1.62
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
 &lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
@@ -169,7 +206,7 @@ age
 Observations
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;
-1432
+100
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -177,123 +214,193 @@ Observations
 R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
 &lt;/td&gt;
 &lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;
-0.102 / 0.101
+0.139 / 0.130
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
-&lt;p&gt;we use an equation to describe the straight line relationship between
-x and y. This equation defines a particular mathematical model which, in
-general terms, is a simplified representation of a real-world situation
-or process that occurs in the population. If we imagine that, for each
-value of x, there is a population of y values, the equation would be:
-&lt;span class="math display"&gt;\[ y =α+βx \]&lt;/span&gt; where: • Ypop is the
-predicted, expected, fitted or mean value of y for a given value of x. •
-α is the constant term that represents the inter-
-ceptoftheline;itisthevalueofywhenxis equal to zero. • β is the slope or
-gradient of the line and repre- sents the mean change in y for a unit
-change in x, i.e. it describes by how much y changes on average when x
-increases by one unit.&lt;/p&gt;
-&lt;p&gt;α and β are the parameters that define the line. They are both called
-regression coefficients although, frequently, you may find that this
-description is reserved only for β. We have to estimate the two
-parameters α and β (by a and b, respectively) from our random sample of
-n pairs of observations, {(x1, y1), (x2, y2), (x3, y3), . . . , (xn,
-yn)}, in such a way that the line ‘fits’ the points as closely as
-possible.&lt;/p&gt;
-&lt;p&gt;Each deviation, the difference between an observed value of y and its
-predicted or fitted value for a given value of x, is called a
-residual&lt;/p&gt;
-&lt;p&gt;… sum of the squared deviations is as small as possible (i.e. is
-minimized) - that’s why least (sum of) squared (residuals). Remember,
-the square of both negative and positive numbers is always posi- tive.
-Hence the terminology, the method of least squares, to describe the
-technique for estimating α and β.&lt;/p&gt;
-&lt;p&gt;Then we estimate the best fitting line, called the regression
-equation of y on x, from our sample of observations as Y = a + bx&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Y is the estimated predicted (fitted) or mean value of y for a given
-value of x.&lt;/li&gt;
-&lt;li&gt;a is the estimated intercept of the line.&lt;/li&gt;
-&lt;li&gt;b is the estimated slope.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;By substituting these values of x in the equation of the line, we can
-calculate the corresponding predicted Y values. We plot these points on
-the scatter diagram and join them by a straight line. &lt;em&gt;The line must
-not be extrapolated beyond the limits of the data.&lt;/em&gt; Extrapolation
-makes no sense.&lt;/p&gt;
-&lt;p&gt;Y = −46.04 + 1.04x The estimated slope indicates that a sheep’s live
-weight increases on average by 1.04 kg as its chest girth increases by
-1cm.This estimated regres- sion line is valid only in the specified
-range of values of chest girth (i.e. 60–90 cm) and should not be
-extrapolated beyond these limits.We have drawn the line by substituting
-three values of chest girth (65, 75 and 85 cm) into the equation to
-obtain the three corresponding values of live weight (21.56, 31.96 and
-42.36 kg, respectively), plotting these points and joining them (Figure
-10.6b).&lt;/p&gt;
+&lt;p&gt;This equation describes the straight-line relationship between the
+x-axis and the y-axis:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ y = α + βx \]&lt;/span&gt; Or, in our case,
+between “age” and “salary”:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ wage = Estimate_{(Intercept)} +
+Estimate_{age} * age \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;… and it helps us to interpret our model. Specifically, an increase
+in age of one year results in an average salary increase of 1080$. It’s
+important to note that this increase can vary — sometimes it’s as low as
+540$, and other times as high as 1620$, depending on people’s job roles.
+The model indicates that there is a 95% chance that the salary increase
+falls within this interval. That’s why it’s called - the 95% Confidence
+Interval.&lt;/p&gt;
+&lt;p&gt;If this average annual increase of 1080$ occurs consistently, we
+obtain the slope of the line, represented by the beta (β) coefficient in
+the model formula. Put simply, the slope indicates the average change in
+“y” for every one-unit increase in “x”. As with any slope, it needs a
+starting point. And the best start of any slope is usually zero. When
+our line crosses the y-axis (zero on the x-axis), we find the intercept
+(α) in the model output. In our case, this implies an unrealistic
+scenario where our salary would be 57,500$ at birth, which doesn’t make
+any sense, and that’s why the intercept of a model is often not
+interpreted.&lt;/p&gt;
+&lt;p&gt;The true value of the formula lies in its ability to predict future
+salaries. By plugging any “age” value (x) into the model equation, we
+can estimate the corresponding “salary” value (y). This means we can ask
+the model to tell us how much we’ll earn when we’re 40 or 50.&lt;/p&gt;
+&lt;h1 id="make-specific-predictions"&gt;Make specific predictions&lt;/h1&gt;
+&lt;p&gt;For that we’ll simply replace our alpha with the value of the
+Intercept 57.5 and the age with 40 or 50:&lt;/p&gt;
+&lt;p&gt;57.50 + 1.08 * 40 = 100.7&lt;/p&gt;
+&lt;p&gt;57.50 + 1.08 * 50 = 111.5&lt;/p&gt;
+&lt;p&gt;Assuming our lives remain relatively stable, at 40 years old, we
+could be earning over 100,000$, and by 50, our paychecks could exceed
+111,000$. Essentially, we’ve just forecast our future salaries based on
+the available data. Naturally, R provides several convenient functions
+for making such predictions, the most well-known being the “predict”
+function. This function allows you to input your model and a data frame
+containing the variable you want predictions for. However, I personally
+find this function somewhat unintuitive.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# get particular predictions
+predict(m, data.frame(age = c(40, 50, 60)) )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;       1        2        3 
+100.8430 111.6785 122.5140 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A much better choice is the “emmeans” function from the very powerful
+{emmeans} package. It not only provides predictions for any age you
+desire, but also reports 95% confidence intervals and offers a wide
+range of additional capabilities.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(emmeans)   # extra 2 videos on my channel ;)
+emmeans(m, ~ age, at = list(age = c(40, 50, 60)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; age emmean   SE df lower.CL upper.CL
+  40    101 2.65 98     95.6      106
+  50    112 3.80 98    104.1      119
+  60    123 6.06 98    110.5      135
+
+Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Asking for predictions beyond 60 years old isn’t recommended, as we
+intentionally limited our data to include only individuals up to 60.
+Here, it’s crucial to differentiate between interpolation and
+extrapolation. Interpolation means - predicting values within existing
+data points, and it is very useful. However, extrapolation, which means
+going beyond the data range, is risky and unreliable. Predicting salary
+at birth (age zero) is a perfect example for a nonsensical
+extrapolation, because at the age of zero we can’t earn anything.&lt;/p&gt;
 &lt;h1 id="get-effect-sizes"&gt;Get effect sizes&lt;/h1&gt;
+&lt;p&gt;Now, that we understand how to interpret our model, the next crucial
+question we need to address is - how good our model is. Your clients or
+scientific reviewers will definetely ask this question. What they
+typically want to know is - how well our model fits the data, which is
+summarized by the coefficient of determination, denoted as &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; quantifies how much variance
+in the data our model explains. It ranges from 0 to 1, with a simple
+rule: the higher the value, the better the fit. However, interpreting
+&lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; is context-dependent. For
+instance:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;in physics, a model with &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt;
+near 1 is usually desirable, while&lt;/li&gt;
+&lt;li&gt;in biology, even an &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; of 0.2
+might indicate a good model fit.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Despite this context sensitivity, some guidelines proposed by smart
+individuals (such as Cohen) exist. And we can ask the {effectsize}
+package to interpret any value of &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt; for us.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# get effect sizes
 library(effectsize)
-interpret_r2(0.102)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;[1] &amp;quot;weak&amp;quot;
+?interpret_r2
+
+interpret_r2(0.139, rules = &amp;quot;cohen1988&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;moderate&amp;quot;
 (Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;?interpret_r2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It’s weak because age is not the most important predictor for salary
-;). Education is, but we’ll see more in the next video on this series,
-where I show how to model a categorical predictor with linear model.
-Here, we can quickly visualize linear models for every education group
-with the help of the “geom_smooth()” function. Namely, the folks with
-“Advanced Degree” start with the salary of ca 120K while people without
-High-School start at 70K.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;ggplot(d, aes(x = age, y = wage, color = education))+
+&lt;pre class="r"&gt;&lt;code&gt;# rules = &amp;quot;cohen1988&amp;quot; is a default&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In our case, the &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; value of
+0.139 indicates a moderate relationship between age and salary. But why
+moderate and not strong? Well, that could be because age is most likely
+not the most crucial predictor for salary 😉. I mean, when I sit on the
+sofa, do nothing, and just get older, my salary won’t grow! So, what is
+an important predictor? Education is!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = age, y = wage, color = education))+
   geom_smooth(method = &amp;quot;lm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-11-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;h1 id="report-and-interpret-the-model"&gt;Report and interpret the
-model&lt;/h1&gt;
+&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Specifically, folks without a High School diploma start at 70,000$ as
+early as 18 years old, while those with an “Advanced Degree” begin with
+a salary of approximately 140,000$ at the age of 25, after completing
+their studies. However, I’ll cover it in a separate video in this
+series, where I demonstrate how to interpret a model with a categorical
+predictor. Until then if you’re enjoying the video so far, please,
+consider hitting the like button!&lt;/p&gt;
+&lt;h1 id="report-model-results"&gt;Report model results&lt;/h1&gt;
+&lt;p&gt;Finally, the last thing I found difficult was &lt;strong&gt;accurately
+describing the model with sufficient detail&lt;/strong&gt; for others to
+understand and reproduce my results. If you have similar problem, the
+{report} package solves it — even if you only use one function to
+literally “report” your model.&lt;/p&gt;
+&lt;p&gt;Namely, the “report” function:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;identifies the type of model you used,&lt;/li&gt;
+&lt;li&gt;shows how well the model fits the data (&lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;),&lt;/li&gt;
+&lt;li&gt;interprets effect sizes,&lt;/li&gt;
+&lt;li&gt;describes whether predictors are significant and which direction the
+slopes go and&lt;/li&gt;
+&lt;li&gt;even reports how 95% confidence intervals (CIs) and p-values were
+calculated.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I personally found it very useful, but I’d love to know what you
+think? So, feel free to share your thoughts in the comments section
+below.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;library(report)   # extra video on my channel
 report(m)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;We fitted a linear model (estimated using OLS) to predict wage with
 age (formula: wage ~ age). The model explains a statistically
-significant and weak proportion of variance (R2 = 0.10, F(1, 1430) =
-161.61, p &amp;lt; .001, adj. R2 = 0.10). The model&amp;#39;s intercept,
-corresponding to age = 0, is at 64.61 (95% CI [58.78, 70.44], t(1430)
-= 21.72, p &amp;lt; .001). Within this model:
+significant and moderate proportion of variance (R2 = 0.14, F(1, 98)
+= 15.80, p &amp;lt; .001, adj. R2 = 0.13). The model&amp;#39;s intercept,
+corresponding to age = 0, is at 57.50 (95% CI [35.24, 79.76], t(98) =
+5.13, p &amp;lt; .001). Within this model:
 
   - The effect of age is statistically significant and positive (beta =
-0.92, 95% CI [0.78, 1.06], t(1430) = 12.71, p &amp;lt; .001; Std. beta =
-0.32, 95% CI [0.27, 0.37])
+1.08, 95% CI [0.54, 1.62], t(98) = 3.97, p &amp;lt; .001; Std. beta = 0.37,
+95% CI [0.19, 0.56])
 
 Standardized parameters were obtained by fitting the model on a
 standardized version of the dataset. 95% Confidence Intervals (CIs)
 and p-values were computed using a Wald t-distribution approximation.&lt;/code&gt;&lt;/pre&gt;
-&lt;ul&gt;
-&lt;li&gt;Numerical predictor: increasing the numerical predictor by one unit
-(usually on the x-axes) changes the estimated outcome by its estimate.
-An increase of the temperature by 1 degree Celsius increases the
-predicted number of bicycles by 110.7.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id="make-predictions"&gt;Make predictions&lt;/h1&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# get particular predictions
-predict(m, data.frame(age = c(20, 30, 40)) )&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;        1         2         3 
- 82.96905  92.14836 101.32766 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(emmeans)   # extra 2 videos on my channel ;)
-emmeans(m, ~ age, at = list(age = c(20, 30, 40)))&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt; age emmean    SE   df lower.CL upper.CL
-  20   83.0 1.618 1430     79.8     86.1
-  30   92.1 1.034 1430     90.1     94.2
-  40  101.3 0.751 1430     99.9    102.8
-
-Confidence level used: 0.95 &lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id="whats-next"&gt;What’s next?&lt;/h1&gt;
-&lt;pre class="r"&gt;&lt;code&gt;library(ggstatsplot)   # extra video on my channel
-ggscatterstats(d, age, wage)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file815745a573af_files/figure-html/unnamed-chunk-14-1.png" width="672" /&gt;&lt;/p&gt;
-&lt;p&gt;the x and y can not be changed. the regression of x on y is different
-then the regression of y on x. The regression method tells us something
-about the nature of the relationship between two variables, how one
-changes with the other, but it does not tell us how close that
-relationship is. To do this we need a different coefficient, correlation
-coefficient.&lt;/p&gt;
+&lt;p&gt;Moreover, the {report} package can help you correctly describe most
+classic statistical tests and models. It can even describe your entire
+dataset, so make sure to check it out.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;The data contains 100 observations of the following 11 variables:
+
+  - year: n = 100, Mean = 2005.83, SD = 2.02, Median = 2006.00, MAD =
+2.97, range: [2003, 2009], Skewness = 0.15, Kurtosis = -1.25, 0%
+missing
+  - age: n = 100, Mean = 39.99, SD = 9.76, Median = 40.50, MAD = 11.86,
+range: [18, 56], Skewness = -0.17, Kurtosis = -0.99, 0% missing
+  - maritl: 5 levels, namely 1. Never Married (n = 20, 20.00%), 2.
+Married (n = 74, 74.00%), 3. Widowed (n = 2, 2.00%), 4. Divorced (n =
+4, 4.00%) and 5. Separated (n = 0, 0.00%)
+  - race: 4 levels, namely 1. White (n = 83, 83.00%), 2. Black (n = 4,
+4.00%), 3. Asian (n = 11, 11.00%) and 4. Other (n = 2, 2.00%)
+  - education: 5 levels, namely 1. &amp;lt; HS Grad (n = 14, 14.00%), 2. HS
+Grad (n = 37, 37.00%), 3. Some College (n = 22, 22.00%), 4. College
+Grad (n = 22, 22.00%) and 5. Advanced Degree (n = 5, 5.00%)
+  - region: 9 levels, namely 1. New England (n = 0, 0.00%), 2. Middle
+Atlantic (n = 100, 100.00%), 3. East North Central (n = 0, 0.00%), 4.
+West North Central (n = 0, 0.00%), 5. South Atlantic (n = 0, 0.00%),
+6. East South Central (n = 0, 0.00%), 7. West South Central (n = 0,
+0.00%), 8. Mountain (n = 0, 0.00%) and 9. Pacific (n = 0, 0.00%)
+  - jobclass: 2 levels, namely 1. Industrial (n = 100, 100.00%) and 2.
+Information (n = 0, 0.00%)
+  - health: 2 levels, namely 1. &amp;lt;=Good (n = 30, 30.00%) and 2. &amp;gt;=Very
+Good (n = 70, 70.00%)
+  - health_ins: 2 levels, namely 1. Yes (n = 61, 61.00%) and 2. No (n =
+39, 39.00%)
+  - logwage: n = 100, Mean = 4.57, SD = 0.29, Median = 4.57, MAD =
+0.31, range: [3.92, 5.18], Skewness = -0.17, Kurtosis = -0.58, 0%
+missing
+  - wage: n = 100, Mean = 100.83, SD = 28.39, Median = 96.76, MAD =
+29.46, range: [50.41, 176.99], Skewness = 0.40, Kurtosis = -0.50, 0%
+missing&lt;/code&gt;&lt;/pre&gt;
 &lt;hr /&gt;
 &lt;p&gt;If you think, I missed something, please comment on it, and I’ll
 improve this tutorial.&lt;/p&gt;
@@ -304,8 +411,8 @@ improve this tutorial.&lt;/p&gt;
       <category>statistics</category>
       <category>visualization</category>
       <guid>https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric</guid>
-      <pubDate>Sat, 10 Feb 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric/lmnumeric_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1248" height="768"/>
+      <pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric/thumbnail_lmnp.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>
       <title>Unleash Quantile Regression Results</title>
