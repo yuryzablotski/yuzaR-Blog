@@ -40,12 +40,14 @@ library(tidyverse)
 # library(emmeans)
 # library(flextable)
 library(ISLR)
+
+sjPlot::set_theme(theme_test())
 ```
 
-# This post as ca. ... minutes video
+# This post as ca. 12 minutes video
 
 ```{r, eval=T, echo=F}
-vembedr::embed_youtube("") 
+vembedr::embed_youtube("yjdONltFwjM") 
 ```
 
 

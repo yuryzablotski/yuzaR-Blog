@@ -15,16 +15,16 @@
       <description>
 
 
-&lt;h1 id="this-post-as-ca.-minutes-video"&gt;This post as ca. … minutes
+&lt;h1 id="this-post-as-ca.-12-minutes-video"&gt;This post as ca. 12 minutes
 video&lt;/h1&gt;
 &lt;div class="vembedr"&gt;
 &lt;div&gt;
-&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;iframe src="https://www.youtube.com/embed/yjdONltFwjM" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
 otherwise: shit in shit out!&lt;/h1&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;The data in this picture comes from the Wage dataset in the ISLR
 package. It clearly shows that real-world data often contains
 contaminations 💩. Therefore, it’s crucial to look at the data first
@@ -74,7 +74,7 @@ that, once you’ve used it, you cannot unlearn it! Believe me! I use it
 &lt;pre class="r"&gt;&lt;code&gt;# check model assumptions visually
 library(performance)   # extra video on my channel
 check_model(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-5-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-5-1.png" width="864" /&gt;&lt;/p&gt;
 &lt;p&gt;Looking at the assumptions, I could say that the model fits the data
 pretty well! The linearity assumption looks fine; the line is not
 completely straight, but there is no dramatic non-linearity to see. The
@@ -94,12 +94,12 @@ check_posterior_predictions(m2)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Warning: Maximum value of original data is not included in the
   replicated data.
   Model may not capture the variation of the data.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;a &amp;lt;- check_posterior_predictions(m2) %&amp;gt;% plot() 
 b &amp;lt;- check_normality(m2) %&amp;gt;% plot()
 
 a + b&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-6-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-6-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Oh, by the way, if you have a lot of data, it’s important to check
 assumptions visually, like we just did, instead of conducting
 statistical tests. For a lot of data, the tests would often show
@@ -127,11 +127,11 @@ and&lt;/li&gt;
 library(sjPlot)    # extra video on my channel
 
 plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;) # show.data = T&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And if we really want to, we could easily &lt;strong&gt;show the
 data&lt;/strong&gt; on our plot:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;,  show.data = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And voilà, our plot shows that salaries increase with age. This plot
 is nice, but it misses two important details: it doesn’t exactly show
 how quickly the salary grows, and it doesn’t demonstrate whether this
@@ -141,7 +141,7 @@ increase is significant.&lt;/p&gt;
 “show.values = TRUE” instead of “type =”eff”.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
 plot_model(m, show.values = TRUE, terms = &amp;quot;age&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Namely, it tells us that we have a 1080$ increase in salary per year,
 and this increase is highly significant because the estimate doesn’t
 cross zero. And while the significance stars are often enough, sometimes
@@ -320,7 +320,7 @@ sofa, do nothing, and just get older, my salary won’t grow! So, what is
 an important predictor? Education is!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = age, y = wage, color = education))+
   geom_smooth(method = &amp;quot;lm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file2df31c1ce30c_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Specifically, folks without a High School diploma start at 70,000$ as
 early as 18 years old, while those with an “Advanced Degree” begin with
 a salary of approximately 140,000$ at the age of 25, after completing

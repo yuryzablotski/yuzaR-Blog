@@ -66,3 +66,27 @@ library(report)   # extra video on my channel
 report(m)
 
 report(d)
+
+# test multivariable model
+m <- lm(formula = wage ~ health_ins * health * education * jobclass, 
+        data = Wage)
+
+ref_grid(m) %>%
+  emmeans(~ education|jobclass|health_ins|health)
+
+ref_grid(m) %>%
+  emmeans(~ education*jobclass*health_ins*health) %>% 
+  as_tibble() %>% 
+  arrange(desc(emmean))
+
+
+
+
+
+
+
+
+
+
+
+
