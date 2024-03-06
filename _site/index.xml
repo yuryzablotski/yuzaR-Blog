@@ -7,7 +7,1269 @@
     <description>Data Science with R
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 25 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Simple Linear Regression with Categorical Predictor in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuzar-blog.netlify.app/posts/2024-02-28-lmcategorical</link>
+      <description>
+
+
+&lt;h1 id="this-post-as-ca.-minutes-video"&gt;This post as ca. … minutes
+video&lt;/h1&gt;
+&lt;div class="vembedr"&gt;
+&lt;div&gt;
+&lt;iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
+otherwise: shit in shit out!&lt;/h1&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;First of all, it’s crucial to visualize the data before modeling,
+because the real-world data often contains contaminations 💩. For
+instance, in Wage dataset from the ISLR package, I would remove the
+high-income individuals earning over 250K per year, because they are
+outliers, and totally not because I am jealous! 😉. The data-cleaning
+step is vital and often overlooked. Remember the phrase: ‘Garbage in,
+garbage out’? If we skip data cleaning, our model’s performance could be
+seriously compromised, and we’ll see it in a moment. For now let’s take
+100 random people form the industry and build our linear model around
+them.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)      # laod &amp;amp; thank me later ;)
+library(ISLR)           # provides Wage dataset
+theme_set(theme_test()) # beautifies plots
+
+set.seed(1)             # for reproducibility
+d &amp;lt;- Wage %&amp;gt;% 
+  filter(wage &amp;lt; 250) %&amp;gt;% 
+  group_by(education) %&amp;gt;% 
+  sample_n(100)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="build-linear-equation"&gt;Build linear equation&lt;/h1&gt;
+&lt;p&gt;To build our linear model, we’ll use the intuitive ‘lm’ (show pack of
+cigarettes ; с рекламой импотенции :) function. Within ‘lm’, we only
+need two arguments: the formula and the data. Here’s how it breaks
+down:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;On the left side of the formula, we’ll place the variable we’re
+interested in predicting. Unfortunately, this variable goes by several
+names: response variable, outcome, dependent variable, target, and more.
+It can get confusing!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On the right side, we’ll place the predictor variable. Predictors
+also have various synonyms: independent variable, explanatory variable,
+regressor or covariate (in linear regression), feature (in Machine
+Learning), and even risk factor (in epidemiology).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ugh, so many names for the same thing! Drives me nuts. Makes stats
+seem way harder than it actually is.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# build the model
+m &amp;lt;- lm(formula = wage ~ education, data = d)&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="check-all-model-assumptions-visually"&gt;Check all model
+assumptions visually&lt;/h1&gt;
+&lt;p&gt;After building the model, we need to make sure the assumptions are
+satisfied. Otherwise, we couldn’t trust our model! The {performance}
+package offers intuitive and powerful functions to do that, for
+instance&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“check_posterior_predictions()” model fits the data well&lt;/li&gt;
+&lt;li&gt;“check_normality()” looks whether the residuals are normally
+distributed and&lt;/li&gt;
+&lt;li&gt;“check_homogeneity()” compares variances between groups.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# check model assumptions visually
+library(performance)   # extra video on my channel
+a &amp;lt;- check_posterior_predictions(m) %&amp;gt;% plot()
+b &amp;lt;- check_normality(m) %&amp;gt;% plot()
+c &amp;lt;- check_homogeneity(m) %&amp;gt;% plot()
+
+library(patchwork)     # extra video on my channel
+a + b + c&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-5-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the assumptions, I could say that the model fits the data
+pretty well! The residuals are normally distributed since they are
+inside the confidence intervals, which means our data is normally
+distributed. And finally, the variance is relatively similar.&lt;/p&gt;
+&lt;p&gt;By the way: with categorical predictor we don’t need to check the
+linearity and outliers assumptions, and we can relax the independence of
+observations assumptions, since we don’t have repeated measures.&lt;/p&gt;
+&lt;p&gt;Now, when we model uncleaned data, the model fit would be far from
+reality, because those rich folks I am totally not jealous about ;)
+would&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;compromised the model fit&lt;/li&gt;
+&lt;li&gt;skew the normality of residuals and&lt;/li&gt;
+&lt;li&gt;add huge heterogenety between groups, in other words would make the
+groups variance differ,&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;… so that I would stop trusting my model. Therefore, it’s really
+important to clean the data before modeling.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;m2 &amp;lt;- lm(formula = wage ~ education, data = Wage)
+
+a &amp;lt;- check_posterior_predictions(m2) %&amp;gt;% plot()
+b &amp;lt;- check_normality(m2) %&amp;gt;% plot()
+c &amp;lt;- check_homogeneity(m2) %&amp;gt;% plot()
+
+a + b + c&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-6-1.png" width="1344" /&gt;&lt;/p&gt;
+&lt;p&gt;Oh, and by the way, if you have a lot of data, it’s important to
+check assumptions visually, like we just did, instead of conducting
+statistical tests. Because, the tests would often show significant
+results, meaning that assumptions seemingly would not be satisfied,
+while they are actually satisfied. Here is an example of the
+Shapiro-Wilk normality test, which magically finds non-normally
+distributed residuals, even though they are totally fine!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# don&amp;#39;t trust statistical tests to much
+check_normality(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Warning: Non-normality of residuals detected (p = 0.041).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, since the assumptions of our model are satisfied, we can
+visualize model results, and by results, I mean visualize model
+predictions.&lt;/p&gt;
+&lt;h1 id="visualize-predictions"&gt;Visualize predictions&lt;/h1&gt;
+&lt;p&gt;For that, we’ll use another very intuitive function called
+“plot_model()” from the {sjPlot} package and provide three
+arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the model name,&lt;/li&gt;
+&lt;li&gt;the type of predictions — we’ll use “effect” to get an effect plot,
+and&lt;/li&gt;
+&lt;li&gt;the name of a predictor we want to visualize.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# visualize predictions
+library(sjPlot)    # extra video on my channel
+
+plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;education&amp;quot;) # show.data = T&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;And voilà, our plot shows that salaries increase with increasing
+levels of education. Nice right? But this plot misses two important
+details: it doesn’t display the differences in salaries between groups,
+and it doesn’t demonstrate whether these differences are
+significant.&lt;/p&gt;
+&lt;h1 id="visualize-estimates"&gt;Visualize estimates&lt;/h1&gt;
+&lt;p&gt;But we can quickly solve both problems, when we use&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“show.values = TRUE” instead of “type =”eff” in the “plot_model()”
+function and&lt;/li&gt;
+&lt;li&gt;width argument instead of predictor name.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
+plot_model(m, show.values = TRUE, width = 0.2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Namely, it tells us that we have a 1080$ increase in salary per year,
+and this increase is highly significant because the estimate doesn’t
+cross zero. And while the significance stars are often enough, sometimes
+we need an exact p-value. To obtain this, we’ll use the “tab_model()”
+function from the same {sjPlot} package. This function produces a nice,
+publication-ready table that not only provides exact p-values but also
+reveals the equation of our linear model:&lt;/p&gt;
+&lt;h1 id="summary-function"&gt;Summary function&lt;/h1&gt;
+&lt;pre class="r"&gt;&lt;code&gt;summary(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Call:
+lm(formula = wage ~ education, data = d)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-84.46 -16.56  -2.13  16.04  95.09 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&amp;gt;|t|)    
+(Intercept)                   86.186      2.810  30.674  &amp;lt; 2e-16 ***
+education2. HS Grad            9.949      3.974   2.504   0.0126 *  
+education3. Some College      18.359      3.974   4.620 4.89e-06 ***
+education4. College Grad      29.353      3.974   7.387 6.43e-13 ***
+education5. Advanced Degree   46.185      3.974  11.623  &amp;lt; 2e-16 ***
+---
+Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1
+
+Residual standard error: 28.1 on 495 degrees of freedom
+Multiple R-squared:  0.2458,    Adjusted R-squared:  0.2397 
+F-statistic: 40.34 on 4 and 495 DF,  p-value: &amp;lt; 2.2e-16&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We could use a well known summary table for that, but the output,
+although useful, is not really pleasing to the human eye and is not
+suitable for publication.&lt;/p&gt;
+&lt;p&gt;There are tons of videos about summary function out there. So, I
+don’t explain this in detail here. And I honestly don’t know why it is
+soo famous and soo many videos are made about it. And here is what
+summary function misses to deliver:&lt;/p&gt;
+&lt;p&gt;Have you ever wondered, why a “summary” function compares all
+categories of a categorical predictor to only the reference category,
+without comparing categories to each other?&lt;/p&gt;
+&lt;p&gt;And what about those mysterious slopes with standard errors we get as
+model coefficients instead of the averages per category with 95% CIs
+that we actually want?&lt;/p&gt;
+&lt;p&gt;Moreover, “summary” function doesn’t adjust p-values for multiple
+comparisons, which increases the probability of discovering nonsense by
+making too many type-I errors.&lt;/p&gt;
+&lt;p&gt;Summary function doesn’t plot the results of a model and&lt;/p&gt;
+&lt;p&gt;makes it almost impossible to interpret interactions!&lt;/p&gt;
+&lt;p&gt;So, if you’ve ever been frustrated due to similar issues, you’re
+definitely not alone! The “summary” function doesn’t actually provide a
+very useful summary, and that’s why we need {emmeans} package, which
+solves all those problems.&lt;/p&gt;
+&lt;p&gt;Post-Hoc tests.&lt;/p&gt;
+&lt;p&gt;A much better choice is the “emmeans” function from the very powerful
+{emmeans} package. It not only provides predictions for any education
+you desire, but also reports 95% confidence intervals and offers a wide
+range of additional capabilities.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(emmeans)   # extra 2 videos on my channel ;)
+results &amp;lt;- emmeans(m, pairwise ~ education, infer = T)
+results&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$emmeans
+ education          emmean   SE  df lower.CL upper.CL t.ratio p.value
+ 1. &amp;lt; HS Grad         86.2 2.81 495     80.7     91.7  30.674  &amp;lt;.0001
+ 2. HS Grad           96.1 2.81 495     90.6    101.7  34.215  &amp;lt;.0001
+ 3. Some College     104.5 2.81 495     99.0    110.1  37.208  &amp;lt;.0001
+ 4. College Grad     115.5 2.81 495    110.0    121.1  41.121  &amp;lt;.0001
+ 5. Advanced Degree  132.4 2.81 495    126.9    137.9  47.112  &amp;lt;.0001
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast                             estimate   SE  df lower.CL
+ 1. &amp;lt; HS Grad - 2. HS Grad               -9.95 3.97 495    -20.8
+ 1. &amp;lt; HS Grad - 3. Some College         -18.36 3.97 495    -29.2
+ 1. &amp;lt; HS Grad - 4. College Grad         -29.35 3.97 495    -40.2
+ 1. &amp;lt; HS Grad - 5. Advanced Degree      -46.18 3.97 495    -57.1
+ 2. HS Grad - 3. Some College            -8.41 3.97 495    -19.3
+ 2. HS Grad - 4. College Grad           -19.40 3.97 495    -30.3
+ 2. HS Grad - 5. Advanced Degree        -36.24 3.97 495    -47.1
+ 3. Some College - 4. College Grad      -10.99 3.97 495    -21.9
+ 3. Some College - 5. Advanced Degree   -27.83 3.97 495    -38.7
+ 4. College Grad - 5. Advanced Degree   -16.83 3.97 495    -27.7
+ upper.CL t.ratio p.value
+    0.930  -2.504  0.0914
+   -7.480  -4.620  &amp;lt;.0001
+  -18.474  -7.387  &amp;lt;.0001
+  -35.306 -11.623  &amp;lt;.0001
+    2.469  -2.117  0.2146
+   -8.525  -4.883  &amp;lt;.0001
+  -25.357  -9.119  &amp;lt;.0001
+   -0.114  -2.767  0.0462
+  -16.947  -7.003  &amp;lt;.0001
+   -5.953  -4.236  0.0003
+
+Confidence level used: 0.95 
+Conf-level adjustment: tukey method for comparing a family of 5 estimates 
+P value adjustment: tukey method for comparing a family of 5 estimates &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We could even quickly plot contrasts in order to see where the
+difference is the biggest. For instance, naturally the biggest
+difference is between two lowest categories, HS Grad and below, vs. the
+highest categorie, Advanced Degree.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;results$contrasts %&amp;gt;% plot() &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;But as much as I love {emmeans} package, it is also not perfect.
+While it can produce a publication ready with some coding effort, it’s
+not as easy and quick, as with two other options we’ll learn next.&lt;/p&gt;
+&lt;h1 id="get-publication-ready-table"&gt;Get publication ready table&lt;/h1&gt;
+&lt;p&gt;The first one is “tab_model” function from {sjPlot} package. It takes
+only three intuitive arguments to produce a basic table, where all
+categories are compared to the reference levels.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;tab_model(m, 
+          show.reflvl = T, 
+          show.intercept = F, 
+          p.style = &amp;quot;numeric_stars&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;
+ 
+&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;
+wage
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;
+Predictors
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+Estimates
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+CI
+&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;
+p
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;&amp;lt; HS Grad
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;em&gt;Reference&lt;/em&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="2" style="list-style-type: decimal"&gt;
+&lt;li&gt;HS Grad
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+9.95 &lt;sup&gt;*&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+2.14 – 17.76
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;0.013&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="3" style="list-style-type: decimal"&gt;
+&lt;li&gt;Some College
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+18.36 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+10.55 – 26.17
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="4" style="list-style-type: decimal"&gt;
+&lt;li&gt;College Grad
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+29.35 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+21.55 – 37.16
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;
+&lt;ol start="5" style="list-style-type: decimal"&gt;
+&lt;li&gt;Advanced Degree
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+46.18 &lt;sup&gt;***&lt;/sup&gt;
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+38.38 – 53.99
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;
+&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;
+Observations
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;
+500
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;
+R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted
+&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;
+0.246 / 0.240
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td colspan="4" style="font-style:italic; border-top:double black; text-align:right;"&gt;
+&lt;ul&gt;
+&lt;li&gt;p&amp;lt;0.05   ** p&amp;lt;0.01   *** p&amp;lt;0.001
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/table&gt;
+&lt;p&gt;But I never understood, why people avoid more inference by limiting
+themselfes to only one reference category, while this inference was
+already calculated by the model. What if we want to compare all
+categories to each other pairwisely? So, that the second option is to
+produce a table with contrasts using the “tbl_regression” function from
+{gtsummary} package, which also take only few intuitive arguments. Where
+Beta is the difference in thousands of dollars.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(gtsummary)
+fancy_table &amp;lt;- tbl_regression(m, add_pairwise_contrasts = T) %&amp;gt;% 
+   add_significance_stars(hide_p = F, hide_se = T, hide_ci = F)
+
+fancy_table&lt;/code&gt;&lt;/pre&gt;
+&lt;div id="cchgeimrdv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;style&gt;#cchgeimrdv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#cchgeimrdv thead, #cchgeimrdv tbody, #cchgeimrdv tfoot, #cchgeimrdv tr, #cchgeimrdv td, #cchgeimrdv th {
+  border-style: none;
+}
+
+#cchgeimrdv p {
+  margin: 0;
+  padding: 0;
+}
+
+#cchgeimrdv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#cchgeimrdv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#cchgeimrdv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#cchgeimrdv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#cchgeimrdv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cchgeimrdv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#cchgeimrdv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#cchgeimrdv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#cchgeimrdv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#cchgeimrdv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#cchgeimrdv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cchgeimrdv .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#cchgeimrdv .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#cchgeimrdv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#cchgeimrdv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cchgeimrdv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#cchgeimrdv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#cchgeimrdv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#cchgeimrdv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cchgeimrdv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#cchgeimrdv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cchgeimrdv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#cchgeimrdv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cchgeimrdv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cchgeimrdv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cchgeimrdv .gt_left {
+  text-align: left;
+}
+
+#cchgeimrdv .gt_center {
+  text-align: center;
+}
+
+#cchgeimrdv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#cchgeimrdv .gt_font_normal {
+  font-weight: normal;
+}
+
+#cchgeimrdv .gt_font_bold {
+  font-weight: bold;
+}
+
+#cchgeimrdv .gt_font_italic {
+  font-style: italic;
+}
+
+#cchgeimrdv .gt_super {
+  font-size: 65%;
+}
+
+#cchgeimrdv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#cchgeimrdv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#cchgeimrdv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#cchgeimrdv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#cchgeimrdv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#cchgeimrdv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#cchgeimrdv .gt_indent_5 {
+  text-indent: 25px;
+}
+&lt;/style&gt;
+&lt;table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false"&gt;
+  &lt;thead&gt;
+    &lt;tr class="gt_col_headings"&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&amp;lt;strong&amp;gt;Characteristic&amp;lt;/strong&amp;gt;"&gt;&lt;strong&gt;Characteristic&lt;/strong&gt;&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&amp;lt;strong&amp;gt;Beta&amp;lt;/strong&amp;gt;&amp;lt;span class=&amp;quot;gt_footnote_marks&amp;quot; style=&amp;quot;white-space:nowrap;font-style:italic;font-weight:normal;&amp;quot;&amp;gt;&amp;lt;sup&amp;gt;1&amp;lt;/sup&amp;gt;&amp;lt;/span&amp;gt;"&gt;&lt;strong&gt;Beta&lt;/strong&gt;&lt;span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&amp;lt;strong&amp;gt;95% CI&amp;lt;/strong&amp;gt;&amp;lt;span class=&amp;quot;gt_footnote_marks&amp;quot; style=&amp;quot;white-space:nowrap;font-style:italic;font-weight:normal;&amp;quot;&amp;gt;&amp;lt;sup&amp;gt;2&amp;lt;/sup&amp;gt;&amp;lt;/span&amp;gt;"&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/span&gt;&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&amp;lt;strong&amp;gt;p-value&amp;lt;/strong&amp;gt;"&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class="gt_table_body"&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;education&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;&lt;br /&gt;&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;&lt;br /&gt;&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;br /&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    2. HS Grad - 1. &amp;lt; HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;10&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;-0.93, 21&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;0.091&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    3. Some College - 1. &amp;lt; HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;18***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;7.5, 29&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    3. Some College - 2. HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;8.4&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;-2.5, 19&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;0.2&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    4. College Grad - 1. &amp;lt; HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;29***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;18, 40&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    4. College Grad - 2. HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;19***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;8.5, 30&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    4. College Grad - 3. Some College&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;11*&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;0.11, 22&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;0.046&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    5. Advanced Degree - 1. &amp;lt; HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;46***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;35, 57&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    5. Advanced Degree - 2. HS Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;36***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;25, 47&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    5. Advanced Degree - 3. Some College&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;28***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;17, 39&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td headers="label" class="gt_row gt_left"&gt;    5. Advanced Degree - 4. College Grad&lt;/td&gt;
+&lt;td headers="estimate" class="gt_row gt_center"&gt;17***&lt;/td&gt;
+&lt;td headers="ci" class="gt_row gt_center"&gt;6.0, 28&lt;/td&gt;
+&lt;td headers="p.value" class="gt_row gt_center"&gt;&lt;0.001&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  &lt;tfoot class="gt_footnotes"&gt;
+    &lt;tr&gt;
+      &lt;td class="gt_footnote" colspan="4"&gt;&lt;span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt; *p&amp;lt;0.05; **p&amp;lt;0.01; ***p&amp;lt;0.001&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td class="gt_footnote" colspan="4"&gt;&lt;span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/span&gt; CI = Confidence Interval&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(flextable)
+fancy_table %&amp;gt;%
+  as_flex_table() %&amp;gt;%
+  save_as_docx(path = &amp;quot;fancy_table.docx&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When you need to publish the equation of the model, you could
+“extract_eq” it from the model via “extract_eq” function from
+{equatiomatic} package.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(equatiomatic)
+extract_eq(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[
+\operatorname{wage} = \alpha +
+\beta_{1}(\operatorname{education}_{\operatorname{2.\ HS\ Grad}}) +
+\beta_{2}(\operatorname{education}_{\operatorname{3.\ Some\ College}}) +
+\beta_{3}(\operatorname{education}_{\operatorname{4.\ College\ Grad}}) +
+\beta_{4}(\operatorname{education}_{\operatorname{5.\ Advanced\
+Degree}}) + \epsilon
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This equation describes the straight-line relationship between the
+x-axis and the y-axis:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ y = α + βx \]&lt;/span&gt; Or, in our case,
+between “education” and “salary”:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[ wage = Estimate_{(Intercept)} +
+Estimate_{education} * education \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;… and it helps us to interpret our model. Specifically, an increase
+in education of one year results in an average salary increase of 1080$.
+It’s important to note that this increase can vary — sometimes it’s as
+low as 540$, and other times as high as 1620$, depending on people’s job
+roles. The model indicates that there is a 95% chance that the salary
+increase falls within this interval. That’s why it’s called - the 95%
+Confidence Interval.&lt;/p&gt;
+&lt;p&gt;If this average annual increase of 1080$ occurs consistently, we
+obtain the slope of the line, represented by the beta (β) coefficient in
+the model formula. Put simply, the slope indicates the average change in
+“y” for every one-unit increase in “x”. As with any slope, it needs a
+starting point. And the best start of any slope is usually zero. When
+our line crosses the y-axis (zero on the x-axis), we find the intercept
+(α) in the model output. In our case, this implies an unrealistic
+scenario where our salary would be 57,500$ at birth, which doesn’t make
+any sense, and that’s why the intercept of a model is often not
+interpreted.&lt;/p&gt;
+&lt;p&gt;The true value of the formula lies in its ability to predict future
+salaries. By plugging any “education” value (x) into the model equation,
+we can estimate the corresponding “salary” value (y). This means we can
+ask the model to tell us how much we’ll earn when we’re 40 or 50.&lt;/p&gt;
+&lt;h1 id="get-effect-sizes"&gt;Get effect sizes&lt;/h1&gt;
+&lt;p&gt;Now, that we understand how to interpret our model, the next crucial
+question we need to address is - how good our model is. Your clients or
+scientific reviewers will definetely ask this question. What they
+typically want to know is - how well our model fits the data, which is
+summarized by the coefficient of determination, denoted as &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; quantifies how much variance
+in the data our model explains. It ranges from 0 to 1, with a simple
+rule: the higher the value, the better the fit. However, interpreting
+&lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; is context-dependent. For
+instance:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;in physics, a model with &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt;
+near 1 is usually desirable, while&lt;/li&gt;
+&lt;li&gt;in biology, even an &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; of 0.2
+might indicate a good model fit.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Despite this context sensitivity, some guidelines proposed by smart
+individuals (such as Cohen) exist. And we can ask the {effectsize}
+package to interpret any value of &lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt; for us.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# get effect sizes
+library(effectsize)
+?interpret_r2
+
+interpret_r2(0.246, rules = &amp;quot;cohen1988&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;moderate&amp;quot;
+(Rules: cohen1988)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# rules = &amp;quot;cohen1988&amp;quot; is a default&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In our case, the &lt;span class="math inline"&gt;\(R^2\)&lt;/span&gt; value of
+0.139 indicates a moderate relationship between education and salary.
+But why moderate and not strong? Well, that could be because education
+is most likely not the most crucial predictor for salary 😉. I mean,
+when I sit on the sofa, do nothing, and just get older, my salary won’t
+grow! So, what is an important predictor? Education is!&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = education, y = wage, color = jobclass))+
+  geom_boxplot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file102174077ce71_files/figure-html/unnamed-chunk-17-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;Specifically, folks without a High School diploma start at 70,000$ as
+early as 18 years old, while those with an “Advanced Degree” begin with
+a salary of approximately 140,000$ at the education of 25, after
+completing their studies. However, I’ll cover it in a separate video in
+this series, where I demonstrate how to interpret a model with a
+categorical predictor. Until then if you’re enjoying the video so far,
+please, consider hitting the like button!&lt;/p&gt;
+&lt;h1 id="report-model-results"&gt;Report model results&lt;/h1&gt;
+&lt;p&gt;Finally, the last thing I found difficult was &lt;strong&gt;accurately
+describing the model with sufficient detail&lt;/strong&gt; for others to
+understand and reproduce my results. If you have similar problem, the
+{report} package solves it — even if you only use one function to
+literally “report” your model.&lt;/p&gt;
+&lt;p&gt;Namely, the “report” function:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;identifies the type of model you used,&lt;/li&gt;
+&lt;li&gt;shows how well the model fits the data (&lt;span
+class="math inline"&gt;\(R^2\)&lt;/span&gt;),&lt;/li&gt;
+&lt;li&gt;interprets effect sizes,&lt;/li&gt;
+&lt;li&gt;describes whether predictors are significant and which direction the
+slopes go and&lt;/li&gt;
+&lt;li&gt;even reports how 95% confidence intervals (CIs) and p-values were
+calculated.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I personally found it very useful, but I’d love to know what you
+think? So, feel free to share your thoughts in the comments section
+below.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(report)   # extra video on my channel
+report(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;We fitted a linear model (estimated using OLS) to predict wage with
+education (formula: wage ~ education). The model explains a
+statistically significant and moderate proportion of variance (R2 =
+0.25, F(4, 495) = 40.34, p &amp;lt; .001, adj. R2 = 0.24). The model&amp;#39;s
+intercept, corresponding to education = 1. &amp;lt; HS Grad, is at 86.19
+(95% CI [80.67, 91.71], t(495) = 30.67, p &amp;lt; .001). Within this model:
+
+  - The effect of education [2. HS Grad] is statistically significant
+and positive (beta = 9.95, 95% CI [2.14, 17.76], t(495) = 2.50, p =
+0.013; Std. beta = 0.31, 95% CI [0.07, 0.55])
+  - The effect of education [3. Some College] is statistically
+significant and positive (beta = 18.36, 95% CI [10.55, 26.17], t(495)
+= 4.62, p &amp;lt; .001; Std. beta = 0.57, 95% CI [0.33, 0.81])
+  - The effect of education [4. College Grad] is statistically
+significant and positive (beta = 29.35, 95% CI [21.55, 37.16], t(495)
+= 7.39, p &amp;lt; .001; Std. beta = 0.91, 95% CI [0.67, 1.15])
+  - The effect of education [5. Advanced Degree] is statistically
+significant and positive (beta = 46.18, 95% CI [38.38, 53.99], t(495)
+= 11.62, p &amp;lt; .001; Std. beta = 1.43, 95% CI [1.19, 1.68])
+
+Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs)
+and p-values were computed using a Wald t-distribution approximation.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;model_performance(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# Indices of model performance
+
+AIC      |     AICc |      BIC |    R2 | R2 (adj.) |   RMSE |  Sigma
+--------------------------------------------------------------------
+4761.586 | 4761.756 | 4786.874 | 0.246 |     0.240 | 27.956 | 28.097&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="whats-next"&gt;What’s next?&lt;/h1&gt;
+&lt;p&gt;What do we do, when assumptions are not satisfied? Well, while there
+are several options, like robust or bootstrapping regression, I
+personally enjoy the quantile regression a lot. So, if you wanna be
+equepped for more situations and be statistically robust, make sure to
+check out this &lt;a href="https://youtu.be/Gtz8ca_4hVg"&gt;video on quantile
+regression&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;report(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;The data contains 500 observations, grouped by education, of the
+following 11 variables:
+
+- 1. &amp;lt; HS Grad (n = 100):
+  - year: n = 100, Mean = 2006.01, SD = 1.98, Median = 2006.00, MAD =
+2.97, range: [2003, 2009], Skewness = 0.02, Kurtosis = -1.32, 0%
+missing
+  - age: n = 100, Mean = 41.27, SD = 11.56, Median = 41.00, MAD =
+10.38, range: [18, 73], Skewness = 0.38, Kurtosis = -7.93e-03, 0%
+missing
+  - maritl: 5 levels, namely 1. Never Married (n = 21, 21.00%), 2.
+Married (n = 64, 64.00%), 3. Widowed (n = 0, 0.00%), 4. Divorced (n =
+7, 7.00%) and 5. Separated (n = 8, 8.00%)
+  - race: 4 levels, namely 1. White (n = 82, 82.00%), 2. Black (n = 10,
+10.00%), 3. Asian (n = 6, 6.00%) and 4. Other (n = 2, 2.00%)
+  - region: 9 levels, namely 1. New England (n = 0, 0.00%), 2. Middle
+Atlantic (n = 100, 100.00%), 3. East North Central (n = 0, 0.00%), 4.
+West North Central (n = 0, 0.00%), 5. South Atlantic (n = 0, 0.00%),
+6. East South Central (n = 0, 0.00%), 7. West South Central (n = 0,
+0.00%), 8. Mountain (n = 0, 0.00%) and 9. Pacific (n = 0, 0.00%)
+  - jobclass: 2 levels, namely 1. Industrial (n = 68, 68.00%) and 2.
+Information (n = 32, 32.00%)
+  - health: 2 levels, namely 1. &amp;lt;=Good (n = 41, 41.00%) and 2. &amp;gt;=Very
+Good (n = 59, 59.00%)
+  - health_ins: 2 levels, namely 1. Yes (n = 49, 49.00%) and 2. No (n =
+51, 51.00%)
+  - logwage: n = 100, Mean = 4.42, SD = 0.30, Median = 4.40, MAD =
+0.24, range: [3.04, 5.03], Skewness = -1.41, Kurtosis = 5.43, 0%
+missing
+  - wage: n = 100, Mean = 86.19, SD = 22.70, Median = 81.28, MAD =
+18.77, range: [20.93, 152.22], Skewness = 0.25, Kurtosis = 0.70, 0%
+missing
+
+- 2. HS Grad (n = 100):
+  - year: n = 100, Mean = 2006.00, SD = 2.02, Median = 2006.00, MAD =
+2.97, range: [2003, 2009], Skewness = -0.02, Kurtosis = -1.29, 0%
+missing
+  - age: n = 100, Mean = 42.85, SD = 11.76, Median = 43.00, MAD =
+11.86, range: [19, 66], Skewness = -0.05, Kurtosis = -0.85, 0%
+missing
+  - maritl: 5 levels, namely 1. Never Married (n = 19, 19.00%), 2.
+Married (n = 70, 70.00%), 3. Widowed (n = 2, 2.00%), 4. Divorced (n =
+8, 8.00%) and 5. Separated (n = 1, 1.00%)
+  - race: 4 levels, namely 1. White (n = 88, 88.00%), 2. Black (n = 8,
+8.00%), 3. Asian (n = 3, 3.00%) and 4. Other (n = 1, 1.00%)
+  - region: 9 levels, namely 1. New England (n = 0, 0.00%), 2. Middle
+Atlantic (n = 100, 100.00%), 3. East North Central (n = 0, 0.00%), 4.
+West North Central (n = 0, 0.00%), 5. South Atlantic (n = 0, 0.00%),
+6. East South Central (n = 0, 0.00%), 7. West South Central (n = 0,
+0.00%), 8. Mountain (n = 0, 0.00%) and 9. Pacific (n = 0, 0.00%)
+  - jobclass: 2 levels, namely 1. Industrial (n = 62, 62.00%) and 2.
+Information (n = 38, 38.00%)
+  - health: 2 levels, namely 1. &amp;lt;=Good (n = 38, 38.00%) and 2. &amp;gt;=Very
+Good (n = 62, 62.00%)
+  - health_ins: 2 levels, namely 1. Yes (n = 70, 70.00%) and 2. No (n =
+30, 30.00%)
+  - logwage: n = 100, Mean = 4.53, SD = 0.26, Median = 4.54, MAD =
+0.24, range: [3.90, 5.08], Skewness = -0.15, Kurtosis = -0.44, 0%
+missing
+  - wage: n = 100, Mean = 96.13, SD = 24.91, Median = 94.00, MAD =
+23.72, range: [49.56, 160.64], Skewness = 0.44, Kurtosis = -0.22, 0%
+missing
+
+- 3. Some College (n = 100):
+  - year: n = 100, Mean = 2005.77, SD = 1.94, Median = 2006.00, MAD =
+2.22, range: [2003, 2009], Skewness = 0.09, Kurtosis = -1.09, 0%
+missing
+  - age: n = 100, Mean = 39.42, SD = 11.40, Median = 39.00, MAD =
+13.34, range: [18, 64], Skewness = 0.29, Kurtosis = -0.76, 0% missing
+  - maritl: 5 levels, namely 1. Never Married (n = 29, 29.00%), 2.
+Married (n = 59, 59.00%), 3. Widowed (n = 0, 0.00%), 4. Divorced (n =
+10, 10.00%) and 5. Separated (n = 2, 2.00%)
+  - race: 4 levels, namely 1. White (n = 87, 87.00%), 2. Black (n = 11,
+11.00%), 3. Asian (n = 1, 1.00%) and 4. Other (n = 1, 1.00%)
+  - region: 9 levels, namely 1. New England (n = 0, 0.00%), 2. Middle
+Atlantic (n = 100, 100.00%), 3. East North Central (n = 0, 0.00%), 4.
+West North Central (n = 0, 0.00%), 5. South Atlantic (n = 0, 0.00%),
+6. East South Central (n = 0, 0.00%), 7. West South Central (n = 0,
+0.00%), 8. Mountain (n = 0, 0.00%) and 9. Pacific (n = 0, 0.00%)
+  - jobclass: 2 levels, namely 1. Industrial (n = 55, 55.00%) and 2.
+Information (n = 45, 45.00%)
+  - health: 2 levels, namely 1. &amp;lt;=Good (n = 22, 22.00%) and 2. &amp;gt;=Very
+Good (n = 78, 78.00%)
+  - health_ins: 2 levels, namely 1. Yes (n = 67, 67.00%) and 2. No (n =
+33, 33.00%)
+  - logwage: n = 100, Mean = 4.60, SD = 0.35, Median = 4.62, MAD =
+0.23, range: [3, 5.18], Skewness = -2.01, Kurtosis = 6.96, 0% missing
+  - wage: n = 100, Mean = 104.55, SD = 29.35, Median = 101.82, MAD =
+24.83, range: [20.09, 176.99], Skewness = -0.08, Kurtosis = 0.84, 0%
+missing
+
+- 4. College Grad (n = 100):
+  - year: n = 100, Mean = 2005.69, SD = 1.99, Median = 2005.50, MAD =
+2.22, range: [2003, 2009], Skewness = 0.14, Kurtosis = -1.25, 0%
+missing
+  - age: n = 100, Mean = 41.88, SD = 10.68, Median = 43.00, MAD =
+11.86, range: [22, 64], Skewness = 0.03, Kurtosis = -0.86, 0% missing
+  - maritl: 5 levels, namely 1. Never Married (n = 26, 26.00%), 2.
+Married (n = 64, 64.00%), 3. Widowed (n = 1, 1.00%), 4. Divorced (n =
+9, 9.00%) and 5. Separated (n = 0, 0.00%)
+  - race: 4 levels, namely 1. White (n = 84, 84.00%), 2. Black (n = 6,
+6.00%), 3. Asian (n = 8, 8.00%) and 4. Other (n = 2, 2.00%)
+  - region: 9 levels, namely 1. New England (n = 0, 0.00%), 2. Middle
+Atlantic (n = 100, 100.00%), 3. East North Central (n = 0, 0.00%), 4.
+West North Central (n = 0, 0.00%), 5. South Atlantic (n = 0, 0.00%),
+6. East South Central (n = 0, 0.00%), 7. West South Central (n = 0,
+0.00%), 8. Mountain (n = 0, 0.00%) and 9. Pacific (n = 0, 0.00%)
+  - jobclass: 2 levels, namely 1. Industrial (n = 34, 34.00%) and 2.
+Information (n = 66, 66.00%)
+  - health: 2 levels, namely 1. &amp;lt;=Good (n = 23, 23.00%) and 2. &amp;gt;=Very
+Good (n = 77, 77.00%)
+  - health_ins: 2 levels, namely 1. Yes (n = 77, 77.00%) and 2. No (n =
+23, 23.00%)
+  - logwage: n = 100, Mean = 4.71, SD = 0.29, Median = 4.74, MAD =
+0.27, range: [3.90, 5.30], Skewness = -0.70, Kurtosis = 0.33, 0%
+missing
+  - wage: n = 100, Mean = 115.54, SD = 30.77, Median = 114.48, MAD =
+30.12, range: [49.56, 200.54], Skewness = 0.06, Kurtosis = -0.15, 0%
+missing
+
+- 5. Advanced Degree (n = 100):
+  - year: n = 100, Mean = 2006.02, SD = 2.08, Median = 2006.00, MAD =
+2.97, range: [2003, 2009], Skewness = 0.01, Kurtosis = -1.32, 0%
+missing
+  - age: n = 100, Mean = 43.73, SD = 10.29, Median = 42.50, MAD =
+12.60, range: [27, 72], Skewness = 0.27, Kurtosis = -0.74, 0% missing
+  - maritl: 5 levels, namely 1. Never Married (n = 21, 21.00%), 2.
+Married (n = 72, 72.00%), 3. Widowed (n = 0, 0.00%), 4. Divorced (n =
+7, 7.00%) and 5. Separated (n = 0, 0.00%)
+  - race: 4 levels, namely 1. White (n = 76, 76.00%), 2. Black (n = 9,
+9.00%), 3. Asian (n = 15, 15.00%) and 4. Other (n = 0, 0.00%)
+  - region: 9 levels, namely 1. New England (n = 0, 0.00%), 2. Middle
+Atlantic (n = 100, 100.00%), 3. East North Central (n = 0, 0.00%), 4.
+West North Central (n = 0, 0.00%), 5. South Atlantic (n = 0, 0.00%),
+6. East South Central (n = 0, 0.00%), 7. West South Central (n = 0,
+0.00%), 8. Mountain (n = 0, 0.00%) and 9. Pacific (n = 0, 0.00%)
+  - jobclass: 2 levels, namely 1. Industrial (n = 31, 31.00%) and 2.
+Information (n = 69, 69.00%)
+  - health: 2 levels, namely 1. &amp;lt;=Good (n = 13, 13.00%) and 2. &amp;gt;=Very
+Good (n = 87, 87.00%)
+  - health_ins: 2 levels, namely 1. Yes (n = 75, 75.00%) and 2. No (n =
+25, 25.00%)
+  - logwage: n = 100, Mean = 4.86, SD = 0.25, Median = 4.90, MAD =
+0.20, range: [4.03, 5.43], Skewness = -0.64, Kurtosis = 0.86, 0%
+missing
+  - wage: n = 100, Mean = 132.37, SD = 31.67, Median = 133.97, MAD =
+24.62, range: [56.45, 227.46], Skewness = 0.21, Kurtosis = 0.32, 0%
+missing&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="should-we-categorize-numerical-predictors"&gt;Should we categorize
+numerical predictors?&lt;/h1&gt;
+&lt;h2 id="advantages"&gt;Advantages&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Increases interpretability: Sometimes it’s easier to understand
+the impact of different predictor levels on the outcome. For instance,
+instead of saying “for every 1-unit increase in blood pressure,” we can
+say “for patients with high blood pressure.”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Handles nonlinearity: Categorization captures nonlinear
+relationships between predictors and outcomes if one exists. By
+categorizing based on these smooth functions, we can identify risk
+categories (e.g., low, average, high) more effectively. Segmenting the
+data into groups can potentially improve model fit and predictive
+power.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Decision Support: Categorization simplifies decision-making. For
+example, a physician might categorize a patient’s cholesterol level as
+“normal,” “borderline,” or “high.”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Model Stability: Categorization can stabilize model estimates.
+Continuous predictors may introduce noise due to small fluctuations. By
+grouping similar values together, we reduce the impact of minor
+variations and enhance model stability.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Outlier Control: Similar to decision trees, categorization can
+reduce the impact of outliers in the data. By grouping outliers with
+other data points, their influence on the model can be
+mitigated.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Relaxes Linearity Assumption&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Handling Missing Values: Categorization allows handling missing
+data by creating a separate category.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="disadvantages"&gt;Disadvantages&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Information Loss: The original numeric relationship is replaced
+by discrete categories, which may not fully capture the underlying
+variability.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Subjective Boundaries (Category Choice): Choosing category
+boundaries is subjective and can impact model results. Techniques like
+quantile-based methods, k-means clustering, or domain knowledge-based
+approaches can be used to create informative categories. However,
+choosing different binning schemes can lead to varying results.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Inefficient Use of Data: Binning reduces the effective sample
+size within each category. Smaller sample sizes can lead to less precise
+estimates.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Increased Model Complexity: Categorization introduces additional
+parameters (dummy variables) into the model. More parameters can lead to
+overfitting, especially with limited data.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In summary, while categorization can simplify modeling, it comes
+with trade-offs. Consider the context, research question, and data
+characteristics before deciding whether to categorize numeric predictors
+in your statistical models.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Thank you for learning!&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>65d2ebf82466f5bf43bdf9cb8b13d8c3</distill:md5>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuzar-blog.netlify.app/posts/2024-02-28-lmcategorical</guid>
+      <pubDate>Tue, 05 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://yuzar-blog.netlify.app/posts/2024-02-28-lmcategorical/lmcategorical_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
     <item>
       <title>Master Simple Linear Regression with Numeric Predictor in R</title>
       <dc:creator>Yury Zablotski</dc:creator>
@@ -24,7 +1286,7 @@ video&lt;/h1&gt;
 &lt;/div&gt;
 &lt;h1 id="clean-the-data-otherwise-shit-in-shit-out"&gt;Clean the data,
 otherwise: shit in shit out!&lt;/h1&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-2-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;The data in this picture comes from the Wage dataset in the ISLR
 package. It clearly shows that real-world data often contains
 contaminations 💩. Therefore, it’s crucial to look at the data first
@@ -74,7 +1336,7 @@ that, once you’ve used it, you cannot unlearn it! Believe me! I use it
 &lt;pre class="r"&gt;&lt;code&gt;# check model assumptions visually
 library(performance)   # extra video on my channel
 check_model(m)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-5-1.png" width="864" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-5-1.png" width="864" /&gt;&lt;/p&gt;
 &lt;p&gt;Looking at the assumptions, I could say that the model fits the data
 pretty well! The linearity assumption looks fine; the line is not
 completely straight, but there is no dramatic non-linearity to see. The
@@ -94,12 +1356,12 @@ check_posterior_predictions(m2)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;Warning: Maximum value of original data is not included in the
   replicated data.
   Model may not capture the variation of the data.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-6-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;a &amp;lt;- check_posterior_predictions(m2) %&amp;gt;% plot() 
 b &amp;lt;- check_normality(m2) %&amp;gt;% plot()
 
 a + b&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-6-2.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-6-2.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Oh, by the way, if you have a lot of data, it’s important to check
 assumptions visually, like we just did, instead of conducting
 statistical tests. For a lot of data, the tests would often show
@@ -127,11 +1389,11 @@ and&lt;/li&gt;
 library(sjPlot)    # extra video on my channel
 
 plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;) # show.data = T&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-8-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And if we really want to, we could easily &lt;strong&gt;show the
 data&lt;/strong&gt; on our plot:&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;plot_model(m, type = &amp;quot;eff&amp;quot;, terms = &amp;quot;age&amp;quot;,  show.data = TRUE)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-9-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;And voilà, our plot shows that salaries increase with age. This plot
 is nice, but it misses two important details: it doesn’t exactly show
 how quickly the salary grows, and it doesn’t demonstrate whether this
@@ -141,7 +1403,7 @@ increase is significant.&lt;/p&gt;
 “show.values = TRUE” instead of “type =”eff”.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# visualize estimates
 plot_model(m, show.values = TRUE, terms = &amp;quot;age&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-10-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Namely, it tells us that we have a 1080$ increase in salary per year,
 and this increase is highly significant because the estimate doesn’t
 cross zero. And while the significance stars are often enough, sometimes
@@ -320,7 +1582,7 @@ sofa, do nothing, and just get older, my salary won’t grow! So, what is
 an important predictor? Education is!&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;ggplot(Wage, aes(x = age, y = wage, color = education))+
   geom_smooth(method = &amp;quot;lm&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file5b71622b08cd_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file10217efcff8b_files/figure-html/unnamed-chunk-15-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;Specifically, folks without a High School diploma start at 70,000$ as
 early as 18 years old, while those with an “Advanced Degree” begin with
 a salary of approximately 140,000$ at the age of 25, after completing
@@ -411,7 +1673,7 @@ improve this tutorial.&lt;/p&gt;
       <category>statistics</category>
       <category>visualization</category>
       <guid>https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric</guid>
-      <pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 26 Feb 2024 00:00:00 +0000</pubDate>
       <media:content url="https://yuzar-blog.netlify.app/posts/2024-02-03-lmnumeric/thumbnail_lmnp.png" medium="image" type="image/png" width="1920" height="1080"/>
     </item>
     <item>

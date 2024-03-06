@@ -1,0 +1,390 @@
+---
+title: "Simple Linear Regression with Categorical Predictor in R"
+description: |
+  Exploring how one categorical predictor affects a numeric outcome, is a fancy way to say: comparing several groups. We could use ANOVA for it, but simple linear regression delivers more results. Let's find out how.
+author:
+  - name: Yury Zablotski
+    url: https://yuzar-blog.netlify.app/
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+categories:
+  - videos
+  - statistics
+  - visualization
+preview: thumbnail_lmnp.png
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_float: true
+    toc_depth: 6
+    code_download: true
+bibliography: /Users/zablotski/Documents/library.bib
+# csl: american-political-science-association.csl
+biblio-style: apalike
+link-citations: yes
+linkcolor: blue
+# draft: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)    
+library(ISLR)
+
+sjPlot::set_theme(theme_test())
+```
+
+
+# This post as ca. ...  minutes video
+
+```{r, eval=T, echo=F}
+vembedr::embed_youtube("") 
+```
+
+
+
+# Clean the data, otherwise: shit in shit out!
+
+
+```{r echo=FALSE}
+ggstatsplot::ggbetweenstats(Wage, education, wage, pairwise.display = "none", bf.message = F)
+```
+
+First of all, it’s crucial to visualize the data before modeling, because the real-world data often contains contaminations 💩. For instance, in Wage dataset from the ISLR package, I would remove the high-income individuals earning over 250K per year, because they are outliers, and totally not because I am jealous! 😉. The data-cleaning step is vital and often overlooked. Remember the phrase: ‘Garbage in, garbage out’? If we skip data cleaning, our model’s performance could be seriously compromised, and we'll see it in a moment. For now let's take 100 random people form the industry and build our linear model around them.
+
+```{r}
+library(tidyverse)      # laod & thank me later ;)
+library(ISLR)           # provides Wage dataset
+theme_set(theme_test()) # beautifies plots
+
+set.seed(1)             # for reproducibility
+d <- Wage %>% 
+  filter(wage < 250) %>% 
+  group_by(education) %>% 
+  sample_n(100)
+```
+
+
+# Build linear equation
+
+To build our linear model, we’ll use the intuitive ‘lm’ (show pack of cigarettes ; с рекламой импотенции :) function. Within ‘lm’, we only need two arguments: the formula and the data. Here’s how it breaks down:
+
+- On the left side of the formula, we'll place the variable we're interested in predicting. Unfortunately, this variable goes by several names: response variable, outcome, dependent variable, target, and more. It can get confusing!
+
+- On the right side, we'll place the predictor variable. Predictors also have various synonyms: independent variable, explanatory variable, regressor or covariate (in linear regression), feature (in Machine Learning), and even risk factor (in epidemiology).
+
+Ugh, so many names for the same thing! Drives me nuts. Makes stats seem way harder than it actually is.
+
+
+```{r}
+# build the model
+m <- lm(formula = wage ~ education, data = d)
+```
+
+
+# Check all model assumptions visually
+
+After building the model, we need to make sure the assumptions are satisfied. Otherwise, we couldn’t trust our model! The {performance} package offers intuitive and powerful functions to do that, for instance 
+
+- "check_posterior_predictions()" model fits the data well
+- "check_normality()" looks whether the residuals are normally distributed and
+- "check_homogeneity()" compares variances between groups. 
+
+
+```{r , fig.width=14}
+# check model assumptions visually
+library(performance)   # extra video on my channel
+a <- check_posterior_predictions(m) %>% plot()
+b <- check_normality(m) %>% plot()
+c <- check_homogeneity(m) %>% plot()
+
+library(patchwork)     # extra video on my channel
+a + b + c
+```
+
+Looking at the assumptions, I could say that the model fits the data pretty well! The residuals are normally distributed since they are inside the confidence intervals, which means our data is normally distributed. And finally, the variance is relatively similar.  
+
+By the way: with categorical predictor we don't need to check the linearity and outliers assumptions, and we can relax the independence of observations assumptions, since we don't have repeated measures.
+
+Now, when we model uncleaned data, the model fit would be far from reality, because those rich folks I am totally not jealous about ;) would
+
+- compromised the model fit
+- skew the normality of residuals and
+- add huge heterogenety between groups, in other words would make the groups variance differ, 
+
+... so that I would stop trusting my model. Therefore, it’s really important to clean the data before modeling.
+
+```{r warning=TRUE, fig.width=14}
+m2 <- lm(formula = wage ~ education, data = Wage)
+
+a <- check_posterior_predictions(m2) %>% plot()
+b <- check_normality(m2) %>% plot()
+c <- check_homogeneity(m2) %>% plot()
+
+a + b + c
+```
+
+
+Oh, and by the way, if you have a lot of data, it’s important to check assumptions visually, like we just did, instead of conducting statistical tests. Because, the tests would often show significant results, meaning that assumptions seemingly would not be satisfied, while they are actually satisfied. Here is an example of the Shapiro-Wilk normality test, which magically finds non-normally distributed residuals, even though they are totally fine! 
+
+```{r}
+# don't trust statistical tests to much
+check_normality(m)
+```
+
+
+Now, since the assumptions of our model are satisfied, we can visualize model results, and by results, I mean visualize model predictions.
+
+# Visualize predictions
+
+For that, we’ll use another very intuitive function called "plot_model()" from the {sjPlot} package and provide three arguments:
+
+- the model name,
+- the type of predictions — we’ll use “effect” to get an effect plot, and
+- the name of a predictor we want to visualize.
+
+```{r}
+# visualize predictions
+library(sjPlot)    # extra video on my channel
+
+plot_model(m, type = "eff", terms = "education") # show.data = T
+```
+
+
+
+
+And voilà, our plot shows that salaries increase with increasing levels of education. Nice right? But this plot misses two important details: it doesn’t display the differences in salaries between groups, and it doesn’t demonstrate whether these differences are significant.
+
+
+
+# Visualize estimates
+
+But we can quickly solve both problems, when we use 
+
+- "show.values = TRUE" instead of "type = "eff" in the "plot_model()" function and
+- width argument instead of predictor name.
+
+```{r}
+# visualize estimates
+plot_model(m, show.values = TRUE, width = 0.2)
+```
+
+
+
+
+Namely, it tells us that we have a 1080\$ increase in salary per year, and this increase is highly significant because the estimate doesn’t cross zero. And while the significance stars are often enough, sometimes we need an exact p-value. To obtain this, we’ll use the "tab_model()" function from the same {sjPlot} package. This function produces a nice, publication-ready table that not only provides exact p-values but also reveals the equation of our linear model:
+
+# Summary function
+
+```{r}
+summary(m)
+```
+
+We could use a well known summary table for that, but the output, although useful, is not really pleasing to the human eye and is not suitable for publication.
+
+There are tons of videos about summary function out there. So, I don't explain this in detail here. And I honestly don't know why it is soo famous and soo many videos are made about it. And here is what summary function misses to deliver:
+
+Have you ever wondered, why a “summary” function compares all categories of a categorical predictor to only the reference category, without comparing categories to each other?
+
+And what about those mysterious slopes with standard errors we get as model coefficients instead of the averages per category with 95% CIs that we actually want?
+
+Moreover, “summary” function doesn’t adjust p-values for multiple comparisons, which increases the probability of discovering nonsense by making too many type-I errors.
+
+Summary function doesn’t plot the results of a model and
+
+makes it almost impossible to interpret interactions!
+
+So, if you’ve ever been frustrated due to similar issues, you’re definitely not alone! The “summary” function doesn’t actually provide a very useful summary, and that’s why we need {emmeans} package, which solves all those problems.
+
+Post-Hoc tests.
+
+
+A much better choice is the "emmeans" function from the very powerful {emmeans} package. It not only provides predictions for any education you desire, but also reports 95% confidence intervals and offers a wide range of additional capabilities.
+
+```{r}
+library(emmeans)   # extra 2 videos on my channel ;)
+results <- emmeans(m, pairwise ~ education, infer = T)
+results
+```
+
+We could even quickly plot contrasts in order to see where the difference is the biggest. For instance, naturally the biggest difference is between two lowest categories, HS Grad and below, vs. the highest categorie, Advanced Degree.
+
+```{r}
+results$contrasts %>% plot() 
+```
+
+But as much as I love {emmeans} package, it is also not perfect. While it can produce a publication ready with some coding effort, it's not as easy and quick, as with two other options we'll learn next.
+
+# Get publication ready table
+
+The first one is "tab_model" function from {sjPlot} package. It takes only three intuitive arguments to produce a basic table, where all categories are compared to the reference levels.
+
+```{r}
+tab_model(m, 
+          show.reflvl = T, 
+          show.intercept = F, 
+          p.style = "numeric_stars")
+```
+
+
+But I never understood, why people avoid more inference by limiting themselfes to only one reference category, while this inference was already calculated by the model. What if we want to compare all categories to each other pairwisely? So, that the second option is to produce a table with contrasts using the "tbl_regression" function from {gtsummary} package, which also take only few intuitive arguments. Where Beta is the difference in thousands of dollars.
+
+```{r}
+library(gtsummary)
+fancy_table <- tbl_regression(m, add_pairwise_contrasts = T) %>% 
+   add_significance_stars(hide_p = F, hide_se = T, hide_ci = F)
+
+fancy_table
+
+library(flextable)
+fancy_table %>%
+  as_flex_table() %>%
+  save_as_docx(path = "fancy_table.docx") 
+```
+
+When you need to publish the equation of the model, you could "extract_eq" it from the model via "extract_eq" function from {equatiomatic} package. 
+
+```{r}
+library(equatiomatic)
+extract_eq(m)
+```
+
+
+
+This equation describes the straight-line relationship between the x-axis and the y-axis:
+
+$$ y = α + βx $$
+Or, in our case, between "education" and "salary":
+
+$$ wage = Estimate_{(Intercept)} + Estimate_{education} * education $$
+
+... and it helps us to interpret our model. Specifically, an increase in education of one year results in an average salary increase of 1080\$. It’s important to note that this increase can vary — sometimes it’s as low as 540\$, and other times as high as 1620\$, depending on people’s job roles. The model indicates that there is a 95% chance that the salary increase falls within this interval. That's why it's called - the 95% Confidence Interval.
+  
+If this average annual increase of 1080\$ occurs consistently, we obtain the slope of the line, represented by the beta (β) coefficient in the model formula. Put simply, the slope indicates the average change in "y" for every one-unit increase in "x". As with any slope, it needs a starting point. And the best start of any slope is usually zero. When our line crosses the y-axis (zero on the x-axis), we find the intercept (α) in the model output. In our case, this implies an unrealistic scenario where our salary would be 57,500\$ at birth, which doesn't make any sense, and that's why the intercept of a model is often not interpreted. 
+
+The true value of the formula lies in its ability to predict future salaries. By plugging any "education" value (x) into the model equation, we can estimate the corresponding "salary" value (y). This means we can ask the model to tell us how much we'll earn when we're 40 or 50. 
+
+
+
+
+
+
+
+
+
+
+# Get effect sizes
+
+Now, that we understand how to interpret our model, the next crucial question we need to address is - how good our model is. Your clients or scientific reviewers will definetely ask this question. What they typically want to know is - how well our model fits the data, which is summarized by the coefficient of determination, denoted as $R^2$.
+
+$R^2$ quantifies how much variance in the data our model explains. It ranges from 0 to 1, with a simple rule: the higher the value, the better the fit. However, interpreting $R^2$ is context-dependent. For instance:
+
+- in physics, a model with $R^2$ near 1 is usually desirable, while
+- in biology, even an $R^2$ of 0.2 might indicate a good model fit.
+
+Despite this context sensitivity, some guidelines proposed by smart individuals (such as Cohen) exist. And we can ask the {effectsize} package to interpret any value of $R^2$ for us.
+
+```{r}
+# get effect sizes
+library(effectsize)
+?interpret_r2
+
+interpret_r2(0.246, rules = "cohen1988") 
+# rules = "cohen1988" is a default
+```
+
+
+In our case, the $R^2$ value of 0.139 indicates a moderate relationship between education and salary. But why moderate and not strong? Well, that could be because education is most likely not the most crucial predictor for salary 😉. I mean, when I sit on the sofa, do nothing, and just get older, my salary won’t grow! So, what is an important predictor? Education is! 
+
+```{r}
+ggplot(Wage, aes(x = education, y = wage, color = jobclass))+
+  geom_boxplot()
+```
+
+Specifically, folks without a High School diploma start at 70,000\$ as early as 18 years old, while those with an “Advanced Degree” begin with a salary of approximately 140,000\$ at the education of 25, after completing their studies. However, I'll cover it in a separate video in this series, where I demonstrate how to interpret a model with a categorical predictor. Until then if you’re enjoying the video so far, please, consider hitting the like button!
+
+# Report model results
+
+Finally, the last thing I found difficult was **accurately describing the model with sufficient detail** for others to understand and reproduce my results. If you have similar problem, the {report} package solves it — even if you only use one function to literally “report” your model.
+
+Namely, the “report” function:
+
+- identifies the type of model you used,
+- shows how well the model fits the data ($R^2$),
+- interprets effect sizes,
+- describes whether predictors are significant and which direction the slopes go and
+- even reports how 95% confidence intervals (CIs) and p-values were calculated.
+
+I personally found it very useful, but I’d love to know what you think? So, feel free to share your thoughts in the comments section below. 
+
+```{r}
+library(report)   # extra video on my channel
+report(m)
+```
+
+```{r}
+model_performance(m)
+```
+
+
+# What's next?
+
+What do we do, when assumptions are not satisfied? Well, while there are several options, like robust or bootstrapping regression, I personally enjoy the quantile regression a lot. So, if you wanna be equepped for more situations and be statistically robust, make sure to check out this [video on quantile regression](https://youtu.be/Gtz8ca_4hVg):
+
+```{r}
+report(d)
+```
+
+# Should we categorize numerical predictors?
+
+## Advantages
+
+- Increases interpretability: Sometimes it's easier to understand the impact of different predictor levels on the outcome. For instance, instead of saying “for every 1-unit increase in blood pressure,” we can say “for patients with high blood pressure.”
+
+- Handles nonlinearity: Categorization captures nonlinear relationships between predictors and outcomes if one exists. By categorizing based on these smooth functions, we can identify risk categories (e.g., low, average, high) more effectively. Segmenting the data into groups can potentially improve model fit and predictive power.
+
+- Decision Support: Categorization simplifies decision-making. For example, a physician might categorize a patient’s cholesterol level as “normal,” “borderline,” or “high.”
+
+- Model Stability: Categorization can stabilize model estimates. Continuous predictors may introduce noise due to small fluctuations. By grouping similar values together, we reduce the impact of minor variations and enhance model stability.
+
+- Outlier Control: Similar to decision trees, categorization can reduce the impact of outliers in the data. By grouping outliers with other data points, their influence on the model can be mitigated.
+
+- Relaxes Linearity Assumption
+
+- Handling Missing Values: Categorization allows handling missing data by creating a separate category.
+
+## Disadvantages
+
+- Information Loss: The original numeric relationship is replaced by discrete categories, which may not fully capture the underlying variability.
+
+- Subjective Boundaries (Category Choice): Choosing category boundaries is subjective and can impact model results. Techniques like quantile-based methods, k-means clustering, or domain knowledge-based approaches can be used to create informative categories. However, choosing different binning schemes can lead to varying results.
+
+- Inefficient Use of Data: Binning reduces the effective sample size within each category. Smaller sample sizes can lead to less precise estimates.
+
+- Increased Model Complexity: Categorization introduces additional parameters (dummy variables) into the model. More parameters can lead to overfitting, especially with limited data.
+
+- In summary, while categorization can simplify modeling, it comes with trade-offs. Consider the context, research question, and data characteristics before deciding whether to categorize numeric predictors in your statistical models.
+
+
+
+
+-----------------------------
+
+If you think, I missed something, please comment on it, and I’ll improve this tutorial.
+
+**Thank you for learning!**
+
+
+
+
+
+
+
+
+
+
+
+
+
+

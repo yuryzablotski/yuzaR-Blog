@@ -79,10 +79,41 @@ ref_grid(m) %>%
   as_tibble() %>% 
   arrange(desc(emmean))
 
+##################################
+
+set.seed(100)
+data <- data.frame(PatientId = factor(c( 1:70, 1:50, 1:30)),
+                   Response = c(rnorm(70, 0, 3), rbeta(50, 3, 3), rbeta(30, .2, .2)),
+                   Timepoint = factor(c(rep("T1", 70), rep("T2", 50), rep("T3", 30))))
+
+library(tidyverse)
+library(mmrm)
+m <- mmrm(Response ~ Timepoint + us(Timepoint | PatientId), 
+                reml = T, data=data %>% arrange(PatientId, Timepoint),
+                control = mmrm_control(method = "Satterthwaite", vcov = "Empirical"))
+
+library(robustlmm)
+m2 <- rlmer(Response ~ Timepoint + (Timepoint | PatientId), 
+                data=data %>% arrange(PatientId, Timepoint))
+
+library(lme4)
+library(lmerTest)
+m3 <- lmer(Response ~ Timepoint + (1 | PatientId), 
+           data=data %>% arrange(PatientId, Timepoint), REML = T,
+           control = lmerControl(
+             optimizer ='optimx', optCtrl=list(method='nlminb')))
 
 
+rn <- residuals(m, type="normalized")
+rr <- residuals(m, type="response")
+layout(matrix(1:4, ncol=2, byrow = F))
+hist(rr, main="MMRM: response residuals")
+hist(rn, main="MMRM: normalized residuals")
+car::qqPlot(rr, main=sprintf("MMRM: response residuals\n%s", scales::pvalue(shapiro.test(rr)$p.value, add_p = TRUE)))
+car::qqPlot(rn, main=sprintf("MMRM: response residuals\n%s", scales::pvalue(shapiro.test(rn)$p.value, add_p = TRUE)))
 
-
+library(performance)
+check_normality(m)
 
 
 
