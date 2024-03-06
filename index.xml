@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>yuzaR-Blog</title>
+    <link>https://yuryzablotski/yuzaR-Blog.github.io</link>
+    <atom:link href="https://yuryzablotski/yuzaR-Blog.github.io/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Data Science with R
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Wed, 06 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Simple Linear Regression with Categorical Predictor in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-02-28-lmcategorical</link>
+      <description>Exploring how one categorical predictor affects a numeric outcome, is a fancy way to say: comparing several groups. We could use ANOVA for it, but simple linear regression delivers more results. Let's find out how.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-02-28-lmcategorical</guid>
+      <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-02-28-lmcategorical/lmcategorical_files/figure-html5/unnamed-chunk-2-1.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>Master Simple Linear Regression with Numeric Predictor in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-02-03-lmnumeric</link>
+      <description>Simple linear regression demonstrates how one numeric predictor affects a numeric outcome. For example, it can reveal whether age actually translates to higher paychecks. So, let's learn (1) how to build a linear regression in R, (2) how to check ALL model assumptions with a ONE simple and intuitive command, (3) how to visualize and interpret the results, and much more.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-02-03-lmnumeric</guid>
+      <pubDate>Mon, 26 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-02-03-lmnumeric/thumbnail_lmnp.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Unleash Quantile Regression Results</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-01-04-qr2</link>
+      <description>In the previous episode, I presented four reasons why Quantile Regression (QR) is a better alternative to classic linear regression. However, I discovered that reporting QR results can be quite demanding. To make the process easier, I created better plots for model estimates and predictions, a comprehensive table of model results, including contrasts between groups and p-values. I found this code so useful that I thought you guys might benefit from it too. Besides, I really enjoyed programming it :)</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-01-04-qr2</guid>
+      <pubDate>Sun, 14 Jan 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2024-01-04-qr2/thumbnail_QR2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Make Multiplots Like a Pro with {patchwork} | R package reviews</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-12-16-patchwork</link>
+      <description>The Patchwork package makes it incredibly easy to combine separate plots into the same graphic by using the simplest mathematical operators, such as plus (+), slash (/), parentheses and much more.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-12-16-patchwork</guid>
+      <pubDate>Fri, 22 Dec 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-12-16-patchwork/thumbnail_patchwork.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Master Box-Violin Plots in {ggplot2} and Discover 10 Reasons Why They Are Useful</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-11-12-boxplots</link>
+      <description>Boxplots display a wealth of useful information about the dataset. Let’s start with the most basic boxplot, build every part of this notched box-violin plot in {ggplot2} step by step, and understand why every detail matters 😉</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-11-12-boxplots</guid>
+      <pubDate>Fri, 24 Nov 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-11-12-boxplots/thumbnail_boxplot.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>7 Reasons to Master Scatter Plots in {ggplot2} with World Happiness Data</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-10-23-scatterplots</link>
+      <description>Today, we'll explore happiness data and uncover seven compelling reasons why scatter plots are indispensable for data analysis. You’ll learn about (1) whether money can actually make you happy, (2) how wealth has changed in the USA, Germany, India, and Venezuela over the past 20 years, (3) whether happy people live longer, and much more. The results might surprise you 😉</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-10-23-scatterplots</guid>
+      <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-10-23-scatterplots/thumbnail_scatter.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Epic Histograms &amp; Density plots with {ggplot2}</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-08-23-histogramsdensityplots</link>
+      <description>Histograms display the shape of the distribution of continuous numeric data. The distribution can be symmetrical, right-skewed, left-skewed, unimodal, or multimodal. Knowing the shape of the distribution helps us decide which statistical test is appropriate. For example, if the distribution is symmetrical, we could use a t-test or linear regression. However, if the distribution is skewed, we'd need to use the Mann-Whitney test or median regression. Moreover, when the data has several peaks, we might need to transform the data before analyzing it. Otherwise, when we calculate central tendencies like the average, we will heavily misrepresent reality. Histograms also help to identify outliers, which is very useful for cleaning the data. So, visualizing the distribution with histograms and density plots helps us avoid these pitfalls.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-08-23-histogramsdensityplots</guid>
+      <pubDate>Sun, 01 Oct 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-08-23-histogramsdensityplots/thumbnail_hist_dens.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Epic Bar Plots with {ggplot2}</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-07-10-barplots</link>
+      <description>Bar charts are useful for visualizing categorical data, group comparisons, and effective data communication through bar labels. In this video we'll learn the secrets of producing visually stunning bar charts using the {ggplot2} package.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-07-10-barplots</guid>
+      <pubDate>Wed, 23 Aug 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-07-10-barplots/thumbnail_barplots.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {sjPlot} How to Easily Visualize Data And Model Results</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-08-01-sjplot</link>
+      <description>One picture is worth a thousand words. That's why visualizing data and model results is a crutial skill for any data scientist. {sjPlot} package became my favorite tool for visualization. That's why I want to share with you some simple but very effective commands which will make you more productive today. So, let's visualize Wage dataset, visualize bunch of models and see what people earn and what factors determine the salary.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>R package reviews</category>
+      <category>visualization</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-08-01-sjplot</guid>
+      <pubDate>Tue, 15 Aug 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-08-01-sjplot/thumbnail_sjPlot.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>{dplyr} on Steroids: Handling Data Bases</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-05-09-datawrangling4</link>
+      <description>If you know how to tidy up data within one table, you're already a skilled data scientist! However, as data continues to grow exponentially, taking your skills to the next level involves mastering the art of working with multiple tables within a database, typically done using SQL. In this post, we'll learn three essential techniques using {dplyr} that will allow you to handle databases with ease: merging multiple tables, reducing redundancy through table joins, and effortlessly modifying values within the resulting table.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>data wrangling</category>
+      <category>R package reviews</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-05-09-datawrangling4</guid>
+      <pubDate>Fri, 14 Jul 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-05-09-datawrangling4/dplyr_4_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Quantile Regression as an useful Alternative for Ordinary Linear Regression</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-12-01-quantileregression</link>
+      <description>Ordinary linear regression often fails to correctly describe skewed or heteroscedastic data, totally srews up if data has outliers, and describes only the mean of the response variable. Quantile Regression promises to solve all these problems and delivers more results.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-12-01-quantileregression</guid>
+      <pubDate>Fri, 07 Jul 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-12-01-quantileregression/thumbnail_quantile_regression.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Transform Your Data Like a Pro with {tidyr} and Say Goodbye to Messy Data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-04-18-datawrangling3</link>
+      <description>Every data scientist dreams of creating beautiful visualizations, conducting complex modeling, and diving into machine learning methods. However, most of the time, messy data hinders our ability to do really cool stuff. Thus, tidying up the data is the key to unlocking your full potential. Unfortunately, reshaping data in Excel can be a tedious and error-prone task. Do you remember the time when you needed to quickly transform columns to rows or rows to columns, split or combine columns, or handle missing values? With the {tidyr} package, you'll be able to transform your data quickly, accurately, and efficiently, preparing yourself for the stuff that really matters ;)</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>data wrangling</category>
+      <category>R package reviews</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-04-18-datawrangling3</guid>
+      <pubDate>Tue, 09 May 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-04-18-datawrangling3/dplyr_3_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Advanced {dplyr}: 50+ Data Wrangling Techniques!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-02-07-datawrangling2</link>
+      <description>Have you ever been frustrated with messy data that seems impossible to analyze? Or have you ever spend hours cleaning and transforming data before you could even start producing results? Well, no worries! In this blog-post, I'll show you &gt;50 Data Wrangling techniques, which will allow you to solve the most of your daily data manipulation challenges like a pro.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>data wrangling</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-02-07-datawrangling2</guid>
+      <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-02-07-datawrangling2/dplyr_2_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Top 10 Must-Know {dplyr} Commands for Data Wrangling in R!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-01-31-datawrangling1</link>
+      <description>The {dplyr} is one of the most useful R packages outthere. For me R is {dplyr} and {tidyverse}. So, here we'll use the most frequently used command.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>data wrangling</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-01-31-datawrangling1</guid>
+      <pubDate>Sun, 05 Feb 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2023-01-31-datawrangling1/dplyr_1_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>{emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans</link>
+      <description>{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let's demistify {emmeans} and uncover it's power!</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans</guid>
+      <pubDate>Tue, 31 Jan 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/thumbnail_emmeans_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Don't Ignore Interactions - Unleash the Full Power of Models with {emmeans} R-package</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-12-29-emmeans2interactions</link>
+      <description>Analysing interactions is both (1) very challenging, that's why it's rarely executed, and (2) very rewording if done well, that's why it's still sometimes attempted. {emmeans} is one of the few packages which demistify interactions and extract the most knowledge out of statistical models!</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-12-29-emmeans2interactions</guid>
+      <pubDate>Tue, 31 Jan 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-12-29-emmeans2interactions/thumbnail_emmeans_2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {gtsummary} Publication-Ready Tables of Data, Stat-Tests and Models!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-10-31-gtsummary</link>
+      <description>{gtsummary} package helps to easily produce publication-ready &amp; beautifully formatted summary tables of Data, Statistical Tests and Models! It calculates tons of statistics and has a beautiful design by default, but you can customize every aspect of your table and export it as a picture or MS Word format.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <category>machine learning</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-10-31-gtsummary</guid>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-10-31-gtsummary/thumbnail_gtsummary.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Publication-Ready Tables of Particular Statistical Tests and Models with {gtsummary}</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-25-gtsummary2</link>
+      <description>Find a review of incredibly useful {gtsummary} package in a separate blog-post. Here I'll just collect all the possible Statsitcal Tests and Models, {gtsummary} can help with.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <category>machine learning</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-25-gtsummary2</guid>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-25-gtsummary2/thumbnail_gtsummary2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {rsample} Effective Resampling for Machine Learning!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-10-27-rsample</link>
+      <description>Let's learn how to use three most important resampling techniques: train-test split, cross-validation and bootstrapping. We'll start with the question...</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>models</category>
+      <category>machine learning</category>
+      <category>tidymodels</category>
+      <category>R package reviews</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-10-27-rsample</guid>
+      <pubDate>Sun, 06 Nov 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-10-27-rsample/thumbnail_rsample.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>4 Reasons Non-Parametric Bootstrapped Regression (with tidymodels) is Better thаn Ordinary Regression</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-08-31-bootstrappingregressions</link>
+      <description>If the assumptions of parametric models can be satisfied, parametric models are the way to go. However, there are often many assumptions and to satisfy them all is rarely possible. Data transformation or using non-parametric methods are two solutions for that. In this post we'll learn the Non-Parametric Bootstrapped Regression as an alternative for the Ordinary Linear Regression in case when assumptions are violated.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-08-31-bootstrappingregressions</guid>
+      <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-08-31-bootstrappingregressions/thumbnail_bootstrapped_regression.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Repeated Measures ANOVA (One-Way) | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-30-rmanova</link>
+      <description>Can sport increase our selfesteem? Well, one experiment measured self-esteem of 10 people on three different time points and used Repeated Measures ANOVA to answer this question. So, let's learn how to produce this statistically rich plot using only one simple command and how to interpret all these results.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-30-rmanova</guid>
+      <pubDate>Wed, 05 Oct 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-30-rmanova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo| Many Models with Nested (Grouped) Data Easily</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-09-12-manymodels</link>
+      <description>In this blog-post, we'll learn how to produce grouped / nested models, with an amazing "map()" function from {purrr} package in R. We'll use linear models in this example for the sake of simplicity, but you can apply any model you want (robust, logistic, poisson etc.). We'll see, how to effectively store and use the information from multiple models. And while in this blog-post we'll produce "only" 10 models, you can produce any number of models you want.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-09-12-manymodels</guid>
+      <pubDate>Thu, 22 Sep 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-09-12-manymodels/thumbnail_many_models.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Robust Regression (don't depend on influential data!)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-09-02-robustregression</link>
+      <description>Linear regression can be very sensitive to unusual data, like outliers, high leverage observations or a combination of both. A robust regression suppose to provide a solution for that. So, let's build both an ordinary and a robust regressions, compare them to find out whether outliers are a serious problem and see whether robust model performs better then usual linear model.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>visualization</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-09-02-robustregression</guid>
+      <pubDate>Sun, 11 Sep 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-09-02-robustregression/thumbnail_robust.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {report} How To Report Statistical Results!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report</link>
+      <description>If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you'll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let's start with a simple t-test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>R package reviews</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report</guid>
+      <pubDate>Mon, 11 Jul 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/thumbnail_report.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {glmulti} find the best model!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-05-31-glmulti</link>
+      <description>“All models are wrong, some are useful” - said a statistician George Box. And he was right. Thus, in this post we'll find the set of very useful models from the set of all possible models and will be able to choose THE MOST USEFUL model which adressed all our questions.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <category>machine learning</category>
+      <category>R package reviews</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-05-31-glmulti</guid>
+      <pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-05-31-glmulti/thumbnail_glmulti.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Tidy Data and Why We Need It!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-22-tidydata</link>
+      <description>Tidy data are easy to manipulate, visualise and analyse, while messy data always interrupts the analysis and invates mistakes. So, tidying up data before analysis pays off a great deal in the long term. In this post you'll learn how do we tidy up data.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-22-tidydata</guid>
+      <pubDate>Mon, 23 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-22-tidydata/tidydata_2.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | ANOVA (One-Way ) | Fisher's, Welch's, Bayesian, Robust</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-03-anova</link>
+      <description>How does education influence our salary? ANOVA which is just the abbreviation for Analysis Of Variances you see on the thumbnail answeres this question with Frequentists and Bayesian tests. It also privides two different effect sizes, compares education levels pairwisely and even corrects p-values for multiple comparisons. ALL OF THAT is done by this simple command. So, in this blog-post you'll learn how to produce the statistically rich plot, you'll understand when to conduct Welch's ANOVA and when Fisher's ANOVA and you'll know how to interpret every little detail on this plot. Lets get into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-03-anova</guid>
+      <pubDate>Mon, 16 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-03-anova/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Kruskal-Wallis test | How to conduct, visualize, interpret &amp; more 😉</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-13-kw</link>
+      <description>If we have ordinal or not-normally distributed data, ANOVA might produce a wrong result. That's why we need Kruskal-Wallis test. Kruskal-Wallis test you see on the screen answers two question (1) whether at least one group is different from other groups and (2) between which groups exactly this difference is. So, let's learn how to get and interpret all these results.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-13-kw</guid>
+      <pubDate>Mon, 16 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-04-13-kw/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Cochran’s Q Test + Pairwise McNemar Tests (post-hoc)</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-04-cochran</link>
+      <description>Cochran test is an extension of the McNemar test for comparing MORE than two PAIRED categorical samples in which the same individuals appear in each sample. If Cochran test is significant, we'd need to compare samples among each other pairwisely with McNemar tests. So, let's do that.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-04-cochran</guid>
+      <pubDate>Wed, 20 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-04-cochran/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Mann-Whitney U Test = Wilcoxon Rank Sum Test | How to conduct, visualise &amp; interpret 🥳 What happens if we use a wrong test 😱</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-16-mwutest</link>
+      <description>Comparing two groups with not-normally disctributed or ordinal data is the reason we need Mann-Whitney U Test instead of t-Test. So, today we'll learn (1) how to conduct and visualize Mann-Whitney U Test you saw on the thumbnail with one simple command, (2) how to interpret all statistical results on that plot and (3) why this test is sometimes called Wilcoxon Rank Sum Test and why we shouldn't use this name</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-16-mwutest</guid>
+      <pubDate>Sat, 16 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-16-mwutest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Correlation Matrix | Danger or opportunity?</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-05-correlationmatrixinr</link>
+      <description>Having several numeric variables, we often wanna know which of them are correlated and how. Correlation Matrix seems to be a good solution for it. But drawing conclusions from plain correlation coeffitients and p-values is dangerous, if we don't visualize the data. Let's learn a better way to produce a correlation matrix.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-05-correlationmatrixinr</guid>
+      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-05-correlationmatrixinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Two-Samples t-Test | Student's &amp; Welch's | How to conduct, visualise, interpret | What happens if we use a wrong test 😱</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-11-ttest</link>
+      <description>Two-samples t-test can answer useful questions, for example - where can we get more money, working in a factory or in the IT-industry? So, let's learn (1) how to make sure t-test is a CORRECT test for our data, (2) how to get all these results with one simple command, (3) how to interpret all these results and (4) finally see what happens if we choose a wrong test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-11-ttest</guid>
+      <pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-03-11-ttest/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples t-Test | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-22-pairedsamplesttestinr</link>
+      <description>Can one week of training significantly improve your number of sit-ups? Well, Paired t-Test can answer this question by comparing your performance Before and After this week. So, let's learn how to produce this statistically rich plot using only one simple command, how to interpret all these results and see what happens if we use a wrong test.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-22-pairedsamplesttestinr</guid>
+      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-22-pairedsamplesttestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | McNemar Test | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-02-20-mcnemar</link>
+      <description>If you need to compare two PAIRED categorical samples, McNemar test is a correct choise for you. Though, people often use Chi-Square test instead. Thus, in this blog-post we'll first conduct, visualize and interpret McNemac test you see on the picture to your right using only one simple command and then see what happens if we use Chi-Square test for paired data.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-02-20-mcnemar</guid>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-02-20-mcnemar/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Friedman Test | How to Conduct, Visualise and Interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-02-08-friedman</link>
+      <description>The Friedman Test is a non-parametric brother of Repeated Measures ANOVA, which does much better job when data is not-normally distributed (which happens pretty often ;). Friedman test is also superior to Repeated Measures ANOVA when our data is ordinal (e.g., scales from 1 to 10). Friedman Test can also be a non-parametric father of the Paired Wilcoxon test, because it can compare more then two groups.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-02-08-friedman</guid>
+      <pubDate>Sun, 20 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-02-08-friedman/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R demo | Paired Samples Wilcoxon Signed Rank Test</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</link>
+      <description>Can a speed-reading exercise make you a faster reader? Well, Wilcoxon Signed Rank Test displayed here is a correct test to answer this question. So, in this video we'll learn how to choose a correct test and what happens if we use a wrong test, why Wilcoxon test is called Signed Rank and how to produce and interpret this statistically rich plot using only one simple command.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr</guid>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-01-13-pairedsampleswilcoxonsigned-ranktestinr/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Correlation Analysis in R | Pearson, Spearman, Robust, Bayesian | How to conduct, visualise and interpret</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-29-correlationinr</link>
+      <description>Having two numeric variables, we often wanna know whether they are correlated and how. One simple command {ggscatterstats} can answer both questions by visualizing the data and conducting frequentists and bayesian correlation analysis at the same time. So, let's learn how to do that, how to interpret all those results and how to choose the right correlation method in the first place.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-29-correlationinr</guid>
+      <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-29-correlationinr/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>One-sample Student’s t-test and One-sample Wilcoxon test: or how to compare your work to the work of others.</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</link>
+      <description>Imagine you get 7 out of 10 to-dos from your list done on average. Are you then more productive then others? One-sample t-test and One-sample Wilcoxon test can answer this question. So, in this blog-post you'll learn how to conduct and visualize these tests with only one simple command, how to interpret all these results and how to choose the right test in the first place. Let's get straight into it.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others</guid>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-20-one-sample-t-test-do-your-results-make-sense-or-how-to-compare-your-work-to-the-work-of-others/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R demo | Chi-Square Test | how to conduct, visualize &amp; interpret | + pairwise post-hoc tests</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</link>
+      <description>Chi-Square Test checks the independence between two categorical variables, where variables can have two or more categories. Need to do Chi-Square test? It can actually be done with only one line of code. There is no better way than {ggbarstats} function from {ggstatsplot} package 📦. In this short blog-post you'll learn how to conduct, visualize and interpret Chi-Square test &amp; pairwise post-hoc tests in R.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-14-how-to-conduct-chi-square-test-in-r</guid>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-12-14-how-to-conduct-chi-square-test-in-r/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {dlookr} diagnose, explore and transform your data</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</link>
+      <description>Raw data need to be diagnosed for existing problems, explored for new hypotheses and repaired in order to increase data quality and output. The {dlookr} package makes these steps fast and easy. {dlookr} generates automated reports and performs compex operations, like imputing missing values or outliers, with simple functions. Moreover, {dlookr} collaborates perfectly with {tidyverse} packages, like {dplyr} and {ggplot2} to name just a few!</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>R package reviews</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data</guid>
+      <pubDate>Sat, 30 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-30-r-package-reviews-dlookr-diagnose-explore-and-transform-your-data/dlookr_thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Deep Exploratory Data Analysis (EDA) in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</link>
+      <description>Exploratory Data Analysis is an important first step on the long way to the final result, be it a statistical inference in a scientific paper or a machine learning algorithm in production. This long way is often bumpy, highly iterative and time consuming. However, EDA might be the most important part of data analysis, because it helps to generate hypothesis, which then determine THE final RESULT. Thus, in this post I'll provide the simplest and most effective ways to explore data in R, which will significantly speed up your work. Moreover, we'll go one step beyond EDA by starting to test our hypotheses with simple statistical tests.</description>
+      <category>EDA</category>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-09-exploratory-data-analysis-and-beyond-in-r-in-progress/DEDA_thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>How to impute missing values with Machine Learning in R</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-03-04-how-to-impute-missing-values-in-r</link>
+      <description>Imputation simply means - replacing a missing value with a value that makes sense. But how can we get such values? Well, we'll use Machine Learning algorithms, because they have a high prediction power. So, in this post we'll learn how to impute missing values easily and effectively.</description>
+      <category>videos</category>
+      <category>data wrangling</category>
+      <category>visualization</category>
+      <category>machine learning</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-03-04-how-to-impute-missing-values-in-r</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-03-04-how-to-impute-missing-values-in-r/thumbnail_missing_values.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Null Hypothesis, Alternative Hypothesis and Hypothesis Testing</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</link>
+      <description>Hypothesis testing is one of the most important concepts in (frequentiest) statistics and science. However, most people who test hypotheses are scientists, but not statisticians. That's why scientists often do not test hypotheses properly, without any bad intensionс. So, in this blog-post we'll break down hypothesis testing in small parts and try to properly understand every of them.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>What is p-value and why we need it</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation</link>
+      <description>Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.</description>
+      <category>videos</category>
+      <category>statistics</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation</guid>
+      <pubDate>Sat, 09 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>R package reviews {DataExplorer} explore your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</link>
+      <description>What is the best way to explore the data quick? I think it's visualization. And what it the best way to visualize the data quick? I think it's - {DataExplorer} package, because it can visualize all your data in seconds using only one function! Check this out...</description>
+      <category>R package reviews</category>
+      <category>EDA</category>
+      <category>videos</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-06-r-package-reviews-dataexplorer-explore-your-data/2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 2: parametric survival models</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-06-survival-analysis-2-parametric-survival-models</link>
+      <description>The non-parametric Kaplan-Meier method (KM) can not describe survival probability by a smooth function, which means it can not predict anything. The parametric models (e.g. Exponential, Weibull etc.) can! Besides, in case where parametric models are appropriate, they are more exact, more effective and more informative than KM or Cox. However, unfortunately, this step is often left out due to the rear use of parametric models. In this post we’ll try to close this gap.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-06-survival-analysis-2-parametric-survival-models</guid>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-06-survival-analysis-2-parametric-survival-models/thumbnail_survival_2.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {performance} check how good your model is! </title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</link>
+      <description>There are several indicators of model quality, e.g. $R^2$ or AIC, and several assumption for every model which supposed to be checked, e.g. normality of residuals, multicollinearity etc.. R provides solutions for every indicator or assumption you can imagine. However, they are usually spread around different packages and functions. {performance} package brings all of quality indicators and all of the assumption under one roof. Thus, for me it became the one-stop solution for modelling.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <category>visualization</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-03-r-package-reviews-performance-check-how-good-your-model-is/14.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>Survival analysis 1: a gentle introduction into Kaplan-Meier Curves</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</link>
+      <description>Survival time analysis is necessary in any study which investigates the time to a particular outcome of interest. Cancer studies in the medicine and the first failure of the car in the engineering field (failure time analysis) are good examples. The outcome of interest could be death, remission to relapse, progression, or failure. Point in time of reaching that outcome is generally called the event. Thank goodness, not every “event” is fatal 😃, but can sometimes even be a favorable outcome such as discharge from hospital. And thus, survival analysis is also a generic term, because it is not only about survival.</description>
+      <category>survival analysis</category>
+      <category>videos</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves</guid>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-03-survival-analysis-1-a-gentle-introduction-into-kaplan-meier-curves/thumbnail_survival_1.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>R package reviews {janitor} clean your data!</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</link>
+      <description>Data Scientists spend up to 80% of their time cleaning and preparing data for analysis. " Happy families are all alike; every unhappy family is unhappy in its own way" — Leo Tolstoy. "Like families, tidy datasets are all alike but every messy dataset is messy in its own way" - Hadley Wickham. Thats when "janitor" helps to clean the mess.</description>
+      <category>R package reviews</category>
+      <category>videos</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-02-r-package-reviews-janitor-clean-your-data</guid>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/11.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to visualize models, their assumptions and post-hocs</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</link>
+      <description>A picture is worth a thousand words! This article shows how to visualize results of 16 different models in R: from a simple linear model to a multiple-additive-non-linear-mixed-effects model. Among them are logistic, multinomial, additive and survival models with and without interactions. **Goal: minimum R code &amp; maximum output!** We'll also go a bit beyond only model visualization. So, don't miss the bonuses 😉.</description>
+      <category>visualization</category>
+      <category>videos</category>
+      <category>models</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs</guid>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-01-01-how-to-visualize-models-their-assumptions-and-post-hocs/thumbnail_visualize_models.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+    <item>
+      <title>How to create a blog or a website in R with {Distill} package</title>
+      <dc:creator>Yury Zablotski</dc:creator>
+      <link>https://yuryzablotski/yuzaR-Blog.github.io/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</link>
+      <description>If you're not online, you don't exist. A personal webpage or a blog became the business card of the digital century. It shows who you are and what you are capable of. Thus: show, don't tell.</description>
+      <category>R &amp; the Web</category>
+      <category>videos</category>
+      <guid>https://yuryzablotski/yuzaR-Blog.github.io/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package</guid>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://yuryzablotski/yuzaR-Blog.github.io/posts/2020-12-26-how-to-create-a-blog-or-a-website-in-r-with-distill-package/images/thumbnail.png" medium="image" type="image/png" width="1920" height="1080"/>
+    </item>
+  </channel>
+</rss>

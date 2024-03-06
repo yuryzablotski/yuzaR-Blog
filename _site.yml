@@ -2,8 +2,10 @@ name: "yuzaR-Blog"
 title: "yuzaR-Blog"
 description: |
   Data Science with R
-output_dir: "_site"
-base_url: https://yuzar-blog.netlify.app/
+#output_dir: "_site"
+output_dir: "."
+#base_url: https://yuzar-blog.netlify.app/
+base_url: https://yuryzablotski/yuzaR-Blog.github.io
 repository_url: https://github.com/yuryzablotski/yuzaR-Blog
 creative_commons: CC BY
 twitter:

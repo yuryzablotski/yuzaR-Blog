@@ -1,0 +1,28 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "Blog about Data Science in R",
+      "description": "Welcome to my blog about Data Science! I love to play with data and try to understand the world through the lens of Statistics, Machine Learning and Artificial Intelligence. I also love to learn, to teach and to create. Having a personal blog optimally combines these three passions. And all of this is possible with R and RStudio. That's why I love R! ",
+      "author": [],
+      "contents": "\n\n\n\n\n\n\n",
+      "last_modified": "2024-03-06T17:50:04+01:00"
+    },
+    {
+      "path": "consulting.html",
+      "title": "Consulting and Tutoring in R",
+      "description": "If you're seeking statistical assistance for any of the topics listed below, take a moment to explore the provided links and ensure they align with your requirements. If possible, attempt to implement the analyses on your own. It's both cost-free and well-explained. Should you still find yourself in need of support, feel free to reach out to me via email with a Subject \"CONSULTING IN R\": yzablotski@icloud.com\n",
+      "author": [],
+      "contents": "\n\nContents\nClassic Statistical Tests\nData Wrangling and Pre-Processing\nExploratory Data Analysis\nData Visualisation\nStatistical Modelling\nMachine Learning and Artificial Intelligence\n\nClassic Statistical Tests\nOne-sample Student’s t-test and One-sample Wilcoxon test\nTwo-Samples Student’s t-Test & Two-Samples Welch’s t-Test\nTwo-Samples Mann-Whitney U Test = Wilcoxon Rank Sum Test\nPaired Samples t-Test\nPaired Samples Wilcoxon Signed Rank Test\nCorrelation Analysis: Pearson, Spearman, Robust, Bayesian\nCorrelation Matrix\nOne-Way ANOVA: Fisher’s, Welch’s, Bayesian, Robust\nKruskal-Wallis test: Non-Parametric Alternative to ANOVA\nOne-Way Repeated Measures ANOVA\nFriedman Test: Non-Parametric Alternative to RM ANOVA\nChi-Square Test + pairwise post-hoc tests\nMcNemar Test: Dependend Samples Alternative for Chi-Square\nCochran’s Q Test + Pairwise McNemar Tests (post-hoc)\nData Wrangling and Pre-Processing\nLearn What Tidy Data Is\nClean Your Data Lightly with {janitor}\nBasic Data Wrangling with {dplyr}\nAdvanced Data Wrangling with {dplyr}\nTidy Up Data\n{dplyr} on Steroids: Handling Data Bases\nExploratory Data Analysis\nQuick Exploratory Data Analysis with {DataExplorer}\nDiagnose, Explore and Repair Your Data with {dlookr}\nDEEP! Exploratory Data Analysis in R\nData Visualisation\nBar Plots with {ggplot2}\nVisualize Data And Model Results\nStatistical Modelling\nRobust Regression: don’t depend on outliers!\nConduct Many Models with Nested (Grouped) Data\nNon-Parametric Bootstrapped Regression: Alternative for Ordinary Linear Regression\nQuantile Regression as the most useful Alternative for Ordinary Linear Regression\nSqueeze Hidden Knowledge out of Models with Game-Changing {emmeans}\nModel Interactions: Two-Way (bivariable) Analysis\nCheck Quality And Assumptions of Your Model\nPublication-Ready Tables of Data, Stat-Tests and Models + Tables of Individual Tests & Models\nVisualize Model Results and Assumptions\nReport (interpret) Results of Statistical Tests & Models\nFind The Best Model: Automated Model Selection and Multimodel Inference as Alternative to Stepwise (backwards) Selection\nSurvival Analysis 1: Kaplan-Meier Curves\nSurvival Analysis 2: parametric survival models\nMachine Learning and Artificial Intelligence\nImpute Missing Values\nEffective Resampling for Machine Learning with {rsample}\n\n\n\n",
+      "last_modified": "2024-03-06T17:50:04+01:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Latest posts",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2024-03-06T17:50:04+01:00"
+    }
+  ],
+  "collections": ["posts/posts.json"]
+}

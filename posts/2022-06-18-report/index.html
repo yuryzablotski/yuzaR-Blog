@@ -1,0 +1,3711 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+<title>yuzaR-Blog: R package reviews {report} How To Report Statistical Results!</title>
+
+<meta property="description" itemprop="description" content="If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you&#39;ll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let&#39;s start with a simple t-test."/>
+
+<link rel="canonical" href="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/"/>
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2022-07-11"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-07-11"/>
+<meta name="article:author" content="Yury Zablotski"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="yuzaR-Blog: R package reviews {report} How To Report Statistical Results!"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you&#39;ll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let&#39;s start with a simple t-test."/>
+<meta property="og:url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/"/>
+<meta property="og:image" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/thumbnail_report.png"/>
+<meta property="og:image:width" content="1920"/>
+<meta property="og:image:height" content="1080"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="yuzaR-Blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="yuzaR-Blog: R package reviews {report} How To Report Statistical Results!"/>
+<meta property="twitter:description" content="If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you&#39;ll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let&#39;s start with a simple t-test."/>
+<meta property="twitter:url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/"/>
+<meta property="twitter:image" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/thumbnail_report.png"/>
+<meta property="twitter:image:width" content="1920"/>
+<meta property="twitter:image:height" content="1080"/>
+<meta property="twitter:site" content="@yuzaR___"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="yuzaR-Blog: R package reviews {report} How To Report Statistical Results!"/>
+<meta name="citation_fulltext_html_url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/"/>
+<meta name="citation_fulltext_world_readable" content=""/>
+<meta name="citation_online_date" content="2022/07/11"/>
+<meta name="citation_publication_date" content="2022/07/11"/>
+<meta name="citation_author" content="Yury Zablotski"/>
+<!--/radix_placeholder_meta_tags-->
+  
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","categories","preview","output","bibliography","biblio-style","link-citations","linkcolor","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["R package reviews {report} How To Report Statistical Results!"]},{"type":"character","attributes":{},"value":["If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you'll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let's start with a simple t-test."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["July 11, 2022"]},{"type":"character","attributes":{},"value":["videos","statistics","R package reviews","models"]},{"type":"character","attributes":{},"value":["thumbnail_report.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"character","attributes":{},"value":["https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/"]},{"type":"character","attributes":{},"value":["https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["code_inside_of_text.png","equal_dedians.png","report_files/anchor-4.2.2/anchor.min.js","report_files/bowser-1.9.3/bowser.min.js","report_files/distill-2.2.21/template.v2.js","report_files/figure-html5/unnamed-chunk-11-1.png","report_files/figure-html5/unnamed-chunk-11-2.png","report_files/figure-html5/unnamed-chunk-12-1 2.png","report_files/figure-html5/unnamed-chunk-12-1.png","report_files/figure-html5/unnamed-chunk-12-2.png","report_files/figure-html5/unnamed-chunk-14-1.png","report_files/figure-html5/unnamed-chunk-14-2.png","report_files/figure-html5/unnamed-chunk-15-1.png","report_files/figure-html5/unnamed-chunk-15-2.png","report_files/figure-html5/unnamed-chunk-16-1.png","report_files/figure-html5/unnamed-chunk-16-2.png","report_files/figure-html5/unnamed-chunk-17-1.png","report_files/figure-html5/unnamed-chunk-17-2.png","report_files/figure-html5/unnamed-chunk-4-1.png","report_files/figure-html5/unnamed-chunk-5-1.png","report_files/figure-html5/unnamed-chunk-5-2.png","report_files/figure-html5/unnamed-chunk-6-1.png","report_files/figure-html5/unnamed-chunk-6-2.png","report_files/figure-html5/unnamed-chunk-7-1.png","report_files/figure-html5/unnamed-chunk-7-2.png","report_files/header-attrs-2.14/header-attrs.js","report_files/jquery-3.6.0/jquery-3.6.0.js","report_files/jquery-3.6.0/jquery-3.6.0.min.js","report_files/jquery-3.6.0/jquery-3.6.0.min.map","report_files/popper-2.6.0/popper.min.js","report_files/tabwid-1.0.0/tabwid.css","report_files/tippy-6.2.7/tippy-bundle.umd.min.js","report_files/tippy-6.2.7/tippy-light-border.css","report_files/tippy-6.2.7/tippy.css","report_files/tippy-6.2.7/tippy.umd.min.js","report_files/vembedr-0.1.5/css/vembedr.css","report_files/webcomponents-2.0.0/webcomponents.js","report_workflow.png","thumbnail_report.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+  font-size: 100%;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+hr.section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0px;
+}
+
+
+d-byline {
+  border-top: none;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+  border-top: none;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+/* tweak for Pandoc numbered line within distill */
+d-article pre.numberSource code > span {
+    left: -2em;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // separator
+  var separator = '<hr class="section-separator" style="clear: both"/>';
+  // prepend separator above appendix
+  $('.d-byline').before(separator);
+  $('.d-article').before(separator);
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme, except when numbering line
+  // in code chunk
+  $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      var author_name = front_matter.authors[i].author
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      const citeChild = $(this).children()[0]
+      // Do not process if @xyz has been used without escaping and without bibliography activated
+      // https://github.com/rstudio/distill/issues/466
+      if (citeChild === undefined) return true
+
+      if (citeChild.nodeName == "D-FOOTNOTE") {
+        var fn = citeChild
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        // Could use CSS.escape too here, we insure backward compatibility in navigator
+        return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+      }).join("\n");
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       25px;
+  --text-color:       white;
+  --text-size:        25px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+  font-weight: bold;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.14/header-attrs.js"></script>
+  <link href="../../site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-Q28WX9Y4VS"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Q28WX9Y4VS');
+</script>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"R package reviews {report} How To Report Statistical Results!","description":"If you ever wandered how to correctly describe the results of statistical tests and models, this blog is for you. In a few minutes you'll learn how to report the results of correlations, t-tests, Generalised Linear Models, Mixed-Effects models, Bayesian Models and even more 😉 So, let's start with a simple t-test.","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-11T00:00:00.000+02:00","citationText":"Zablotski, 2022"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/my_foto.jpg" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">yuzaR-Blog</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../about.html">ABOUT</a>
+<a href="../../index.html">POSTS</a>
+<a href="../../consulting.html">CONSULTING</a>
+<a href="https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA">
+<i class="fa fa-youtube-square" aria-hidden="true"></i>
+</a>
+<a href="https://twitter.com/yuzaR___">
+<i class="fa fa-twitter" aria-hidden="true"></i>
+</a>
+<a href="https://www.linkedin.com/in/dr-yury-zablotski-3765b378/">
+<i class="fa fa-linkedin" aria-hidden="true"></i>
+</a>
+<a href="https://github.com/yuryzablotski/yuzaR-Blog">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
+<a href="https://koji.to/yuzaR">LEAVE A TIP</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>R package reviews {report} How To Report Statistical Results!</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:videos" class="dt-tag">videos</a>
+  <a href="../../index.html#category:statistics" class="dt-tag">statistics</a>
+  <a href="../../index.html#category:R_package_reviews" class="dt-tag">R package reviews</a>
+  <a href="../../index.html#category:models" class="dt-tag">models</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>If you ever wandered how to correctly describe the results of
+statistical tests and models, this blog is for you. In a few minutes
+you’ll learn how to report the results of correlations, t-tests,
+Generalised Linear Models, Mixed-Effects models, Bayesian Models and
+even more 😉 So, let’s start with a simple t-test.</p></p>
+</div>
+
+<div class="d-byline">
+  Yury Zablotski <a href="https://yuzar-blog.netlify.app/"
+class="uri">https://yuzar-blog.netlify.app/</a> 
+  
+<br/>July 11, 2022
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#this-post-as-a-video">This post as a video</a></li>
+<li><a href="#why-do-we-need-report">Why do we need {report}?</a></li>
+<li><a href="#reporting-statistical-tests">1. Reporting Statistical
+Tests</a>
+<ul>
+<li><a href="#welch-t-test">Welch t-test</a></li>
+<li><a href="#students-two-sample-t-test">Student’s Two Sample
+t-test</a></li>
+<li><a href="#paired-two-sample-t-test">Paired Two Sample
+t-test</a></li>
+<li><a href="#wilcoxon-rank-sum-test-aka-mann-whitney-test">Wilcoxon
+rank sum test (aka Mann-Whitney test)</a></li>
+<li><a href="#paired-wilcoxon-signed-rank-test">Paired Wilcoxon signed
+rank test</a></li>
+<li><a href="#pearsons-correlation">Pearson’s correlation</a></li>
+<li><a href="#spearmans-rank-correlation">Spearman’s rank
+correlation</a></li>
+<li><a href="#kendalls-rank-correlation-as-a-table">Kendall’s rank
+correlation (as a table)</a></li>
+<li><a href="#reporting-anovas">Reporting ANOVAs</a></li>
+</ul></li>
+<li><a href="#reporting-regression-models">2. Reporting Regression
+Models</a>
+<ul>
+<li><a href="#reporting-general-linear-models">Reporting (General)
+Linear Models</a></li>
+<li><a href="#logistic-regression">Logistic regression</a></li>
+<li><a href="#mixed-effects-multilevel-models">Mixed-effects /
+multilevel models</a></li>
+<li><a
+href="#reporting-bayesian-models-and-bayesian-mixed-effects-models">Reporting
+Bayesian Models and Bayesian Mixed-Effects models</a></li>
+<li><a href="#exotic-and-not-supported-models">Exotic and not-supported
+models 😨 ???</a></li>
+</ul></li>
+<li><a href="#reporting-data">3. Reporting Data</a>
+<ul>
+<li><a href="#as-text">As text</a></li>
+<li><a href="#as-table">As table</a></li>
+</ul></li>
+<li><a href="#reporting-r-environment-packages-system">4. Reporting R
+environment, packages, system</a>
+<ul>
+<li><a href="#references">References</a></li>
+<li><a href="#further-readings-and-references">Further readings and
+references</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h1 id="this-post-as-a-video">This post as a video</h1>
+<p>I recommend to watch a video first, because I highlight things I talk
+about. It’s less then 8 minutes long.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/iMh9tPsuiik" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+<h1 id="why-do-we-need-report">Why do we need {report}?</h1>
+<p>The result of a statistical test are often hardly digestible. So,
+what we really want is the small but condense peace of text about what
+our result are and what they mean. And that’s what the {report} package
+gives you.</p>
+<p><img src="report_workflow.png" /></p>
+<p>Here is a preliminary list of objects you can report now, in Julne,
+2022. However, the package constantly improves and will only get better
+over time:</p>
+<ul>
+<li><p>Correlations, t-tests, Wilcoxon tests, paired &amp; unpaired
+(htest)</p></li>
+<li><p>ANOVAs one-way, two-way etc. (aov, anova, aovlist, …)</p></li>
+<li><p>Bayes factors (from bayestestR)</p></li>
+<li><p>… (more tests to come)</p></li>
+<li><p>Regression models (glm, lm, …)</p></li>
+<li><p>Mixed-effects models (glmer, lmer, glmmTMB, …)</p></li>
+<li><p>Bayesian models (stanreg, brms…)</p></li>
+<li><p>Structural Equation Models (SEM) (from lavaan)</p></li>
+<li><p>… (more models to come)</p></li>
+<li><p>Model comparison (from performance())</p></li>
+<li><p>System and packages (sessionInfo)</p></li>
+<li><p>Dataframes and vectors</p></li>
+<li><p>… (more features to come)</p></li>
+</ul>
+<h1 id="reporting-statistical-tests">1. Reporting Statistical Tests</h1>
+<p>Load all needed packages at once, to avoid interruptions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.statlearning.com'>ISLR</a></span><span class='op'>)</span>        <span class='co'># provides "Wage" dataset</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/report/'>report</a></span><span class='op'>)</span>      <span class='co'># to report results</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span>      <span class='co'># visualizes model results</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ardata-fr.github.io/flextable-book/'>flextable</a></span><span class='op'>)</span>   <span class='co'># for beautiful tables</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>   <span class='co'># provides a lot of useful stuff !!! </span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://indrajeetpatil.github.io/ggstatsplot/'>ggstatsplot</a></span><span class='op'>)</span> <span class='co'># to visualize test results</span>
+</code></pre>
+</div>
+</div>
+<h2 id="welch-t-test">Welch t-test</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, data <span class='op'>=</span> <span class='va'>Wage</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  wage by jobclass
+t = -11.489, df = 2714.9, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means between group 1. Industrial and group 2. Information is not equal to 0
+95 percent confidence interval:
+ -20.21940 -14.32378
+sample estimates:
+ mean in group 1. Industrial mean in group 2. Information 
+                    103.3211                     120.5927 </code></pre>
+</div>
+<p>The usual output of a t-test is … <strong>not really
+appealing</strong> … to say the least. And if we’d try to write down the
+results, we might end up reporting only a p-value. However, if we add
+only one word to this code, we’ll get <strong>SOO MUCH
+MORE</strong>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, data <span class='op'>=</span> <span class='va'>Wage</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Cohen’s (1988)
+recommendations.</p>
+<p>The Welch Two Sample t-test testing the difference of wage by
+jobclass (mean in group 1. Industrial = 103.32, mean in group 2.
+Information = 120.59) suggests that the effect is negative,
+statistically significant, and small (difference = -17.27, 95% CI
+[-20.22, -14.32], t(2714.87) = -11.49, p &lt; .001; Cohen’s d = -0.44,
+95% CI [-0.52, -0.36])</p>
+<ol type="1">
+<li>First of all, we’ll get a <strong>digestible</strong> peace of
+<strong>text, suitable for</strong> any <strong>publication
+instantly</strong>, with <strong>all important statistics, brackets and
+special characters</strong>. If you think it’s not a big deal, try to
+rewrite it at least once without a single mistake 😉</li>
+<li>Secondly, it gives us the <strong>difference</strong> between groups
+with 95% Confidence Intervals, while the test only provides the
+confidence intervals of … probably difference, but not <strong>the
+difference itself - the very thing we are interested in</strong>!</li>
+<li>On top of that, <code>report()</code> function provides a humanly
+<strong>readable p-value</strong> of under 0.001, instead of the strange
+scientific notation, nobody really likes and only a few understand.</li>
+<li>And finally, it not only <strong>calculates the effect size with 95%
+Confidence Intervals</strong> for us, which a classic test doesn’t do,
+but also <strong>interprets</strong> it and even <strong>provides a
+reference</strong>.</li>
+</ol>
+<h2 id="students-two-sample-t-test">Student’s Two Sample t-test</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, var.equal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Cohen’s (1988)
+recommendations.</p>
+<p>The Two Sample t-test testing the difference between iris<span
+class="math inline">\(Sepal.Width and iris\)</span>Sepal.Length (mean of
+x = 3.06, mean of y = 5.84) suggests that the effect is negative,
+statistically significant, and large (difference = -2.79, 95% CI [-2.94,
+-2.64], t(298) = -36.46, p &lt; .001; Cohen’s d = -4.21, 95% CI [-4.61,
+-3.80])</p>
+<h2 id="paired-two-sample-t-test">Paired Two Sample t-test</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, paired <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Cohen’s (1988)
+recommendations.</p>
+<p>The Paired t-test testing the difference between iris<span
+class="math inline">\(Sepal.Width and iris\)</span>Sepal.Length (mean of
+the differences = -2.79) suggests that the effect is negative,
+statistically significant, and large (difference = -2.79, 95% CI [-2.94,
+-2.63], t(149) = -34.82, p &lt; .001; Cohen’s d = -2.84, 95% CI [-3.66,
+-2.49])</p>
+<h2 id="wilcoxon-rank-sum-test-aka-mann-whitney-test">Wilcoxon rank sum
+test (aka Mann-Whitney test)</h2>
+<p>Reporting results of nonparametric tests, for example Wilcoxon test,
+is even more useful! Because the <code>report()</code> function
+correctly says: “The Wilcoxon rank sum test is testing <strong>the
+difference in ranks</strong>…”, while even some scientific papers
+mistakenly say that Wilcoxon test is testing <strong>the difference in
+medians</strong>, which is just wrong, medians are only used to better
+describe not-normally distributed data, but medians are not used to
+compare groups. If fact the difference in ranks can be significant even
+when medians are identical. Here again, <code>report()</code> function
+applies a <strong>rank biserial correlation coefficient</strong> as a
+<strong>suitable effect size for Wilcoxon rank sum test</strong> with a
+reference. As you can see, {report} package not only produces more
+results in a suitable for publication form, but also <strong>ensures a
+correct interpretation of results</strong>.</p>
+<p><img src="equal_dedians.png" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>wilc_test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span><span class='op'>(</span><span class='va'>Wage</span><span class='op'>$</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>Wage</span><span class='op'>$</span><span class='va'>jobclass</span><span class='op'>)</span> 
+<span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>wilc_test</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Funder’s (2019)
+recommendations.</p>
+<p>The Wilcoxon rank sum test with continuity correction testing the
+difference in ranks between Wage<span class="math inline">\(wage and
+Wage\)</span>jobclass suggests that the effect is negative,
+statistically significant, and medium (W = 8.53e+05, p &lt; .001; r
+(rank biserial) = -0.24, 95% CI [-0.28, -0.20])</p>
+<p>By the way, we can easily integrate <strong>parts of the
+results</strong> into the text of our manuscript, if we prepare our
+manuscript in RStudio. For instance if we use
+<code>report_statistics()</code> function in the middle of the text,
+only numbers from our test will be incorporated into the text. The
+<code>report_effectsize()</code> function would only report the effect
+size. Here is how it looks like inside of RStudio and in the
+manuscript:</p>
+<p><img src="code_inside_of_text.png" /></p>
+<p>Workers in the IT-Industry earn significantly more (W = 8.53e+05, p
+&lt; .001; r (rank biserial) = -0.24, 95% CI [-0.28, -0.20]) as compared
+to workers in Industrial jobs. This difference is medium (r (rank
+biserial) = -0.24, 95% CI [-0.28, -0.20]) large and can not be
+ignored.</p>
+<h2 id="paired-wilcoxon-signed-rank-test">Paired Wilcoxon signed rank
+test</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, paired <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Funder’s (2019)
+recommendations.</p>
+<p>The Wilcoxon signed rank test with continuity correction testing the
+difference in ranks between iris<span class="math inline">\(Sepal.Width
+and iris\)</span>Sepal.Length suggests that the effect is negative,
+statistically significant, and very large (W = 0.00, p &lt; .001; r
+(rank biserial) = -1.00, 95% CI [-1.00, -1.00])</p>
+<h2 id="pearsons-correlation">Pearson’s correlation</h2>
+<p>Similarly we can easily report the results of either parametric
+Pearson or non-parametric Spearman or Kendall correlations. Besides,
+<code>report_table()</code> function allows you to display your result
+as a table instead of text (see Kendall’s correlation below).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Funder’s (2019)
+recommendations.</p>
+<p>The Pearson’s product-moment correlation between mtcars<span
+class="math inline">\(mpg and mtcars\)</span>wt is negative,
+statistically significant, and very large (r = -0.87, 95% CI [-0.93,
+-0.74], t(30) = -9.56, p &lt; .001)</p>
+<h2 id="spearmans-rank-correlation">Spearman’s rank correlation</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Effect sizes were labelled following Funder’s (2019)
+recommendations.</p>
+<p>The Spearman’s rank correlation rho between mtcars<span
+class="math inline">\(mpg and mtcars\)</span>wt is negative,
+statistically significant, and very large (rho = -0.89, S = 10292.32, p
+&lt; .001)</p>
+<h2 id="kendalls-rank-correlation-as-a-table">Kendall’s rank correlation
+(as a table)</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span>, <span class='va'>mtcars</span><span class='op'>$</span><span class='va'>wt</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report_table.html'>report_table</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Parameter1 | Parameter2 |   tau |     z |      p |                         Method | Alternative
+-----------------------------------------------------------------------------------------------
+mtcars$mpg |  mtcars$wt | -0.73 | -5.80 | &lt; .001 | Kendall&#39;s rank correlation tau |   two.sided</code></pre>
+</div>
+<h2 id="reporting-anovas">Reporting ANOVAs</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/stats/aov.html'>aov</a></span><span class='op'>(</span><span class='va'>wt</span> <span class='op'>~</span> <span class='va'>am</span> <span class='op'>+</span> <span class='va'>mpg</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The ANOVA (formula: wt ~ am + mpg) suggests that:</p>
+<ul>
+<li>The main effect of am is statistically significant and large (F(1,
+29) = 69.21, p &lt; .001; Eta2 (partial) = 0.70, 95% CI [0.54,
+1.00])</li>
+<li>The main effect of mpg is statistically significant and large (F(1,
+29) = 46.12, p &lt; .001; Eta2 (partial) = 0.61, 95% CI [0.42,
+1.00])</li>
+</ul>
+<p>Effect sizes were labelled following Field’s (2013)
+recommendations.</p>
+<h1 id="reporting-regression-models">2. Reporting Regression Models</h1>
+<h2 id="reporting-general-linear-models">Reporting (General) Linear
+Models</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>am</span> <span class='op'>+</span> <span class='va'>hp</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = mpg ~ am + hp, data = mtcars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.3843 -2.2642  0.1366  1.6968  5.8657 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 26.584914   1.425094  18.655  &lt; 2e-16 ***
+am           5.277085   1.079541   4.888 3.46e-05 ***
+hp          -0.058888   0.007857  -7.495 2.92e-08 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.909 on 29 degrees of freedom
+Multiple R-squared:  0.782, Adjusted R-squared:  0.767 
+F-statistic: 52.02 on 2 and 29 DF,  p-value: 2.55e-10</code></pre>
+</div>
+<p>But enough about tests, let’s see how {report} package handles
+models. First of all, the usual summary of a model provides some useful
+information but the output is again, not very friendly to the human eye,
+and it is not clear how to describe it. I bet 10 researchers would
+report these results in 10 slightly different ways. In contrast {report}
+package provides a standardized way to report model-results, and again
+delivers <strong>soo much more then the classic
+<code>summary()</code></strong> function. Particularly,</p>
+<ul>
+<li>it describes what kind of model we used, while the
+<code>summary()</code> does not</li>
+<li>it interprets the <span class="math inline">\(R^2\)</span> and <span
+class="math inline">\(adj.R^2\)</span>, while the <code>summary()</code>
+does not</li>
+<li>it uncovers what is behind the <em>mysterious</em> (Intercept),
+while the <code>summary()</code> assumes that you already know it</li>
+<li>and finally, <code>report()</code> functions describes parameters
+“am” and “hp” by providing the slope with <strong>useful! 95% Confidence
+Intervals</strong>, while the <code>summary()</code> gives you
+<strong>not really useful Standard Error of the Mean</strong></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<p>We fitted a linear model (estimated using OLS) to predict mpg with am
+and hp (formula: mpg ~ am + hp). The model explains a statistically
+significant and substantial proportion of variance (R2 = 0.78, F(2, 29)
+= 52.02, p &lt; .001, adj. R2 = 0.77). The model’s intercept,
+corresponding to am = 0 and hp = 0, is at 26.58 (95% CI [23.67, 29.50],
+t(29) = 18.65, p &lt; .001). Within this model:</p>
+<ul>
+<li>The effect of am is statistically significant and positive (beta =
+5.28, 95% CI [3.07, 7.48], t(29) = 4.89, p &lt; .001; Std. beta = 0.44,
+95% CI [0.25, 0.62])</li>
+<li>The effect of hp is statistically significant and negative (beta =
+-0.06, 95% CI [-0.07, -0.04], t(29) = -7.50, p &lt; .001; Std. beta =
+-0.67, 95% CI [-0.85, -0.49])</li>
+</ul>
+<p>Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs) and
+p-values were computed using the Wald approximation.</p>
+<p>In fact, if used for models, the <code>report()</code> function gives
+you more than you might want to use. That is why you can apply a
+<strong><code>summary()</code> command ON TOP OF THE REPORT</strong> 🤣
+in order to report only essential information.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>We fitted a linear model to predict mpg with am and hp. The model’s
+explanatory power is substantial (R2 = 0.78, adj. R2 = 0.77). The
+model’s intercept is at 26.58 (95% CI [23.67, 29.50]). Within this
+model:</p>
+<ul>
+<li>The effect of am is statistically significant and positive (beta =
+5.28, 95% CI [3.07, 7.48], t(29) = 4.89, p &lt; .001, Std. beta =
+0.44)</li>
+<li>The effect of hp is statistically significant and negative (beta =
+-0.06, 95% CI [-0.07, -0.04], t(29) = -7.50, p &lt; .001, Std. beta =
+-0.67)</li>
+</ul>
+<p>Similarly to test results, you can display model results as a table
+with the <code>report_table()</code> command, or use different parts of
+the report inside of your text with:
+<code>report_model(), report_performance(), report_parameters(), report_statistics()</code>
+or <code>report_effectsize()</code> functions:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_table.html'>report_table</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Parameter   | Coefficient |         95% CI | t(29) |      p | Std. Coef. | Std. Coef. 95% CI |    Fit
+-----------------------------------------------------------------------------------------------------
+(Intercept) |       26.58 | [23.67, 29.50] | 18.65 | &lt; .001 |  -2.32e-17 |    [-0.17,  0.17] |       
+am          |        5.28 | [ 3.07,  7.48] |  4.89 | &lt; .001 |       0.44 |    [ 0.25,  0.62] |       
+hp          |       -0.06 | [-0.07, -0.04] | -7.50 | &lt; .001 |      -0.67 |    [-0.85, -0.49] |       
+            |             |                |       |        |            |                   |       
+AIC         |             |                |       |        |            |                   | 164.01
+BIC         |             |                |       |        |            |                   | 169.87
+R2          |             |                |       |        |            |                   |   0.78
+R2 (adj.)   |             |                |       |        |            |                   |   0.77
+Sigma       |             |                |       |        |            |                   |   2.91</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_model.html'>report_model</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>linear model (estimated using OLS) to predict mpg with am and hp
+(formula: mpg ~ am + hp)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_performance.html'>report_performance</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The model explains a statistically significant and substantial
+proportion of variance (R2 = 0.78, F(2, 29) = 52.02, p &lt; .001, adj.
+R2 = 0.77)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_parameters.html'>report_parameters</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The intercept is statistically significant and positive (beta =
+26.58, 95% CI [23.67, 29.50], t(29) = 18.65, p &lt; .001; Std. beta =
+-2.32e-17, 95% CI [-0.17, 0.17]), The effect of am is statistically
+significant and positive (beta = 5.28, 95% CI [3.07, 7.48], t(29) =
+4.89, p &lt; .001; Std. beta = 0.44, 95% CI [0.25, 0.62]), The effect of
+hp is statistically significant and negative (beta = -0.06, 95% CI
+[-0.07, -0.04], t(29) = -7.50, p &lt; .001; Std. beta = -0.67, 95% CI
+[-0.85, -0.49])</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_statistics.html'>report_statistics</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>beta = 26.58, 95% CI [23.67, 29.50], t(29) = 18.65, p &lt; .001; Std.
+beta = -2.32e-17, 95% CI [-0.17, 0.17], beta = 5.28, 95% CI [3.07,
+7.48], t(29) = 4.89, p &lt; .001; Std. beta = 0.44, 95% CI [0.25, 0.62],
+beta = -0.06, 95% CI [-0.07, -0.04], t(29) = -7.50, p &lt; .001; Std.
+beta = -0.67, 95% CI [-0.85, -0.49]</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_effectsize.html'>report_effectsize</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>very small (Std. beta = -2.32e-17, 95% CI [-0.17, 0.17]), small (Std.
+beta = 0.44, 95% CI [0.25, 0.62]), medium (Std. beta = -0.67, 95% CI
+[-0.85, -0.49])</p>
+<h2 id="logistic-regression">Logistic regression</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>am</span> <span class='op'>~</span> <span class='va'>mpg</span>, <span class='va'>mtcars</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span> 
+<span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>We fitted a logistic model (estimated using ML) to predict am with
+mpg (formula: am ~ mpg). The model’s explanatory power is substantial
+(Tjur’s R2 = 0.37). The model’s intercept, corresponding to mpg = 0, is
+at -6.60 (95% CI [-12.33, -2.77], p = 0.005). Within this model:</p>
+<ul>
+<li>The effect of mpg is statistically significant and positive (beta =
+0.31, 95% CI [0.12, 0.59], p = 0.008; Std. beta = 1.85, 95% CI [0.74,
+3.54])</li>
+</ul>
+<p>Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs) and
+p-values were computed using</p>
+<h2 id="mixed-effects-multilevel-models">Mixed-effects / multilevel
+models</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/lme4/lme4/'>lme4</a></span><span class='op'>)</span>
+
+<span class='va'>mixed_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span><span class='op'>(</span><span class='va'>Reaction</span> <span class='op'>~</span> <span class='va'>Days</span> <span class='op'>+</span> <span class='op'>(</span><span class='va'>Days</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>sleepstudy</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>mixed_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Linear mixed model fit by REML [&#39;lmerMod&#39;]
+Formula: Reaction ~ Days + (Days | Subject)
+   Data: sleepstudy
+
+REML criterion at convergence: 1743.6
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.9536 -0.4634  0.0231  0.4634  5.1793 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ Subject  (Intercept) 612.10   24.741       
+          Days         35.07    5.922   0.07
+ Residual             654.94   25.592       
+Number of obs: 180, groups:  Subject, 18
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)  251.405      6.825  36.838
+Days          10.467      1.546   6.771
+
+Correlation of Fixed Effects:
+     (Intr)
+Days -0.138</code></pre>
+</div>
+<p>The {report} package can report <strong>logistic
+regressions</strong>, but this is not really surprising. Surprising is
+however, that it can also easily handle <strong>Linear Mixed-Effects
+models</strong>, whose popularity and usage is currently exploding. The
+function explicitly describes random effects and interprets the
+explanatory power of the model with two coefficients of determination,
+conditional <span class="math inline">\(R^2\)</span> for the whole model
+(including random effects) and the marginal <span
+class="math inline">\(R^2\)</span> for only fixed effects, or only
+predictors without random effects.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>mixed_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>We fitted a linear mixed model (estimated using REML and nloptwrap
+optimizer) to predict Reaction with Days (formula: Reaction ~ Days). The
+model included Days and Subject as random effects (formula: ~Days |
+Subject). The model’s total explanatory power is substantial
+(conditional R2 = 0.80) and the part related to the fixed effects alone
+(marginal R2) is of 0.28. The model’s intercept, corresponding to Days =
+0, is at 251.41 (95% CI [237.94, 264.87], t(174) = 36.84, p &lt; .001).
+Within this model:</p>
+<ul>
+<li>The effect of Days is statistically significant and positive (beta =
+10.47, 95% CI [7.42, 13.52], t(174) = 6.77, p &lt; .001; Std. beta =
+0.54, 95% CI [0.38, 0.69])</li>
+</ul>
+<p>Standardized parameters were obtained by fitting the model on a
+standardized version of the dataset. 95% Confidence Intervals (CIs) and
+p-values were computed using</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_random.html'>report_random</a></span><span class='op'>(</span><span class='va'>mixed_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The model included Days and Subject as random effects (formula: ~Days
+| Subject)</p>
+<h2
+id="reporting-bayesian-models-and-bayesian-mixed-effects-models">Reporting
+Bayesian Models and Bayesian Mixed-Effects models</h2>
+<p>Bayesian models can also be reported using the new <strong>Sequential
+Effect eXistence and sIgnificance Testing</strong> framework, or
+abbreviated - <strong>SEXIT</strong> 😁 (I swear I did not made it
+up).</p>
+<p>This report describes:</p>
+<ul>
+<li>how Markov Chain Monte Carlo was computed,</li>
+<li>which primers were used</li>
+<li>it calculates the coefficient of determination <span
+class="math inline">\(R^2\)</span> and interprets the performance of the
+model</li>
+<li>conducts Bayesian probabilistic hypothesis testing via
+<strong>SEXIT</strong> 😁</li>
+<li>and provides references for reported metrics, so that you can learn
+more if something is not completely clear</li>
+</ul>
+<p>The full report for Bayesian models is huge though, but here you also
+can use parts of the report effortlessly. Just choose what you want to
+include into your text with one of the following functions:
+<code>report_priors(), report_model(), report_performance(), report_parameters(), report_statistics()</code>
+or <code>report_effectsize()</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/rstanarm/'>rstanarm</a></span><span class='op'>)</span>
+
+<span class='va'>bayes_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://mc-stan.org/rstanarm/reference/stan_glm.html'>stan_glm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>qsec</span> <span class='op'>+</span> <span class='va'>wt</span>, data <span class='op'>=</span> <span class='va'>mtcars</span>, refresh <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>We fitted a Bayesian linear model (estimated using MCMC sampling with
+4 chains of 2000 iterations and a warmup of 1000) to predict mpg with
+qsec and wt (formula: mpg ~ qsec + wt). Priors over parameters were set
+as normal (mean = 0.00, SD = 8.43) and normal (mean = 0.00, SD = 15.40)
+distributions. The model’s explanatory power is substantial (R2 = 0.81,
+95% CI [0.70, 0.89], adj. R2 = 0.79). The model’s intercept,
+corresponding to qsec = 0 and wt = 0, is at 19.83 (95% CI [9.13,
+30.38]). Within this model:</p>
+<ul>
+<li>The effect of qsec (Median = 0.92, 95% CI [0.38, 1.47]) has a 99.92%
+probability of being positive (&gt; 0), 98.95% of being significant
+(&gt; 0.30), and 0.18% of being large (&gt; 1.81). The estimation
+successfully converged (Rhat = 1.000) and the indices are reliable (ESS
+= 3847)</li>
+<li>The effect of wt (Median = -5.06, 95% CI [-6.04, -4.06]) has a
+100.00% probability of being negative (&lt; 0), 100.00% of being
+significant (&lt; -0.30), and 100.00% of being large (&lt; -1.81). The
+estimation successfully converged (Rhat = 1.000) and the indices are
+reliable (ESS = 4376)</li>
+</ul>
+<p>Following the Sequential Effect eXistence and sIgnificance Testing
+(SEXIT) framework, we report the median of the posterior distribution
+and its 95% CI (Highest Density Interval), along the probability of
+direction (pd), the probability of significance and the probability of
+being large. The thresholds beyond which the effect is considered as
+significant (i.e., non-negligible) and large are |0.30| and |1.81|
+(corresponding respectively to 0.05 and 0.30 of the outcome’s SD).
+Convergence and stability of the Bayesian sampling has been assessed
+using R-hat, which should be below 1.01 (Vehtari et al., 2019), and
+Effective Sample Size (ESS), which should be greater than 1000 (Burkner,
+2017).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_priors.html'>report_priors</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Priors over parameters were set as normal (mean = 0.00, SD = 8.43)
+and normal (mean = 0.00, SD = 15.40) distributions</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_model.html'>report_model</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Bayesian linear model (estimated using MCMC sampling with 4 chains of
+2000 iterations and a warmup of 1000) to predict mpg with qsec and wt
+(formula: mpg ~ qsec + wt). Priors over parameters were set as normal
+(mean = 0.00, SD = 8.43) and normal (mean = 0.00, SD = 15.40)
+distributions</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_performance.html'>report_performance</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The model’s explanatory power is substantial (R2 = 0.81, 95% CI
+[0.70, 0.89], adj. R2 = 0.79)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_parameters.html'>report_parameters</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The intercept (Median = 19.83, 95% CI [9.13, 30.38]) has a 99.92%
+probability of being positive (&gt; 0), 99.92% of being significant
+(&gt; 0.30), and 99.80% of being large (&gt; 1.81). The estimation
+successfully converged (Rhat = 1.000) and the indices are reliable (ESS
+= 3758), The effect of qsec (Median = 0.92, 95% CI [0.38, 1.47]) has a
+99.92% probability of being positive (&gt; 0), 98.95% of being
+significant (&gt; 0.30), and 0.18% of being large (&gt; 1.81). The
+estimation successfully converged (Rhat = 1.000) and the indices are
+reliable (ESS = 3847), The effect of wt (Median = -5.06, 95% CI [-6.04,
+-4.06]) has a 100.00% probability of being negative (&lt; 0), 100.00% of
+being significant (&lt; -0.30), and 100.00% of being large (&lt; -1.81).
+The estimation successfully converged (Rhat = 1.000) and the indices are
+reliable (ESS = 4376)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_statistics.html'>report_statistics</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Median = 19.83, 95% CI [9.13, 30.38], pd = 99.92%, 0% in ROPE; Std.
+beta = -3.21e-03, 95% CI [-0.16, 0.15]; Rhat = 1.00, ESS = 3757.53,
+Median = 0.92, 95% CI [0.38, 1.47], pd = 99.92%, 9.24% in ROPE; Std.
+beta = 0.27, 95% CI [0.11, 0.44]; Rhat = 1.00, ESS = 3846.97, Median =
+-5.06, 95% CI [-6.04, -4.06], pd = 100%, 0% in ROPE; Std. beta = -0.82,
+95% CI [-0.98, -0.66]; Rhat = 1.00, ESS = 4375.77</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_effectsize.html'>report_effectsize</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>very small (Std. beta = -3.67e-04, 95% CI [-0.15, 0.17]), small (Std.
+beta = 0.27, 95% CI [0.11, 0.44]), large (Std. beta = -0.82, 95% CI
+[-0.98, -0.66])</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_table.html'>report_table</a></span><span class='op'>(</span><span class='va'>bayes_model</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Parameter   | Median |         95% CI |     pd | % in ROPE |  Rhat |     ESS |                   Prior | Std. Median | Std_Median 95% CI |    Fit
+-------------------------------------------------------------------------------------------------------------------------------------------------
+(Intercept) |  19.83 | [ 9.13, 30.38] | 99.92% |        0% | 1.000 | 3758.00 | Normal (20.09 +- 15.07) |   -6.19e-04 |    [-0.15,  0.16] |       
+qsec        |   0.92 | [ 0.38,  1.47] | 99.92% |     9.24% | 1.000 | 3847.00 |   Normal (0.00 +- 8.43) |        0.27 |    [ 0.11,  0.44] |       
+wt          |  -5.06 | [-6.04, -4.06] |   100% |        0% | 1.000 | 4376.00 |  Normal (0.00 +- 15.40) |       -0.82 |    [-0.98, -0.66] |       
+            |        |                |        |           |       |         |                         |             |                   |       
+ELPD        |        |                |        |           |       |         |                         |             |                   | -79.08
+LOOIC       |        |                |        |           |       |         |                         |             |                   | 158.17
+WAIC        |        |                |        |           |       |         |                         |             |                   | 157.82
+R2          |        |                |        |           |       |         |                         |             |                   |   0.81
+R2 (adj.)   |        |                |        |           |       |         |                         |             |                   |   0.79
+Sigma       |        |                |        |           |       |         |                         |             |                   |   2.66</code></pre>
+</div>
+<h2 id="exotic-and-not-supported-models">Exotic and not-supported models
+😨 ???</h2>
+<p>Despite the large number of models supported, at the time of making
+this blog (June 2022), {report} package doesn’t support all the models
+in the world. But it evolves very quick. For instance when you found
+similar “Error message” to the one you see on the screen, go to this
+link and let the authors know, what kind of models you want {report}
+package to be able to handle.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>foreign</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreign/man/read.dta.html'>read.dta</a></span><span class='op'>(</span><span class='st'>"https://stats.idre.ucla.edu/stat/data/hsbdemo.dta"</span><span class='op'>)</span>
+
+<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>nnet</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/nnet/man/multinom.html'>multinom</a></span><span class='op'>(</span><span class='va'>prog</span> <span class='op'>~</span> <span class='va'>ses</span> <span class='op'>+</span> <span class='va'>write</span>, <span class='va'>d</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># weights:  15 (8 variable)
+initial  value 219.722458 
+iter  10 value 179.985215
+final  value 179.981726 
+converged</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Error in report.default(m): Oops, objects of class [multinom, nnet] are not supported (yet) by report() :(
+
+Want to help? Check out https://easystats.github.io/report/articles/new_models.html</code></pre>
+</div>
+<h1 id="reporting-data">3. Reporting Data</h1>
+<h2 id="as-text">As text</h2>
+<p>Now, you can also quickly describe your data by simply using {report}
+function on your dataset. It provides the most common descriptive
+statistics for every variable, doesn’t matter numeric or
+categorical.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The data contains 150 observations of the following 5 variables:</p>
+<ul>
+<li>Sepal.Length: n = 150, Mean = 5.84, SD = 0.83, Median = 5.80, MAD =
+1.04, range: [4.30, 7.90], Skewness = 0.31, Kurtosis = -0.55, 0%
+missing</li>
+<li>Sepal.Width: n = 150, Mean = 3.06, SD = 0.44, Median = 3.00, MAD =
+0.44, range: [2, 4.40], Skewness = 0.32, Kurtosis = 0.23, 0%
+missing</li>
+<li>Petal.Length: n = 150, Mean = 3.76, SD = 1.77, Median = 4.35, MAD =
+1.85, range: [1, 6.90], Skewness = -0.27, Kurtosis = -1.40, 0%
+missing</li>
+<li>Petal.Width: n = 150, Mean = 1.20, SD = 0.76, Median = 1.30, MAD =
+1.04, range: [0.10, 2.50], Skewness = -0.10, Kurtosis = -1.34, 0%
+missing</li>
+<li>Species: 3 levels, namely setosa (n = 50, 33.33%), versicolor (n =
+50, 33.33%) and virginica (n = 50, 33.33%)</li>
+</ul>
+<p>Besides, {Report} package works perfectly with famous {tidyverse}
+packages, like {dplyr}. Thus, the data can be easily grouped by any
+categorical variable, e.g. Species, and the descriptive stats for every
+level of the grouping variable will be returned:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>iris</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"Sepal"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Species</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<pre><code>The data contains 150 observations, grouped by Species, of the following 3 variables:
+
+- setosa (n = 50):
+  - Petal.Length: n = 50, Mean = 1.46, SD = 0.17, Median = 1.50, MAD = 0.15, range: [1, 1.90], Skewness = 0.11, Kurtosis = 1.02, 0 missing
+  - Petal.Width: n = 50, Mean = 0.25, SD = 0.11, Median = 0.20, MAD = 0.00, range: [0.10, 0.60], Skewness = 1.25, Kurtosis = 1.72, 0 missing
+
+- versicolor (n = 50):
+  - Petal.Length: n = 50, Mean = 4.26, SD = 0.47, Median = 4.35, MAD = 0.52, range: [3, 5.10], Skewness = -0.61, Kurtosis = 0.05, 0 missing
+  - Petal.Width: n = 50, Mean = 1.33, SD = 0.20, Median = 1.30, MAD = 0.22, range: [1, 1.80], Skewness = -0.03, Kurtosis = -0.41, 0 missing
+
+- virginica (n = 50):
+  - Petal.Length: n = 50, Mean = 5.55, SD = 0.55, Median = 5.55, MAD = 0.67, range: [4.50, 6.90], Skewness = 0.55, Kurtosis = -0.15, 0 missing
+  - Petal.Width: n = 50, Mean = 2.03, SD = 0.27, Median = 2.00, MAD = 0.30, range: [1.40, 2.50], Skewness = -0.13, Kurtosis = -0.60, 0 missing</code></pre>
+</div>
+<h2 id="as-table">As table</h2>
+<p>Want the same as a huge or a minimalistic table? No, problems! Use
+<code>report_table()</code> or <code>report_sample()</code>
+functions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>iris</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Species</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://easystats.github.io/report/reference/report_table.html'>report_table</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Group      |     Variable | n_Obs | Mean |   SD | Median |  MAD |  Min |  Max | Skewness | Kurtosis | n_Missing
+---------------------------------------------------------------------------------------------------------------
+versicolor | Sepal.Length |    50 | 5.94 | 0.52 |   5.90 | 0.52 | 4.90 | 7.00 |     0.11 |    -0.53 |         0
+versicolor |  Sepal.Width |    50 | 2.77 | 0.31 |   2.80 | 0.30 | 2.00 | 3.40 |    -0.36 |    -0.37 |         0
+versicolor | Petal.Length |    50 | 4.26 | 0.47 |   4.35 | 0.52 | 3.00 | 5.10 |    -0.61 |     0.05 |         0
+versicolor |  Petal.Width |    50 | 1.33 | 0.20 |   1.30 | 0.22 | 1.00 | 1.80 |    -0.03 |    -0.41 |         0
+virginica  | Sepal.Length |    50 | 6.59 | 0.64 |   6.50 | 0.59 | 4.90 | 7.90 |     0.12 |     0.03 |         0
+virginica  |  Sepal.Width |    50 | 2.97 | 0.32 |   3.00 | 0.30 | 2.20 | 3.80 |     0.37 |     0.71 |         0
+virginica  | Petal.Length |    50 | 5.55 | 0.55 |   5.55 | 0.67 | 4.50 | 6.90 |     0.55 |    -0.15 |         0
+virginica  |  Petal.Width |    50 | 2.03 | 0.27 |   2.00 | 0.30 | 1.40 | 2.50 |    -0.13 |    -0.60 |         0</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report_sample.html'>report_sample</a></span><span class='op'>(</span><span class='va'>iris</span>, group_by <span class='op'>=</span> <span class='st'>"Species"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># Descriptive Statistics
+
+Variable               | setosa (n=50) | versicolor (n=50) | virginica (n=50) | Total (n=150)
+---------------------------------------------------------------------------------------------
+Mean Sepal.Length (SD) |   5.01 (0.35) |       5.94 (0.52) |      6.59 (0.64) |   5.84 (0.83)
+Mean Sepal.Width (SD)  |   3.43 (0.38) |       2.77 (0.31) |      2.97 (0.32) |   3.06 (0.44)
+Mean Petal.Length (SD) |   1.46 (0.17) |       4.26 (0.47) |      5.55 (0.55) |   3.76 (1.77)
+Mean Petal.Width (SD)  |   0.25 (0.11) |       1.33 (0.20) |      2.03 (0.27) |   1.20 (0.76)</code></pre>
+</div>
+<h1 id="reporting-r-environment-packages-system">4. Reporting R
+environment, packages, system</h1>
+<p>And finally, using only one command:
+<code>report(sessionInfo())</code> you first report the Statistical
+software you used for data analysis, secondly, you list ALL packages you
+used and lastly you cite all packages you used automatically without any
+typing mistakes! How cool is that? And if you want to know how to find
+THE BEST MODEL which you then can report, check out {glmulti}
+package!</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.html'>report</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/sessionInfo.html'>sessionInfo</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Analyses were conducted using the R Statistical language (version
+4.1.3; R Core Team, 2022) on macOS Big Sur/Monterey 10.16, using the
+packages flextable (version 0.7.0; David Gohel, 2022), Rcpp (version
+1.0.8.3; Dirk Eddelbuettel and Romain Francois, 2011), Matrix (version
+1.4.1; Douglas Bates, Martin Maechler and Mikael Jagan, 2022), lme4
+(version 1.1.29; Douglas Bates et al., 2015), ISLR (version 1.4; Gareth
+James et al., 2021), rstanarm (version 2.21.3; Goodrich B et al., 2022),
+ggplot2 (version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data
+Analysis. Springer-Verlag New York, 2016.), stringr (version 1.4.0;
+Hadley Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021),
+tidyr (version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022),
+readr (version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan,
+2022), dplyr (version 1.0.9; Hadley Wickham et al., 2022), tibble
+(version 3.1.7; Kirill Müller and Hadley Wickham, 2022), purrr (version
+0.3.4; Lionel Henry and Hadley Wickham, 2020), sjPlot (version 2.8.10;
+Lüdecke D, 2021), report (version 0.5.1; Makowski et al., 2020),
+ggstatsplot (version 0.9.3; Patil, 2021) and tidyverse (version
+1.3.1.9000; Wickham et al., 2019).</p>
+<h2 id="references">References</h2>
+<ul>
+<li>David Gohel (2022). flextable: Functions for Tabular Reporting. R
+package version 0.7.0. <a
+href="https://CRAN.R-project.org/package=flextable"
+class="uri">https://CRAN.R-project.org/package=flextable</a></li>
+<li>Dirk Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and
+C++ Integration. Journal of Statistical Software, 40(8), 1-18, <a
+href="doi:10.18637/jss.v040.i08"
+class="uri">doi:10.18637/jss.v040.i08</a>.</li>
+<li>Douglas Bates, Martin Maechler and Mikael Jagan (2022). Matrix:
+Sparse and Dense Matrix Classes and Methods. R package version 1.4-1. <a
+href="https://CRAN.R-project.org/package=Matrix"
+class="uri">https://CRAN.R-project.org/package=Matrix</a></li>
+<li>Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015).
+Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical
+Software, 67(1), 1-48. <a href="doi:10.18637/jss.v067.i01"
+class="uri">doi:10.18637/jss.v067.i01</a>.</li>
+<li>Gareth James, Daniela Witten, Trevor Hastie and Rob Tibshirani
+(2021). ISLR: Data for an Introduction to Statistical Learning with
+Applications in R. R package version 1.4. <a
+href="https://CRAN.R-project.org/package=ISLR"
+class="uri">https://CRAN.R-project.org/package=ISLR</a></li>
+<li>Goodrich B, Gabry J, Ali I &amp; Brilleman S. (2022). rstanarm:
+Bayesian applied regression modeling via Stan. R package version 2.21.3
+<a href="https://mc-stan.org/rstanarm"
+class="uri">https://mc-stan.org/rstanarm</a>.</li>
+<li>H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.</li>
+<li>Hadley Wickham (2019). stringr: Simple, Consistent Wrappers for
+Common String Operations. R package version 1.4.0. <a
+href="https://CRAN.R-project.org/package=stringr"
+class="uri">https://CRAN.R-project.org/package=stringr</a></li>
+<li>Hadley Wickham (2021). forcats: Tools for Working with Categorical
+Variables (Factors). R package version 0.5.1. <a
+href="https://CRAN.R-project.org/package=forcats"
+class="uri">https://CRAN.R-project.org/package=forcats</a></li>
+<li>Hadley Wickham and Maximilian Girlich (2022). tidyr: Tidy Messy
+Data. R package version 1.2.0. <a
+href="https://CRAN.R-project.org/package=tidyr"
+class="uri">https://CRAN.R-project.org/package=tidyr</a></li>
+<li>Hadley Wickham, Jim Hester and Jennifer Bryan (2022). readr: Read
+Rectangular Text Data. R package version 2.1.2. <a
+href="https://CRAN.R-project.org/package=readr"
+class="uri">https://CRAN.R-project.org/package=readr</a></li>
+<li>Hadley Wickham, Romain François, Lionel Henry and Kirill Müller
+(2022). dplyr: A Grammar of Data Manipulation. R package version 1.0.9.
+<a href="https://CRAN.R-project.org/package=dplyr"
+class="uri">https://CRAN.R-project.org/package=dplyr</a></li>
+<li>Kirill Müller and Hadley Wickham (2022). tibble: Simple Data Frames.
+R package version 3.1.7. <a
+href="https://CRAN.R-project.org/package=tibble"
+class="uri">https://CRAN.R-project.org/package=tibble</a></li>
+<li>Lionel Henry and Hadley Wickham (2020). purrr: Functional
+Programming Tools. R package version 0.3.4. <a
+href="https://CRAN.R-project.org/package=purrr"
+class="uri">https://CRAN.R-project.org/package=purrr</a></li>
+<li>Lüdecke D (2021). <em>sjPlot: Data Visualization for Statistics in
+SocialScience</em>. R package version 2.8.10, &lt;URL:<a
+href="https://CRAN.R-project.org/package=sjPlot"
+class="uri">https://CRAN.R-project.org/package=sjPlot</a>&gt;.</li>
+<li>Makowski, D., Ben-Shachar, M.S., Patil, I. &amp; Lüdecke, D. (2020).
+Automated Results Reporting as a Practical Tool to Improve
+Reproducibility and Methodological Best Practices Adoption. CRAN.
+Available from <a href="https://github.com/easystats/report"
+class="uri">https://github.com/easystats/report</a>. doi: .</li>
+<li>Patil, I. (2021). Visualizations with statistical details: The
+‘ggstatsplot’ approach. Journal of Open Source Software, 6(61), 3167, <a
+href="doi:10.21105/joss.03167"
+class="uri">doi:10.21105/joss.03167</a></li>
+<li>R Core Team (2022). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+<a href="https://www.R-project.org/"
+class="uri">https://www.R-project.org/</a>.</li>
+<li>Wickham et al., (2019). Welcome to the tidyverse. Journal of Open
+Source Software, 4(43), 1686, <a
+href="https://doi.org/10.21105/joss.01686"
+class="uri">https://doi.org/10.21105/joss.01686</a></li>
+</ul>
+<p>You can also use parts of <code>sessionInfo()</code>, but why would
+you? 🤓</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.sessionInfo.html'>report_system</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Analyses were conducted using the R Statistical language (version
+4.1.3; R Core Team, 2022) on macOS Big Sur/Monterey 10.16</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.sessionInfo.html'>report_packages</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>flextable (version 0.7.0; David Gohel, 2022), Rcpp (version 1.0.8.3;
+Dirk Eddelbuettel and Romain Francois, 2011), Matrix (version 1.4.1;
+Douglas Bates, Martin Maechler and Mikael Jagan, 2022), lme4 (version
+1.1.29; Douglas Bates et al., 2015), ISLR (version 1.4; Gareth James et
+al., 2021), rstanarm (version 2.21.3; Goodrich B et al., 2022), ggplot2
+(version 3.3.6; Wickham. ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York, 2016.), stringr (version 1.4.0; Hadley
+Wickham, 2019), forcats (version 0.5.1; Hadley Wickham, 2021), tidyr
+(version 1.2.0; Hadley Wickham and Maximilian Girlich, 2022), readr
+(version 2.1.2; Hadley Wickham, Jim Hester and Jennifer Bryan, 2022),
+dplyr (version 1.0.9; Hadley Wickham et al., 2022), tibble (version
+3.1.7; Kirill Müller and Hadley Wickham, 2022), purrr (version 0.3.4;
+Lionel Henry and Hadley Wickham, 2020), sjPlot (version 2.8.10; Lüdecke
+D, 2021), report (version 0.5.1; Makowski et al., 2020), ggstatsplot
+(version 0.9.3; Patil, 2021), R (version 4.1.3; R Core Team, 2022),
+tidyverse (version 1.3.1.9000; Wickham et al., 2019)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://easystats.github.io/report/reference/report.sessionInfo.html'>cite_packages</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>David Gohel (2022). flextable: Functions for Tabular Reporting. R
+package version 0.7.0. <a
+href="https://CRAN.R-project.org/package=flextable"
+class="uri">https://CRAN.R-project.org/package=flextable</a>, Dirk
+Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and C++
+Integration. Journal of Statistical Software, 40(8), 1-18, <a
+href="doi:10.18637/jss.v040.i08"
+class="uri">doi:10.18637/jss.v040.i08</a>., Douglas Bates, Martin
+Maechler and Mikael Jagan (2022). Matrix: Sparse and Dense Matrix
+Classes and Methods. R package version 1.4-1. <a
+href="https://CRAN.R-project.org/package=Matrix"
+class="uri">https://CRAN.R-project.org/package=Matrix</a>, Douglas
+Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear
+Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1),
+1-48. <a href="doi:10.18637/jss.v067.i01"
+class="uri">doi:10.18637/jss.v067.i01</a>., Gareth James, Daniela
+Witten, Trevor Hastie and Rob Tibshirani (2021). ISLR: Data for an
+Introduction to Statistical Learning with Applications in R. R package
+version 1.4. <a href="https://CRAN.R-project.org/package=ISLR"
+class="uri">https://CRAN.R-project.org/package=ISLR</a>, Goodrich B,
+Gabry J, Ali I &amp; Brilleman S. (2022). rstanarm: Bayesian applied
+regression modeling via Stan. R package version 2.21.3 <a
+href="https://mc-stan.org/rstanarm"
+class="uri">https://mc-stan.org/rstanarm</a>., H. Wickham. ggplot2:
+Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.,
+Hadley Wickham (2019). stringr: Simple, Consistent Wrappers for Common
+String Operations. R package version 1.4.0. <a
+href="https://CRAN.R-project.org/package=stringr"
+class="uri">https://CRAN.R-project.org/package=stringr</a>, Hadley
+Wickham (2021). forcats: Tools for Working with Categorical Variables
+(Factors). R package version 0.5.1. <a
+href="https://CRAN.R-project.org/package=forcats"
+class="uri">https://CRAN.R-project.org/package=forcats</a>, Hadley
+Wickham and Maximilian Girlich (2022). tidyr: Tidy Messy Data. R package
+version 1.2.0. <a href="https://CRAN.R-project.org/package=tidyr"
+class="uri">https://CRAN.R-project.org/package=tidyr</a>, Hadley
+Wickham, Jim Hester and Jennifer Bryan (2022). readr: Read Rectangular
+Text Data. R package version 2.1.2. <a
+href="https://CRAN.R-project.org/package=readr"
+class="uri">https://CRAN.R-project.org/package=readr</a>, Hadley
+Wickham, Romain François, Lionel Henry and Kirill Müller (2022). dplyr:
+A Grammar of Data Manipulation. R package version 1.0.9. <a
+href="https://CRAN.R-project.org/package=dplyr"
+class="uri">https://CRAN.R-project.org/package=dplyr</a>, Kirill Müller
+and Hadley Wickham (2022). tibble: Simple Data Frames. R package version
+3.1.7. <a href="https://CRAN.R-project.org/package=tibble"
+class="uri">https://CRAN.R-project.org/package=tibble</a>, Lionel Henry
+and Hadley Wickham (2020). purrr: Functional Programming Tools. R
+package version 0.3.4. <a
+href="https://CRAN.R-project.org/package=purrr"
+class="uri">https://CRAN.R-project.org/package=purrr</a>, Lüdecke D
+(2021). <em>sjPlot: Data Visualization for Statistics in
+SocialScience</em>. R package version 2.8.10, &lt;URL:<a
+href="https://CRAN.R-project.org/package=sjPlot"
+class="uri">https://CRAN.R-project.org/package=sjPlot</a>&gt;.,
+Makowski, D., Ben-Shachar, M.S., Patil, I. &amp; Lüdecke, D. (2020).
+Automated Results Reporting as a Practical Tool to Improve
+Reproducibility and Methodological Best Practices Adoption. CRAN.
+Available from <a href="https://github.com/easystats/report"
+class="uri">https://github.com/easystats/report</a>. doi: ., Patil, I.
+(2021). Visualizations with statistical details: The ‘ggstatsplot’
+approach. Journal of Open Source Software, 6(61), 3167, <a
+href="doi:10.21105/joss.03167" class="uri">doi:10.21105/joss.03167</a>,
+R Core Team (2022). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+<a href="https://www.R-project.org/"
+class="uri">https://www.R-project.org/</a>., Wickham et al., (2019).
+Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686,
+<a href="https://doi.org/10.21105/joss.01686"
+class="uri">https://doi.org/10.21105/joss.01686</a></p>
+<h2 id="further-readings-and-references">Further readings and
+references</h2>
+<ul>
+<li><p><a href="https://easystats.github.io/report/index.html"
+class="uri">https://easystats.github.io/report/index.html</a></p></li>
+<li><p>All functions from {report} package: <a
+href="https://easystats.github.io/report/reference/index.html"
+class="uri">https://easystats.github.io/report/reference/index.html</a></p></li>
+</ul>
+<hr />
+<p>If you think, I missed something, please comment on it, and I’ll
+improve this tutorial.</p>
+<p><strong>Thank you for learning!</strong></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2022-06-18-report/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=R%20package%20reviews%20%7Breport%7D%20How%20To%20Report%20Statistical%20Results%21&amp;url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-06-18-report%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-06-18-report%2F&amp;title=R%20package%20reviews%20%7Breport%7D%20How%20To%20Report%20Statistical%20Results%21" aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-06-18-report%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
+      </a>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-06-18-report%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
+      </a>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-06-18-report%2F&amp;description=R%20package%20reviews%20%7Breport%7D%20How%20To%20Report%20Statistical%20Results%21" aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://yuzar-blog.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script type="text/javascript" cookie-consent="functionality">
+var disqus_config = function () {
+  this.page.url = 'https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/';
+  this.page.identifier = 'posts/2022-06-18-report/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://yuzar-blog.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
+  <h3 id="updates-and-corrections">Corrections</h3>
+  <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/yuryzablotski/yuzaR-Blog/issues/new">create an issue</a> on the source repository.</p>
+  <h3 id="reuse">Reuse</h3>
+  <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/yuryzablotski/yuzaR-Blog">https://github.com/yuryzablotski/yuzaR-Blog</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Zablotski (2022, July 11). yuzaR-Blog: R package reviews {report} How To Report Statistical Results!. Retrieved from https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{zablotski2022r,
+  author = {Zablotski, Yury},
+  title = {yuzaR-Blog: R package reviews {report} How To Report Statistical Results!},
+  url = {https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-06-18-report/},
+  year = {2022}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

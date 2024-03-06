@@ -1,0 +1,2822 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>yuzaR-Blog: What is p-value and why we need it</title>
+
+<meta property="description" itemprop="description" content="Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**."/>
+
+<link rel="canonical" href="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/"/>
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2021-01-09"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-01-09"/>
+<meta name="article:author" content="Yury Zablotski"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="yuzaR-Blog: What is p-value and why we need it"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**."/>
+<meta property="og:url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/"/>
+<meta property="og:image" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="yuzaR-Blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="yuzaR-Blog: What is p-value and why we need it"/>
+<meta property="twitter:description" content="Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**."/>
+<meta property="twitter:url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/"/>
+<meta property="twitter:image" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/thumbnail.jpg"/>
+<meta property="twitter:site" content="@yuzaR___"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="yuzaR-Blog: What is p-value and why we need it"/>
+<meta name="citation_fulltext_html_url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/"/>
+<meta name="citation_fulltext_world_readable" content=""/>
+<meta name="citation_online_date" content="2021/01/09"/>
+<meta name="citation_publication_date" content="2021/01/09"/>
+<meta name="citation_author" content="Yury Zablotski"/>
+<!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Why is Getting Rid of P-Values So Hard? Musings on Science and Statistics;citation_publication_date=2019;citation_volume=73;citation_doi=10.1080/00031305.2018.1558111;citation_issn=15372731;citation_author=Steven N. Goodman"/>
+  <meta name="citation_reference" content="citation_title=Abandon Statistical Significance;citation_publication_date=2019;citation_volume=73;citation_doi=10.1080/00031305.2018.1527253;citation_issn=15372731;citation_author=Blakeley B. McShane;citation_author=David Gal;citation_author=Andrew Gelman;citation_author=Christian Robert;citation_author=Jennifer L. Tackett"/>
+  <meta name="citation_reference" content="citation_title=The difference between &quot;significant&quot; and &quot;not significant&quot; is not itself statistically significant;citation_publication_date=2006;citation_volume=60;citation_doi=10.1198/000313006X152649;citation_issn=00031305;citation_author=Andrew Gelman;citation_author=Hal Stern"/>
+  <meta name="citation_reference" content="citation_title=Sifting the evidence—what’s wrong with significance tests?;citation_publication_date=2001;citation_volume=322;citation_doi=10.1136/bmj.322.7280.226;citation_issn=14685833;citation_author=Jonathan A. C. Sterne;citation_author=George Davey Smith;citation_author=D. R. Cox"/>
+  <meta name="citation_reference" content="citation_title=Moving to a World Beyond &quot;p &lt; 0.05&quot;;citation_publication_date=2019;citation_doi=10.1080/00031305.2019.1583913;citation_issn=1537-2731;citation_author=Ronald L Wasserstein;citation_author=Allen L Schirm;citation_author=Nicole A Lazar"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","categories","preview","output","bibliography","biblio-style","link-citations","linkcolor","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["What is p-value and why we need it"]},{"type":"character","attributes":{},"value":["Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yury-zablotski.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["01-09-2021"]},{"type":"character","attributes":{},"value":["videos","statistics"]},{"type":"character","attributes":{},"value":["thumbnail.jpg"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"character","attributes":{},"value":["https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/"]},{"type":"character","attributes":{},"value":["https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["3_probs.png","3h1t.png","6_tails.png","bla.jpg","coin.png","distribution.jpg","Fifty_Shades_of_Grey_poster.jpeg","impossible-parking.gif","interpretation.png","p-value-intuitive-explanation_files/anchor-4.2.2/anchor.min.js","p-value-intuitive-explanation_files/bowser-1.9.3/bowser.min.js","p-value-intuitive-explanation_files/distill-2.2.21/template.v2.js","p-value-intuitive-explanation_files/header-attrs-2.10/header-attrs.js","p-value-intuitive-explanation_files/header-attrs-2.8.6/header-attrs.js","p-value-intuitive-explanation_files/jquery-1.11.3/jquery.min.js","p-value-intuitive-explanation_files/popper-2.6.0/popper.min.js","p-value-intuitive-explanation_files/tippy-6.2.7/tippy-bundle.umd.min.js","p-value-intuitive-explanation_files/tippy-6.2.7/tippy-light-border.css","p-value-intuitive-explanation_files/tippy-6.2.7/tippy.css","p-value-intuitive-explanation_files/tippy-6.2.7/tippy.umd.min.js","p-value-intuitive-explanation_files/vembedr-0.1.4/css/vembedr.css","p-value-intuitive-explanation_files/webcomponents-2.0.0/webcomponents.js","similarity.png","thumbnail.jpg","type_1_errors.png","type_2_errors.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+  font-size: 100%;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+hr.section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0px;
+}
+
+
+d-byline {
+  border-top: none;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+  border-top: none;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+/* tweak for Pandoc numbered line within distill */
+d-article pre.numberSource code > span {
+    left: -2em;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // separator
+  var separator = '<hr class="section-separator" style="clear: both"/>';
+  // prepend separator above appendix
+  $('.d-byline').before(separator);
+  $('.d-article').before(separator);
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme, except when numbering line
+  // in code chunk
+  $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      var author_name = front_matter.authors[i].author
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      const citeChild = $(this).children()[0]
+      // Do not process if @xyz has been used without escaping and without bibliography activated
+      // https://github.com/rstudio/distill/issues/466
+      if (citeChild === undefined) return true
+
+      if (citeChild.nodeName == "D-FOOTNOTE") {
+        var fn = citeChild
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        // Could use CSS.escape too here, we insure backward compatibility in navigator
+        return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+      }).join("\n");
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       25px;
+  --text-color:       white;
+  --text-size:        25px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+  font-weight: bold;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.10/header-attrs.js"></script>
+  <link href="../../site_libs/vembedr-0.1.4/css/vembedr.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-Q28WX9Y4VS"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Q28WX9Y4VS');
+</script>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"What is p-value and why we need it","description":"Why do we need p-values? Well, they help to **make decisions** and **answer the question whether we found something new or not**. But despite the fact that **p-values are** actually **useful**, they are **far from perfect**! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to **make better decisions and better science**.","authors":[{"author":"Yury Zablotski","authorURL":"https://yury-zablotski.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-09T00:00:00.000+01:00","citationText":"Zablotski, 2021"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/my_foto.jpg" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">yuzaR-Blog</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../about.html">ABOUT</a>
+<a href="../../index.html">POSTS</a>
+<a href="../../consulting.html">CONSULTING</a>
+<a href="https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA">
+<i class="fa fa-youtube-square" aria-hidden="true"></i>
+</a>
+<a href="https://twitter.com/yuzaR___">
+<i class="fa fa-twitter" aria-hidden="true"></i>
+</a>
+<a href="https://www.linkedin.com/in/dr-yury-zablotski-3765b378/">
+<i class="fa fa-linkedin" aria-hidden="true"></i>
+</a>
+<a href="https://github.com/yuryzablotski/yuzaR-Blog">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
+<a href="https://koji.to/yuzaR">LEAVE A TIP</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>What is p-value and why we need it</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:videos" class="dt-tag">videos</a>
+  <a href="../../index.html#category:statistics" class="dt-tag">statistics</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Why do we need p-values? Well, they help to <strong>make decisions</strong> and <strong>answer the question whether we found something new or not</strong>. But despite the fact that <strong>p-values are</strong> actually <strong>useful</strong>, they are <strong>far from perfect</strong>! And while everyone uses p-values, understanding them (and using them correctly) is very hard. The definition of the p-value from the book is often correct but rarely intuitive. Intuitive explanations are often not entirely correct. So, in this blog-post (and video) we’ll start with an intuitive (and not entirely correct) definition and will gradually build up the understanding of the p-value step by step. Thus, I don’t recommend to skip any part of this blog (or video). We’ll also talk about how to use and interpret p-values correctly in order to <strong>make better decisions and better science</strong>.</p></p>
+</div>
+
+<div class="d-byline">
+  Yury Zablotski <a href="https://yury-zablotski.netlify.app/" class="uri">https://yury-zablotski.netlify.app/</a> 
+  
+<br/>01-09-2021
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#this-post-as-a-video">This post as a video</a></li>
+<li><a href="#previous-topics">Previous topics</a></li>
+<li><a href="#p-value-definition-n1-its-a-probability">P-value definition N°1: it’s a probability</a></li>
+<li><a href="#p-value-definition-n2-three-probabilities-learned-from-josh-starmer">P-value definition N°2: three probabilities (learned from <span>Josh Starmer!</span>)</a></li>
+<li><a href="#p-value-definition-n3-cumulative-probability-area-under-the-curve">P-value definition N°3: cumulative probability (area under the curve)</a></li>
+<li><a href="#p-value-definition-n4-original-fishers-definition">P-value definition N°4: original Fisher’s definition</a></li>
+<li><a href="#dont-follow-any-cut-off-the-cut-off-should-follow-you">Don’t follow any cut-off, the cut-off should follow you!</a></li>
+<li><a href="#a-single-article-you-need-to-read-moving-to-a-world-beyond-p0.05">A single article you need to read: “Moving to a World Beyond “p&lt;0.05” "</a>
+<ul>
+<li><a href="#what-to-do">What to do:</a></li>
+<li><a href="#what-not-to-do">What not to do:</a></li>
+</ul></li>
+<li><a href="#what-about-bayesian-statistical-inference">What about Bayesian statistical inference?</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#whats-next-to-learn">What’s next to learn?</a></li>
+<li><a href="#further-readings-and-watchings">Further readings and watchings</a></li>
+</ul>
+</nav>
+</div>
+<h2 id="this-post-as-a-video">This post as a video</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/Dldutns6Tig" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+</div>
+<h2 id="previous-topics">Previous topics</h2>
+<p>Since p-values are mostly used for testing hypothesis, you should definitely check out the previous post - <a href="https://yuzar-blog.netlify.app/posts/2021-06-04-my-second-blog-postthis-one-will-be-really-good/">hypothesis testing</a>, where I superficially introduced the p-value already.</p>
+<h2 id="p-value-definition-n1-its-a-probability">P-value definition N°1: it’s a probability</h2>
+<p>The most intuitive explanation of p-values I have found came from Andrew Vickers’ book “What is a p-value anyway? 34 Stories to Help You Actually Understand Statistics”: <strong>“P-value is the probability of the toothbrush being dry if you’ve just cleaned your teeth.”</strong> Let’s start with that.</p>
+<p>The <strong>P</strong> stands for <strong>probability</strong>. And it refers to <strong>the probability to observe the results we did just by chance</strong>. In order to understand this definition a little better, let’s have an example:</p>
+<p><img src="coin.png" /></p>
+<p>If we throw a fair coin, we have only <strong>2 possible outcomes</strong>: heads or tales. The chances to get <strong>tails are obviously 50%</strong>. Then we throw our coin a second time. The chances to get <strong>2 tails in a row are 25%</strong>, because we have 4 possible outcomes after two throws, with only one of those four outcomes having <strong>two tails in a row</strong>, so 1/4 = 0.25 = 25%. It’s actually pretty likely to get 2 tails in a row. So, nothing unusual here. The coin must be fair. But 3 tails in a row starts to feel strange. The chances to get <strong>3 tails in a row are low, only 12.5%</strong>, but still possible. However, if we get 3 tails in a row we start to doubt whether the coin is actually fair. And if we get <strong>6 tails in a row despite only 1.5% probability to get them</strong>, the null hypothesis - <em>that this is a fair coin</em> - would seem ridiculous and we’ll reject it, because it’s simply <strong>too unlikely to happen randomly (or by chance)</strong>.</p>
+<p><img src="6_tails.png" /></p>
+<p>This example, which defines the p-value as <strong>ONE particular</strong> probability of having <strong>only tales</strong>, is clear, intuitive, but <strong>only ONE sided</strong>. It isn’t wrong, but <strong>ONE-sided p-values</strong> coming from <strong>only ONE probability</strong> is not what people use. The <strong>“real p-values”</strong> are <strong>TWO sided</strong>. Then why did we learned about one-sided p-values at all, you might ask??? Well, it was totally necessary for a better understanding of the second definition of p-values. And this is actually one of those definitions from the book, where people start to run away from statistics :) namely:</p>
+<div id="hello" class="greeting message" style="color: blue;">
+<p>P.S.: <strong>One-sided p-values are rare and dangerous</strong>, so, please don’t use them to avoid confusion, especially if you just started to learn about p-values.</p>
+</div>
+<h2 id="p-value-definition-n2-three-probabilities-learned-from-josh-starmer">P-value definition N°2: three probabilities (learned from <a href="https://www.youtube.com/watch?v=5Z9OIYA8He8&amp;ab_channel=StatQuestwithJoshStarmer">Josh Starmer!</a>)</h2>
+<p>P-value is the probability to get <strong>(1) the data we have collected, (2) as extreme or (3) more extreme data</strong> just by chance, assuming our null hypothesis is true.</p>
+<p>Two tailed p-values are determined by adding up <strong>three probabilities</strong>.</p>
+<p><img src="3_probs.png" /></p>
+<ol type="1">
+<li><p>Remember our coin example? The probability of having <em>two tails</em> in a row is 25% (or 0.25), because there are 4 equally possible outcomes after flipping a coin 2 times. These 4 possible outcomes is our <em>distribution.</em> And <strong>the data we have got</strong> - <em>two tails</em> - is only one side of this distribution.</p></li>
+<li><p>Likewise, the probability of getting <em>two heads</em> is also 0.25, and since <em>two heads</em> are <strong>as extreme</strong> as <em>two tales</em>, we have to add the probability of <em>two tails</em> to the probability of <em>two heads</em>: 1/4 + 1/4 = 2/4 = 0.5. Now we have a <strong>two sided probability</strong> but the p-values still need one last part.</p></li>
+</ol>
+<ol start="3" type="1">
+<li>The third and the last part of the p-value is - the probability of observing <strong>something rarer or more extreme</strong>. In this case it is 0, because <strong>no other outcomes are rarer then two tails or two heads</strong>. Thus, if we add this 0 to the probability of having either two tales or two heads, we’ll get a final p-value of 0.5. And since our p-value is way above the significance threshold of 0.05, we failed to reject the null hypothesis, so that our null hypothesis is still TRUE - our coin must be fare.</li>
+</ol>
+<p>Thus: the p-value is the probability of getting the <strong>(1) data we collected (two tails = 0.25), as extreme (two heads = 0.25) or more extreme data (0) is</strong>: 0.25 + 0.25 + 0 = 0.5.</p>
+<p>Now let’s calculate the p-value for a slightly more complicated outcome: <strong>3 heads and 1 tail</strong>. This is one of the 16 possible outcomes, when we flip the coin 4 times. The null hypothesis would be that our data - 3 heads and 1 tail - is nothing special, but belongs to this exact distribution.</p>
+<p><img src="3h1t.png" /></p>
+<ol type="1">
+<li><p>The probability we randomly get <strong>3 heads and 1 tail</strong> is 4/16 = 0.25. That would be <strong>our data</strong> and with that <strong>the first part of the p-value</strong>.</p></li>
+<li><p>The probability that we randomly get something equally rare, namely <strong>3 tails and 1 head</strong>, is also 4/16 = 0.25, which will be <strong>the second part of the p-values</strong>.</p></li>
+<li><p>The probability that we randomly get something rarer or more extreme, which in our case are <strong>4 heads and 4 tails</strong> is 2/16 = 0.125, and are <strong>the last part of our p-value</strong>.</p></li>
+</ol>
+<p>Adding them all together would result into a p-value of 0.625, so we would fail to reject the null hypothesis - that our data (3 heads and 1 tail) is nothing special, and would need to conclude that 3 heads and 1 tail belong to this distribution.</p>
+<h2 id="p-value-definition-n3-cumulative-probability-area-under-the-curve">P-value definition N°3: cumulative probability (area under the curve)</h2>
+<p>Calculating a p-value from discrete numbers is kind of easy, but how do we do it for continuous numbers? Plotting our discrete data will help to understand that. If we plot our values from the last example, we would find the <strong>most probable</strong> outcomes (<span style="color: green;">green</span>) in the middle, a bit <strong>less probable</strong> (black and <span style="color: blue;">blue</span>) on both sides of the middle, and finally <strong>the least probable</strong> values (<span style="color: red;">red</span>) very far away from the middle. This will become <strong>the probability distribution of our discrete values</strong>. We can also cover plotted values with a <strong>curve</strong> to better visualize this distribution. Now, if we mark our discrete values with discrete numbers on the x-axis, we’ll see that we’ll be able to add any <strong>continuous value</strong> in between those discrete numbers, e.g. 0.3 or 0.333. And for every of these <strong>continuous value</strong> we can calculate <strong>probability</strong> in the exact same way as we just did for <em>2 tails</em>, or <em>3 heads and 1 tail</em>. That’s how we arrive at the <strong>continuous probability</strong>. The p-values for such continuous probability are also calculated in the same way. But instead of adding up only 3 discrete probabilities (our data, as extreme and more extreme data), we add up 2 discrete parts (our data and similarly extreme data) and 1 continuous part (more extreme data from both tails of the distribution):</p>
+<ul>
+<li>and since we calculate probabilities of many points <strong>under the curve</strong> and</li>
+<li>add all of them together, or <strong>ACCUMULATE those probabilities under the curve</strong>,</li>
+<li>we’ll get the <strong>AREA under the curve</strong> - which then <strong>IS</strong> our p-value as a <strong>cumulative probability</strong>, including all the values which are as extreme or more extreme than our data.</li>
+</ul>
+<p><img src="distribution.jpg" /></p>
+<p>An example of such curve could be the weight of people. For instance, the average weight of German males is 80 kilos with 95% of them weighting between 70 and 90 kilos (these numbers are totally made up ;). 2.5% of them will weight &lt;70 and 2.5% will weight &gt;90 kilos. If we get a new data point - namely a weight of a new person, we can calculate the p-value for that point. Our null hypothesis is - that the persons weight is <strong>NOT different</strong> from our distribution. If this person weights 75 kilos, the area under the curve (or a p-value!), which includes all the values <strong>as extreme or more extreme</strong> than 75, will be ca. 0.6 (or 60%), which is fairly big. So, we would fail to reject the null hypothesis, concluding that the person could be a German male, or is at least not different from German males. However, if the weight is 65 kilos, the area under the curve is quite small, let’s say 2%. Here, we can reject the null hypothesis and conclude that this person must belong to a different population, e.g. women, or a man from a different country.</p>
+<p><strong>So you see the p-value is not a simple probability, but 3 probabilities (parts) added together!</strong> A simple probability is the number of outcomes of interest, divided by the total number of outcomes (it’s not even the one-sided p-value). While <strong>a p-value is the probability that random chance generated the</strong></p>
+<ul>
+<li><ol type="1">
+<li>data we observed, or the data that is</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>equally rare or 3. rarer for <strong>discrete</strong> values, or</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>equally extreme or 3. more extreme for <strong>continuous</strong> values,</li>
+</ol></li>
+</ul>
+<p><strong>if the null hypothesis is true.</strong></p>
+<h2 id="p-value-definition-n4-original-fishers-definition">P-value definition N°4: original Fisher’s definition</h2>
+<p>All right, <strong>p-value is a cumulative probability</strong>. And since a probability is a <strong>continues</strong> measure from 0 to 1 (or from 0% to 100%), the <strong>p-value also IS any number between 0 &amp; 1</strong>. If we look for a difference between two groups, we can see a p-value <strong>as a measure of similarity</strong>.</p>
+<p><img src="similarity.png" /></p>
+<p>For examples if two samples are identical, there is <strong>100% similarity and 0% difference</strong>. So, our p-value is equal to 1. If <strong>similarity is only 60%, then the difference is 40%</strong>, which is much bigger then 0, but is still small. But <strong>if the similarity drops to 5% or below, then the difference of 95% is often considered significant</strong>, and we can confidently reject the null hypothesis - that there is NO difference between samples, in favour of the alternative hypothesis - that such difference exists.</p>
+<p><strong>But wait!!!</strong>, does it make any sense to <strong>dichotomize a continuous number</strong> (from 0 to 1) into only two categories - <strong>significant and not-significant? Of coarse, not!</strong> The p-value is not black and white, but everything in between … like 50 shades of gray …</p>
+<p><img src="Fifty_Shades_of_Grey_poster.jpeg" /></p>
+<p>… ups, sorry, not that 50 shades of gray … that one :) <span class="citation" data-cites="Sterne2001">(<a href="#ref-Sterne2001" role="doc-biblioref">Sterne, Smith, and Cox 2001</a>)</span></p>
+<p><img src="interpretation.png" /></p>
+<p>Hmm, but if dichotomizing continuous p-values into two categories - <strong>significant and not-significant</strong> - doesn’t make much sense, <strong>why is the whole world doing exactly that</strong>? “The basic explanation is neither philosophical nor scientific, but sociologic - <strong>everyone uses them</strong>.” <span class="citation" data-cites="Goodman2019">(<a href="#ref-Goodman2019" role="doc-biblioref">Goodman 2019</a>)</span>. But in order to answer this question more thoroughly, we’d need to briefly explore the history of p-values …</p>
+<p>Ronald Fisher, the father of modern statistics, saw the <strong>P value as an index measuring the strength of evidence against the null hypothesis</strong> (see the picture above). Fisher himself proposed: <strong>“if P-value is between 0.1 and 0.9 there is certainly no reason to suspect the hypothesis tested. If it’s below 0.02 it is strongly indicated that the hypothesis fails to account for the whole of the facts.”</strong> He sometimes used the threshold for the p-value of 0.05 (&lt; 5%) himself to reject the null hypothesis, but <strong>without any clear reason</strong>. Moreover, he recommended to treat a <strong>p-value around 0.05 as inconclusive, where we’d need to repeat the experiment.</strong> The reason Fisher used p-values at all was - to reduce the probability of the <strong>type I error</strong> - the probability to find something what is not there - <strong>false positive</strong>, e.g. that somebody has cancer, while being totally healthy. The most typical type I error happens when we measure a difference between two groups and find this difference to be significant, while both samples came from the same population:</p>
+<p><img src="type_1_errors.png" /></p>
+<p>Having a stiff threshold of 0.05 can be:</p>
+<ul>
+<li><p><strong>Good</strong>: because from all H0 you test, in the long run you will falsely reject at most 5% of the correct ones, but it’s also</p></li>
+<li><p><strong>BAD</strong>: because it statistically guarantees that 1 in 20 healthy people, will “have” cancer just by chance, or in 1 out of 20 statistical tests we’ll find nonsense just by chance.</p></li>
+</ul>
+<p>Thus, <strong>lowering the p-value to, let’s say 0.01, reduces the probability of finding nonsense and ensures we find something what is really there</strong>.</p>
+<p>Along the <strong>type I error</strong>, Neyman and Pearson also advocated the <strong>type II error</strong>, that could be made in interpreting the results of an experiment. The type II error is the probability to miss something what is there - <strong>false negative</strong>, e.g. failing to detect cancer, when cancer is already in the body.</p>
+<p><img src="type_2_errors.png" /></p>
+<p>Neyman and Pearson’s idea of <strong>hypothesis testing</strong> was actually really good, because it supposed to reduce the number of mistakes by <strong>keeping the rates of both type I and type II errors low</strong>. However, only the easy part of their approach — that the null hypothesis can be rejected if P &lt; 0.05 (type I error rate of 5%) — has been widely adopted and stuck in the medical research, causing current dichotomy of results into <strong>significant</strong> or <strong>not significant</strong>.</p>
+<p>Two serious consequences of this are that</p>
+<ul>
+<li><p>potentially clinically important differences observed in small studies are denoted as non-significant and ignored, while</p></li>
+<li><p>all significant findings are assumed to result from real treatment effects.</p></li>
+</ul>
+<p>Well, how do we deal with type II errors? <strong>Increasing the sample size will increase the power of the experiment and therefore decrease the probability of type II error</strong>.</p>
+<p>So, now we know that hypothesis testing can produce two types of mistakes:</p>
+<ul>
+<li><p><strong>The type I error IS an ERROR, because p-values help to maintain nonsense</strong>. While</p></li>
+<li><p><strong>The type II error IS an ERROR, because p-values help to miss something important</strong>.</p></li>
+</ul>
+<p>Therefore, <strong>we should stop dichotomising our results into significant and not significant</strong>! But, if after reading this you still want to continue dichotomising your results into <strong>significant</strong> or <strong>not significant</strong>, please, answer a following question: <strong>is the difference between a P-value of 0.051 and 0.049 statistically significant?</strong></p>
+<p>The answer is - a clear NO! However, if using a p-value continuously totally blows your mind, and you still need some pragmatic decision making tool, consider using a hybrid approach, which singles out 5 instead of only 2 categories of <strong>the strength of the evidence against the null hypothesis in favor of the alternative:</strong></p>
+<ul>
+<li>P &gt; 0.10 The data shows <strong>NO evidence</strong> against the null hypothesis</li>
+<li>0.05 &lt; P &lt; 0.10 <strong>Weak evidence</strong> against the null hypothesis in favor of the alternative. It is sometimes reported as a dot: ‘.’</li>
+<li>0.01 &lt; P &lt; 0.05 <strong>Moderate evidence</strong> against the null hypothesis in favor of the alternative. It is sometimes reported as one star: ‘*’</li>
+<li>0.001 &lt; P &lt; 0.01 <strong>Strong evidence</strong> against the null hypothesis in favor of the alternative. It is sometimes reported as two stars: ‘**’</li>
+<li>P &lt; 0.001 <strong>Very strong evidence</strong> against the null hypothesis in favor of the alternative. It is sometimes reported as three stars: ‘***’</li>
+</ul>
+<h2 id="dont-follow-any-cut-off-the-cut-off-should-follow-you">Don’t follow any cut-off, the cut-off should follow you!</h2>
+<p>Any cut-off splits the probability into two parts:</p>
+<ol type="1">
+<li><p><strong>Level of confidence</strong> - beta (β), e.g. 95%, tells how confident are we in our decision and</p></li>
+<li><p><strong>Level of significance</strong> - alpha (⍺), e.g. 5%, tells us when to <strong>reject or fail to reject the <span class="math inline">\(H_0\)</span></strong>. Namely, (1) if p-value &lt;= ⍺, we reject the <span class="math inline">\(H_0\)</span>; (2) if p-value &gt; ⍺, we fail to reject the <span class="math inline">\(H_0\)</span>.</p></li>
+</ol>
+<p>Both <strong>⍺</strong> &amp; <strong>β</strong> add up to 1 and tell you the same thing - how sure are you about your decision:</p>
+<ul>
+<li>for 95% confidence: ⍺ = 1 - β = 1 - 0.95 = 0.05</li>
+<li>for 99% confidence: ⍺ = 1 - β = 1 - 0.99 = 0.01</li>
+</ul>
+<p>The <strong>cut-off itself is up to you</strong> and is <strong>highly dependent on the experiment</strong>. It might sound fuzzy, but it actually gives you a freedom to adjust the decision-making to reality. On the other hand, clinging to the cut-off of 0.05 may actually increase the rates of both type I and type II errors. Let’s have a look at two examples:</p>
+<ol type="1">
+<li>Imagine you study a new treatment for a deadly disease and your p-value for the difference between control and treatment groups is 0.15. If you strictly follow the 0.05 cut-off, you’ll fail to reject the <span class="math inline">\(H_0\)</span> and would conclude that the treatment does not work. The p-value of 0.15 makes you “<em>only</em>” 85% sure that such difference exists, making this difference “<em>not significant enough</em>.” However, if you don’t <span style="color: red;">blindly</span> follow the 0.05, you could <span style="color: blue;">look</span> at your experiment in a completely new way by saying: <strong>I am 85% confident that new treatment works and we found a new way of treating a deadly disease</strong>.</li>
+</ol>
+<p>Similarly, if I was 85% confident of winning the lottery I would definitely play! However, if I’d strictly follow the cut-off of 0.05, I would “<em>be not confident enough</em>” that I will win (which is ridiculous) and I won’t play.</p>
+<ol start="2" type="1">
+<li>On the opposite side, if an airline company welcomes you aboard with a catchy phrase: “We are 95% confident that you’ll survive, so your probability of crashing with us is below 5% (p &lt; 0.05),” would you go aboard? I personally would run away! The airline company would chase me though and scrim: "Stop running away! We <strong>successfully rejected the Null Hypothesis that you will die!!!</strong> But I would only be willing to fly .. if my level of confidence in survival increases to 99.9999% or if my chances to die would become 1 to a million (⍺ = 0,000001) flights.</li>
+</ol>
+<p>So, you see?, the freedom to set up your own level of significance (the cut-off) depending on the situation makes you a better scientist, while blindly following the cut-off of 0.05 would either keep you pure or just kill you.</p>
+<div id="hello" class="greeting message" style="color: blue;">
+<p>P.S.: the dramatic effect of the last sentence serves solely educational purposes … while hoping to significantly (p &lt; 0.05 😉) increase the <strong>probability</strong> that you’ll remember the material :)</p>
+</div>
+<p>Does it mean that any threshold is evil? Well, no! <strong>The threshold of 0.05 means that if there is no difference between Group 1 and Group 2, and if we did this exact experiment 100 times, then only 5 of these experiments would result in a wrong decision.</strong> These would be 5 <strong>false positives</strong> (type I error). Lowering the threshold to let’s say 0.001 would reduce the number of false positives to 1 out of 1000 experiments. <strong>But the costs of doing 1000 experiments are often much higher then it is worth.</strong></p>
+<h2 id="a-single-article-you-need-to-read-moving-to-a-world-beyond-p0.05">A single article you need to read: “Moving to a World Beyond “p&lt;0.05” "</h2>
+<p>If you want to know what statisticians themselves think about p-value, read the following article: <a href="https://www.tandfonline.com/doi/full/10.1080/00031305.2019.1583913">Moving to a World Beyond “p&lt;0.05”</a> <span class="citation" data-cites="Wasserstein2019">(<a href="#ref-Wasserstein2019" role="doc-biblioref">Wasserstein, Schirm, and Lazar 2019</a>)</span>. Here I would just sum up some recommendations the authors provided. These recommendations would enable you to find <strong>fewer false alarms (false positives, type I error), and to overlook fewer discoveries (false negatives, type II error)</strong>.</p>
+<h3 id="what-to-do">What to do:</h3>
+<ul>
+<li><p><strong>report precise continuous p-values</strong> without reference to arbitrary thresholds. For example, P = 0.023 rather than P &lt; 0.05.</p></li>
+<li><p>lower the 0.05 “<em>statistical significance</em>” threshold for claims of novel discoveries to a 0.005 threshold and refer to p-values between 0.05 and 0.005 as “<em>suggestive</em>.”</p></li>
+<li><p>remember, <strong>the p-value as only one aspect of a complete data analysis</strong>. Thus, supplement the p-value with visualizations of confidence intervals on effect sizes or likelihood ratios, justify the adequacy of the sample size and <strong>the reasons various statistical methods were employed</strong>.</p></li>
+<li><p>clarify objectives, invest into careful planning &amp; design, invest into producing solid data, use more descriptive stats, use more of the regularized, robust, nonlinear and nonparametric methods for exploratory research, check the robustness of your methods and use several different data analysis techniques for testing the same hypothesis.</p></li>
+<li><p>look for both (1) a small p-value and (2) a large effect size before declaring a result “significant,” instead of dichotomized p-values alone.</p></li>
+<li><p>interpret the p-value in the context of sample size. A large study can detect a small, clinically unimportant finding. The larger the sample the more likely a difference to be detected. Lower the p-value threshold (e.g. to 0.001) for large studies.</p></li>
+<li><p>reduce unplanned and uncontrolled modeling/testing (p-hacking). <strong>Examining 20 associations will produce one result that is “significant at P = 0.05” by chance alone.</strong> Thus, testing multiple variables, using long questionnaires with hundreds of variables and measuring a wide range of potential outcomes, would <strong>guarantee several false positive findings</strong>.</p></li>
+<li><p>“Accept uncertainty and embrace variation in effects” <span class="citation" data-cites="McShane2019">(<a href="#ref-McShane2019" role="doc-biblioref">McShane et al. 2019</a>)</span></p></li>
+</ul>
+<h3 id="what-not-to-do">What not to do:</h3>
+<ul>
+<li><p>Don’t make decisions based solely on some arbitrary threshold such as p &lt; 0.05. Dichotomizing p-values into “significant” and “non significant” one loses information. A P-value is not black and white, but ≈ 50 shades of grey 😂</p></li>
+<li><p>Don’t treat <strong>“p = 0.051” and “p = 0.049” as being categorically different. 🙂 As <span class="citation" data-cites="Gelman2006"><a href="#ref-Gelman2006" role="doc-biblioref">Gelman and Stern</a> (<a href="#ref-Gelman2006" role="doc-biblioref">2006</a>)</span> famously observed, the difference between “significant” and “not significant” is not itself statistically significant.</strong> Don’t discard a well-designed, excellently conducted, thoughtfully analyzed, and scientifically important experiment only because it failed to cross the threshold of 0.05 (e.g. p-value = 0.09).</p></li>
+<li><p>Don’t believe that an association or effect exists just because it was “statistically significant.”</p></li>
+<li><p>Don’t believe that an association or effect is absent just because it was not “statistically significant.”</p></li>
+<li><p>Don’t conclude anything about practical importance based on “statistical significance” (or lack thereof).</p></li>
+<li><p>In fact - don’t say “statistically significant” at all … whether expressed in words or by asterisks in a table.</p></li>
+<li><p>Don’t believe that your p-value gives the probability that your test hypothesis is TRUE. <strong>P-value is the probability of the data, not of (any) hypothesis!</strong></p></li>
+</ul>
+<h2 id="what-about-bayesian-statistical-inference">What about Bayesian statistical inference?</h2>
+<p>The switch to the use of Bayesian statistical inference in medical research was proposed for several decades, but is barely possible. A major reason is that <strong>prior knowledge can be difficult to quantify</strong>. The major reason for that is that science suppose to produce NEW knowledge. Thus, repeated experiments are necessary, but few scientist want to do them. Moreover, if the priors are flat (a wide range of values is considered to be equally likely), then the <em>Frequentist</em> and <em>Bayesian</em> results are similar, while computing power required for Bayesian analysis is “significantly” ;) higher. Two approaches will give different results, however, if our prior opinion is not vague. Besides, we can’t ignore the fact that <em>Bayesian statistics</em> is even less intuitive to the majority of scientists then <em>Frequentists statistics</em>. Otherwise everybody would have already used it. Thus, until an alternative, simple and widely accepted approach to the p-values exists, banning p-values is of no help to anyone.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Most of the scientist can’t tell you what the p-value is. Most of the statisticians can, but can’t explain it to intuitively. So, don’t give yourself a hard time if you still a bit confused. It’s normal. Instead, I’d suggest we stop caring about understanding the p-value, but start caring to use it properly. And remember, <strong>you don’t need to understand how the car works, you only need to know how to drive</strong>.</p>
+<p><img src="impossible-parking.gif" /></p>
+<h2 id="whats-next-to-learn">What’s next to learn?</h2>
+<ul>
+<li>misinterpretations of p-values (only if you are interested)</li>
+<li>effect size and</li>
+<li>power analysis</li>
+</ul>
+<hr />
+<p>If you think, I missed something, please comment on it, and I’ll improve this tutorial.</p>
+<p><strong>Thank you for learning!</strong></p>
+<h2 id="further-readings-and-watchings">Further readings and watchings</h2>
+<ul>
+<li><p>that’s an amazing video: <a href="https://www.youtube.com/watch?v=tLM7xS6t4FE&amp;ab_channel=SciShow" class="uri">https://www.youtube.com/watch?v=tLM7xS6t4FE&amp;ab_channel=SciShow</a></p></li>
+<li><p><a href="http://www.stat.ualberta.ca/~hooper/teaching/misc/Pvalue.pdf" class="uri">http://www.stat.ualberta.ca/~hooper/teaching/misc/Pvalue.pdf</a></p></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-Gelman2006" class="csl-entry" role="doc-biblioentry">
+Gelman, Andrew, and Hal Stern. 2006. <span>“<span class="nocase">The difference between "significant" and "not significant" is not itself statistically significant</span>.”</span> <em>American Statistician</em> 60 (4). <a href="https://doi.org/10.1198/000313006X152649">https://doi.org/10.1198/000313006X152649</a>.
+</div>
+<div id="ref-Goodman2019" class="csl-entry" role="doc-biblioentry">
+Goodman, Steven N. 2019. <span>“<span class="nocase">Why is Getting Rid of P-Values So Hard? Musings on Science and Statistics</span>.”</span> <em>American Statistician</em> 73 (sup1). <a href="https://doi.org/10.1080/00031305.2018.1558111">https://doi.org/10.1080/00031305.2018.1558111</a>.
+</div>
+<div id="ref-McShane2019" class="csl-entry" role="doc-biblioentry">
+McShane, Blakeley B., David Gal, Andrew Gelman, Christian Robert, and Jennifer L. Tackett. 2019. <span>“<span>Abandon Statistical Significance</span>.”</span> <em>American Statistician</em> 73 (sup1). <a href="https://doi.org/10.1080/00031305.2018.1527253">https://doi.org/10.1080/00031305.2018.1527253</a>.
+</div>
+<div id="ref-Sterne2001" class="csl-entry" role="doc-biblioentry">
+Sterne, Jonathan A. C., George Davey Smith, and D. R. Cox. 2001. <span>“<span class="nocase">Sifting the evidence—what’s wrong with significance tests?</span>”</span> <em>BMJ</em> 322 (7280). <a href="https://doi.org/10.1136/bmj.322.7280.226">https://doi.org/10.1136/bmj.322.7280.226</a>.
+</div>
+<div id="ref-Wasserstein2019" class="csl-entry" role="doc-biblioentry">
+Wasserstein, Ronald L, Allen L Schirm, and Nicole A Lazar. 2019. <span>“<span class="nocase">Moving to a World Beyond "p <span>&lt;</span> 0.05"</span>.”</span> <a href="https://doi.org/10.1080/00031305.2019.1583913">https://doi.org/10.1080/00031305.2019.1583913</a>.
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2021-07-31-p-value-intuitive-explanation/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=What%20is%20p-value%20and%20why%20we%20need%20it&amp;url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F&amp;title=What%20is%20p-value%20and%20why%20we%20need%20it" aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
+      </a>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
+      </a>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2021-07-31-p-value-intuitive-explanation%2F&amp;description=What%20is%20p-value%20and%20why%20we%20need%20it" aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://yuzar-blog.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script type="text/javascript" cookie-consent="functionality">
+var disqus_config = function () {
+  this.page.url = 'https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/';
+  this.page.identifier = 'posts/2021-07-31-p-value-intuitive-explanation/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://yuzar-blog.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
+  <h3 id="updates-and-corrections">Corrections</h3>
+  <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/yuryzablotski/yuzaR-Blog/issues/new">create an issue</a> on the source repository.</p>
+  <h3 id="reuse">Reuse</h3>
+  <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/yuryzablotski/yuzaR-Blog">https://github.com/yuryzablotski/yuzaR-Blog</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Zablotski (2021, Jan. 9). yuzaR-Blog: What is p-value and why we need it. Retrieved from https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{zablotski2021what,
+  author = {Zablotski, Yury},
+  title = {yuzaR-Blog: What is p-value and why we need it},
+  url = {https://yuryzablotski/yuzaR-Blog.github.io/posts/2021-07-31-p-value-intuitive-explanation/},
+  year = {2021}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

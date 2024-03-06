@@ -1,0 +1,3191 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { color: #00769e; background-color: #f1f3f5; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #00769e; } /* Normal */
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #657422; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #00769e; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #00769e; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #00769e; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+
+  <!--radix_placeholder_meta_tags-->
+<title>yuzaR-Blog: {emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!</title>
+
+<meta property="description" itemprop="description" content="{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let&#39;s demistify {emmeans} and uncover it&#39;s power!"/>
+
+<link rel="canonical" href="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/"/>
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2023-01-31"/>
+<meta property="article:created" itemprop="dateCreated" content="2023-01-31"/>
+<meta name="article:author" content="Yury Zablotski"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="yuzaR-Blog: {emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let&#39;s demistify {emmeans} and uncover it&#39;s power!"/>
+<meta property="og:url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/"/>
+<meta property="og:image" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/thumbnail_emmeans_1.png"/>
+<meta property="og:image:width" content="1920"/>
+<meta property="og:image:height" content="1080"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="yuzaR-Blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="yuzaR-Blog: {emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!"/>
+<meta property="twitter:description" content="{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let&#39;s demistify {emmeans} and uncover it&#39;s power!"/>
+<meta property="twitter:url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/"/>
+<meta property="twitter:image" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/thumbnail_emmeans_1.png"/>
+<meta property="twitter:image:width" content="1920"/>
+<meta property="twitter:image:height" content="1080"/>
+<meta property="twitter:site" content="@yuzaR___"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="yuzaR-Blog: {emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!"/>
+<meta name="citation_fulltext_html_url" content="https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/"/>
+<meta name="citation_fulltext_world_readable" content=""/>
+<meta name="citation_online_date" content="2023/01/31"/>
+<meta name="citation_publication_date" content="2023/01/31"/>
+<meta name="citation_author" content="Yury Zablotski"/>
+<!--/radix_placeholder_meta_tags-->
+  
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","date","categories","preview","output","bibliography","biblio-style","link-citations","linkcolor","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["{emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!"]},{"type":"character","attributes":{},"value":["{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let's demistify {emmeans} and uncover it's power!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Yury Zablotski"]},{"type":"character","attributes":{},"value":["https://yuzar-blog.netlify.app/"]}]}]},{"type":"character","attributes":{},"value":["January 31, 2023"]},{"type":"character","attributes":{},"value":["videos","statistics","models"]},{"type":"character","attributes":{},"value":["thumbnail_emmeans_1.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float","toc_depth","code_download"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[6]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["/Users/zablotski/Documents/library.bib"]},{"type":"character","attributes":{},"value":["apalike"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["blue"]},{"type":"character","attributes":{},"value":["https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/"]},{"type":"character","attributes":{},"value":["https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["emmeans_files/anchor-4.2.2/anchor.min 3.js","emmeans_files/anchor-4.2.2/anchor.min.js","emmeans_files/bowser-1.9.3/bowser.min 3.js","emmeans_files/bowser-1.9.3/bowser.min.js","emmeans_files/distill-2.2.21/template.v2 3.js","emmeans_files/distill-2.2.21/template.v2.js","emmeans_files/figure-html5/unnamed-chunk-1-1.png","emmeans_files/figure-html5/unnamed-chunk-10-1.png","emmeans_files/figure-html5/unnamed-chunk-10-2.png","emmeans_files/figure-html5/unnamed-chunk-11-1.png","emmeans_files/figure-html5/unnamed-chunk-11-2.png","emmeans_files/figure-html5/unnamed-chunk-12-1.png","emmeans_files/figure-html5/unnamed-chunk-13-1.png","emmeans_files/figure-html5/unnamed-chunk-14-1.png","emmeans_files/figure-html5/unnamed-chunk-16-1.png","emmeans_files/figure-html5/unnamed-chunk-18-1.png","emmeans_files/figure-html5/unnamed-chunk-19-1.png","emmeans_files/figure-html5/unnamed-chunk-19-2.png","emmeans_files/figure-html5/unnamed-chunk-2-1.png","emmeans_files/figure-html5/unnamed-chunk-20-1.png","emmeans_files/figure-html5/unnamed-chunk-20-2.png","emmeans_files/figure-html5/unnamed-chunk-21-1 2.png","emmeans_files/figure-html5/unnamed-chunk-21-1.png","emmeans_files/figure-html5/unnamed-chunk-21-2.png","emmeans_files/figure-html5/unnamed-chunk-21-3.png","emmeans_files/figure-html5/unnamed-chunk-21-4.png","emmeans_files/figure-html5/unnamed-chunk-22-1 2.png","emmeans_files/figure-html5/unnamed-chunk-22-1.png","emmeans_files/figure-html5/unnamed-chunk-22-2.png","emmeans_files/figure-html5/unnamed-chunk-22-3.png","emmeans_files/figure-html5/unnamed-chunk-23-1.png","emmeans_files/figure-html5/unnamed-chunk-23-2.png","emmeans_files/figure-html5/unnamed-chunk-23-3.png","emmeans_files/figure-html5/unnamed-chunk-24-1 2.png","emmeans_files/figure-html5/unnamed-chunk-24-1.png","emmeans_files/figure-html5/unnamed-chunk-24-2.png","emmeans_files/figure-html5/unnamed-chunk-24-3.png","emmeans_files/figure-html5/unnamed-chunk-25-1.png","emmeans_files/figure-html5/unnamed-chunk-26-1.png","emmeans_files/figure-html5/unnamed-chunk-26-2.png","emmeans_files/figure-html5/unnamed-chunk-26-3.png","emmeans_files/figure-html5/unnamed-chunk-26-4.png","emmeans_files/figure-html5/unnamed-chunk-27-1.png","emmeans_files/figure-html5/unnamed-chunk-27-2.png","emmeans_files/figure-html5/unnamed-chunk-27-3.png","emmeans_files/figure-html5/unnamed-chunk-27-4.png","emmeans_files/figure-html5/unnamed-chunk-28-1.png","emmeans_files/figure-html5/unnamed-chunk-28-2.png","emmeans_files/figure-html5/unnamed-chunk-28-3.png","emmeans_files/figure-html5/unnamed-chunk-28-4.png","emmeans_files/figure-html5/unnamed-chunk-29-1.png","emmeans_files/figure-html5/unnamed-chunk-29-2.png","emmeans_files/figure-html5/unnamed-chunk-29-3.png","emmeans_files/figure-html5/unnamed-chunk-29-4.png","emmeans_files/figure-html5/unnamed-chunk-3-1.png","emmeans_files/figure-html5/unnamed-chunk-3-2.png","emmeans_files/figure-html5/unnamed-chunk-30-1.png","emmeans_files/figure-html5/unnamed-chunk-30-2.png","emmeans_files/figure-html5/unnamed-chunk-30-3.png","emmeans_files/figure-html5/unnamed-chunk-30-4.png","emmeans_files/figure-html5/unnamed-chunk-31-1.png","emmeans_files/figure-html5/unnamed-chunk-31-2.png","emmeans_files/figure-html5/unnamed-chunk-31-3.png","emmeans_files/figure-html5/unnamed-chunk-31-4.png","emmeans_files/figure-html5/unnamed-chunk-32-1.png","emmeans_files/figure-html5/unnamed-chunk-32-2.png","emmeans_files/figure-html5/unnamed-chunk-32-3.png","emmeans_files/figure-html5/unnamed-chunk-33-1.png","emmeans_files/figure-html5/unnamed-chunk-33-2.png","emmeans_files/figure-html5/unnamed-chunk-34-1.png","emmeans_files/figure-html5/unnamed-chunk-34-2.png","emmeans_files/figure-html5/unnamed-chunk-35-1.png","emmeans_files/figure-html5/unnamed-chunk-35-2.png","emmeans_files/figure-html5/unnamed-chunk-36-1.png","emmeans_files/figure-html5/unnamed-chunk-36-2.png","emmeans_files/figure-html5/unnamed-chunk-37-1.png","emmeans_files/figure-html5/unnamed-chunk-37-2.png","emmeans_files/figure-html5/unnamed-chunk-38-1.png","emmeans_files/figure-html5/unnamed-chunk-39-1.png","emmeans_files/figure-html5/unnamed-chunk-4-1.png","emmeans_files/figure-html5/unnamed-chunk-5-1.png","emmeans_files/figure-html5/unnamed-chunk-6-1.png","emmeans_files/figure-html5/unnamed-chunk-7-1.png","emmeans_files/figure-html5/unnamed-chunk-7-2.png","emmeans_files/figure-html5/unnamed-chunk-7-3.png","emmeans_files/figure-html5/unnamed-chunk-8-1.png","emmeans_files/figure-html5/unnamed-chunk-8-2.png","emmeans_files/figure-html5/unnamed-chunk-9-1.png","emmeans_files/figure-html5/unnamed-chunk-9-2.png","emmeans_files/header-attrs-2.18/header-attrs 2.js","emmeans_files/header-attrs-2.18/header-attrs.js","emmeans_files/header-attrs-2.19/header-attrs 2.js","emmeans_files/header-attrs-2.19/header-attrs.js","emmeans_files/jquery-3.6.0/jquery-3.6.0 3.js","emmeans_files/jquery-3.6.0/jquery-3.6.0.js","emmeans_files/jquery-3.6.0/jquery-3.6.0.min 3.js","emmeans_files/jquery-3.6.0/jquery-3.6.0.min 3.map","emmeans_files/jquery-3.6.0/jquery-3.6.0.min.js","emmeans_files/jquery-3.6.0/jquery-3.6.0.min.map","emmeans_files/popper-2.6.0/popper.min 3.js","emmeans_files/popper-2.6.0/popper.min.js","emmeans_files/tippy-6.2.7/tippy 3.css","emmeans_files/tippy-6.2.7/tippy-bundle.umd.min 3.js","emmeans_files/tippy-6.2.7/tippy-bundle.umd.min.js","emmeans_files/tippy-6.2.7/tippy-light-border 3.css","emmeans_files/tippy-6.2.7/tippy-light-border.css","emmeans_files/tippy-6.2.7/tippy.css","emmeans_files/tippy-6.2.7/tippy.umd.min 3.js","emmeans_files/tippy-6.2.7/tippy.umd.min.js","emmeans_files/vembedr-0.1.5/css/vembedr 2.css","emmeans_files/vembedr-0.1.5/css/vembedr.css","emmeans_files/webcomponents-2.0.0/webcomponents 3.js","emmeans_files/webcomponents-2.0.0/webcomponents.js","thumbnail_emmeans_1.png","type_1_errors.png","type_2_errors.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+  font-size: 100%;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+hr.section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0px;
+}
+
+
+d-byline {
+  border-top: none;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+  border-top: none;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+/* tweak for Pandoc numbered line within distill */
+d-article pre.numberSource code > span {
+    left: -2em;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // separator
+  var separator = '<hr class="section-separator" style="clear: both"/>';
+  // prepend separator above appendix
+  $('.d-byline').before(separator);
+  $('.d-article').before(separator);
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme, except when numbering line
+  // in code chunk
+  $('pre:not(.numberLines) code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      var author_name = front_matter.authors[i].author
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      const citeChild = $(this).children()[0]
+      // Do not process if @xyz has been used without escaping and without bibliography activated
+      // https://github.com/rstudio/distill/issues/466
+      if (citeChild === undefined) return true
+
+      if (citeChild.nodeName == "D-FOOTNOTE") {
+        var fn = citeChild
+        $(this).html(fn.shadowRoot.querySelector("sup"))
+        $(this).id = fn.id
+        fn.remove()
+      }
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        // Could use CSS.escape too here, we insure backward compatibility in navigator
+        return "<p>" + $('div[id="ref-' + ref + '"]').html() + "</p>";
+      }).join("\n");
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // fix footnotes in tables (#411)
+    // replacing broken distill.pub feature
+    $('table d-footnote').each(function() {
+      // we replace internal showAtNode methode which is triggered when hovering a footnote
+      this.hoverBox.showAtNode = function(node) {
+        // ported from https://github.com/distillpub/template/pull/105/files
+        calcOffset = function(elem) {
+            let x = elem.offsetLeft;
+            let y = elem.offsetTop;
+            // Traverse upwards until an `absolute` element is found or `elem`
+            // becomes null.
+            while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                x += elem.offsetLeft;
+                y += elem.offsetTop;
+            }
+
+            return { left: x, top: y };
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+        const bbox = node.getBoundingClientRect();
+        const offset = calcOffset(node);
+        this.show([offset.left + bbox.width, offset.top + bbox.height]);
+      }
+    })
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    // ignore leaflet img layers (#106)
+    figures = figures.filter(':not(img[class*="leaflet"])')
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       25px;
+  --text-color:       white;
+  --text-size:        25px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+  font-weight: bold;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.19/header-attrs.js"></script>
+  <link href="../../site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-Q28WX9Y4VS"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Q28WX9Y4VS');
+</script>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"{emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!","description":"{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let's demistify {emmeans} and uncover it's power!","authors":[{"author":"Yury Zablotski","authorURL":"https://yuzar-blog.netlify.app/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2023-01-31T00:00:00.000+01:00","citationText":"Zablotski, 2023"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo">
+<img src="../../images/my_foto.jpg" alt="Logo"/>
+</a>
+<a href="../../index.html" class="title">yuzaR-Blog</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../about.html">ABOUT</a>
+<a href="../../index.html">POSTS</a>
+<a href="../../consulting.html">CONSULTING</a>
+<a href="https://www.youtube.com/channel/UCcGXGFClRdnrwXsPHi7P4ZA">
+<i class="fa fa-youtube-square" aria-hidden="true"></i>
+</a>
+<a href="https://twitter.com/yuzaR___">
+<i class="fa fa-twitter" aria-hidden="true"></i>
+</a>
+<a href="https://www.linkedin.com/in/dr-yury-zablotski-3765b378/">
+<i class="fa fa-linkedin" aria-hidden="true"></i>
+</a>
+<a href="https://github.com/yuryzablotski/yuzaR-Blog">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
+<a href="https://koji.to/yuzaR">LEAVE A TIP</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>{emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:videos" class="dt-tag">videos</a>
+  <a href="../../index.html#category:statistics" class="dt-tag">statistics</a>
+  <a href="../../index.html#category:models" class="dt-tag">models</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>{emmeans} is one of the most capable, but at the same time one of the most mysterious and therefore underrated R packages. Let’s demistify {emmeans} and uncover it’s power!</p></p>
+</div>
+
+<div class="d-byline">
+  Yury Zablotski <a href="https://yuzar-blog.netlify.app/" class="uri">https://yuzar-blog.netlify.app/</a> 
+  
+<br/>January 31, 2023
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#this-post-as-a-video" id="toc-this-post-as-a-video">This post as a video</a></li>
+<li><a href="#why-do-we-need-emmeans" id="toc-why-do-we-need-emmeans">Why do we need {emmeans}?</a></li>
+<li><a href="#understand-what-emmeans-actually-stands-for" id="toc-understand-what-emmeans-actually-stands-for">Understand what “emmeans” actually stands for</a></li>
+<li><a href="#single-categorical-predictor" id="toc-single-categorical-predictor">Single categorical predictor</a></li>
+<li><a href="#summary-of-summaries" id="toc-summary-of-summaries">Summary of … summaries ;)</a></li>
+<li><a href="#single-numeric-predictor-altering-the-reference-grid" id="toc-single-numeric-predictor-altering-the-reference-grid">Single numeric predictor + altering the reference grid</a></li>
+<li><a href="#one-categorical-one-numeric-predictors" id="toc-one-categorical-one-numeric-predictors">One categorical + One numeric predictors</a></li>
+<li><a href="#two-categorical-predictors" id="toc-two-categorical-predictors">Two categorical predictors</a></li>
+<li><a href="#two-numeric-predictors" id="toc-two-numeric-predictors">Two numeric predictors</a></li>
+<li><a href="#whats-next-interactions" id="toc-whats-next-interactions">What’s next? … Interactions!</a></li>
+<li><a href="#some-bonus-content" id="toc-some-bonus-content">Some bonus content</a>
+<ul>
+<li><a href="#cohens-d-effect-sizes" id="toc-cohens-d-effect-sizes">“Cohen’s d” Effect sizes</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h1 id="this-post-as-a-video">This post as a video</h1>
+<p>I recommend to watch a video first, because I highlight things I talk about. It’s ca. 14 minutes long.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/_okuMw4JFfU" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="emmeans_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
+</div>
+<h1 id="why-do-we-need-emmeans">Why do we need {emmeans}?</h1>
+<ul>
+<li><p>Have you ever wondered, why a “summary” function of an omnibus test like ANOVA, tells you that “the number of cylinders” significantly affects “car mileage” <strong>without explaining how?</strong></p></li>
+<li><p>Or have you ever been puzzled why a model compares all categories of a categorical predictor to <strong>only the reference category, without comparing categories to each other?</strong></p></li>
+<li><p>And what about those mysterious slopes with standard errors we get as model coefficients instead of the averages per category with 95% CIs that we actually want?</p></li>
+<li><p>Moreover, “summary” function doesn’t adjust p-values for multiple comparisons, which increases the probability of discovering nonsense by making too many type-I errors.</p></li>
+</ul>
+<p><img src="type_1_errors.png" /></p>
+<ul>
+<li><p>Summary function doesn’t plot the results of a model and</p></li>
+<li><p>makes it almost impossible to interpret interactions!</p></li>
+</ul>
+<p>So, if you’ve ever been frustrated due to similar issues, you’re definitely not alone! The <strong>“summary” function doesn’t actually provide a very useful summary</strong>, and that’s why we need {emmeans} package, which solves all those problems.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>       <span class='co'># for everything good in R</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme_get.html'>theme_set</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_test</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>  <span class='co'># beautifies plots </span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rvlenth/emmeans'>emmeans</a></span><span class='op'>)</span>         <span class='co'># unleash power of your results!</span></span>
+<span></span>
+<span><span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cyl  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span>,</span>
+<span>         am   <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>am</span><span class='op'>)</span>,</span>
+<span>         gear <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>gear</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># omnibus test</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/aov.html'>aov</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+cyl          2  824.8   412.4    39.7 4.98e-09 ***
+Residuals   29  301.3    10.4                     
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># linear model</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = mpg ~ cyl, data = d)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.2636 -1.8357  0.0286  1.3893  7.2364 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  26.6636     0.9718  27.437  &lt; 2e-16 ***
+cyl6         -6.9208     1.5583  -4.441 0.000119 ***
+cyl8        -11.5636     1.2986  -8.905 8.57e-10 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 3.223 on 29 degrees of freedom
+Multiple R-squared:  0.7325,    Adjusted R-squared:  0.714 
+F-statistic:  39.7 on 2 and 29 DF,  p-value: 4.979e-09</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># lm(mpg ~ cyl, d) %&gt;% summary() %&gt;% plot()</span></span></code></pre>
+</div>
+</div>
+<p>Even the simplest “emmeans” application provides averages with CIs, compares all categories to each other pair-wisely, adjusts p-values for multiple comparisons and can be easily plotted. And that’s just a beginning, because {emmeans} can do soo much more! But before we unleash the full power of {emmeans} package, we need to …</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># emmeans helps ;)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span> </span></code></pre>
+</div>
+<pre><code>$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.7 0.972 29     24.7     28.7
+ 6     19.7 1.218 29     17.3     22.2
+ 8     15.1 0.861 29     13.3     16.9
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0003
+ cyl4 - cyl8    11.56 1.30 29   8.905  &lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0112
+
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="emmeans_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
+</div>
+<h1 id="understand-what-emmeans-actually-stands-for">Understand what “emmeans” actually stands for</h1>
+<p>The “emmeans” is an abbreviation for <strong>Estimated Marginal MEANS</strong> (EMMs).</p>
+<ul>
+<li><p>“estimated” is part of the name, since results are estimated (or predicted) only from models, not from data</p></li>
+<li><p>the “means” is part of of the name, because the averages themselves are often estimated. However, the term “means” is just a generalization, because for a median-based regression {emmeans} would estimate the marginal medians, while for a logistic regression {emmeans} calculates marginal probabilities. Cool, right?</p></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.r-project.org'>quantreg</a></span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/quantreg/man/rq.html'>rq</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span>, tau <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> cyl emmean    SE df lower.CL upper.CL
+ 4     26.0 1.872 29     22.2     29.8
+ 6     19.7 0.895 29     17.9     21.5
+ 8     15.2 0.873 29     13.4     17.0
+
+Confidence level used: 0.95 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>am</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>cyl</span>, type <span class='op'>=</span> <span class='st'>"response"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> cyl  prob     SE  df asymp.LCL asymp.UCL
+ 4   0.727 0.1343 Inf     0.414     0.910
+ 6   0.429 0.1870 Inf     0.144     0.770
+ 8   0.143 0.0935 Inf     0.036     0.427
+
+Confidence level used: 0.95 
+Intervals are back-transformed from the logit scale </code></pre>
+</div>
+<ul>
+<li>so, the last part of the name is called “marginal”, which describes a <strong>group of values that we want to compute an average for</strong>. For a categorical predictor, each category is a “margin”. And for a numeric predictor, an average of that predictor is the “margin”. For example, a marginal mean of “miles per gallon” for 4 cylinders is 26.7, and for 8 cylinders only 15.1, while the average “mpg” will be estimated for an average horsepower of 147.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>gear</span> <span class='op'>+</span> <span class='va'>am</span> <span class='op'>+</span> <span class='va'>hp</span>, <span class='va'>d</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/ref_grid.html'>ref_grid</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>&#39;emmGrid&#39; object with variables:
+    gear = 3, 4, 5
+    am = 0, 1
+    hp = 146.69</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>$</span><span class='va'>hp</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>[1] 146.6875</code></pre>
+</div>
+<p><strong>All margins of a model are combined in a REFERENCE GRID, which is the FOUNDATION for EMMs,</strong> because we can estimate the mean at each point in the reference grid, or even define new points of the reference grid we want to estimate the means for. But let’s take it one step at the time, starting with a …</p>
+<h1 id="single-categorical-predictor">Single categorical predictor</h1>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>cyl</span>, <span class='va'>d</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/ref_grid.html'>ref_grid</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>&#39;emmGrid&#39; object with variables:
+    cyl = 4, 6, 8</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.7 0.972 29     24.7     28.7
+ 6     19.7 1.218 29     17.3     22.2
+ 8     15.1 0.861 29     13.3     16.9
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0003
+ cyl4 - cyl8    11.56 1.30 29   8.905  &lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0112
+
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+</div>
+<p>The reference grid of this model shows 3 points we can estimate mean “mpg” for, namely cylinders 4, 6 and 8. The “emmeans” function displays those means with their 95% CIs, compares the mileage of cylinders among each other pair-wisely and adjusts p-values for multiple comparison with a <em>Tukey</em> method by default.</p>
+<p>The default method of adjustment can easily be changed thought, which is very useful for several cases. First of all, people might want to use a famous <em>Bonferroni</em> method. However, <em>Bonferroni</em> correction is quite conservative and produces higher p-values as compared to <em>Tukey</em>, which is dangerous, because it increases chances to make a type II error - namely missing a discovery.</p>
+<p><img src="type_2_errors.png" /></p>
+<p>Thus, <em>Bonferroni</em> correction is more useful when you have a lot of data. But if you only have a few observations or conduct an exploratory pilot study, you can even stop correcting for multiple comparisons by using, adjust = “none”, argument. I personally prefer Benjamini &amp; Hochberg (1995) method (“BH” or its alias “fdr”) to control the false discovery rate.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span>, adjust <span class='op'>=</span> <span class='st'>"bonferroni"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span></span></code></pre>
+</div>
+<pre><code> contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0004
+ cyl4 - cyl8    11.56 1.30 29   8.905  &lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0125
+
+P value adjustment: bonferroni method for 3 tests </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span>, adjust <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>contrasts</span></span></code></pre>
+</div>
+<pre><code> contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0001
+ cyl4 - cyl8    11.56 1.30 29   8.905  &lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0042</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span>, adjust <span class='op'>=</span> <span class='st'>"BH"</span><span class='op'>)</span> <span class='co'># = “fdr”</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.7 0.972 29     24.7     28.7
+ 6     19.7 1.218 29     17.3     22.2
+ 8     15.1 0.861 29     13.3     16.9
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29   4.441  0.0002
+ cyl4 - cyl8    11.56 1.30 29   8.905  &lt;.0001
+ cyl6 - cyl8     4.64 1.49 29   3.112  0.0042
+
+P value adjustment: BH method for 3 tests </code></pre>
+</div>
+<h1 id="summary-of-summaries">Summary of … summaries ;)</h1>
+<p>Interestingly, the “emmeans” function shows us 95% CIs of the means, but not of the estimates of contrasts, which are differences between cylinders. On the other hand, the contrasts have p-values which test the null hypothesis that the difference is literally zero, while the “emmeans” section does not test any hypothesis and therefore has no p-values.</p>
+<p>We could greatly enhance the output of “emmeans” by using the “infer = TRUE” argument. This produces 95% CIs for the differences among cylinders, which is more useful than the standard error (SE). It also tests the null hypothesis that the means are actually zero. However, testing “emmeans” against zero is not particularly useful – which is why p-values are not usually shown. But it makes a lot more sense to test them against some target mileage, let’s say 14. For that, we can use the “null” argument to set the null hypothesis to 14. This makes cylinder 8, with a mean mileage of 15.1, no longer significantly different from our new null hypothesis. The “pairwise” argument is removed, because otherwise the contrasts would also have been tested against 14.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span>, infer <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+ cyl emmean    SE df lower.CL upper.CL t.ratio p.value
+ 4     26.7 0.972 29     24.7     28.7  27.437  &lt;.0001
+ 6     19.7 1.218 29     17.3     22.2  16.206  &lt;.0001
+ 8     15.1 0.861 29     13.3     16.9  17.529  &lt;.0001
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df lower.CL upper.CL t.ratio p.value
+ cyl4 - cyl6     6.92 1.56 29    3.072    10.77   4.441  0.0003
+ cyl4 - cyl8    11.56 1.30 29    8.356    14.77   8.905  &lt;.0001
+ cyl6 - cyl8     4.64 1.49 29    0.958     8.33   3.112  0.0112
+
+Confidence level used: 0.95 
+Conf-level adjustment: tukey method for comparing a family of 3 estimates 
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>cyl</span>, infer <span class='op'>=</span> <span class='cn'>T</span>, null <span class='op'>=</span> <span class='fl'>14</span>, adjust <span class='op'>=</span> <span class='st'>"mvt"</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> cyl emmean    SE df lower.CL upper.CL null t.ratio p.value
+ 4     26.7 0.972 29     24.2     29.1   14  13.031  &lt;.0001
+ 6     19.7 1.218 29     16.7     22.8   14   4.714  0.0002
+ 8     15.1 0.861 29     12.9     17.3   14   1.277  0.5018
+
+Confidence level used: 0.95 
+Conf-level adjustment: mvt method for 3 estimates 
+P value adjustment: mvt method for 3 tests </code></pre>
+</div>
+<p>As you can see, the “emmeans” function does a great job of summarizing all the important results, while the “summary” function misses most of them. We can even go in the opposite direction and summarize the “emmeans” results themselves to include <strong>only the most essential information</strong>. For that we’ll use the Pairwise P-value matrix (“pwpm”) function, which presents results from “emmeans” and pairwise comparisons thereof in a most compact way, where:</p>
+<ul>
+<li>the upper triangle displays the “Tukey” adjusted P values,</li>
+<li>the diagonal shows the Estimates (EMMs), and</li>
+<li>the lower triangle compares the estimates between levels.</li>
+</ul>
+<p>In this way, rarely used information such as “df” or “t.ratios” is left out.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/pwpm.html'>pwpm</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>       4      6      8
+4 [26.7] 0.0003 &lt;.0001
+6   6.92 [19.7] 0.0112
+8  11.56   4.64 [15.1]
+
+Row and column labels: cyl
+Upper triangle: P values   adjust = &quot;tukey&quot;
+Diagonal: [Estimates] (emmean) 
+Lower triangle: Comparisons (estimate)   earlier vs. later</code></pre>
+</div>
+<p>Another advantage of “emmeans” over “summary” function is that we can easily plot our estimates with their 95% confidence intervals by using a “plot” command. (The 95% confidence intervals are the default, but you can change them with “level” argument, if you want to.) But the advantages of using “emmeans” over “summary” doesn’t stop there. The benefits are even more pronounced if we analyze numeric predictors or covariates.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span><span class='op'>$</span><span class='va'>emmeans</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="emmeans_files/figure-html5/unnamed-chunk-11-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span>, level <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>$</span><span class='va'>emmeans</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="emmeans_files/figure-html5/unnamed-chunk-11-2.png" width="624" /></p>
+</div>
+<h1 id="single-numeric-predictor-altering-the-reference-grid">Single numeric predictor + altering the reference grid</h1>
+<p>Namely, instead of just looking at the average 20 miles per gallon for a boring average car (as represented by the mean “horsepower” of 147), we can estimate “mileages per gallon” for weak (imagine a baby car) and muscle cars (imagine a muscle car and a engine noise)? To do this, we’ll <em>reduce our covariate</em> to only the <em>range</em> of “horsepower”, from 52 to 335, which gives us a <strong>much more informative</strong> and less boring look at fuel efficiency. Particularly, weak cars drive further and strong cars drive <strong>much less</strong> than the average 20 miles per gallon.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>hp</span>, <span class='va'>d</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>hp</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>  hp emmean    SE df lower.CL upper.CL
+ 147   20.1 0.683 30     18.7     21.5
+
+Confidence level used: 0.95 </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>hp</span>, cov.reduce <span class='op'>=</span> <span class='va'>range</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>  hp emmean   SE df lower.CL upper.CL
+  52  26.55 1.18 30    24.15     29.0
+ 335   7.24 2.02 30     3.11     11.4
+
+Confidence level used: 0.95 </code></pre>
+</div>
+<p>Moreover, we can specify any particular values of a numeric predictor, which might be useful when we have a non-linear relationship, but still need to figure out the efficiency of cars at different values of horsepower.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/stats/poly.html'>poly</a></span><span class='op'>(</span><span class='va'>hp</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='va'>d</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://strengejacke.github.io/sjPlot/'>sjPlot</a></span><span class='op'>)</span> <span class='co'># I made a video on this 📦</span></span>
+<span><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m1</span>, type <span class='op'>=</span> <span class='st'>"pred"</span>, show.data <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$hp</code></pre>
+<p><img src="emmeans_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<p>Let’s use 100, 200, and 300 “horsepowers” and not only plot the estimates, but also compare them statistically by using the “comparisons = TRUE” argument. The blue bars represent the 95% confidence intervals for the EMMs, and the red arrows show statistical comparisons among them. If an arrow from one mean overlaps with an arrow from another mean, the difference is not significant.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='op'>~</span> <span class='va'>hp</span>, at <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>hp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>200</span>, <span class='fl'>300</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>comparisons <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="emmeans_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+</div>
+<p>Speaking of significance: if we want to see the exact p-values for pairwise comparisons among the different “horsepowers,” we again can add the “pairwise” argument in front of the tilde (~) and see that after crossing the 200 horsepower threshold, the mileage doesn’t significant change anymore, but stays at around 14.5 miles.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m1</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>hp</span>, at <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>hp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>200</span>, <span class='fl'>300</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+  hp emmean    SE df lower.CL upper.CL
+ 100   23.3 0.662 29     21.9     24.6
+ 200   14.6 0.820 29     12.9     16.3
+ 300   14.3 1.735 29     10.7     17.8
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast      estimate    SE df t.ratio p.value
+ hp100 - hp200     8.71 0.919 29   9.477  &lt;.0001
+ hp100 - hp300     9.00 1.945 29   4.626  0.0002
+ hp200 - hp300     0.29 1.728 29   0.168  0.9846
+
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+</div>
+<p>Now, having learned what “emmeans” does with one categorical and one numeric predictors, let’s figure out what happens if we have both in a multiple model.</p>
+<h1 id="one-categorical-one-numeric-predictors">One categorical + One numeric predictors</h1>
+<p>In models that include covariates, EMMs are often referred to as <em>adjusted means</em>. For example, consider a scenario where we want to understand the effect of profession on <em>salary.</em> We might include <em>age</em> as a covariate in our model because <em>salary</em> certainly changes over the lifetime. By holding <em>age</em> constant at its average, we are controlling for the influence of <em>age</em> and are able to better understand the unique effect of profession on <em>salary</em> and make more accurate predictions.</p>
+<p>If you wonder whether we really need any covariate at all, you can compare the Akaike’s Information Criterion (AIC) of a model with, to the model without this covariate. The lower AIC of the model with age indicates that the covariate improves the model and thus makes predictions of salary by profession indeed more realistic.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.statlearning.com'>ISLR</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>  <span class='co'># for reproducibility</span></span>
+<span><span class='va'>salary</span> <span class='op'>&lt;-</span> <span class='va'>Wage</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>jobclass</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/sample_n.html'>sample_n</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>m_no_age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span>, <span class='va'>salary</span><span class='op'>)</span></span>
+<span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>wage</span> <span class='op'>~</span> <span class='va'>jobclass</span> <span class='op'>+</span> <span class='va'>age</span>, <span class='va'>salary</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/stats/AIC.html'>AIC</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>m_no_age</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>         df      AIC
+m         4 1014.413
+m_no_age  3 1020.342</code></pre>
+</div>
+<p>The average age of 41.39 years shows that industrial workers earn slightly below 100K, while the IT crowd earns over 116K, which is already a first insight into our question. However, we can go one step further and ask “emmeans” to provide salary estimates for different ages in order to see how strongly salary increases over a lifetime for different professions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/ref_grid.html'>ref_grid</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>&#39;emmGrid&#39; object with variables:
+    jobclass = 1. Industrial, 2. Information
+    age = 41.39</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>jobclass</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> jobclass       emmean   SE df lower.CL upper.CL
+ 1. Industrial    99.9 5.33 97     89.4      111
+ 2. Information  116.4 5.33 97    105.8      127
+
+Confidence level used: 0.95 </code></pre>
+</div>
+<p>For instance, if people start working at 25 and finish working at 65 years old, we will see that IT professionals receive a salary of over 100K already at the beginning of their career at the age of 25, while factory workers only reach that 100K mark by the age of 42.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>|</span> <span class='va'>jobclass</span>, at <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>age <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>25</span>, <span class='fl'>42</span>, <span class='fl'>65</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>$</span><span class='va'>emmeans</span></span></code></pre>
+</div>
+<pre><code>jobclass = 1. Industrial:
+ age emmean   SE df lower.CL upper.CL
+  25     85 7.33 97     70.4     99.5
+  42    100 5.34 97     89.9    111.1
+  65    121 9.49 97    102.6    140.3
+
+jobclass = 2. Information:
+ age emmean   SE df lower.CL upper.CL
+  25    101 7.67 97     86.2    116.6
+  42    117 5.32 97    106.3    127.5
+  65    138 9.09 97    119.8    155.9
+
+Confidence level used: 0.95 </code></pre>
+</div>
+<h1 id="two-categorical-predictors">Two categorical predictors</h1>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>am</span> <span class='op'>+</span> <span class='va'>cyl</span>, <span class='va'>d</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/ref_grid.html'>ref_grid</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>&#39;emmGrid&#39; object with variables:
+    am = 0, 1
+    cyl = 4, 6, 8</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+ cyl emmean    SE df lower.CL upper.CL
+ 4     26.1 0.972 28     24.1     28.1
+ 6     19.9 1.165 28     17.5     22.3
+ 8     16.0 0.943 28     14.1     17.9
+
+Results are averaged over the levels of: am 
+Confidence level used: 0.95 
+
+$contrasts
+ contrast    estimate   SE df t.ratio p.value
+ cyl4 - cyl6     6.16 1.54 28   4.009  0.0012
+ cyl4 - cyl8    10.07 1.45 28   6.933  &lt;.0001
+ cyl6 - cyl8     3.91 1.47 28   2.660  0.0331
+
+Results are averaged over the levels of: am 
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+</div>
+<p>The model with two categorical predictors works a little differently. If we examine the estimated marginal means (EMMs) of <em>cylinders</em> while adjusting for <em>automatic transmission</em>, the “emmeans” command indicates that the results are somehow averaged over the levels of the variable <em>“am”</em>. I was initially unsure of what this meant, so I calculated the means of cylinders separately for transmission 0 and 1 using “by” argument and averaged them to get the same EMMs we obtained initially.</p>
+<ul>
+<li>(24.8 + 27.4) / 2 = 26.1</li>
+<li>(18.6 + 21.2) / 2 = 19.9</li>
+<li>(14.7 + 17.3) / 2 = 16</li>
+</ul>
+<p>Oh, by the way, if you want to display the sample size of every level, use <code>calc = c(n = ".wgt.")</code> argument ;)</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>cyl</span>, by <span class='op'>=</span> <span class='st'>"am"</span>, calc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='st'>".wgt."</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>am = 0:
+ cyl emmean    SE df  n lower.CL upper.CL
+ 4     24.8 1.323 28  3     22.1     27.5
+ 6     18.6 1.288 28  4     16.0     21.3
+ 8     14.7 0.842 28 12     13.0     16.5
+
+am = 1:
+ cyl emmean    SE df  n lower.CL upper.CL
+ 4     27.4 0.992 28  8     25.3     29.4
+ 6     21.2 1.378 28  3     18.4     24.0
+ 8     17.3 1.383 28  2     14.5     20.1
+
+Confidence level used: 0.95 </code></pre>
+</div>
+<p>So, in the case of a numeric covariate, “emmeans” are estimated for the mean of the covariate. However, for a categorical covariate, “emmeans” calculates the averages for each category and then takes the average of the estimated marginal means over the categories.</p>
+<p>But what happens if we have two numeric predictors?</p>
+<h1 id="two-numeric-predictors">Two numeric predictors</h1>
+<p>To answer this question, let’s consider the horsepower and weight of cars in the same model. The reference grid tells us that the mileage will be calculated only for the averages of predictors, which is somewhat boring. However, using the “cov.reduce” argument we learned about today, we can tell a more interesting story that is already part of the model but would have gone untold if we had only used the “summary” function. In particular, weak (52 horsepower) and light (1.52 weight) cars are the most efficient, as they can drive the most distance (nearly 30 miles per gallon of fuel). If a weak car is heavy (5.42 weight), it can only manage to drive 14.5 miles, which is less than a light but sporty muscle car (335 horsepower) with a mileage of 20 miles per gallon. The most inefficient cars, however, are strong and heavy, which can only manage 5.5 miles per gallon, so you’ll never pass a gas station.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>hp</span> <span class='op'>+</span> <span class='va'>wt</span>, <span class='va'>d</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/ref_grid.html'>ref_grid</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>&#39;emmGrid&#39; object with variables:
+    hp = 146.69
+    wt = 3.2172</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>wt</span> <span class='op'>|</span> <span class='va'>hp</span>, cov.reduce <span class='op'>=</span> <span class='va'>range</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>hp =  52:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  29.71 0.943 29    27.78    31.64
+ 5.42  14.54 2.113 29    10.22    18.86
+
+hp = 335:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  20.72 2.585 29    15.43    26.00
+ 5.42   5.55 1.387 29     2.71     8.39
+
+Confidence level used: 0.95 </code></pre>
+</div>
+<p>Plotting the results supports our conclusion that increasing the <em>strength</em> and <em>weight</em> of cars decreases their efficiency. The only thing we would need to be absolutely sure of our finding is the p-values. However, if we use the “pairwise” argument in front of the tilde (~) to get contrasts between values, we oddly get identical results for different horsepower levels. This happens because in a multiple model <strong>without interactions</strong> we can only adjust the effect of one predictor, such as <em>weight</em>, while the other predictors are held constant and do not change or vary.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://strengejacke.github.io/sjPlot/reference/plot_model.html'>plot_model</a></span><span class='op'>(</span><span class='va'>m</span>, type <span class='op'>=</span> <span class='st'>"pred"</span>, terms <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wt"</span>, <span class='st'>"hp [52, 335]"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="emmeans_files/figure-html5/unnamed-chunk-22-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>hp</span> <span class='op'>+</span> <span class='va'>wt</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>wt</span> <span class='op'>|</span> <span class='va'>hp</span>, cov.reduce <span class='op'>=</span> <span class='va'>range</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+hp =  52:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  29.71 0.943 29    27.78    31.64
+ 5.42  14.54 2.113 29    10.22    18.86
+
+hp = 335:
+   wt emmean    SE df lower.CL upper.CL
+ 1.51  20.72 2.585 29    15.43    26.00
+ 5.42   5.55 1.387 29     2.71     8.39
+
+Confidence level used: 0.95 
+
+$contrasts
+hp =  52:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424     15.2 2.47 29   6.129  &lt;.0001
+
+hp = 335:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424     15.2 2.47 29   6.129  &lt;.0001</code></pre>
+</div>
+<p>However, when we introduce interactions, things dramatically improve, because we can calculate EMMs for every level of one predictor within every level of the other predictor, and we can easily obtain contrasts between levels with unique p-values. This, however, is a completely different story, because analyzing interactions can be very challenging, but at the same time, it is extremely rewarding because it allows us to extract even more valuable knowledge from models. Thus, if you want to step up your data science game and unleash the real power of {emmeans}, you should definitely <a href="https://youtu.be/cqmMNR6x73g">watch this video!</a></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>hp</span> <span class='op'>*</span> <span class='va'>wt</span>, <span class='va'>d</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>pairwise</span> <span class='op'>~</span> <span class='va'>wt</span> <span class='op'>|</span> <span class='va'>hp</span>, cov.reduce <span class='op'>=</span> <span class='va'>range</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>$emmeans
+hp =  52:
+   wt emmean   SE df lower.CL upper.CL
+ 1.51  33.32 1.24 28    30.78     35.9
+ 5.42   6.85 2.70 28     1.33     12.4
+
+hp = 335:
+   wt emmean   SE df lower.CL upper.CL
+ 1.51  11.26 3.31 28     4.48     18.0
+ 5.42  15.61 2.92 28     9.63     21.6
+
+Confidence level used: 0.95 
+
+$contrasts
+hp =  52:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424    26.47 3.65 28   7.261  &lt;.0001
+
+hp = 335:
+ contrast          estimate   SE df t.ratio p.value
+ wt1.513 - wt5.424    -4.35 5.59 28  -0.778  0.4430</code></pre>
+</div>
+<h1 id="whats-next-interactions">What’s next? … Interactions!</h1>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="emmeans_files/figure-html5/unnamed-chunk-24-1.png" width="624" /><img src="emmeans_files/figure-html5/unnamed-chunk-24-2.png" width="624" /><img src="emmeans_files/figure-html5/unnamed-chunk-24-3.png" width="624" /></p>
+</div>
+<h1 id="some-bonus-content">Some bonus content</h1>
+<h2 id="cohens-d-effect-sizes">“Cohen’s d” Effect sizes</h2>
+<ul>
+<li>you must specify the “emmGrid” object with the means to be compared, the estimated population SD sigma of the model, and its degrees of freedom “edf”:</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/eff_size.html'>eff_size</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans</a></span><span class='op'>(</span><span class='va'>m</span>, <span class='op'>~</span> <span class='va'>cyl</span><span class='op'>)</span>, sigma <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/sigma.html'>sigma</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span>, edf <span class='op'>=</span> <span class='fl'>29</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code> contrast    effect.size    SE df lower.CL upper.CL
+ cyl4 - cyl6        1.86 0.566 26    0.698     3.02
+ cyl4 - cyl8        3.38 0.677 26    1.993     4.78
+ cyl6 - cyl8        1.52 0.576 26    0.340     2.71
+
+Results are averaged over the levels of: am 
+sigma used for effect sizes: 3.032 
+Confidence level used: 0.95 </code></pre>
+</div>
+<hr />
+<p>If you think, I missed something, please comment on it, and I’ll improve this tutorial.</p>
+<p><strong>Thank you for learning!</strong></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2022-11-29-emmeans/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=%7Bemmeans%7D%20Game-Changing%20R-package%20Squeezes%20Hidden%20Knowledge%20out%20of%20Models%21&amp;url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-11-29-emmeans%2F" aria-label="share on twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-11-29-emmeans%2F&amp;title=%7Bemmeans%7D%20Game-Changing%20R-package%20Squeezes%20Hidden%20Knowledge%20out%20of%20Models%21" aria-label="share on linkedin">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-11-29-emmeans%2F" aria-label="share on facebook">
+        <i class="fab fa-facebook" aria-hidden="true"></i>
+      </a>
+      <a href="https://plus.google.com/share?url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-11-29-emmeans%2F" aria-label="share on google-plus">
+        <i class="fab fa-google-plus" aria-hidden="true"></i>
+      </a>
+      <a href="https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fyuryzablotski%2FyuzaR-Blog.github.io%2Fposts%2F2022-11-29-emmeans%2F&amp;description=%7Bemmeans%7D%20Game-Changing%20R-package%20Squeezes%20Hidden%20Knowledge%20out%20of%20Models%21" aria-label="share on pinterest">
+        <i class="fab fa-pinterest" aria-hidden="true"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://yuzar-blog.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script type="text/javascript" cookie-consent="functionality">
+var disqus_config = function () {
+  this.page.url = 'https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/';
+  this.page.identifier = 'posts/2022-11-29-emmeans/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://yuzar-blog.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
+  <h3 id="updates-and-corrections">Corrections</h3>
+  <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/yuryzablotski/yuzaR-Blog/issues/new">create an issue</a> on the source repository.</p>
+  <h3 id="reuse">Reuse</h3>
+  <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code is available at <a href="https://github.com/yuryzablotski/yuzaR-Blog">https://github.com/yuryzablotski/yuzaR-Blog</a>, unless otherwise noted. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Zablotski (2023, Jan. 31). yuzaR-Blog: {emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!. Retrieved from https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{zablotski2023{emmeans},
+  author = {Zablotski, Yury},
+  title = {yuzaR-Blog: {emmeans} Game-Changing R-package Squeezes Hidden Knowledge out of Models!},
+  url = {https://yuryzablotski/yuzaR-Blog.github.io/posts/2022-11-29-emmeans/},
+  year = {2023}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
